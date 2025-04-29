@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 2
+names: ['Dandelion', 'Lettuce']
+
+roboflow:
+  workspace: seed24
+  project: lettuce_vs_dandelion
+  version: 1
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/seed24/lettuce_vs_dandelion/dataset/1
