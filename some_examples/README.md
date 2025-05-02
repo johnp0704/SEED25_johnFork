@@ -28,3 +28,12 @@ You will need to pip install the following packages before running the code in p
 On top of this, there are two ways to get the Realsense to work with python. The first is as mentioned above by "pip install pyrealsense2", but may require a virtual environment. The second involves following this github instruction set for the jetson. Follow [this link](https://dev.intelrealsense.com/docs/nvidia-jetson-tx2-installation) closely to install the Realsense packages natively.
 
 From here, plug in the Realsense via USB and run the python BirdsEyeView.py script. There is a calibration board in the V308 closet if you need to change parameters to get a perfect top-down perspective.
+
+## motor_test.py
+Follow this section to gain an understanding of how to command the motors using Simple Serial Mode. The script provided cycles the speeds of the left and right motors through a for loop.
+
+You will need to pip install the following packages before running the code in python:
+1. pip install pyserial
+2. the "time" module is used, but is already part of python's standard packages so this does not need to be pip'd
+
+Using the Sabertooth 2x12 datasheet, set to Simple Serial and the baud rate to 9600 by adjusting the dip switches. Prop the robot up on a box so that the wheels do not touch the ground, otherwise it will run away when the script is ran! Here no sensors are used, this is used for testing the motors and seeing how commands are sent.
