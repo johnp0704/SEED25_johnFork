@@ -12,4 +12,19 @@ You will need to pip install the following packages before running the code in p
 
 On top of this, there are two ways to get the Realsense to work with python. The first is as mentioned above by "pip install pyrealsense2", but may require a virtual environment. The second involves following this github instruction set for the jetson. Follow [this link](https://dev.intelrealsense.com/docs/nvidia-jetson-tx2-installation) closely to install the Realsense packages natively.
 
-From here, you will be able to plug in the Realsense via USB and run the python circles_test.py script.
+From here, plug in the Realsense via USB and run the python circles_test.py script.
+
+## BirdsEyeView.py
+Follow this section to run a Birds Eye View transformation for a given image. This can be paired with the circles_test.py script above to perform a more precise DWA calculation, as this is a direct top-down measurement, rather than an extrapolated one. In other words, when we command a robot, we usually tell it how to move from a top-down reference frame, however we are taking a front-facing image with the Realsense. To get the most accurate measurements and hence the most accurate commands, use this transformation. Again, this program does not use motor commands as this is a purely visual aid.
+
+You will need to pip install the following packages before running the code in python:
+1. pip install opencv-python
+2. pip install numpy
+3. pip install matplotlib
+4. pip install pyrealsense2
+5. pip install imutils
+6. pip install python-math
+
+On top of this, there are two ways to get the Realsense to work with python. The first is as mentioned above by "pip install pyrealsense2", but may require a virtual environment. The second involves following this github instruction set for the jetson. Follow [this link](https://dev.intelrealsense.com/docs/nvidia-jetson-tx2-installation) closely to install the Realsense packages natively.
+
+From here, plug in the Realsense via USB and run the python BirdsEyeView.py script. There is a calibration board in the V308 closet if you need to change parameters to get a perfect top-down perspective.
