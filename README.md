@@ -1,6 +1,6 @@
 # The Autonomous Weeding Garden Robot (AWGR)
 
-[User operation video](https://drive.google.com/file/d/1jZLO9X0hrXnLbDT-zOZEFcToG8p_CPjy/view?usp=sharing)
+[User operation video](https://drive.google.com/file/d/1jZLO9X0hrXnLbDT-zOZEFcToG8p_CPjy/view?usp=sharing) <br/>
 There are a number of folders in this repo to help develop the AWGR. There are README files in each directory with further clarification of individual files. 
 ## RC Control 
 Guide on how to setup RC mode for the robot. Scripts for microcontrollers.
