@@ -1,7 +1,7 @@
 # Examples for interfacing with the Jetson 
 
 ## circles_test.py
-Follow this section to run the Dynamic Window Approach to collision avoidance, with object detection from a standard package.
+Follow this section to run the Dynamic Window Approach to collision avoidance, with object detection from a standard package. In other words, this program will detect an object, find the middle of the bounding box, and navigate around it. There are no motor commands here as this is a purely visual aid.
 
 You will need to pip install the following packages before running the code in python:
 1. pip install opencv-python
