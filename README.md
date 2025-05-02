@@ -1,3 +1,3 @@
-# SEED24
+# The Autonomous Weeding Garden Robot (AWGR)
 
-The files in this repository are discussed in the technical documentation package submission for the autonomous weeding robot (SEED team 24). Detailed instructions can be found in the software section of this document. 
+[User operation video](https://drive.google.com/file/d/1jZLO9X0hrXnLbDT-zOZEFcToG8p_CPjy/view?usp=sharing)
