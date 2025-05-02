@@ -7,7 +7,7 @@ Guide on how to setup RC mode for the robot. Scripts for microcontrollers.
 ## automation 
 Guide for the robots autonomy. Includes information on the script that runs on startup, and the script itself. 
 ## drawings
-.png files of all the parts that were either 3D printed or machined for the robot 
+.png files of all the parts that were either 3D printed or machined for the robot. does not contain a README because it is just pictures.
 ## schematics_and_drawings
 Similar to the above, including all the solidworks files for each assembly. Ask your mechanical engineer. Also includes the electrical wiring diagram. 
 ## some_examples 
