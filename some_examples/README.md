@@ -28,7 +28,10 @@ __Using the Sabertooth 2x12 datasheet, set to Simple Serial and the baud rate to
 Follow this section to test and understand the GPIO pins on the Jetson. This script currently uses a button input and an LED output to turn on the LED when the button is pressed. The debouncing is not fantastic, it could be better, but it's just a practice example. 
 You will need to pip install the following packages:
 1. `pip install RPi.GPIO`
-2. This again uses the `time` module.
+2. `pip install Jetson.GPIO`
+3. This again uses the `time` module.
+
+The Jetson GPIO Package is finnickey. There is a [repo](https://github.com/NVIDIA/jetson-gpio.git) with more information on it. `RPi.GPIO` worked better for us. 
 
 Connect the LED to ground and board pin 12. Connect the button across ground and the input pin 18. Run the script using a `venv` in vscode or via the command line. The pinout we used is shown below, we're not confident it's entirely correct as we used the YAHBOOM dev kit with the Jetson, so you may just have to plug and play with which GPIO pins you can use. The ground, 5V supply, and 3.3V supply are all correct however, you'll see that they are a different color on the board. 
 
