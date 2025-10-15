@@ -41,7 +41,7 @@ config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
 
 pipeline.start(config)
 
-print("Press SPACE to capture a photo. Press ESC to exit.")
+print("SPACE to capture a photo. ESC to exit.")
 
 try:
     while True:
