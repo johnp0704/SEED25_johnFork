@@ -1,4 +1,4 @@
 (sym_lib_table
   (version 7)
-  (lib (name "Auger_sym_lib")(type "KiCad")(uri "${KIPRJMOD}/Syms/Auger_sym_lib.kicad_sym")(options "")(descr ""))
+  (lib (name "Seed25")(type "KiCad")(uri "${KIPRJMOD}/Syms/Auger_sym_lib.kicad_sym")(options "")(descr ""))
 )
