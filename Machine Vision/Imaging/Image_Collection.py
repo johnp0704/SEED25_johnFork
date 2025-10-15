@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 import time
 
-# Define absolute paths for saving images (Change if needed)
+# Define absolute paths for saving images (Change is needed)
 rgb_folder = r"C:\UVM\SEED\Images\Preliminary Images\RGB"
 depth_folder = r"C:\UVM\SEED\Images\Preliminary Images\Depth"
 
