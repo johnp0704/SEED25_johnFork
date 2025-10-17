@@ -55,7 +55,7 @@ try:
         depth_image = np.asanyarray(depth_frame.get_data())
         depth_colormap = cv2.convertScaleAbs(depth_image, alpha=0.03)
 
-        images = np.hstack((color_image, cv2.cvtColor(depth_colormap, cv2.COLOR_GRAY2BGR)))
+        images = np.hstack((color_image, cv2.cvtColor(depth_colormap, cv2.COLOR_JET)))
         cv2.imshow('RealSense RGB and Depth Stream', images)
 
         key = cv2.waitKey(1)
