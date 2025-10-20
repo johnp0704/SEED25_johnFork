@@ -111,6 +111,8 @@ class SaberToothMotorDriver:
         elif speed > 0:
             send_val = linear_map_constrain_int(speed, 0, 100, range_midpoint, range_max)
 
+        self.sabertooth_UART_serial.write([send_val])
+
 
     def get_motor1_speed(self):
         return self.__motor1_speed
