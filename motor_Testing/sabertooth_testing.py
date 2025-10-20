@@ -14,7 +14,7 @@ for i in range(-30, 30):
     motor.updateMotorSpeed(i,i)
     time.sleep(0.2)
 
-for i in range(30, 0):
+for i in range(30, 0, -1):
     print(i)
     motor.updateMotorSpeed(i,i)
     time.sleep(0.2)
