@@ -4,7 +4,7 @@ import time
 
 motor = st.SaberToothMotorDriver(True,True)
 
-for i in range(0, -30):
+for i in range(0, -30, -1):
     print(i)
     motor.updateMotorSpeed(i,i)
     time.sleep(0.2)
