@@ -6,8 +6,8 @@ from datetime import datetime
 import time
 
 # Define absolute paths for saving images (Change if needed)
-rgb_folder = r"C:\UVM\SEED\Images\Preliminary Images\RGB"
-depth_folder = r"C:\UVM\SEED\Images\Preliminary Images\Depth"
+rgb_folder = r"C:\UVM\SEED\Images\Preliminary Images\Dandelion\RGB"
+depth_folder = r"C:\UVM\SEED\Images\Preliminary Images\Dandelion\Depth"
 
 # Create folders if they don't exist
 os.makedirs(rgb_folder, exist_ok=True)
@@ -36,8 +36,8 @@ def get_next_index(folder, prefix):
 # Configure depth and color streams
 pipeline = rs.pipeline()
 config = rs.config()
-config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
+config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
 
 pipeline.start(config)
 
