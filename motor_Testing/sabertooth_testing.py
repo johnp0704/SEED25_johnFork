@@ -4,7 +4,7 @@ import time
 
 motor = st.SaberToothMotorDriver(True,True)
 
-motor_test_range = 10
+motor_test_range = 20
 delay_time = 0.2
 
 for i in range(0, -motor_test_range, -1):
