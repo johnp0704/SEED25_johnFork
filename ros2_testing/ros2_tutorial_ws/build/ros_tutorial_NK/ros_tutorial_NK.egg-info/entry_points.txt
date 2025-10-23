@@ -1,3 +1,3 @@
 [console_scripts]
-
+first_node_test = ros_tutorial_NK.first_node:main
 

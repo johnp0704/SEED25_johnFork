@@ -6,7 +6,7 @@ class Basic_Node(Node):
     #Define new class which inherits from RCLPY node
     def __init__(self):
         super().__init__("node_one")
-        self.get_logger().info("test2!")
+        self.get_logger().info("test!")
 
 
  

@@ -1,0 +1,18 @@
+running develop
+running egg_info
+writing ros_tutorial_NK.egg-info/PKG-INFO
+writing dependency_links to ros_tutorial_NK.egg-info/dependency_links.txt
+writing entry points to ros_tutorial_NK.egg-info/entry_points.txt
+writing requirements to ros_tutorial_NK.egg-info/requires.txt
+writing top-level names to ros_tutorial_NK.egg-info/top_level.txt
+reading manifest file 'ros_tutorial_NK.egg-info/SOURCES.txt'
+writing manifest file 'ros_tutorial_NK.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/install/ros_tutorial_NK/lib/python3.8/site-packages/site.py
+Creating /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/install/ros_tutorial_NK/lib/python3.8/site-packages/ros-tutorial-NK.egg-link (link to .)
+Installing first_node_test script to /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/install/ros_tutorial_NK/lib/ros_tutorial_NK
+
+Installed /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/build/ros_tutorial_NK
+running symlink_data
+symbolically linking /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/build/ros_tutorial_NK/resource/ros_tutorial_NK -> /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+symbolically linking /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/build/ros_tutorial_NK/package.xml -> /home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/install/ros_tutorial_NK/share/ros_tutorial_NK

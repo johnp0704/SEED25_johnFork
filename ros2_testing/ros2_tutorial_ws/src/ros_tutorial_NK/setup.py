@@ -20,6 +20,7 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "first_node_test = ros_tutorial_NK.first_node:main"
         ],
     },
 )
