@@ -1,0 +1,33 @@
+[0.484s] Invoking command in '/home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK': PYTHONPATH=/home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/ros_tutorial_NK build --build-base /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build install --record /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/install.log --install-scripts $base/lib/ros_tutorial_NK --single-version-externally-managed install_data
+[0.621s] running egg_info
+[0.621s] creating ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info
+[0.621s] writing ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/PKG-INFO
+[0.621s] writing dependency_links to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/dependency_links.txt
+[0.622s] writing entry points to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/entry_points.txt
+[0.622s] writing requirements to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/requires.txt
+[0.622s] writing top-level names to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/top_level.txt
+[0.624s] writing manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[0.645s] reading manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[0.645s] writing manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[0.645s] running build
+[0.645s] running build_py
+[0.646s] creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build
+[0.646s] creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib
+[0.646s] creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+[0.646s] copying ros_tutorial_NK/__init__.py -> /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+[0.646s] running install
+[0.646s] running install_lib
+[0.647s] creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+[0.647s] copying /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK/__init__.py -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+[0.647s] byte-compiling /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK/__init__.py to __init__.cpython-38.pyc
+[0.648s] running install_data
+[0.648s] creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index
+[0.649s] creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index
+[0.649s] creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+[0.649s] copying resource/ros_tutorial_NK -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+[0.649s] copying package.xml -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ros_tutorial_NK
+[0.649s] running install_egg_info
+[0.650s] Copying ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info to /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK-0.0.0-py3.8.egg-info
+[0.650s] running install_scripts
+[0.662s] writing list of installed files to '/home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/install.log'
+[0.675s] Invoked command in '/home/nk/Desktop/SEED25/ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK' returned '0': PYTHONPATH=/home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/ros_tutorial_NK build --build-base /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build install --record /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/install.log --install-scripts $base/lib/ros_tutorial_NK --single-version-externally-managed install_data

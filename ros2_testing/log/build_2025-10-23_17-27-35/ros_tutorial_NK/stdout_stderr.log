@@ -1,0 +1,31 @@
+running egg_info
+creating ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info
+writing ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/PKG-INFO
+writing dependency_links to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/dependency_links.txt
+writing entry points to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/entry_points.txt
+writing requirements to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/requires.txt
+writing top-level names to ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/top_level.txt
+writing manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+reading manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+writing manifest file '../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build
+creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib
+creating /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+copying ros_tutorial_NK/__init__.py -> /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+running install
+running install_lib
+creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+copying /home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/build/lib/ros_tutorial_NK/__init__.py -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+byte-compiling /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index
+creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index
+creating /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+copying resource/ros_tutorial_NK -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+copying package.xml -> /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/share/ros_tutorial_NK
+running install_egg_info
+Copying ../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info to /home/nk/Desktop/SEED25/ros2_testing/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK-0.0.0-py3.8.egg-info
+running install_scripts
+writing list of installed files to '/home/nk/Desktop/SEED25/ros2_testing/build/ros_tutorial_NK/install.log'
