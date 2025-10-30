@@ -1,0 +1,30 @@
+from ultralytics import YOLO
+import os
+
+# Load your trained model
+model = YOLO(r"C:\Users\johnp\runs\detect\train5\weights\best.pt") 
+#path needs to be whatever the YOLO model training outputs after "Results save to..."
+
+
+def get_all_file_paths(folder_path):
+    file_paths = []
+    for root, _, filenames in os.walk(folder_path):
+        for filename in filenames:
+            full_path = os.path.join(root, filename)
+            file_paths.append(full_path)
+    return file_paths
+
+folder_path = r"C:\UVM\SEED\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2"
+file_paths = get_all_file_paths(folder_path)
+# Run inference
+for image_path in file_paths:
+    results = model(image_path)
+
+    # Get the detections
+    detections = results[0].boxes  # bounding boxes
+
+    if len(detections) > 0:
+        print(f"Dandelion detected in {image_path}!")
+    else:
+        print(f"No dandelions found in {image_path}.")
+        print()

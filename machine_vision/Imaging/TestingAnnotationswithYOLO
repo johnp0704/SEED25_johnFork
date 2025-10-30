@@ -1,0 +1,48 @@
+import os #needed for reading and path commands
+
+# Path to dataset
+DATASET_DIR = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations" #will have to be changed on user-basis
+
+
+def main():
+    image_counts = {} #Create dictionary
+
+    # For all in dataset
+    for path, _, files in os.walk(DATASET_DIR): #taking path string and file names
+        for file in files: #for each file 
+            if file.endswith(".txt"): #if it is a txt file
+                txt_path = os.path.join(path, file) #get path of the file
+                with open(txt_path, "r") as f: #open the file to read
+                    lines = [line.strip() for line in f if line.strip()] #for each line in the file, strip lines, remove empty lines
+                    #lines is now a list of all non-empty, stripped lines in the file 
+
+                image_name = os.path.splitext(file)[0] #get image name, split removes file extension
+
+                # Count the number of annotated dandelions
+                num_dandelions = len(lines) #set list
+
+                # Find associated image
+                img_path = None
+                for ext in DATASET_DIR: #take extensions in data
+                    candidate = os.path.join(path, image_name + ext) #make full file name
+                    if os.path.exists(candidate): #if this exists
+                        img_path = candidate #save path
+                        break #exit if file is found
+
+                image_counts[image_name] = {
+                    "count": num_dandelions,
+                    "image": img_path or "(image not found)"
+                } #Index by file name, save number of dandelions annotated and path
+
+    # Print results
+    total_images = len(image_counts) #number of images looked at
+    total_dandelions = sum(info["count"] for info in image_counts.values()) #sum the number of annotated dandelions in all images
+
+    for img, info in image_counts.items(): #for each image, take the file name and the information saved
+        print(f"{img}: {info['count']} dandelion(s)") #prints file name and number of annotated dandelions in the image
+
+    print(f"\nTotal images: {total_images}") #Print total checked images
+    print(f"Total dandelions: {total_dandelions}") #Print total found annotated dandelions
+
+if __name__ == "__main__": #robustify: run module is script ran directly, don't run if imported
+    main()
