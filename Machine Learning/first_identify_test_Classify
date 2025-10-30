@@ -1,0 +1,20 @@
+from ultralytics import YOLO
+
+# Load your trained model
+model = YOLO(r"C:\Users\johnp\runs\detect\train5\weights\best.pt") 
+#path needs to be whatever the YOLO model training outputs after "Results save to..."
+
+
+# Path to a new image
+image_path = r"C:\UVM\SEED\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1\photo_20251017_871.png"
+
+# Run inference
+results = model(image_path)
+
+# Get the detections
+detections = results[0].boxes  # bounding boxes
+
+if len(detections) > 0:
+    print(f"Dandelion detected in {image_path}!")
+else:
+    print(f"No dandelions found in {image_path}.")

@@ -1,4 +1,0 @@
-'''Very simple binary classification example; given 100 annotated training images (dandelion wave 1), and given 1 new test image, classify if the image
-has a dandelion. Does not worry about where or how many'''
-
-#Make sure to install ultralytics
