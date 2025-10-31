@@ -1,30 +1,102 @@
+'''
+John Poirier
+SEED 485: The AWGR Autonomous Weeding Garden Robot
+'''
+
+'''This file is using the previously trained YOLO model to do a binary image classification: either there is a dandelion or there isn't.
+Then compares it to the known labels, and finds accuracy, precision, recall.'''
+
+
 from ultralytics import YOLO
 import os
 
-# Load your trained model
+# Load the trained model
 model = YOLO(r"C:\Users\johnp\runs\detect\train5\weights\best.pt") 
 #path needs to be whatever the YOLO model training outputs after "Results save to..."
 
 
+#Grab all the file paths from a specific folder, since we're doing it in waves
 def get_all_file_paths(folder_path):
     file_paths = []
-    for root, _, filenames in os.walk(folder_path):
+    for root, _, filenames in os.walk(folder_path): #walk through the folder
         for filename in filenames:
             full_path = os.path.join(root, filename)
             file_paths.append(full_path)
     return file_paths
 
-folder_path = r"C:\UVM\SEED\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2"
+folder_path = r"C:\UVM\SEED\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1" #choose what folder (wave) you look at
 file_paths = get_all_file_paths(folder_path)
-# Run inference
-for image_path in file_paths:
-    results = model(image_path)
 
-    # Get the detections
-    detections = results[0].boxes  # bounding boxes
 
-    if len(detections) > 0:
-        print(f"Dandelion detected in {image_path}!")
-    else:
-        print(f"No dandelions found in {image_path}.")
-        print()
+''' Temp Remove, can tell you if specific images have dandelions detected or not'''
+# # Run inference
+# for image_path in file_paths: #check all the images
+#     results = model(image_path) #use the model
+
+#     # Get the detections
+#     detections = results[0].boxes  #bounding boxes
+
+#     if len(detections) > 0: #if there are ANY dandelions detected
+#         print(f"Dandelion detected in {image_path}!")
+#     else: #if there are NO dandelions detected
+#         print(f"No dandelions found in {image_path}.")
+#         print()
+
+
+# Save predictions, but don't print them, just yes or no
+def get_prediction(model, image_path):
+    results = model(image_path, verbose=False)
+    detections = results[0].boxes
+    return 1 if len(detections) > 0 else 0
+
+
+#Lets check how well it did, since we have Wave 2 annotated
+
+#Get known images and labels
+image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 1\images\train" #change as needed
+label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 1\labels\train"
+
+def get_ground_truth(image_folder, label_folder): #find the gorund truths
+    ground_truth = {} #set up a dictionary
+    for root, _, filenames in os.walk(image_folder): #get the paths
+        for filename in filenames: #for each file
+            if not filename.lower().endswith(('.png')): #if the filename does not end with .png
+                continue
+
+            image_path = os.path.join(root, filename) #image path name
+            label_name = os.path.splitext(filename)[0] + ".txt" #label
+            label_path = os.path.join(label_folder, label_name) #label path name
+
+            if os.path.exists(label_path) and os.path.getsize(label_path) > 0: #is there something?
+                ground_truth[image_path] = 1 #Yes
+            else:
+                ground_truth[image_path] = 0 #No
+
+    return ground_truth
+
+#Now compare how the model did
+ground_truths = get_ground_truth(image_folder, label_folder)
+
+TP = TN = FP = FN = 0 #True positive, True negative, False Positive, False Negative
+
+for image_path, actual in ground_truths.items(): #take image path and true label
+    pred = get_prediction(model, image_path) #use model for prediction of image
+
+    if pred == 1 and actual == 1: #if True Positive
+        TP += 1
+    elif pred == 0 and actual == 0: #if True Negative
+        TN += 1
+    elif pred == 1 and actual == 0: #if False Positive
+        FP += 1
+    elif pred == 0 and actual == 1: #if False Negative
+        FN += 1
+
+# Calculate accuracy and other metrics
+accuracy = (TP + TN) / (TP + TN + FP + FN)
+precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+recall = TP / (TP + FN) if (TP + FN) > 0 else 0
+
+print(f"Accuracy: {accuracy:.2%}") #how often is it right?
+print(f"Precision: {precision:.2%}") #how often is it right when it detects a dandelion?
+print(f"Recall: {recall:.2%}") #how often did the model find a dandelion when there actually was one?
+print(f"TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}")
