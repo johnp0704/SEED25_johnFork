@@ -11,8 +11,8 @@ from ultralytics import YOLO
 import os
 
 # Load the trained model
-model = YOLO(r"C:\Users\johnp\runs\detect\train5\weights\best.pt") 
-#path needs to be whatever the YOLO model training outputs after "Results save to..."
+model = YOLO(r"C:\Users\johnp\runs\detect\train6\weights\best.pt") 
+#path needs to be whatever the YOLO model training outputs after "Results save to...", looking for a best.pt file
 
 
 #Grab all the file paths from a specific folder, since we're doing it in waves
@@ -53,8 +53,8 @@ def get_prediction(model, image_path):
 #Lets check how well it did, since we have Wave 2 annotated
 
 #Get known images and labels
-image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 1\images\train" #change as needed
-label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 1\labels\train"
+image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 2\images\train" #change as needed
+label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Wave 2\labels\train"
 
 def get_ground_truth(image_folder, label_folder): #find the gorund truths
     ground_truth = {} #set up a dictionary
