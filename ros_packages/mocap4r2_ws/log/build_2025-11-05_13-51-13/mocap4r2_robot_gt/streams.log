@@ -1,0 +1,14 @@
+[0.059s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_robot_gt': CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_robot_gt -- -j4 -l4
+[0.204s] [35m[1mScanning dependencies of target gt_component[0m
+[0.236s] [ 25%] Built target set_gt_component
+[0.261s] [35m[1mScanning dependencies of target set_gt_cli[0m
+[0.308s] [ 37%] [32mBuilding CXX object CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o[0m
+[0.374s] [ 50%] [32mBuilding CXX object CMakeFiles/set_gt_cli.dir/src/set_gt_cli.cpp.o[0m
+[6.259s] [ 62%] [32m[1mLinking CXX executable set_gt_cli[0m
+[6.708s] [ 62%] Built target set_gt_cli
+[19.930s] [ 75%] [32m[1mLinking CXX shared library libgt_component.so[0m
+[21.017s] [ 75%] Built target gt_component
+[21.042s] [35m[1mScanning dependencies of target gt_program[0m
+[21.137s] [ 87%] [32mBuilding CXX object CMakeFiles/gt_program.dir/src/gt_program.cpp.o[0m
+[26.752s] [100%] [32m[1mLinking CXX executable gt_program[0m
+[27.134s] [100%] Built target gt_program

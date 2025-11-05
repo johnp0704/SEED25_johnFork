@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mocap4r2_dummy_driver",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_dummy_driver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_dummy_driver-d92d4df2089ebe4a6a4a.json",
+					"name" : "mocap4r2_dummy_driver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_dummy_driver_main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_dummy_driver_main-45caa0c566d118bca2a1.json",
+					"name" : "mocap4r2_dummy_driver_main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_dummy_driver_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_dummy_driver_uninstall-a53894b6843e3ce17aea.json",
+					"name" : "mocap4r2_dummy_driver_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-c67a5c4a0f5608f0552d.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_dummy_driver",
+		"source" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_dummy_driver"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

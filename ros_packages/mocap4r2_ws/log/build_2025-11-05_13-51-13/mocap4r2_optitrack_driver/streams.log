@@ -1,0 +1,84 @@
+[0.084s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/cmake /home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_optitrack_driver
+[0.345s] -- The C compiler identification is GNU 9.4.0
+[0.534s] -- The CXX compiler identification is GNU 9.4.0
+[0.544s] -- Check for working C compiler: /usr/bin/cc
+[0.805s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.805s] -- Detecting C compiler ABI info
+[1.099s] -- Detecting C compiler ABI info - done
+[1.124s] -- Detecting C compile features
+[1.124s] -- Detecting C compile features - done
+[1.130s] -- Check for working CXX compiler: /usr/bin/c++
+[1.341s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[1.341s] -- Detecting CXX compiler ABI info
+[1.611s] -- Detecting CXX compiler ABI info - done
+[1.646s] -- Detecting CXX compile features
+[1.647s] -- Detecting CXX compile features - done
+[1.648s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[1.710s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[1.711s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[2.339s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[2.443s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[2.460s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[2.811s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[2.943s] -- Found FastRTPS: /opt/ros/foxy/include  
+[3.173s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[3.301s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[3.306s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[3.309s] -- Looking for pthread.h
+[3.609s] -- Looking for pthread.h - found
+[3.613s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[3.901s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[3.901s] -- Looking for pthread_create in pthreads
+[4.137s] -- Looking for pthread_create in pthreads - not found
+[4.138s] -- Looking for pthread_create in pthread
+[4.452s] -- Looking for pthread_create in pthread - found
+[4.455s] -- Found Threads: TRUE  
+[4.927s] -- Found rclcpp_lifecycle: 2.4.3 (/opt/ros/foxy/share/rclcpp_lifecycle/cmake)
+[4.992s] -- Found tf2: 0.13.14 (/opt/ros/foxy/share/tf2/cmake)
+[5.094s] -- Found tf2_ros: 0.13.14 (/opt/ros/foxy/share/tf2_ros/cmake)
+[5.900s] -- Found mocap4r2_msgs: 0.0.3 (/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake)
+[6.079s] -- Found mocap4r2_control_msgs: 0.0.7 (/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/share/mocap4r2_control_msgs/cmake)
+[6.255s] -- Found mocap4r2_control: 0.0.7 (/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake)
+[6.429s] -- Found ament_cmake_copyright: 0.9.8 (/opt/ros/foxy/share/ament_cmake_copyright/cmake)
+[6.434s] -- Found ament_cmake_cppcheck: 0.9.8 (/opt/ros/foxy/share/ament_cmake_cppcheck/cmake)
+[6.439s] -- Found ament_cmake_cpplint: 0.9.8 (/opt/ros/foxy/share/ament_cmake_cpplint/cmake)
+[6.444s] -- Found ament_cmake_lint_cmake: 0.9.8 (/opt/ros/foxy/share/ament_cmake_lint_cmake/cmake)
+[6.450s] -- Found ament_cmake_xmllint: 0.9.8 (/opt/ros/foxy/share/ament_cmake_xmllint/cmake)
+[6.455s] -- Found ament_cmake_uncrustify: 0.9.8 (/opt/ros/foxy/share/ament_cmake_uncrustify/cmake)
+[6.465s] -- Found ament_cmake_gtest: 0.9.12 (/opt/ros/foxy/share/ament_cmake_gtest/cmake)
+[6.630s] -- Configuring done
+[6.695s] -- Generating done
+[6.721s] -- Build files have been written to: /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver
+[6.755s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver' returned '0': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/cmake /home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_optitrack_driver
+[6.757s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver -- -j4 -l4
+[6.872s] [35m[1mScanning dependencies of target mocap4r2_optitrack_driver[0m
+[6.977s] [ 25%] [32mBuilding CXX object CMakeFiles/mocap4r2_optitrack_driver.dir/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp.o[0m
+[13.456s] [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp:[m[K In member function ‘[01m[Kstd::chrono::nanoseconds mocap4r2_optitrack_driver::OptitrackDriverNode::get_optitrack_system_latency(sFrameOfMocapData*)[m[K’:
+[13.457s] [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp:116:90:[m[K [01;31m[Kerror: [m[Kno matching function for call to ‘[01m[Kround<std::chrono::nanoseconds>(std::chrono::duration<float>)[m[K’
+[13.457s]   116 |     return round<std::chrono::nanoseconds>(std::chrono::duration<float>{clientLatencySec}[01;31m[K)[m[K;
+[13.457s]       |                                                                                          [01;31m[K^[m[K
+[13.457s] In file included from [01m[K/opt/ros/foxy/include/libstatistics_collector/moving_average_statistics/types.hpp:18[m[K,
+[13.461s]                  from [01m[K/opt/ros/foxy/include/libstatistics_collector/collector/generate_statistics_message.hpp:24[m[K,
+[13.461s]                  from [01m[K/opt/ros/foxy/include/rclcpp/topic_statistics/subscription_topic_statistics.hpp:23[m[K,
+[13.461s]                  from [01m[K/opt/ros/foxy/include/rclcpp/subscription.hpp:50[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/any_executable.hpp:25[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/memory_strategy.hpp:24[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/memory_strategies.hpp:18[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executor_options.hpp:20[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executor.hpp:33[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors/multi_threaded_executor.hpp:26[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/executors.hpp:21[m[K,
+[13.462s]                  from [01m[K/opt/ros/foxy/include/rclcpp/rclcpp.hpp:146[m[K,
+[13.463s]                  from [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver/include/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.hpp:43[m[K,
+[13.463s]                  from [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp:28[m[K:
+[13.463s] [01m[K/usr/include/c++/9/cmath:1768:5:[m[K [01;36m[Knote: [m[Kcandidate: ‘[01m[Ktemplate<class _Tp> constexpr typename __gnu_cxx::__enable_if<std::__is_integer<_Tp>::__value, double>::__type std::round(_Tp)[m[K’
+[13.463s]  1768 |     [01;36m[Kround[m[K(_Tp __x)
+[13.463s]       |     [01;36m[K^~~~~[m[K
+[13.463s] [01m[K/usr/include/c++/9/cmath:1768:5:[m[K [01;36m[Knote: [m[K  template argument deduction/substitution failed:
+[13.464s] /usr/include/c++/9/cmath: In substitution of ‘[01m[Ktemplate<class _Tp> constexpr typename __gnu_cxx::__enable_if<std::__is_integer<_Tp>::__value, double>::__type std::round(_Tp) [with _Tp = std::chrono::duration<long int, std::ratio<1, 1000000000> >][m[K’:
+[13.464s] [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp:116:90:[m[K   required from here
+[13.464s] [01m[K/usr/include/c++/9/cmath:1768:5:[m[K [01;31m[Kerror: [m[Kno type named ‘[01m[K__type[m[K’ in ‘[01m[Kstruct __gnu_cxx::__enable_if<false, double>[m[K’
+[18.928s] make[2]: *** [CMakeFiles/mocap4r2_optitrack_driver.dir/build.make:63: CMakeFiles/mocap4r2_optitrack_driver.dir/src/mocap4r2_optitrack_driver/mocap4r2_optitrack_driver.cpp.o] Error 1
+[18.930s] make[1]: *** [CMakeFiles/Makefile2:107: CMakeFiles/mocap4r2_optitrack_driver.dir/all] Error 2
+[18.930s] make: *** [Makefile:141: all] Error 2
+[18.941s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver' returned '2': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver -- -j4 -l4

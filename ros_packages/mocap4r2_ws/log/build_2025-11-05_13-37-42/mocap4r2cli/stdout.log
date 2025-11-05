@@ -1,0 +1,58 @@
+running egg_info
+creating ../../../build/mocap4r2cli/mocap4r2cli.egg-info
+writing ../../../build/mocap4r2cli/mocap4r2cli.egg-info/PKG-INFO
+writing dependency_links to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/dependency_links.txt
+writing entry points to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/entry_points.txt
+writing requirements to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/requires.txt
+writing top-level names to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/top_level.txt
+writing manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+reading manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+writing manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli
+copying mocap4r2cli/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+copying mocap4r2cli/verb/stop.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+copying mocap4r2cli/verb/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+copying mocap4r2cli/verb/start.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+copying mocap4r2cli/verb/status.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+copying mocap4r2cli/command/mocap4r2.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+copying mocap4r2cli/command/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api
+copying mocap4r2cli/api/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api
+running install
+running install_lib
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/stop.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/start.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/status.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command/mocap4r2.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api
+copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/stop.py to stop.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/start.py to start.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/status.py to status.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command/mocap4r2.py to mocap4r2.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api/__init__.py to __init__.cpython-38.pyc
+running install_data
+copying package.xml -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/mocap4r2cli
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index
+creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index/packages
+copying resource/mocap4r2cli -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index/packages
+running install_egg_info
+Copying ../../../build/mocap4r2cli/mocap4r2cli.egg-info to /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli-0.0.1-py3.8.egg-info
+running install_scripts
+writing list of installed files to '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/install.log'

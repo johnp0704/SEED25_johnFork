@@ -1,0 +1,40 @@
+[ 28%] Built target gtest_main
+[ 28%] Built target gtest
+[ 57%] Built target mocap4r2_control
+[100%] Built target auxiliar_main
+[100%] Built target test_control
+[100%] Built target test_auxiliar
+-- Install configuration: ""
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/include/
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/include//mocap4r2_control
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/include//mocap4r2_control/AuxiliarNode.hpp
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/include//mocap4r2_control/ControlledLifecycleNode.hpp
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/include//mocap4r2_control/ControllerNode.hpp
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/config
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/config/config_example.yaml
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/launch
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/launch/auxiliar.launch.py
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib/libmocap4r2_control.so
+-- Set runtime path of "/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib/libmocap4r2_control.so" to ""
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib/mocap4r2_control/auxiliar_main
+-- Set runtime path of "/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib/mocap4r2_control/auxiliar_main" to ""
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/library_path.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/library_path.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/ament_index/resource_index/package_run_dependencies/mocap4r2_control
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/ament_index/resource_index/parent_prefix_path/mocap4r2_control
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/ament_prefix_path.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/ament_prefix_path.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/path.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/environment/path.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/local_setup.bash
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/local_setup.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/local_setup.zsh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/local_setup.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/package.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/ament_index/resource_index/packages/mocap4r2_control
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake/ament_cmake_export_include_directories-extras.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake/ament_cmake_export_libraries-extras.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake/ament_cmake_export_dependencies-extras.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake/mocap4r2_controlConfig.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/cmake/mocap4r2_controlConfig-version.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/share/mocap4r2_control/package.xml

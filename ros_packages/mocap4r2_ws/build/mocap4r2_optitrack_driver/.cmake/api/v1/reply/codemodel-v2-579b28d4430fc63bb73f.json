@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mocap4r2_optitrack_driver",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_optitrack_driver::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_optitrack_driver-fad6b7c8dc155dcfcbda.json",
+					"name" : "mocap4r2_optitrack_driver",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_optitrack_driver_main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_optitrack_driver_main-1fed9d5fce2a2d2f7f0b.json",
+					"name" : "mocap4r2_optitrack_driver_main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_optitrack_driver_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_optitrack_driver_uninstall-488f704c0a1c0463f407.json",
+					"name" : "mocap4r2_optitrack_driver_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-28fad0d8780de0720597.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_optitrack_driver",
+		"source" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4ros2_optitrack/mocap4r2_optitrack_driver"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

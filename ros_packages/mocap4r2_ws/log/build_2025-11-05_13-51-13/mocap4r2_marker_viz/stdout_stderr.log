@@ -1,0 +1,25 @@
+[ 50%] Built target mocap4r2_marker_viz_NODE
+[100%] Built target mocap4r2_marker_viz
+-- Install configuration: ""
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/lib/libmocap4r2_marker_viz_NODE.a
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/lib/mocap4r2_marker_viz/mocap4r2_marker_viz
+-- Set runtime path of "/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/lib/mocap4r2_marker_viz/mocap4r2_marker_viz" to ""
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/launch
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/launch/mocap4r2_marker_viz.launch.py
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/rviz
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/rviz/config.rviz
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/ament_index/resource_index/package_run_dependencies/mocap4r2_marker_viz
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/ament_index/resource_index/parent_prefix_path/mocap4r2_marker_viz
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/environment/ament_prefix_path.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/environment/ament_prefix_path.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/environment/path.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/environment/path.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/local_setup.bash
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/local_setup.sh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/local_setup.zsh
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/local_setup.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/package.dsv
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/ament_index/resource_index/packages/mocap4r2_marker_viz
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/cmake/mocap4r2_marker_vizConfig.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/cmake/mocap4r2_marker_vizConfig-version.cmake
+-- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz/share/mocap4r2_marker_viz/package.xml

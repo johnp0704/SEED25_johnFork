@@ -1,0 +1,13 @@
+[35m[1mScanning dependencies of target gt_component[0m
+[ 25%] Built target set_gt_component
+[35m[1mScanning dependencies of target set_gt_cli[0m
+[ 37%] [32mBuilding CXX object CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o[0m
+[ 50%] [32mBuilding CXX object CMakeFiles/set_gt_cli.dir/src/set_gt_cli.cpp.o[0m
+[ 62%] [32m[1mLinking CXX executable set_gt_cli[0m
+[ 62%] Built target set_gt_cli
+[ 75%] [32m[1mLinking CXX shared library libgt_component.so[0m
+[ 75%] Built target gt_component
+[35m[1mScanning dependencies of target gt_program[0m
+[ 87%] [32mBuilding CXX object CMakeFiles/gt_program.dir/src/gt_program.cpp.o[0m
+[100%] [32m[1mLinking CXX executable gt_program[0m
+[100%] Built target gt_program

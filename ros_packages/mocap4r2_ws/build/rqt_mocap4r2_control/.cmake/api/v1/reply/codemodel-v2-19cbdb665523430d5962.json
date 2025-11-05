@@ -1,0 +1,78 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "rqt_mocap4r2_control",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "rqt_mocap4r2_control::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rqt_mocap4r2_control-5930a5fa12d9f8dacb68.json",
+					"name" : "rqt_mocap4r2_control",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "rqt_mocap4r2_control_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-rqt_mocap4r2_control_uninstall-d5fa276aae38809472bd.json",
+					"name" : "rqt_mocap4r2_control_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-65a8b585a27442c992c4.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/build/rqt_mocap4r2_control",
+		"source" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_control/rqt_mocap4r2_control"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

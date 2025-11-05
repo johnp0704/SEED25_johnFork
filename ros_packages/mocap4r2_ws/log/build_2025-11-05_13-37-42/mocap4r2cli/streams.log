@@ -1,0 +1,60 @@
+[1.658s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2cli': CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/mocap4r2cli build --build-base /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build install --record /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/install.log --single-version-externally-managed install_data
+[2.197s] running egg_info
+[2.198s] creating ../../../build/mocap4r2cli/mocap4r2cli.egg-info
+[2.198s] writing ../../../build/mocap4r2cli/mocap4r2cli.egg-info/PKG-INFO
+[2.199s] writing dependency_links to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/dependency_links.txt
+[2.199s] writing entry points to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/entry_points.txt
+[2.199s] writing requirements to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/requires.txt
+[2.200s] writing top-level names to ../../../build/mocap4r2cli/mocap4r2cli.egg-info/top_level.txt
+[2.202s] writing manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+[2.268s] reading manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+[2.270s] writing manifest file '../../../build/mocap4r2cli/mocap4r2cli.egg-info/SOURCES.txt'
+[2.270s] running build
+[2.271s] running build_py
+[2.271s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build
+[2.271s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib
+[2.271s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli
+[2.272s] copying mocap4r2cli/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli
+[2.272s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+[2.272s] copying mocap4r2cli/verb/stop.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+[2.272s] copying mocap4r2cli/verb/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+[2.272s] copying mocap4r2cli/verb/start.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+[2.273s] copying mocap4r2cli/verb/status.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb
+[2.273s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+[2.273s] copying mocap4r2cli/command/mocap4r2.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+[2.274s] copying mocap4r2cli/command/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command
+[2.274s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api
+[2.274s] copying mocap4r2cli/api/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api
+[2.275s] running install
+[2.277s] running install_lib
+[2.279s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli
+[2.279s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+[2.280s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/stop.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+[2.280s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+[2.280s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/start.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+[2.280s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/verb/status.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb
+[2.281s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli
+[2.281s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+[2.281s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command/mocap4r2.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+[2.281s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/command/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command
+[2.282s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api
+[2.282s] copying /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build/lib/mocap4r2cli/api/__init__.py -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api
+[2.283s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/stop.py to stop.cpython-38.pyc
+[2.286s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/__init__.py to __init__.cpython-38.pyc
+[2.288s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/start.py to start.cpython-38.pyc
+[2.289s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/verb/status.py to status.cpython-38.pyc
+[2.289s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/__init__.py to __init__.cpython-38.pyc
+[2.290s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command/mocap4r2.py to mocap4r2.cpython-38.pyc
+[2.291s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/command/__init__.py to __init__.cpython-38.pyc
+[2.291s] byte-compiling /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli/api/__init__.py to __init__.cpython-38.pyc
+[2.291s] running install_data
+[2.292s] copying package.xml -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/mocap4r2cli
+[2.292s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index
+[2.292s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index
+[2.292s] creating /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index/packages
+[2.293s] copying resource/mocap4r2cli -> /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/share/ament_index/resource_index/packages
+[2.293s] running install_egg_info
+[2.298s] Copying ../../../build/mocap4r2cli/mocap4r2cli.egg-info to /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages/mocap4r2cli-0.0.1-py3.8.egg-info
+[2.301s] running install_scripts
+[2.340s] writing list of installed files to '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/install.log'
+[2.408s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2cli' returned '0': CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../build/mocap4r2cli build --build-base /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/build install --record /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2cli/install.log --single-version-externally-managed install_data
