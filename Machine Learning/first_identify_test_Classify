@@ -8,6 +8,8 @@ Then compares it to the known labels, and finds accuracy, precision, recall.'''
 
 
 from ultralytics import YOLO
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+import matplotlib.pyplot as plt
 import os
 
 # Load the trained model
@@ -76,11 +78,13 @@ def get_ground_truth(image_folder, label_folder): #find the gorund truths
 
 #Now compare how the model did
 ground_truths = get_ground_truth(image_folder, label_folder)
+y_pred = []
 
 TP = TN = FP = FN = 0 #True positive, True negative, False Positive, False Negative
 
 for image_path, actual in ground_truths.items(): #take image path and true label
     pred = get_prediction(model, image_path) #use model for prediction of image
+    y_pred.append(pred)
 
     if pred == 1 and actual == 1: #if True Positive
         TP += 1
@@ -90,6 +94,13 @@ for image_path, actual in ground_truths.items(): #take image path and true label
         FP += 1
     elif pred == 0 and actual == 1: #if False Negative
         FN += 1
+
+y_true = list(ground_truths.values())
+cm = confusion_matrix(y_true, y_pred)
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["No Dandelion", "Dandelion"])
+disp.plot(cmap=plt.cm.Blues)
+plt.title("Dandelion Detection Confusion Matrix")
+plt.show()
 
 # Calculate accuracy and other metrics
 accuracy = (TP + TN) / (TP + TN + FP + FN)
