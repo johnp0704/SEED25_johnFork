@@ -1,0 +1,196 @@
+[0.058s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs -- -j4 -l4
+[0.221s] [  1%] Built target mocap4r2_msgs__cpp
+[0.231s] [ 12%] Built target mocap4r2_msgs__rosidl_generator_c
+[0.425s] [ 23%] Built target mocap4r2_msgs__rosidl_typesupport_c
+[0.437s] [ 34%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp
+[0.440s] [ 46%] Built target mocap4r2_msgs__rosidl_typesupport_cpp
+[0.462s] [ 57%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_cpp
+[0.562s] [ 68%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_c
+[0.576s] [ 79%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_c
+[0.626s] [ 79%] Built target mocap4r2_msgs
+[0.672s] [ 80%] Built target mocap4r2_msgs__py
+[0.737s] [ 90%] Built target mocap4r2_msgs__python
+[0.881s] [ 93%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_c__pyext
+[0.900s] [ 96%] Built target mocap4r2_msgs__rosidl_typesupport_c__pyext
+[0.910s] [100%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_c__pyext
+[0.989s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs -- -j4 -l4
+[0.991s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs
+[1.044s] -- Install configuration: ""
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/ament_index/resource_index/rosidl_interfaces/mocap4r2_msgs
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/markers.h
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__struct.h
+[1.045s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__functions.c
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__struct.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__functions.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__functions.c
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__functions.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__struct.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__functions.h
+[1.046s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__functions.h
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__struct.h
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__functions.c
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.h
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__functions.c
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__struct.h
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.h
+[1.047s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__functions.c
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__functions.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_generator_c__visibility_control.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/marker.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_body.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_bodies.h
+[1.048s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/imus_info.h
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/library_path.sh
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/library_path.dsv
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_generator_c.so
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.049s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_c.h
+[1.062s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_c.h
+[1.062s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_c.h
+[1.062s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_c.h
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_c.h
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_c.so
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[1.063s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_cpp.hpp
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/dds_fastrtps
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_cpp.hpp
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_cpp.hpp
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_cpp.hpp
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_cpp.hpp
+[1.064s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.so
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.c
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_introspection_c.h
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_c.h
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.c
+[1.065s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.c
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.c
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.c
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_c.h
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_c.h
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_introspection_c.h
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[1.066s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_c.so
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_c.so
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_bodies.hpp
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/markers.hpp
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.067s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__builder.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__traits.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__struct.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__traits.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__builder.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__builder.hpp
+[1.068s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__struct.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__traits.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__struct.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__traits.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__traits.hpp
+[1.069s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__builder.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__struct.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__builder.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__struct.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_body.hpp
+[1.070s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/marker.hpp
+[1.075s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/imus_info.hpp
+[1.075s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_cpp.hpp
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.cpp
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.cpp
+[1.076s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.cpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_introspection_cpp.hpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_cpp.hpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.cpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.cpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_introspection_cpp.hpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_cpp.hpp
+[1.077s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_cpp.so
+[1.078s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_cpp.so
+[1.078s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/pythonpath.sh
+[1.078s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/pythonpath.dsv
+[1.078s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/__init__.py
+[1.159s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg
+[1.159s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_bodies.py
+[1.160s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_markers_s.c
+[1.160s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_marker_s.c
+[1.161s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_imus_info.py
+[1.161s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/__init__.py
+[1.162s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_bodies_s.c
+[1.163s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_imus_info_s.c
+[1.163s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_body_s.c
+[1.164s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_body.py
+[1.164s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_markers.py
+[1.164s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_marker.py
+[1.164s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so
+[1.165s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so
+[1.166s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so
+[1.167s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib/libmocap4r2_msgs__python.so
+[1.167s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Marker.idl
+[1.167s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Markers.idl
+[1.167s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/ImusInfo.idl
+[1.168s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBody.idl
+[1.168s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBodies.idl
+[1.168s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Marker.msg
+[1.168s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Markers.msg
+[1.169s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/ImusInfo.msg
+[1.169s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBody.msg
+[1.169s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBodies.msg
+[1.169s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/mocap4r2_bridge_mapping_rule.yaml
+[1.170s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/ament_index/resource_index/package_run_dependencies/mocap4r2_msgs
+[1.170s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/ament_index/resource_index/parent_prefix_path/mocap4r2_msgs
+[1.170s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/ament_prefix_path.sh
+[1.170s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/ament_prefix_path.dsv
+[1.171s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/path.sh
+[1.171s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/path.dsv
+[1.171s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.bash
+[1.171s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.sh
+[1.171s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.zsh
+[1.172s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.dsv
+[1.172s] -- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/package.dsv
+[1.172s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/ament_index/resource_index/packages/mocap4r2_msgs
+[1.172s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cExport.cmake
+[1.172s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cExport-noconfig.cmake
+[1.173s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cExport.cmake
+[1.173s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[1.173s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cExport.cmake
+[1.173s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[1.173s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cppExport.cmake
+[1.174s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[1.174s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[1.175s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cppExport.cmake
+[1.175s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[1.176s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake-extras.cmake
+[1.176s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[1.176s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[1.177s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[1.177s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.178s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[1.178s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[1.178s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgsConfig.cmake
+[1.179s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgsConfig-version.cmake
+[1.179s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/share/mocap4r2_msgs/package.xml
+[1.249s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_msgs

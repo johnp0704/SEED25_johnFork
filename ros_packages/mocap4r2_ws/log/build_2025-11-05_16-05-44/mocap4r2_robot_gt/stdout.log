@@ -1,0 +1,4 @@
+[35m[1mScanning dependencies of target gt_component[0m
+[ 25%] Built target set_gt_component
+[ 37%] [32mBuilding CXX object CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o[0m
+[ 62%] Built target set_gt_cli

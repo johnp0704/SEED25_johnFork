@@ -1,0 +1,6 @@
+[ 14%] Built target gtest_main
+[ 28%] Built target gtest
+[ 57%] Built target mocap4r2_control
+[ 85%] Built target test_control
+[ 85%] Built target test_auxiliar
+[100%] Built target auxiliar_main

@@ -1,0 +1,144 @@
+[0.053s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs -- -j4 -l4
+[0.196s] [ 10%] Built target mocap4r2_marker_viz_srvs__rosidl_generator_c
+[0.221s] [ 12%] Built target mocap4r2_marker_viz_srvs__cpp
+[0.335s] [ 23%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_c
+[0.361s] [ 33%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_c
+[0.411s] [ 43%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_fastrtps_cpp
+[0.427s] [ 53%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_cpp
+[0.530s] [ 64%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cpp
+[0.548s] [ 74%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_fastrtps_c
+[0.598s] [ 74%] Built target mocap4r2_marker_viz_srvs
+[0.650s] [ 76%] Built target mocap4r2_marker_viz_srvs__py
+[0.711s] [ 84%] Built target mocap4r2_marker_viz_srvs__python
+[0.790s] [ 89%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_c__pyext
+[0.803s] [ 94%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_c__pyext
+[0.846s] [100%] Built target mocap4r2_marker_viz_srvs__rosidl_typesupport_fastrtps_c__pyext
+[0.916s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs -- -j4 -l4
+[0.954s] Invoking command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs
+[0.979s] -- Install configuration: ""
+[0.980s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/ament_index/resource_index/rosidl_interfaces/mocap4r2_marker_viz_srvs
+[0.980s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[0.980s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg
+[0.980s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg/rosidl_generator_c__visibility_control.h
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/reset_marker_color.h
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/set_marker_color.h
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__type_support.h
+[0.982s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__struct.h
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__functions.c
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__functions.c
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__struct.h
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__functions.h
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__type_support.h
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__functions.h
+[0.983s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/library_path.sh
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/library_path.dsv
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_generator_c.so
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[0.984s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__rosidl_typesupport_fastrtps_c.h
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__rosidl_typesupport_fastrtps_c.h
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_fastrtps_c.so
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[0.985s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[0.986s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__rosidl_typesupport_fastrtps_cpp.hpp
+[0.986s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/dds_fastrtps
+[0.986s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__rosidl_typesupport_fastrtps_cpp.hpp
+[0.986s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_fastrtps_cpp.so
+[0.995s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[0.996s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg
+[0.996s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[0.996s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[0.996s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[0.997s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__type_support.c
+[0.997s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__rosidl_typesupport_introspection_c.h
+[0.997s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__rosidl_typesupport_introspection_c.h
+[0.997s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__type_support.c
+[0.998s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_c.so
+[0.998s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_c.so
+[0.998s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[0.998s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/msg/rosidl_generator_cpp__visibility_control.hpp
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__struct.hpp
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__builder.hpp
+[0.999s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__traits.hpp
+[1.000s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__struct.hpp
+[1.000s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__traits.hpp
+[1.000s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__type_support.hpp
+[1.000s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__builder.hpp
+[1.000s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__type_support.hpp
+[1.001s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/set_marker_color.hpp
+[1.001s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/reset_marker_color.hpp
+[1.001s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__rosidl_typesupport_introspection_cpp.hpp
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__rosidl_typesupport_introspection_cpp.hpp
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/reset_marker_color__type_support.cpp
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/include/mocap4r2_marker_viz_srvs/srv/detail/set_marker_color__type_support.cpp
+[1.002s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cpp.so
+[1.007s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__rosidl_typesupport_cpp.so
+[1.008s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/pythonpath.sh
+[1.012s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/pythonpath.dsv
+[1.013s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/__init__.py
+[1.087s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv
+[1.087s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv/_set_marker_color.py
+[1.087s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv/__init__.py
+[1.088s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv/_reset_marker_color_s.c
+[1.088s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv/_reset_marker_color.py
+[1.088s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/srv/_set_marker_color_s.c
+[1.089s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/mocap4r2_marker_viz_srvs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so
+[1.094s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/mocap4r2_marker_viz_srvs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so
+[1.095s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/python3.8/site-packages/mocap4r2_marker_viz_srvs/mocap4r2_marker_viz_srvs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so
+[1.095s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib/libmocap4r2_marker_viz_srvs__python.so
+[1.095s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/SetMarkerColor.idl
+[1.096s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/ResetMarkerColor.idl
+[1.096s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/SetMarkerColor.srv
+[1.106s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/SetMarkerColor_Request.msg
+[1.107s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/SetMarkerColor_Response.msg
+[1.108s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/ResetMarkerColor.srv
+[1.108s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/ResetMarkerColor_Request.msg
+[1.108s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/srv/ResetMarkerColor_Response.msg
+[1.109s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/ament_index/resource_index/package_run_dependencies/mocap4r2_marker_viz_srvs
+[1.109s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/ament_index/resource_index/parent_prefix_path/mocap4r2_marker_viz_srvs
+[1.109s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/ament_prefix_path.sh
+[1.109s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/ament_prefix_path.dsv
+[1.109s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/path.sh
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/environment/path.dsv
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/local_setup.bash
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/local_setup.sh
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/local_setup.zsh
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/local_setup.dsv
+[1.110s] -- Installing: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/package.dsv
+[1.110s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/ament_index/resource_index/packages/mocap4r2_marker_viz_srvs
+[1.111s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_generator_cExport.cmake
+[1.111s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_generator_cExport-noconfig.cmake
+[1.111s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cExport.cmake
+[1.111s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[1.112s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_cExport.cmake
+[1.113s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_cExport-noconfig.cmake
+[1.114s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_generator_cppExport.cmake
+[1.114s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cppExport.cmake
+[1.115s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[1.115s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_cppExport.cmake
+[1.116s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvs__rosidl_typesupport_cppExport-noconfig.cmake
+[1.116s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/rosidl_cmake-extras.cmake
+[1.116s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/ament_cmake_export_dependencies-extras.cmake
+[1.116s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/ament_cmake_export_libraries-extras.cmake
+[1.117s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/ament_cmake_export_targets-extras.cmake
+[1.117s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/ament_cmake_export_include_directories-extras.cmake
+[1.121s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[1.122s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[1.122s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvsConfig.cmake
+[1.123s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/cmake/mocap4r2_marker_viz_srvsConfig-version.cmake
+[1.124s] -- Up-to-date: /home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/share/mocap4r2_marker_viz_srvs/package.xml
+[1.134s] Invoked command in '/home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/mocap4r2_ws/build/mocap4r2_marker_viz_srvs
