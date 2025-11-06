@@ -6,27 +6,31 @@ from mocap4r2_msgs.msg import RigidBodies
 class RigidBodyListener(Node):
     def __init__(self):
         super().__init__('rigid_body_listener')
-
-        # Subscribe to /rigid_bodies
         self.subscription = self.create_subscription(
             RigidBodies,
             '/rigid_bodies',
             self.listener_callback,
             10)
-        self.subscription  # prevent unused variable warning
+        self.latest_msg = None
+
+        # Create a timer to process data at 10 Hz (every 0.1 seconds)
+        self.timer = self.create_timer(0.1, self.process_latest_msg)
 
     def listener_callback(self, msg: RigidBodies):
-        self.get_logger().info(f"Frame: {msg.frame_number}")
+        self.latest_msg = msg  # always store the newest message
 
+    def process_latest_msg(self):
+        if self.latest_msg is None:
+            return
+        msg = self.latest_msg
+        self.get_logger().info(f"Frame: {msg.frame_number}")
         for rb in msg.rigidbodies:
-            name = rb.rigid_body_name
             pos = rb.pose.position
             ori = rb.pose.orientation
-
             self.get_logger().info(
-                f"RigidBody '{name}':\n"
-                f"  Position: x={pos.x:.3f}, y={pos.y:.3f}, z={pos.z:.3f}\n"
-                f"  Orientation: x={ori.x:.3f}, y={ori.y:.3f}, z={ori.z:.3f}, w={ori.w:.3f}"
+                f"RigidBody '{rb.rigid_body_name}': "
+                f"pos=({pos.x:.3f}, {pos.y:.3f}, {pos.z:.3f}) "
+                f"ori=({ori.x:.3f}, {ori.y:.3f}, {ori.z:.3f}, {ori.w:.3f})"
             )
 
 def main(args=None):
