@@ -1,0 +1,3 @@
+[console_scripts]
+rigid_listener = mocap_listener.rigid_listener:main
+

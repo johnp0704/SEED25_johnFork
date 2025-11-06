@@ -1,0 +1,24 @@
+[1.472s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data
+[1.961s] running egg_info
+[1.962s] writing ../../build/mocap_listener/mocap_listener.egg-info/PKG-INFO
+[1.963s] writing dependency_links to ../../build/mocap_listener/mocap_listener.egg-info/dependency_links.txt
+[1.963s] writing entry points to ../../build/mocap_listener/mocap_listener.egg-info/entry_points.txt
+[1.963s] writing requirements to ../../build/mocap_listener/mocap_listener.egg-info/requires.txt
+[1.964s] writing top-level names to ../../build/mocap_listener/mocap_listener.egg-info/top_level.txt
+[2.031s] reading manifest file '../../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'
+[2.033s] writing manifest file '../../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'
+[2.033s] running build
+[2.033s] running build_py
+[2.034s] copying mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/build/lib/mocap_listener
+[2.035s] running install
+[2.037s] running install_lib
+[2.039s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/build/lib/mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.040s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/rigid_listener.py to rigid_listener.cpython-38.pyc
+[2.043s] running install_data
+[2.043s] running install_egg_info
+[2.048s] removing '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages/mocap_listener-0.0.0-py3.8.egg-info' (and everything under it)
+[2.049s] Copying ../../build/mocap_listener/mocap_listener.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages/mocap_listener-0.0.0-py3.8.egg-info
+[2.051s] running install_scripts
+[2.087s] Installing rigid_listener script to /home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/mocap_listener
+[2.087s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/install.log'
+[2.145s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data

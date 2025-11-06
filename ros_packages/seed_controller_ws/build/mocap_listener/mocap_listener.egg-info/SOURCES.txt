@@ -1,0 +1,16 @@
+package.xml
+setup.cfg
+setup.py
+../../build/mocap_listener/mocap_listener.egg-info/PKG-INFO
+../../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt
+../../build/mocap_listener/mocap_listener.egg-info/dependency_links.txt
+../../build/mocap_listener/mocap_listener.egg-info/entry_points.txt
+../../build/mocap_listener/mocap_listener.egg-info/requires.txt
+../../build/mocap_listener/mocap_listener.egg-info/top_level.txt
+../../build/mocap_listener/mocap_listener.egg-info/zip-safe
+mocap_listener/__init__.py
+mocap_listener/rigid_listener.py
+resource/mocap_listener
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
