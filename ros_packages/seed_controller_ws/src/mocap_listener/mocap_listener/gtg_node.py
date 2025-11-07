@@ -36,21 +36,20 @@ class ControllerNode(Node):
 
     def rigid_bodies_listener_callback(self, msg: RigidBodies):
         self.latest_rigidbodies_msg = msg  # always store the newest message
-        self.get_logger().info("new R msg")
 
     def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
-        self.get_logger().info("new M msg")
 
         
 
     def controller_update(self):
-        self.get_logger().info("Updating controller")
+        # self.get_logger().info("Updating controller")
         
         robot_body = None
         if self.latest_rigidbodies_msg != None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
+            self.get_logger().info("Lost Body")
             return
         
         pos = robot_body.pose.position
@@ -65,6 +64,7 @@ class ControllerNode(Node):
         if self.latest_markers_msg != None:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
         if goal is None:
+            self.get_logger().info("Lost Goal")
             return
         
         x_des, y_des, _ = goal.translation
