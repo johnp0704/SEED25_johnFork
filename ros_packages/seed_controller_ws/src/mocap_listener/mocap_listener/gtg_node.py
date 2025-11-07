@@ -3,6 +3,10 @@ import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
 from scipy.spatial.transform import Rotation as R
+import sabertooth as st
+import atexit
+
+
 
 class ControllerNode(Node):
     def __init__(self):
@@ -38,10 +42,17 @@ class ControllerNode(Node):
 def main(args=None):
     rclpy.init(args=args)
     node = ControllerNode()
+    motor = st.SaberToothMotorDriver(True,True)
+
+    atexit.register(motor.all_motors_off)
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
+        print("Exiting")
+        motor.all_motors_off()
+
+
     node.destroy_node()
     rclpy.shutdown()
 
