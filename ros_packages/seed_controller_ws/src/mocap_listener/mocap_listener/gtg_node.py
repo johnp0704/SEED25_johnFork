@@ -28,6 +28,8 @@ class ControllerNode(Node):
             REFRESH_RATE)
         
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
+        self.latest_rigidbodies_msg = None
+        self.latest_markers_msg = None
     
 
 
