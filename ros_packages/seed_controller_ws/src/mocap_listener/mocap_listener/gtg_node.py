@@ -44,7 +44,7 @@ def main(args=None):
     node = ControllerNode()
     motor = st.SaberToothMotorDriver(True,True)
 
-    motor.updateMotorSpeed(10,10)
+    motor.updateMotorSpeed(20,20)
 
     atexit.register(motor.all_motors_off)
 
