@@ -59,15 +59,18 @@ class ControllerNode(Node):
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
 
-        
+        x_des = 0
+        y_des = 0
         goal = None
         if self.latest_markers_msg != None:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
         if goal is None:
             self.get_logger().info("Lost Goal")
             return
+        else:
+            x_des, y_des, _ = goal.translation
         
-        x_des, y_des, _ = goal.translation
+        
 
         
 
