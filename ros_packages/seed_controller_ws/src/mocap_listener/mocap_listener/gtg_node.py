@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
-import tf_transformations as tf
+from scipy.spatial.transform import Rotation as R
 
 class ControllerNode(Node):
     def __init__(self):
@@ -25,7 +25,8 @@ class ControllerNode(Node):
         pos = target.pose.position
         ori = target.pose.orientation
 
-        _, _, yaw = tf.euler_from_quaternion([ori.x, ori.y, ori.z, ori.w])
+        r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
+        _, _, yaw = r.as_euler('xyz', degrees=False)
 
         self.get_logger().info(
             f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}"
