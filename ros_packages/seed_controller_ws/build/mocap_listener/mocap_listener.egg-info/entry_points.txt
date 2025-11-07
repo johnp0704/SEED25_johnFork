@@ -1,3 +1,4 @@
 [console_scripts]
+controller_node = mocap_listener.controller_node:main
 rigid_listener = mocap_listener.rigid_listener:main
 
