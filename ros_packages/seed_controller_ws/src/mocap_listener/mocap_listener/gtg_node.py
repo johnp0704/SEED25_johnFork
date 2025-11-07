@@ -5,7 +5,7 @@ from mocap4r2_msgs.msg import RigidBodies, Markers
 from scipy.spatial.transform import Rotation as R
 from mocap_listener import sabertooth as st
 import atexit
-import PID as PID
+from mocap_listener import PID as PID
 
 REFRESH_RATE = 10 #hz
 
