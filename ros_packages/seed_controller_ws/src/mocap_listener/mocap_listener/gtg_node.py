@@ -65,8 +65,8 @@ class ControllerNode(Node):
         if self.latest_markers_msg != None:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
         if goal is None:
-            # self.get_logger().info("Lost Goal")
-            pass
+            self.get_logger().warn("Lost Goal! Dumping data:")
+            print(self.latest_markers_msg.markers)
         else:
             x_des, y_des, _ = goal.translation
         
@@ -75,7 +75,7 @@ class ControllerNode(Node):
         
 
         self.get_logger().info(
-            f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}  |  Goal: {x_des:.3f},{y_des:.3f}"
+            f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}  |  Goal: {x_des:.3f}, {y_des:.3f}"
         )
         
 
