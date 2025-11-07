@@ -44,6 +44,8 @@ def main(args=None):
     node = ControllerNode()
     motor = st.SaberToothMotorDriver(True,True)
 
+    motor.updateMotorSpeed(10,10)
+
     atexit.register(motor.all_motors_off)
 
     try:
