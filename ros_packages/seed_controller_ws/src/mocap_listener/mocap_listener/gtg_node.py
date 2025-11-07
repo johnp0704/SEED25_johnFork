@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 import rclpy
 from rclpy.node import Node
-from mocap4r2_msgs.msg import RigidBodies
+from mocap4r2_msgs.msg import RigidBodies, Markers
 from scipy.spatial.transform import Rotation as R
 from mocap_listener import sabertooth as st
 import atexit
 
+REFRESH_RATE = 10 #hz
 
 
 class ControllerNode(Node):
@@ -16,24 +17,51 @@ class ControllerNode(Node):
         self.subscription = self.create_subscription(
             RigidBodies,
             '/rigid_bodies',
-            self.listener_callback,
-            10)
+            self.markers_listener_callback,
+            REFRESH_RATE)
+        
+        self.subscription = self.create_subscription(
+            Markers,
+            '/markers',
+            self.bodies_listener_callback,
+            REFRESH_RATE)
+        
+        self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
+    
+
+
+    def listener_callback(self, msg: RigidBodies):
+        self.latest_rigidbodies_msg = msg  # always store the newest message
+
+    def listener_callback(self, msg: RigidBodies):
+        self.latest_markers_msg = msg  # always store the newest message
 
         
 
-    def listener_callback(self, msg: RigidBodies):
-        target = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
-        if target is None:
+    def controller_update(self):
+        robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        if robot_body is None:
             return
-
-        pos = target.pose.position
-        ori = target.pose.orientation
+        
+        pos = robot_body.pose.position
+        ori = robot_body.pose.orientation
 
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
+
+        
+
+        goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
+        if goal is None:
+            return
+        
+        x_des, y_des, _ = goal.translation
+
+        
+
         self.get_logger().info(
-            f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}"
+            f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}  |  Goal: {x_des:.3f},{y_des:.3f}"
         )
         
 
