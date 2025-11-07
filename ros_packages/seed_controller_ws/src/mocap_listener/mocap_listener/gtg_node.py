@@ -42,7 +42,10 @@ class ControllerNode(Node):
         
 
     def controller_update(self):
-        robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        
+        robot_body = None
+        if self.latest_rigidbodies_msg != None:
+            robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
             return
         
@@ -54,8 +57,9 @@ class ControllerNode(Node):
 
 
         
-
-        goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
+        goal = None
+        if self.latest_markers_msg != None:
+            goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
         if goal is None:
             return
         
