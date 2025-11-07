@@ -3,7 +3,7 @@ import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
 from scipy.spatial.transform import Rotation as R
-import sabertooth as st
+from mocap_listener import sabertooth as st
 import atexit
 
 
