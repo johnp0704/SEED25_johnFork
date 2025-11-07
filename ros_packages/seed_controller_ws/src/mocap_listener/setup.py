@@ -21,7 +21,7 @@ setup(
     entry_points={
     'console_scripts': [
         'rigid_listener = mocap_listener.rigid_listener:main',
-        'controller_node = mocap_listener.controller_node:main',
+        'gtg_node = mocap_listener.gtg_node:main',
     ],
     },
 )
