@@ -63,7 +63,7 @@ class ControllerNode(Node):
         y_des = 0
         goal = None
         if self.latest_markers_msg != None:
-            goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '3'), None)
+            goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == 3), None)
         if goal is None:
             self.get_logger().warn("Lost Goal! Dumping data:")
             print(self.latest_markers_msg.markers)
