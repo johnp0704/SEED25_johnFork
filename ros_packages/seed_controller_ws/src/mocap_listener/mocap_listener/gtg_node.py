@@ -65,8 +65,8 @@ class ControllerNode(Node):
         if self.latest_markers_msg != None:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == '4'), None)
         if goal is None:
-            self.get_logger().info("Lost Goal")
-            return
+            # self.get_logger().info("Lost Goal")
+            pass
         else:
             x_des, y_des, _ = goal.translation
         
