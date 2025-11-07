@@ -50,6 +50,7 @@ def main(args=None):
         rclpy.spin(node)
     except KeyboardInterrupt:
         print("Exiting")
+        
         motor.all_motors_off()
 
 
