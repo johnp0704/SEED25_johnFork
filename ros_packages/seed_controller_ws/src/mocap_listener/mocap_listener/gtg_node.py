@@ -68,8 +68,8 @@ class ControllerNode(Node):
             self.get_logger().warn("Lost Goal! Dumping data:")
             print(self.latest_markers_msg.markers)
         else:
-            print(goal.translation)
-            # x_des, y_des, _ = goal.translation
+            x_des = goal.translation.x
+            y_des = goal.translation.y
         
         
 
