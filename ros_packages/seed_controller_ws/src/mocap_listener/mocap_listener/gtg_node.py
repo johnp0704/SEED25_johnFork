@@ -12,6 +12,7 @@ REFRESH_RATE = 10 #hz
 
 class ControllerNode(Node):
     def __init__(self):
+        print("Starting GTG Controller node")
         super().__init__('controller_node')
 
         # Subscribe to mocap data
@@ -35,13 +36,16 @@ class ControllerNode(Node):
 
     def rigid_bodies_listener_callback(self, msg: RigidBodies):
         self.latest_rigidbodies_msg = msg  # always store the newest message
+        self.get_logger().info("new R msg")
 
-    def markers_listener_callback(self, msg: RigidBodies):
+    def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
+        self.get_logger().info("new M msg")
 
         
 
     def controller_update(self):
+        self.get_logger().info("Updating controller")
         
         robot_body = None
         if self.latest_rigidbodies_msg != None:
