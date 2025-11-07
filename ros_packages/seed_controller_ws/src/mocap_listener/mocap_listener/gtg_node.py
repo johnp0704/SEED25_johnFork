@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
-from geometry_msgs.msg import Twist  # or whatever you plan to command
+import tf.transformations as tf
 
 class ControllerNode(Node):
     def __init__(self):
@@ -18,13 +18,18 @@ class ControllerNode(Node):
         
 
     def listener_callback(self, msg: RigidBodies):
-        # For example: track rigid body '1'
         target = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if target is None:
             return
 
         pos = target.pose.position
         ori = target.pose.orientation
+
+        _, _, yaw = tf.euler_from_quaternion(ori)
+
+        self.get_logger().info(
+                f"X=({pos.x:.3f}, Y={pos.y:.3f}, Dir=({yaw:.3f}"  
+            )
 
         
 
