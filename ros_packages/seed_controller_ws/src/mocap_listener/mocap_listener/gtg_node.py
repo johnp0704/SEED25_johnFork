@@ -17,23 +17,23 @@ class ControllerNode(Node):
         self.subscription = self.create_subscription(
             RigidBodies,
             '/rigid_bodies',
-            self.markers_listener_callback,
+            self.rigid_bodies_listener_callback,
             REFRESH_RATE)
         
         self.subscription = self.create_subscription(
             Markers,
             '/markers',
-            self.bodies_listener_callback,
+            self.markers_listener_callback,
             REFRESH_RATE)
         
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
     
 
 
-    def listener_callback(self, msg: RigidBodies):
+    def rigid_bodies_listener_callback(self, msg: RigidBodies):
         self.latest_rigidbodies_msg = msg  # always store the newest message
 
-    def listener_callback(self, msg: RigidBodies):
+    def markers_listener_callback(self, msg: RigidBodies):
         self.latest_markers_msg = msg  # always store the newest message
 
         
