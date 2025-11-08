@@ -10,12 +10,12 @@ import numpy as np
 
 GOAL_MARKER_INDEX = 5
 S_MAX = 30
-MAX_ACUTUATOR_INPUT = 40
+MAX_ACUTUATOR_INPUT = 25
 GOAL_THRESH = 0.3
 
 REFRESH_RATE = 10 #hz
-R_wheel = 8 #cm
-L = 17.8 #cm
+R_wheel = .08 #cm
+L = .0178 #cm
 K_e = 30
 K_theta = 0.5
 
