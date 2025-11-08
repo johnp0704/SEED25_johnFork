@@ -62,7 +62,7 @@ class ControllerNode(Node):
         robot_body = None
         if self.latest_rigidbodies_msg is not None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
-        elif self.latest_markers_msg is None:
+        if self.latest_markers_msg is None:
             return
         
         if robot_body is None:
