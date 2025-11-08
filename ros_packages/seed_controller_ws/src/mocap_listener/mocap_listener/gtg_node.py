@@ -6,9 +6,13 @@ from scipy.spatial.transform import Rotation as R
 from mocap_listener import sabertooth as st
 import atexit
 from mocap_listener import PID as PID
+import numpy as np
 
 REFRESH_RATE = 10 #hz
-
+R = 8 #cm
+L = 17.8 #cm
+K_e = 10
+K_theta = 2
 
 class ControllerNode(Node):
     def __init__(self):
@@ -31,6 +35,7 @@ class ControllerNode(Node):
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
         self.latest_rigidbodies_msg = None
         self.latest_markers_msg = None
+        
     
 
 
@@ -43,10 +48,9 @@ class ControllerNode(Node):
         
 
     def controller_update(self):
-        # self.get_logger().info("Updating controller")
-        
+    # Get robot pose
         robot_body = None
-        if self.latest_rigidbodies_msg != None:
+        if self.latest_rigidbodies_msg is not None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
             self.get_logger().info("Lost Body")
@@ -58,26 +62,43 @@ class ControllerNode(Node):
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
-
-        x_des = 0
-        y_des = 0
-        goal = None
-        if self.latest_markers_msg != None:
+        # Goal
+        x_des, y_des = 0.0, 0.0
+        if self.latest_markers_msg is not None:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == 3), None)
-        if goal is None:
-            self.get_logger().warn("Lost Goal! Dumping data:")
-            print(self.latest_markers_msg.markers)
+            if goal is not None:
+                x_des = goal.translation.x
+                y_des = goal.translation.y
+            else:
+                self.get_logger().warn("Lost Goal")
+                return
         else:
-            x_des = goal.translation.x
-            y_des = goal.translation.y
-        
-        
+            self.get_logger().warn("No goal data")
+            return
 
-        
+        # Compute control signals
+        Ux_des = K_e*(x_des - pos.x)
+        Uy_des = K_e*(y_des - pos.y)
 
+        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
+        S_sat = np.clip(S_des, -10, 10)
+
+        Theta_des = np.arctan2(Uy_des, Ux_des)
+        error_Theta = np.atan2(np.sin(Theta_des - yaw), np.cos(Theta_des - yaw))
+
+        w_des = K_theta*(error_Theta) 
+
+        wr_des = (S_sat - L * w_des) / R
+        wl_des = (S_sat + L * w_des) / R
+
+
+        # Send commands to motors
+        self.motor.updateMotorSpeed(wl_des, wr_des)
+
+        # Log for debugging
         self.get_logger().info(
-            f"X={pos.x:.3f}, Y={pos.y:.3f}, Dir={yaw:.3f}  |  Goal: {x_des:.3f}, {y_des:.3f}"
-        )
+            f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_des:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
+
         
 
         
