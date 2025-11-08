@@ -86,7 +86,7 @@ class ControllerNode(Node):
         S_sat = np.clip(S_des, -10, 10)
 
         Theta_des = np.arctan2(Uy_des, Ux_des)
-        error_Theta = np.atan2(np.sin(Theta_des - yaw), np.cos(Theta_des - yaw))
+        error_Theta = np.arctan2(np.sin(Theta_des - yaw), np.cos(Theta_des - yaw))
 
         w_des = K_theta*(error_Theta) 
 
