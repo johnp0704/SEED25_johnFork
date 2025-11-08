@@ -106,12 +106,10 @@ class ControllerNode(Node):
             w_des = K_theta*(error_Theta) 
 
 
-        # FIXME MAYBE BACKWARDS?
+
         wr_des = (S_sat - L * w_des) / R_wheel
         wl_des = (S_sat + L * w_des) / R_wheel
 
-        # wr_des_sat = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        # wl_des_sat = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
         maxInput = max(wr_des, wl_des)
         if maxInput > MAX_ACUTUATOR_INPUT:
@@ -119,6 +117,10 @@ class ControllerNode(Node):
             speed_adjust_factor = MAX_ACUTUATOR_INPUT/maxInput
             wr_des_sat = wr_des * speed_adjust_factor
             wl_des_sat = wl_des * speed_adjust_factor
+
+        else:
+            wr_des_sat = wr_des
+            wl_des_sat = wl_des
 
 
         wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
