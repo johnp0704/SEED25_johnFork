@@ -17,7 +17,7 @@ K_theta = 2
 
 
 class ControllerNode(Node):
-    def __init__(self):
+    def __init__(self, motor):
         print("Starting GTG Controller node")
         super().__init__('controller_node')
 
@@ -34,6 +34,10 @@ class ControllerNode(Node):
             self.markers_listener_callback,
             REFRESH_RATE)
         
+        self.motor = motor
+        atexit.register(self.motor.all_motors_off) # Should not be needed
+
+
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
         self.latest_rigidbodies_msg = None
         self.latest_markers_msg = None
@@ -107,8 +111,8 @@ class ControllerNode(Node):
 
 def main(args=None):
     rclpy.init(args=args)
-    node = ControllerNode()
     motor = st.SaberToothMotorDriver(True,True)
+    node = ControllerNode(motor)
 
     # motor.updateMotorSpeed(20,20)
 
