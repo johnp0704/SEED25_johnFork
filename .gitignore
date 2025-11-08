@@ -1,2 +1,8 @@
 ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK/.vscode
 ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK/.vscode/browse.vc.db
+
+
+ros_packages/seed_controller_ws/install/
+ros_packages/seed_controller_ws/build/
+ros_packages/seed_controller_ws/log/
+ros_packages/seed_controller_ws/src/mocap_listener/mocap_listener/test.txt

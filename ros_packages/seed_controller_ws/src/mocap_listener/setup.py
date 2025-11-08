@@ -22,6 +22,7 @@ setup(
     'console_scripts': [
         'rigid_listener = mocap_listener.rigid_listener:main',
         'gtg_node = mocap_listener.gtg_node:main',
+        'gtg_node_mathAngle = mocap_listener.gtg_node_mathAngle:main',
     ],
     },
 )
