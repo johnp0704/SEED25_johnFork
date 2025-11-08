@@ -17,7 +17,7 @@ REFRESH_RATE = 10 #hz
 R_wheel = 8 #cm
 L = 17.8 #cm
 K_e = 30
-K_theta = 2
+K_theta = 0.5
 
 
 class ControllerNode(Node):
