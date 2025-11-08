@@ -8,11 +8,13 @@ import atexit
 from mocap_listener import PID as PID
 import numpy as np
 
+GOAL_MARKER_INDEX = 5
 REFRESH_RATE = 10 #hz
 R = 8 #cm
 L = 17.8 #cm
 K_e = 10
 K_theta = 2
+
 
 class ControllerNode(Node):
     def __init__(self):
@@ -65,7 +67,7 @@ class ControllerNode(Node):
         # Goal
         x_des, y_des = 0.0, 0.0
         if self.latest_markers_msg is not None:
-            goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == 3), None)
+            goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == GOAL_MARKER_INDEX), None)
             if goal is not None:
                 x_des = goal.translation.x
                 y_des = goal.translation.y
