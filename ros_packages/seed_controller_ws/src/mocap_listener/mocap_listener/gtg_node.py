@@ -10,7 +10,7 @@ import numpy as np
 
 GOAL_MARKER_INDEX = 5
 REFRESH_RATE = 10 #hz
-R = 8 #cm
+R_wheel = 8 #cm
 L = 17.8 #cm
 K_e = 10
 K_theta = 2
@@ -90,8 +90,8 @@ class ControllerNode(Node):
 
         w_des = K_theta*(error_Theta) 
 
-        wr_des = (S_sat - L * w_des) / R
-        wl_des = (S_sat + L * w_des) / R
+        wr_des = (S_sat - L * w_des) / R_wheel
+        wl_des = (S_sat + L * w_des) / R_wheel
 
 
         # Send commands to motors
