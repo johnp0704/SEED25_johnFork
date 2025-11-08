@@ -9,8 +9,8 @@ from mocap_listener import PID as PID
 import numpy as np
 
 GOAL_MARKER_INDEX = 5
-S_MAX = 30
 MAX_ACUTUATOR_INPUT = 25
+S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
 
 REFRESH_RATE = 10 #hz
