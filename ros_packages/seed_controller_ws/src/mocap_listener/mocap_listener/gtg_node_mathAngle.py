@@ -169,8 +169,8 @@ class ControllerNode(Node):
         # Log for debugging
         self.get_logger().info(
             # f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
-            f"S_des={S_sat:.2f}, Theta_e={angle:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f} | Unsats L={wl_des:.1f}, R={wr_des:.1f}")
-
+            f"S_des={S_sat:.2f}, Theta_e={angle:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}")
+            # f" | angle_to_goal={angle:.2f}, Theta_goal = {Theta_des:.2f}, Theta_e={error_theta:.2f}, Theta_e_wrap={error_theta_wrapped:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}")
         
 
         
