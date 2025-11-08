@@ -128,7 +128,9 @@ class ControllerNode(Node):
         S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
         # Robot heading unit vector
-        ux, uy = -unit_vector  # from earlier
+        # ux, uy = -unit_vector[0]  # from earlier
+        ux = -unit_vector[0]
+        uy = -unit_vector[1]
         #FIXME should not be -
 
         # Vector to goal
