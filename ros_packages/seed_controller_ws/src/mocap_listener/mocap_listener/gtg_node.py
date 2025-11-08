@@ -16,7 +16,7 @@ GOAL_THRESH = 0.3
 REFRESH_RATE = 10 #hz
 R_wheel = 8 #cm
 L = 17.8 #cm
-K_e = 15
+K_e = 30
 K_theta = 2
 
 
