@@ -116,11 +116,11 @@ class ControllerNode(Node):
             wl_des_sat = wl_des * speed_adjust_factor
 
 
-        wr_des_sat = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        wl_des_sat = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl_des_sat_clip = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
         # Send commands to motors
-        self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
+        self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
 
         # Log for debugging
         self.get_logger().info(
