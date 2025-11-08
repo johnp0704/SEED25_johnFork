@@ -105,16 +105,16 @@ class ControllerNode(Node):
         wr_des = (S_sat - L * w_des) / R_wheel
         wl_des = (S_sat + L * w_des) / R_wheel
 
-        wr_des = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        wl_des = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wr_des_sat = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl_des_sat = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
         # Send commands to motors
-        self.motor.updateMotorSpeed(wl_des, wr_des)
+        self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
 
         # Log for debugging
         self.get_logger().info(
             # f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
-            f"S_des={S_sat:.2f}, Theta_e={error_Theta:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
+            f"S_des={S_sat:.2f}, Theta_e={error_Theta:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f} | Unsats L={wl_des:.1f}, R={wr_des:.1f}")
 
         
 
