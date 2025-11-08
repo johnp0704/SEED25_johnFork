@@ -9,10 +9,14 @@ from mocap_listener import PID as PID
 import numpy as np
 
 GOAL_MARKER_INDEX = 5
+S_MAX = 20
+MAX_ACUTUATOR_INPUT = 30
+GOAL_THRESH = 0.3
+
 REFRESH_RATE = 10 #hz
 R_wheel = 8 #cm
 L = 17.8 #cm
-K_e = 10
+K_e = 20
 K_theta = 2
 
 
@@ -83,11 +87,15 @@ class ControllerNode(Node):
             return
 
         # Compute control signals
-        Ux_des = K_e*(x_des - pos.x)
-        Uy_des = K_e*(y_des - pos.y)
+        Ux_des = 0
+        Uy_des = 0
+
+        if (np.sqrt((pos.x - x_des)**2 + (pos.y - y_des)**2) > GOAL_THRESH):
+            Ux_des = K_e*(x_des - pos.x)
+            Uy_des = K_e*(y_des - pos.y)
 
         S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -10, 10)
+        S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
         Theta_des = np.arctan2(Uy_des, Ux_des)
         error_Theta = np.arctan2(np.sin(Theta_des - yaw), np.cos(Theta_des - yaw))
@@ -97,6 +105,8 @@ class ControllerNode(Node):
         wr_des = (S_sat - L * w_des) / R_wheel
         wl_des = (S_sat + L * w_des) / R_wheel
 
+        wr_des = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl_des = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
         # Send commands to motors
         self.motor.updateMotorSpeed(wl_des, wr_des)
