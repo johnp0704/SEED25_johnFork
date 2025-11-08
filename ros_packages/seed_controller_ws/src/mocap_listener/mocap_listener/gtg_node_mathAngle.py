@@ -99,7 +99,7 @@ class ControllerNode(Node):
         else:
             ux, uy = 0.0, 0.0
 
-        unit_vector = (ux, uy)
+        unit_vector = [ux, uy]
 
 
         # Goal
