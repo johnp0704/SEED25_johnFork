@@ -12,12 +12,13 @@ GOAL_MARKER_INDEX = 5
 MAX_ACUTUATOR_INPUT = 25
 S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
+ANGLE_THRESH = np.deg2rad(5)
 
 REFRESH_RATE = 10 #hz
 R_wheel = .08 #cm
 L = .178 #cm
 K_e = 30
-K_theta = 50
+K_theta = K_e
 
 
 class ControllerNode(Node):
@@ -100,8 +101,12 @@ class ControllerNode(Node):
         Theta_des = np.arctan2(Uy_des, Ux_des)
         error_Theta = np.arctan2(np.sin(Theta_des - yaw), np.cos(Theta_des - yaw))
 
-        w_des = K_theta*(error_Theta) 
+        w_des = 0
+        if error_Theta > ANGLE_THRESH:
+            w_des = K_theta*(error_Theta) 
 
+
+        # FIXME MAYBE BACKWARDS?
         wr_des = (S_sat - L * w_des) / R_wheel
         wl_des = (S_sat + L * w_des) / R_wheel
 
