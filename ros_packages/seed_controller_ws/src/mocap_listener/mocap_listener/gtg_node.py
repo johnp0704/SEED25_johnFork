@@ -9,14 +9,14 @@ from mocap_listener import PID as PID
 import numpy as np
 
 GOAL_MARKER_INDEX = 5
-S_MAX = 20
-MAX_ACUTUATOR_INPUT = 30
+S_MAX = 30
+MAX_ACUTUATOR_INPUT = 40
 GOAL_THRESH = 0.3
 
 REFRESH_RATE = 10 #hz
 R_wheel = 8 #cm
 L = 17.8 #cm
-K_e = 20
+K_e = 15
 K_theta = 2
 
 
@@ -113,7 +113,7 @@ class ControllerNode(Node):
 
         # Log for debugging
         self.get_logger().info(
-            f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_des:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
+            f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
 
         
 
