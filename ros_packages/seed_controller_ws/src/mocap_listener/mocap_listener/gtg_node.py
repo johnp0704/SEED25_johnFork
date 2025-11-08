@@ -73,6 +73,11 @@ class ControllerNode(Node):
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
+        # Unwrap Angle
+        if yaw < 0:
+            yaw = 2*np.pi + yaw
+
+
         # Goal
         x_des, y_des = 0.0, 0.0
         if self.latest_markers_msg is not None:
