@@ -73,7 +73,7 @@ class ControllerNode(Node):
         corner_pos = []
         for i in range(5):
             if i != 1:
-                corner = next((pt for pt in self.latest_rigidbodies_msg[0].markers if pt.marker_index == i), None)
+                corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
                 if corner is None:
                     self.get_logger().warn(f"Missing corner marker {i}, dumping!")
                     print(self.latest_markers_msg.markers)
