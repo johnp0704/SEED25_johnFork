@@ -1,47 +1,73 @@
 #!/usr/bin/env python3
-import rospy
-import numpy as np
+import rclpy
+from rclpy.node import Node
+from mocap4r2_msgs.msg import RigidBodies, Markers
 import matplotlib.pyplot as plt
-from nav_msgs.msg import Odometry
-from geometry_msgs.msg import PointStamped
-import tf.transformations as tft
+import numpy as np
 
-robot_pos = np.array([0, 0])
-robot_yaw = 0.0
-goal = None
+GOAL_MARKER_INDEX = 5
 
-def odom_callback(msg):
-    global robot_pos, robot_yaw
-    robot_pos = np.array([msg.pose.pose.position.x, msg.pose.pose.position.y])
-    q = msg.pose.pose.orientation
-    robot_yaw = tft.euler_from_quaternion([q.x, q.y, q.z, q.w])[2]
+class PlotNode(Node):
+    def __init__(self):
+        super().__init__("plot_robot_and_goal")
 
-def goal_callback(msg):
-    global goal
-    goal = np.array([msg.point.x, msg.point.y])
+        self.latest_rigid = None
+        self.latest_markers = None
+
+        self.create_subscription(RigidBodies, '/rigid_bodies', self.rb_cb, 10)
+        self.create_subscription(Markers, '/markers', self.markers_cb, 10)
+
+        self.timer = self.create_timer(0.1, self.update_plot)
+
+        plt.ion()
+        self.fig, self.ax = plt.subplots()
+        self.robot_plot, = self.ax.plot([], [], 'bo-', linewidth=2)
+        self.goal_plot, = self.ax.plot([], [], 'rx', markersize=12)
+
+    def rb_cb(self, msg):
+        self.latest_rigid = msg
+
+    def markers_cb(self, msg):
+        self.latest_markers = msg
+
+    def update_plot(self):
+        if self.latest_rigid is None or self.latest_markers is None:
+            return
+
+        rb = next((r for r in self.latest_rigid.rigidbodies if r.rigid_body_name == '1'), None)
+        if rb is None:
+            return
+
+        pts = []
+        for idx in [0, 2, 3, 4]:
+            m = next((p for p in rb.markers if p.marker_index == idx), None)
+            if m is None:
+                return
+            pts.append([m.translation.x, m.translation.y])
+
+        pts = np.array(pts)
+        self.robot_plot.set_data(pts[:,0], pts[:,1])
+
+        goal = next((p for p in self.latest_markers.markers if p.marker_index == GOAL_MARKER_INDEX), None)
+        if goal:
+            self.goal_plot.set_data(goal.translation.x, goal.translation.y)
+
+        self.ax.set_aspect('equal', 'box')
+        self.ax.set_xlim(-2, 2)
+        self.ax.set_ylim(-2, 2)
+        plt.draw()
+        plt.pause(0.001)
+
+
+def main():
+    rclpy.init()
+    node = PlotNode()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+    rclpy.shutdown()
+
 
 if __name__ == "__main__":
-    rospy.init_node("live_robot_plotter")
-    rospy.Subscriber("/odom", Odometry, odom_callback)
-    rospy.Subscriber("/goal", PointStamped, goal_callback)
-
-    plt.ion()
-    fig, ax = plt.subplots()
-
-    while not rospy.is_shutdown():
-        ax.clear()
-        ax.set_aspect("equal", adjustable="box")
-        ax.set_xlim(robot_pos[0] - 2, robot_pos[0] + 2)
-        ax.set_ylim(robot_pos[1] - 2, robot_pos[1] + 2)
-
-        # Draw robot
-        ax.plot(robot_pos[0], robot_pos[1], 'bo', label="Robot")
-        ax.arrow(robot_pos[0], robot_pos[1], 0.3 * np.cos(robot_yaw), 0.3 * np.sin(robot_yaw),
-                 head_width=0.1, color='blue')
-
-        # Draw goal
-        if goal is not None:
-            ax.plot(goal[0], goal[1], 'rx', markersize=12, label="Goal")
-
-        ax.legend()
-        plt.pause(0.01)
+    main()

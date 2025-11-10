@@ -2,153 +2,154 @@
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies, Markers
-import atexit
-import numpy as np
 from mocap_listener import sabertooth as st
+import numpy as np
+import atexit
 
-# Marker configuration
 GOAL_MARKER_INDEX = 5
-CORNER_MARKERS = [0, 2, 3, 4]
+MAX_ACUTUATOR_INPUT = 25
+S_MAX = MAX_ACUTUATOR_INPUT * 0.6
+GOAL_THRESH = 0.3
 
-# Robot geometry
-R_WHEEL = 0.08
-L = 0.178
+REFRESH_RATE = 10.0  # Hz
+R_wheel = 0.08  # m
+L = 0.178  # m
+K_e = 30.0
+K_theta = 50.0
+ANGLE_SAT = 0.5  # radians
 
-# Control gains
-K_v = 25.0          # Linear gain
-K_theta = 40.0      # Angular gain
-ANGLE_FORWARD_THRESH = 0.6   # rad, ~34 deg where robot is allowed to drive forward
-
-# Speed limits
-MAX_CMD = 25
-MAX_ACCEL = 2.0      # max actuator change per update step
-
-# Goal behavior
-GOAL_THRESH = 0.30
-
-# Loop frequency
-REFRESH_RATE = 20.0
-
+# Speed ramping limits
+MAX_SPEED_STEP = 2.0  # max change per cycle (motor command units)
 
 class ControllerNode(Node):
     def __init__(self, motor):
-        super().__init__("controller_node")
-        print("Starting GTG Controller")
+        super().__init__('controller_node')
+        print("Starting GTG Controller Node")
 
         self.motor = motor
         atexit.register(self.motor.all_motors_off)
 
-        self.latest_rb = None
+        self.latest_rigid = None
         self.latest_markers = None
 
-        self.last_left = 0.0
-        self.last_right = 0.0
+        self.subscription_rb = self.create_subscription(
+            RigidBodies,
+            '/rigid_bodies',
+            self.rigid_cb,
+            10
+        )
 
-        self.create_subscription(RigidBodies, "/rigid_bodies", self.rb_cb, 10)
-        self.create_subscription(Markers, "/markers", self.mark_cb, 10)
+        self.subscription_m = self.create_subscription(
+            Markers,
+            '/markers',
+            self.marker_cb,
+            10
+        )
 
         self.timer = self.create_timer(1.0 / REFRESH_RATE, self.update)
 
-    def rb_cb(self, msg):
-        self.latest_rb = msg
+        # Previous wheel speeds for ramping
+        self.prev_wl = 0.0
+        self.prev_wr = 0.0
 
-    def mark_cb(self, msg):
+    def rigid_cb(self, msg):
+        self.latest_rigid = msg
+
+    def marker_cb(self, msg):
         self.latest_markers = msg
 
     def update(self):
-        if self.latest_rb is None or self.latest_markers is None:
+        if self.latest_rigid is None:
             return
 
-        # Locate robot body
-        rb = next((r for r in self.latest_rb.rigidbodies if r.rigid_body_name == "1"), None)
+        rb = next((r for r in self.latest_rigid.rigidbodies if r.rigid_body_name == '1'), None)
         if rb is None:
-            self.get_logger().warn("Lost robot body")
+            self.get_logger().warn("Lost rigid body")
             return
 
-        # Extract corner markers
-        corners = []
-        for idx in CORNER_MARKERS:
+        # Extract corner markers (required indices)
+        corner_indices = [0, 2, 3, 4]
+        pts = []
+        for idx in corner_indices:
             m = next((p for p in rb.markers if p.marker_index == idx), None)
             if m is None:
-                self.get_logger().warn(f"Missing robot marker {idx}")
+                self.get_logger().warn(f"Missing marker {idx}")
                 return
-            corners.append(np.array([m.translation.x, m.translation.y]))
+            pts.append(np.array([m.translation.x, m.translation.y]))
 
-        center = np.mean(corners, axis=0)
-        front = (corners[1] + corners[2]) / 2.0
+        center = np.mean(pts, axis=0)
+        front = (pts[1] + pts[2]) / 2.0
+
         heading = front - center
-        norm = np.linalg.norm(heading)
-        if norm < 1e-8:
+        hn = np.linalg.norm(heading)
+        if hn < 1e-6:
             return
-        ux, uy = heading / norm
+        heading /= hn
 
-        # Get goal marker
-        goal = next((m for m in self.latest_markers.markers if m.marker_index == GOAL_MARKER_INDEX), None)
+        # Goal
+        if self.latest_markers is None:
+            return
+
+        goal = next((p for p in self.latest_markers.markers if p.marker_index == GOAL_MARKER_INDEX), None)
         if goal is None:
-            self.get_logger().warn("Lost goal marker")
+            self.get_logger().warn("Missing goal marker")
             return
 
-        xg, yg = goal.translation.x, goal.translation.y
-        dx = xg - center[0]
-        dy = yg - center[1]
+        goal_pos = np.array([goal.translation.x, goal.translation.y])
+        dist = np.linalg.norm(center - goal_pos)
 
-        dist = np.hypot(dx, dy)
+        if dist > GOAL_THRESH:
+            U = K_e * (goal_pos - center)
+            S_des = np.linalg.norm(U)
+        else:
+            S_des = 0.0
 
-        # If close, stop smoothly
-        if dist < GOAL_THRESH:
-            self.ramped_send(0.0, 0.0)
-            return
-
-        # Direction to goal
-        gn = np.hypot(dx, dy)
-        gx, gy = dx / gn, dy / gn
+        S_des = np.clip(S_des, -S_MAX, S_MAX)
 
         # Angle error
-        dot = ux * gx + uy * gy
-        cross = ux * gy - uy * gx
-        ang = np.arctan2(cross, dot)
-
-        # Only move forward if facing roughly correct direction
-        if abs(ang) < ANGLE_FORWARD_THRESH:
-            v = K_v * dist
+        gdir = goal_pos - center
+        gn = np.linalg.norm(gdir)
+        if gn < 1e-6:
+            gdir = heading
         else:
-            v = 0.0
+            gdir /= gn
 
-        w = K_theta * ang
+        dot = heading[0] * gdir[0] + heading[1] * gdir[1]
+        cross = heading[0] * gdir[1] - heading[1] * gdir[0]
+        angle = np.arctan2(cross, dot)
 
-        # Convert to wheel speeds
-        wr = (v - L * w) / R_WHEEL
-        wl = (v + L * w) / R_WHEEL
+        am = abs(angle)
+        if am < ANGLE_SAT:
+            w = K_theta * angle * (am / ANGLE_SAT)
+        else:
+            w = K_theta * angle
 
-        # Saturate
-        wr = np.clip(wr, -MAX_CMD, MAX_CMD)
-        wl = np.clip(wl, -MAX_CMD, MAX_CMD)
+        wr = (S_des - L * w) / R_wheel
+        wl = (S_des + L * w) / R_wheel
 
-        # Smooth command (ramping)
-        self.ramped_send(wl, wr)
+        wr = np.clip(wr, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl = np.clip(wl, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
-        self.get_logger().info(f"dist={dist:.2f}, ang={ang:.2f} | L={self.last_left:.1f}, R={self.last_right:.1f}")
+        # Speed ramping
+        wl_cmd = self.prev_wl + np.clip(wl - self.prev_wl, -MAX_SPEED_STEP, MAX_SPEED_STEP)
+        wr_cmd = self.prev_wr + np.clip(wr - self.prev_wr, -MAX_SPEED_STEP, MAX_SPEED_STEP)
 
-    def ramped_send(self, wl, wr):
-        wl_cmd = self.last_left + np.clip(wl - self.last_left, -MAX_ACCEL, MAX_ACCEL)
-        wr_cmd = self.last_right + np.clip(wr - self.last_right, -MAX_ACCEL, MAX_ACCEL)
-
-        self.last_left = wl_cmd
-        self.last_right = wr_cmd
+        self.prev_wl = wl_cmd
+        self.prev_wr = wr_cmd
 
         self.motor.updateMotorSpeed(wl_cmd, wr_cmd)
+
+        self.get_logger().info(f"S={S_des:.2f}, angle={angle:.2f}, wl={wl_cmd:.1f}, wr={wr_cmd:.1f}")
 
 
 def main(args=None):
     rclpy.init(args=args)
     motor = st.SaberToothMotorDriver(True, True)
     node = ControllerNode(motor)
-
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        pass
-
+        print("Exiting")
     motor.all_motors_off()
     node.destroy_node()
     rclpy.shutdown()
