@@ -68,8 +68,8 @@ class PlotRobotNode(Node):
                     y_front = (cp[1,1] + cp[2,1])/2.0
 
                     # heading arrow (from center to front-center)
-                    dx = x_front - x_center
-                    dy = y_front - y_center
+                    dx = x_center - x_front
+                    dy = y_center - y_front
                     self.ax.arrow(x_center, y_center, dx, dy,
                                   head_width=0.02, head_length=0.03, fc='blue', ec='blue', label='heading')
 
