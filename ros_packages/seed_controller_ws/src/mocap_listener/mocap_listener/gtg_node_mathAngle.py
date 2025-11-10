@@ -86,8 +86,8 @@ class ControllerNode(Node):
         x_center = sum([c[0] for c in corner_pos]) / len(corner_pos)
         y_center = sum([c[1] for c in corner_pos]) / len(corner_pos)
         
-        x_direction_center = (corner_pos[0][-1] + corner_pos[1][-1]) / 2 #take center of 3rd and 4th croenr points, that the "front" of the robot
-        y_direction_center = (corner_pos[0][-2] + corner_pos[1][-2]) / 2
+        x_direction_center = (corner_pos[2][-1] + corner_pos[3][-1]) / 2 #take center of 3rd and 4th croenr points, that the "front" of the robot
+        y_direction_center = (corner_pos[2][-2] + corner_pos[3][-2]) / 2
 
         dx = x_direction_center - x_center
         dy = y_direction_center - y_center
