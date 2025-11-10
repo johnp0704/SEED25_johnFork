@@ -14,7 +14,7 @@ import time
 import threading
 import matplotlib.pyplot as plt
 
-# Constants (default values are also set as ROS parameters below)
+# Constants
 GOAL_MARKER_INDEX = 5
 MAX_ACTUATOR_INPUT = 25.0
 S_MAX = MAX_ACTUATOR_INPUT * 0.6
@@ -24,18 +24,14 @@ R_wheel = 0.08  # m
 L = 0.178  # m
 
 def angle_normalize(a):
-    """Normalize angle to [-pi, pi]."""
     return np.arctan2(np.sin(a), np.cos(a))
-
 
 class ControllerNode(Node):
     def __init__(self, motor):
         super().__init__('controller_node')
-        self.get_logger().info("Starting GTG Controller node (adjusted for heading)")
+        self.get_logger().info("Starting GTG Controller node (heading 0-3 normal)")
 
         cb_group = ReentrantCallbackGroup()
-
-        # Subscriptions
         self.subscription_rb = self.create_subscription(
             RigidBodies, '/rigid_bodies', self.rigid_bodies_listener_callback,
             int(REFRESH_RATE), callback_group=cb_group
@@ -44,15 +40,10 @@ class ControllerNode(Node):
             Markers, '/markers', self.markers_listener_callback,
             int(REFRESH_RATE), callback_group=cb_group
         )
-
-        # Publishers
         self.pose_pub = self.create_publisher(Pose2D, '/controller/pose2d', 10)
         self.markers_pub = self.create_publisher(Float32MultiArray, '/controller/marker_array', 10)
-
-        # Service to dump marker plot
         self.create_service(Trigger, 'dump_marker_plot', self.handle_dump_marker_plot, callback_group=cb_group)
 
-        # Parameters
         self.declare_parameters(
             namespace='',
             parameters=[
@@ -73,15 +64,12 @@ class ControllerNode(Node):
                 ('min_forward_scale', float(0.05)),
             ]
         )
-
         self._refresh_local_params()
         self.add_on_set_parameters_callback(self._param_change_callback)
 
-        # Motor driver
         self.motor = motor
         atexit.register(self.motor.all_motors_off)
 
-        # Internal state
         self.prev_wl = 0.0
         self.prev_wr = 0.0
         self.prev_angle = 0.0
@@ -111,16 +99,16 @@ class ControllerNode(Node):
         self.speed_ramp_rate = self.get_parameter('speed_ramp_rate').get_parameter_value().double_value
         self.forward_angle_slowing = self.get_parameter('forward_angle_slowing').get_parameter_value().double_value
         self.min_forward_scale = self.get_parameter('min_forward_scale').get_parameter_value().double_value
-        self.MAX_ACTUATOR_INPUT = self.max_actuator_input
+
+        self.MAX_ACUTUATOR_INPUT = self.max_actuator_input
         self.S_MAX = self.s_max
 
     def _param_change_callback(self, params):
         for param in params:
-            if param.name not in ['goal_marker_index', 'max_actuator_input', 's_max_scale', 'goal_thresh', 'refresh_rate',
-                                  'r_wheel', 'L', 'K_e', 'K_theta_p', 'K_theta_d', 'angle_sat', 'angle_deadzone',
-                                  'speed_ramp_rate', 'forward_angle_slowing', 'min_forward_scale']:
-                return rclpy.parameter.SetParametersResult(successful=False,
-                                                           reason=f"Unknown param {param.name}")
+            if param.name not in ['goal_marker_index','max_actuator_input','s_max_scale','goal_thresh','refresh_rate',
+                                  'r_wheel','L','K_e','K_theta_p','K_theta_d','angle_sat','angle_deadzone',
+                                  'speed_ramp_rate','forward_angle_slowing','min_forward_scale']:
+                return rclpy.parameter.SetParametersResult(successful=False, reason=f"Unknown param {param.name}")
         self._refresh_local_params()
         self.get_logger().info("Parameters updated live")
         return rclpy.parameter.SetParametersResult(successful=True)
@@ -137,13 +125,12 @@ class ControllerNode(Node):
         with self._msg_lock:
             markers_msg = self.latest_markers_msg
             rb_msg = self.latest_rigidbodies_msg
-
         if markers_msg is None and rb_msg is None:
             response.success = False
             response.message = "No marker/rigidbody data received yet."
             return response
 
-        fig, ax = plt.subplots(figsize=(6, 6))
+        fig, ax = plt.subplots(figsize=(6,6))
         if markers_msg:
             xs = [m.translation.x for m in markers_msg.markers]
             ys = [m.translation.y for m in markers_msg.markers]
@@ -151,19 +138,18 @@ class ControllerNode(Node):
             for m in markers_msg.markers:
                 ax.text(m.translation.x, m.translation.y, f"{m.marker_index}", fontsize=8)
         if rb_msg:
-            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name=='1'), None)
             if robot_body:
-                corners = []
-                for i in [0, 2, 3, 4]:
-                    marker = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
-                    if marker:
-                        corners.append((marker.translation.x, marker.translation.y))
-                if corners:
-                    cp = np.array(corners)
-                    ax.scatter(cp[:, 0], cp[:, 1], marker='o', label='robot corners', color='green')
-                    for idx, (xx, yy) in enumerate(cp):
-                        ax.text(xx, yy, f"corner_{idx}", fontsize=8)
-
+                corner_pos=[]
+                for i in [0,2,3,4]:
+                    corner = next((pt for pt in robot_body.markers if pt.marker_index==i), None)
+                    if corner:
+                        corner_pos.append((corner.translation.x, corner.translation.y))
+                if corner_pos:
+                    cp = np.array(corner_pos)
+                    ax.scatter(cp[:,0], cp[:,1], marker='o', label='robot corners')
+                    for idx,(xx,yy) in enumerate(cp):
+                        ax.text(xx,yy,f"corner_{idx}",fontsize=8,color='green')
         ax.set_xlabel('x (m)')
         ax.set_ylabel('y (m)')
         ax.set_title('Latest Markers and Robot Corners')
@@ -173,106 +159,123 @@ class ControllerNode(Node):
         try:
             fig.savefig(outpath)
             plt.close(fig)
-            response.success = True
-            response.message = f"Saved marker plot to {outpath}"
+            response.success=True
+            response.message=f"Saved marker plot to {outpath}"
         except Exception as e:
-            response.success = False
-            response.message = f"Failed to save plot: {e}"
+            response.success=False
+            response.message=f"Failed to save plot: {e}"
         return response
 
     def controller_update(self):
         with self._msg_lock:
             rb_msg = self.latest_rigidbodies_msg
             markers_msg = self.latest_markers_msg
-
         if rb_msg is None:
-            self.get_logger().info("Waiting for rigid bodies...")
             return
-
-        robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name=='1'), None)
         if robot_body is None:
             self.get_logger().info("Lost Body")
             return
 
+        # get corners
         corner_pos = []
-        for i in [0, 2, 3, 4]:
-            marker = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
-            if marker is None:
+        for i in [0,2,3,4]:
+            corner = next((pt for pt in robot_body.markers if pt.marker_index==i), None)
+            if corner is None:
                 self.get_logger().warn(f"Missing corner {i}")
-                continue
-            corner_pos.append([marker.translation.x, marker.translation.y])
+                return
+            corner_pos.append([corner.translation.x, corner.translation.y])
 
-        if len(corner_pos) < 3:
-            self.get_logger().warn("Not enough corners, skipping update")
-            return
+        # center of robot
+        x_center = sum(c[0] for c in corner_pos)/len(corner_pos)
+        y_center = sum(c[1] for c in corner_pos)/len(corner_pos)
 
-        x_center = sum(c[0] for c in corner_pos) / len(corner_pos)
-        y_center = sum(c[1] for c in corner_pos) / len(corner_pos)
-
-        # ADJUSTED: Heading using markers 0 and 3
-        corner0 = next((pt for pt in robot_body.markers if pt.marker_index == 0), None)
-        corner3 = next((pt for pt in robot_body.markers if pt.marker_index == 3), None)
-        if corner0 and corner3:
-            x_front = (corner0.translation.x + corner3.translation.x) / 2.0
-            y_front = (corner0.translation.y + corner3.translation.y) / 2.0
+        # Heading: midpoint between 0 and 3
+        x0,y0 = corner_pos[0]
+        x3,y3 = corner_pos[2]  # note: 0->3 front corners
+        mid_x = (x0 + x3)/2
+        mid_y = (y0 + y3)/2
+        # vector along front line
+        dx = x3 - x0
+        dy = y3 - y0
+        # heading vector = normal to front line
+        ux = -dy
+        uy = dx
+        norm = np.sqrt(ux**2 + uy**2)
+        if norm>1e-8:
+            ux /= norm
+            uy /= norm
         else:
-            x_front, y_front = x_center, y_center
+            ux, uy = 0.0,0.0
 
-        dx = x_front - x_center
-        dy = y_front - y_center
-        norm = np.hypot(dx, dy)
-        ux, uy = (dx / norm, dy / norm) if norm > 1e-8 else (0.0, 0.0)
-
-        x_des, y_des = 0.0, 0.0
+        # goal
+        x_des = y_des = 0.0
         if markers_msg:
-            goal = next((m for m in markers_msg.markers if m.marker_index == int(self.goal_marker_index)), None)
+            goal = next((pt for pt in markers_msg.markers if pt.marker_index==int(self.goal_marker_index)), None)
             if goal:
                 x_des = goal.translation.x
                 y_des = goal.translation.y
             else:
-                self.get_logger().warn("Lost goal marker")
+                self.get_logger().warn("Lost Goal marker")
+                return
         else:
-            self.get_logger().warn("No goal markers received")
+            self.get_logger().warn("No goal data")
+            return
 
-        dist_to_goal = np.hypot(x_center - x_des, y_center - y_des)
-        Ux_des = self.K_e * (x_des - x_center) if dist_to_goal > self.goal_thresh else 0.0
-        Uy_des = self.K_e * (y_des - y_center) if dist_to_goal > self.goal_thresh else 0.0
+        dist_to_goal = np.sqrt((x_center - x_des)**2 + (y_center - y_des)**2)
+        if dist_to_goal > self.goal_thresh:
+            Ux_des = self.K_e * (x_des - x_center)
+            Uy_des = self.K_e * (y_des - y_center)
+        else:
+            Ux_des = Uy_des = 0.0
 
-        S_des = np.hypot(Ux_des, Uy_des)
+        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
         S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
 
-        gx, gy = (x_des - x_center, y_des - y_center)
-        g_norm = np.hypot(gx, gy)
-        gx, gy = (gx / g_norm, gy / g_norm) if g_norm > 1e-8 else (0.0, 0.0)
+        # vector to goal
+        gx = x_des - x_center
+        gy = y_des - y_center
+        g_norm = np.sqrt(gx**2 + gy**2)
+        if g_norm>1e-8:
+            gx/=g_norm
+            gy/=g_norm
+        else:
+            gx=gy=0.0
 
-        dot = ux * gx + uy * gy
-        cross = ux * gy - uy * gx
-        angle = angle_normalize(np.arctan2(cross, dot))
-        if abs(abs(angle) - np.pi) < 0.02:
-            angle = np.sign(angle) * (np.pi - 0.02)
+        dot = ux*gx + uy*gy
+        cross = ux*gy - uy*gx
+        raw_angle = np.arctan2(cross, dot)
+        angle = angle_normalize(raw_angle)
+        if abs(abs(angle)-np.pi)<0.02:
+            angle = np.sign(angle)*(np.pi-0.02)
 
         now = time.time()
-        dt = max(1e-6, now - self.prev_time)
-        d_angle = (angle - self.prev_angle) / dt
+        dt = max(1e-6, now-self.prev_time)
+        d_angle = (angle - self.prev_angle)/dt if dt>0 else 0.0
 
-        if abs(angle) < self.angle_deadzone:
+        if abs(angle)<self.angle_deadzone:
             w_des = 0.0
         else:
-            scale = (abs(angle) / self.angle_sat) if abs(angle) < self.angle_sat else 1.0
-            w_des = (self.K_theta_p * angle + self.K_theta_d * d_angle) * scale
+            angle_mag = abs(angle)
+            scale = angle_mag/self.angle_sat if angle_mag<self.angle_sat else 1.0
+            w_des = (self.K_theta_p*angle + self.K_theta_d*d_angle)*scale
 
-        forward_scale = max(self.min_forward_scale, np.cos(angle) * self.forward_angle_slowing)
+        forward_scale = max(self.min_forward_scale, np.cos(angle)*self.forward_angle_slowing)
         S_sat *= forward_scale
 
-        wr_des = (S_sat - self.L * w_des) / self.r_wheel
-        wl_des = (S_sat + self.L * w_des) / self.r_wheel
-        wr_des_sat = np.clip(wr_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
-        wl_des_sat = np.clip(wl_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
+        wr_des = (S_sat - self.L*w_des)/self.r_wheel
+        wl_des = (S_sat + self.L*w_des)/self.r_wheel
 
-        # Ramp limiter
-        max_delta = self.speed_ramp_rate * dt
-        wl_des_sat = self.prev_wl + np.clip(wl_des_sat - self.prev_wl, -max_delta, max_delta)
-        wr_des_sat = self.prev_wr + np.clip(wr_des_sat - self.prev_wr, -max_delta, max_delta)
+        wr_des_sat = np.clip(wr_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
+        wl_des_sat = np.clip(wl_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
+
+        max_delta = self.speed_ramp_rate*dt
+        delta_l = wl_des_sat - self.prev_wl
+        delta_r = wr_des_sat - self.prev_wr
+        if abs(delta_l)>max_delta:
+            wl_des_sat = self.prev_wl + np.sign(delta_l)*max_delta
+        if abs(delta_r)>max_delta:
+            wr_des_sat = self.prev_wr + np.sign(delta_r)*max_delta
 
         try:
             self.motor.updateMotorSpeed(float(wl_des_sat), float(wr_des_sat))
@@ -284,27 +287,29 @@ class ControllerNode(Node):
         self.prev_angle = angle
         self.prev_time = now
 
-        pose = Pose2D(x=float(x_center), y=float(y_center), theta=float(np.arctan2(uy, ux)))
+        pose = Pose2D()
+        pose.x = float(x_center)
+        pose.y = float(y_center)
+        pose.theta = float(np.arctan2(uy, ux))
         self.pose_pub.publish(pose)
 
         arr = Float32MultiArray()
         if markers_msg:
-            arr.data = []
+            data=[]
             for m in markers_msg.markers:
-                arr.data.extend([float(m.marker_index), float(m.translation.x), float(m.translation.y)])
+                data.extend([float(m.marker_index), float(m.translation.x), float(m.translation.y)])
+            arr.data=data
             self.markers_pub.publish(arr)
 
         self.get_logger().info(
-            f"S_des={S_sat:.2f}, Theta_e={angle:.3f}, w_des={w_des:.2f} | L={wl_des_sat:.1f}, R={wr_des_sat:.1f}"
+            f"S_des={S_sat:.2f}, Theta_e={angle:.3f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}"
         )
-
 
 def main(args=None):
     rclpy.init(args=args)
     motor = st.SaberToothMotorDriver(True, True)
     node = ControllerNode(motor)
     atexit.register(motor.all_motors_off)
-
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -314,6 +319,5 @@ def main(args=None):
         node.destroy_node()
         rclpy.shutdown()
 
-
-if __name__ == '__main__':
+if __name__=='__main__':
     main()
