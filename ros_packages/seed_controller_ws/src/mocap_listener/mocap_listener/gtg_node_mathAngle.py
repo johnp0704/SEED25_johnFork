@@ -1,159 +1,116 @@
 #!/usr/bin/env python3
+
 import rclpy
 from rclpy.node import Node
-from mocap4r2_msgs.msg import RigidBodies, Markers
-from mocap_listener import sabertooth as st
 import numpy as np
-import atexit
+from geometry_msgs.msg import PoseStamped
+from std_msgs.msg import Float32MultiArray
+import time
+from sabertooth import SaberToothMotorDriver
 
-GOAL_MARKER_INDEX = 5
-MAX_ACUTUATOR_INPUT = 25
-S_MAX = MAX_ACUTUATOR_INPUT * 0.6
-GOAL_THRESH = 0.3
 
-REFRESH_RATE = 10.0  # Hz
-R_wheel = 0.08  # m
-L = 0.178  # m
-K_e = 30.0
-K_theta = 50.0
-ANGLE_SAT = 0.5  # radians
+class GoToGoalController(Node):
+    def __init__(self):
+        super().__init__('go_to_goal_controller')
 
-# Speed ramping limits
-MAX_SPEED_STEP = 2.0  # max change per cycle (motor command units)
+        # Controller gains (static, no live tuning)
+        self.K_e = 0.6       # Linear error gain
+        self.K_theta = 2.0   # Heading gain
 
-class ControllerNode(Node):
-    def __init__(self, motor):
-        super().__init__('controller_node')
-        print("Starting GTG Controller Node")
+        # Speed scaling for Sabertooth (-100 to +100)
+        self.MAX_OUTPUT = 80.0   # Leave headroom (avoid instantly slamming motors)
+        self.MAX_SPEED_STEP = 10.0  # Ramp rate per update
 
-        self.motor = motor
-        atexit.register(self.motor.all_motors_off)
+        # Robot specs
+        self.wheel_base = 0.24  # meters between wheels
 
-        self.latest_rigid = None
-        self.latest_markers = None
+        # Initialize motor driver
+        self.motor = SaberToothMotorDriver(True, True)  # (ports reversed?, debug?)
 
-        self.subscription_rb = self.create_subscription(
-            RigidBodies,
-            '/rigid_bodies',
-            self.rigid_cb,
-            10
-        )
+        # State
+        self.x = None
+        self.y = None
+        self.yaw = None
+        self.goal = np.array([0.0, 0.0])
 
-        self.subscription_m = self.create_subscription(
-            Markers,
-            '/markers',
-            self.marker_cb,
-            10
-        )
+        self.last_left_cmd = 0.0
+        self.last_right_cmd = 0.0
 
-        self.timer = self.create_timer(1.0 / REFRESH_RATE, self.update)
+        # Subscribers
+        self.create_subscription(Float32MultiArray, "/rigid_bodies", self.rigid_body_callback, 10)
+        self.create_subscription(PoseStamped, "/goal", self.goal_callback, 10)
 
-        # Previous wheel speeds for ramping
-        self.prev_wl = 0.0
-        self.prev_wr = 0.0
+        # Timer loop (50 Hz)
+        self.create_timer(0.02, self.control_loop)
 
-    def rigid_cb(self, msg):
-        self.latest_rigid = msg
+        self.get_logger().info("Go-To-Goal controller started.")
 
-    def marker_cb(self, msg):
-        self.latest_markers = msg
 
-    def update(self):
-        if self.latest_rigid is None:
+    def goal_callback(self, msg):
+        self.goal = np.array([msg.pose.position.x, msg.pose.position.y])
+
+
+    def rigid_body_callback(self, msg):
+        # Expected msg: [x, y, z, qx, qy, qz, qw]
+        data = msg.data
+        if len(data) < 7:
             return
 
-        rb = next((r for r in self.latest_rigid.rigidbodies if r.rigid_body_name == '1'), None)
-        if rb is None:
-            self.get_logger().warn("Lost rigid body")
+        self.x = data[0]
+        self.y = data[1]
+
+        # Convert quaternion to yaw
+        qx, qy, qz, qw = data[3:7]
+        # yaw from quaternion
+        self.yaw = np.arctan2(2*(qw*qz + qx*qy), 1 - 2*(qy*qy + qz*qz))
+
+
+    def control_loop(self):
+        if self.x is None or self.y is None or self.yaw is None:
             return
 
-        # Extract corner markers (required indices)
-        corner_indices = [0, 2, 3, 4]
-        pts = []
-        for idx in corner_indices:
-            m = next((p for p in rb.markers if p.marker_index == idx), None)
-            if m is None:
-                self.get_logger().warn(f"Missing marker {idx}")
-                return
-            pts.append(np.array([m.translation.x, m.translation.y]))
+        dx = self.goal[0] - self.x
+        dy = self.goal[1] - self.y
+        e = np.hypot(dx, dy)  # distance to goal
 
-        center = np.mean(pts, axis=0)
-        front = (pts[1] + pts[2]) / 2.0
+        # Heading angle to the goal
+        theta_g = np.arctan2(dy, dx)
 
-        heading = front - center
-        hn = np.linalg.norm(heading)
-        if hn < 1e-6:
-            return
-        heading /= hn
+        # Heading error
+        theta_error = theta_g - self.yaw
+        theta_error = np.arctan2(np.sin(theta_error), np.cos(theta_error))  # wrap
 
-        # Goal
-        if self.latest_markers is None:
-            return
+        # Control law
+        v = self.K_e * e
+        w = self.K_theta * theta_error
 
-        goal = next((p for p in self.latest_markers.markers if p.marker_index == GOAL_MARKER_INDEX), None)
-        if goal is None:
-            self.get_logger().warn("Missing goal marker")
-            return
+        # Convert to wheel speeds
+        wl = v - (w * self.wheel_base / 2.0)
+        wr = v + (w * self.wheel_base / 2.0)
 
-        goal_pos = np.array([goal.translation.x, goal.translation.y])
-        dist = np.linalg.norm(center - goal_pos)
-
-        if dist > GOAL_THRESH:
-            U = K_e * (goal_pos - center)
-            S_des = np.linalg.norm(U)
-        else:
-            S_des = 0.0
-
-        S_des = np.clip(S_des, -S_MAX, S_MAX)
-
-        # Angle error
-        gdir = goal_pos - center
-        gn = np.linalg.norm(gdir)
-        if gn < 1e-6:
-            gdir = heading
-        else:
-            gdir /= gn
-
-        dot = heading[0] * gdir[0] + heading[1] * gdir[1]
-        cross = heading[0] * gdir[1] - heading[1] * gdir[0]
-        angle = np.arctan2(cross, dot)
-
-        am = abs(angle)
-        if am < ANGLE_SAT:
-            w = K_theta * angle * (am / ANGLE_SAT)
-        else:
-            w = K_theta * angle
-
-        wr = (S_des - L * w) / R_wheel
-        wl = (S_des + L * w) / R_wheel
-
-        wr = np.clip(wr, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        wl = np.clip(wl, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        # Scale to sabertooth input
+        wl = np.clip(wl * 20.0, -self.MAX_OUTPUT, self.MAX_OUTPUT)
+        wr = np.clip(wr * 20.0, -self.MAX_OUTPUT, self.MAX_OUTPUT)
 
         # Speed ramping
-        wl_cmd = self.prev_wl + np.clip(wl - self.prev_wl, -MAX_SPEED_STEP, MAX_SPEED_STEP)
-        wr_cmd = self.prev_wr + np.clip(wr - self.prev_wr, -MAX_SPEED_STEP, MAX_SPEED_STEP)
+        wl = self.last_left_cmd + np.clip(wl - self.last_left_cmd, -self.MAX_SPEED_STEP, self.MAX_SPEED_STEP)
+        wr = self.last_right_cmd + np.clip(wr - self.last_right_cmd, -self.MAX_SPEED_STEP, self.MAX_SPEED_STEP)
 
-        self.prev_wl = wl_cmd
-        self.prev_wr = wr_cmd
+        # Store for next step
+        self.last_left_cmd = wl
+        self.last_right_cmd = wr
 
-        self.motor.updateMotorSpeed(wl_cmd, wr_cmd)
-
-        self.get_logger().info(f"S={S_des:.2f}, angle={angle:.2f}, wl={wl_cmd:.1f}, wr={wr_cmd:.1f}")
+        # Send to motors (expects -100 to 100)
+        self.motor.updateMotorSpeed(float(wl), float(wr))
 
 
 def main(args=None):
     rclpy.init(args=args)
-    motor = st.SaberToothMotorDriver(True, True)
-    node = ControllerNode(motor)
-    try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        print("Exiting")
-    motor.all_motors_off()
+    node = GoToGoalController()
+    rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
