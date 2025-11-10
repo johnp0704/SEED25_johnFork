@@ -31,7 +31,7 @@ def angle_normalize(a):
 class ControllerNode(Node):
     def __init__(self, motor):
         super().__init__('controller_node')
-        self.get_logger().info("Starting GTG Controller node (fixed)")
+        self.get_logger().info("Starting GTG Controller node (adjusted for heading)")
 
         cb_group = ReentrantCallbackGroup()
 
@@ -208,8 +208,15 @@ class ControllerNode(Node):
 
         x_center = sum(c[0] for c in corner_pos) / len(corner_pos)
         y_center = sum(c[1] for c in corner_pos) / len(corner_pos)
-        x_front = sum([corner_pos[1][0], corner_pos[2][0]]) / 2.0 if len(corner_pos) > 2 else x_center
-        y_front = sum([corner_pos[1][1], corner_pos[2][1]]) / 2.0 if len(corner_pos) > 2 else y_center
+
+        # ADJUSTED: Heading using markers 0 and 3
+        corner0 = next((pt for pt in robot_body.markers if pt.marker_index == 0), None)
+        corner3 = next((pt for pt in robot_body.markers if pt.marker_index == 3), None)
+        if corner0 and corner3:
+            x_front = (corner0.translation.x + corner3.translation.x) / 2.0
+            y_front = (corner0.translation.y + corner3.translation.y) / 2.0
+        else:
+            x_front, y_front = x_center, y_center
 
         dx = x_front - x_center
         dy = y_front - y_center
