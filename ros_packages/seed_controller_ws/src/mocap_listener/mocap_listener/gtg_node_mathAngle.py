@@ -19,31 +19,46 @@ GOAL_MARKER_INDEX = 5
 MAX_ACTUATOR_INPUT = 25.0
 S_MAX = MAX_ACTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
+
 REFRESH_RATE = 10.0  # Hz
 R_wheel = 0.08  # m
 L = 0.178  # m
 
 def angle_normalize(a):
+    """Normalize angle to [-pi, pi]."""
     return np.arctan2(np.sin(a), np.cos(a))
 
 class ControllerNode(Node):
     def __init__(self, motor):
         super().__init__('controller_node')
-        self.get_logger().info("Starting GTG Controller node (heading 0-3 normal, goal alignment first)")
+        self.get_logger().info("Starting GTG Controller node (heading fixed)")
 
         cb_group = ReentrantCallbackGroup()
+
+        # Subscriptions
         self.subscription_rb = self.create_subscription(
-            RigidBodies, '/rigid_bodies', self.rigid_bodies_listener_callback,
-            int(REFRESH_RATE), callback_group=cb_group
+            RigidBodies,
+            '/rigid_bodies',
+            self.rigid_bodies_listener_callback,
+            int(REFRESH_RATE),
+            callback_group=cb_group
         )
         self.subscription_markers = self.create_subscription(
-            Markers, '/markers', self.markers_listener_callback,
-            int(REFRESH_RATE), callback_group=cb_group
+            Markers,
+            '/markers',
+            self.markers_listener_callback,
+            int(REFRESH_RATE),
+            callback_group=cb_group
         )
+
+        # Publishers
         self.pose_pub = self.create_publisher(Pose2D, '/controller/pose2d', 10)
         self.markers_pub = self.create_publisher(Float32MultiArray, '/controller/marker_array', 10)
+
+        # Dump marker plot service
         self.create_service(Trigger, 'dump_marker_plot', self.handle_dump_marker_plot, callback_group=cb_group)
 
+        # Parameters
         self.declare_parameters(
             namespace='',
             parameters=[
@@ -67,9 +82,11 @@ class ControllerNode(Node):
         self._refresh_local_params()
         self.add_on_set_parameters_callback(self._param_change_callback)
 
+        # Motor driver
         self.motor = motor
         atexit.register(self.motor.all_motors_off)
 
+        # Internal state
         self.prev_wl = 0.0
         self.prev_wr = 0.0
         self.prev_angle = 0.0
@@ -79,6 +96,7 @@ class ControllerNode(Node):
         self.latest_markers_msg = None
         self._msg_lock = threading.Lock()
 
+        # Control loop timer
         period = 1.0 / self.refresh_rate
         self.timer = self.create_timer(period, self.controller_update, callback_group=cb_group)
 
@@ -105,9 +123,9 @@ class ControllerNode(Node):
 
     def _param_change_callback(self, params):
         for param in params:
-            if param.name not in ['goal_marker_index','max_actuator_input','s_max_scale','goal_thresh','refresh_rate',
-                                  'r_wheel','L','K_e','K_theta_p','K_theta_d','angle_sat','angle_deadzone',
-                                  'speed_ramp_rate','forward_angle_slowing','min_forward_scale']:
+            if param.name not in ['goal_marker_index', 'max_actuator_input', 's_max_scale', 'goal_thresh', 'refresh_rate',
+                                  'r_wheel', 'L', 'K_e', 'K_theta_p', 'K_theta_d', 'angle_sat', 'angle_deadzone',
+                                  'speed_ramp_rate', 'forward_angle_slowing', 'min_forward_scale']:
                 return rclpy.parameter.SetParametersResult(successful=False, reason=f"Unknown param {param.name}")
         self._refresh_local_params()
         self.get_logger().info("Parameters updated live")
@@ -125,12 +143,13 @@ class ControllerNode(Node):
         with self._msg_lock:
             markers_msg = self.latest_markers_msg
             rb_msg = self.latest_rigidbodies_msg
+
         if markers_msg is None and rb_msg is None:
             response.success = False
             response.message = "No marker/rigidbody data received yet."
             return response
 
-        fig, ax = plt.subplots(figsize=(6,6))
+        fig, ax = plt.subplots(figsize=(6, 6))
         if markers_msg:
             xs = [m.translation.x for m in markers_msg.markers]
             ys = [m.translation.y for m in markers_msg.markers]
@@ -138,75 +157,89 @@ class ControllerNode(Node):
             for m in markers_msg.markers:
                 ax.text(m.translation.x, m.translation.y, f"{m.marker_index}", fontsize=8)
         if rb_msg:
-            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name=='1'), None)
+            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
             if robot_body:
-                corner_pos=[]
-                for i in [0,2,3,4]:
-                    corner = next((pt for pt in robot_body.markers if pt.marker_index==i), None)
+                corner_pos = []
+                for i in [0, 2, 3, 4]:
+                    corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
                     if corner:
                         corner_pos.append((corner.translation.x, corner.translation.y))
                 if corner_pos:
                     cp = np.array(corner_pos)
-                    ax.scatter(cp[:,0], cp[:,1], marker='o', label='robot corners')
-                    for idx,(xx,yy) in enumerate(cp):
-                        ax.text(xx,yy,f"corner_{idx}",fontsize=8,color='green')
+                    ax.scatter(cp[:, 0], cp[:, 1], marker='o', label='robot corners')
+                    for idx, (xx, yy) in enumerate(cp):
+                        ax.text(xx, yy, f"corner_{idx}", fontsize=8, color='green')
+
         ax.set_xlabel('x (m)')
         ax.set_ylabel('y (m)')
-        ax.set_title('Latest Markers and Robot Corners')
+        ax.set_title('Latest Markers and Robot Corners (index labels)')
         ax.legend()
         ax.axis('equal')
         outpath = '/tmp/controller_marker_dump.png'
         try:
             fig.savefig(outpath)
             plt.close(fig)
-            response.success=True
-            response.message=f"Saved marker plot to {outpath}"
+            response.success = True
+            response.message = f"Saved marker plot to {outpath}"
         except Exception as e:
-            response.success=False
-            response.message=f"Failed to save plot: {e}"
+            response.success = False
+            response.message = f"Failed to save plot: {e}"
         return response
 
     def controller_update(self):
         with self._msg_lock:
             rb_msg = self.latest_rigidbodies_msg
             markers_msg = self.latest_markers_msg
+
         if rb_msg is None:
             return
-        robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name=='1'), None)
+
+        robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
             self.get_logger().info("Lost Body")
             return
 
+        # Get corner positions
         corner_pos = []
-        for i in [0,2,3,4]:
-            corner = next((pt for pt in robot_body.markers if pt.marker_index==i), None)
+        for i in [0, 2, 3, 4]:
+            corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
             if corner is None:
-                self.get_logger().warn(f"Missing corner {i}")
+                self.get_logger().warn(f"Missing corner marker {i}")
+                if markers_msg:
+                    arr = Float32MultiArray()
+                    arr.data = [m.marker_index for m in markers_msg.markers]
+                    self.markers_pub.publish(arr)
                 return
             corner_pos.append([corner.translation.x, corner.translation.y])
 
-        x_center = sum(c[0] for c in corner_pos)/len(corner_pos)
-        y_center = sum(c[1] for c in corner_pos)/len(corner_pos)
+        # Robot center
+        x_center = sum(c[0] for c in corner_pos) / len(corner_pos)
+        y_center = sum(c[1] for c in corner_pos) / len(corner_pos)
 
-        # Heading: midpoint between 0 and 3, normal to line, **reversed**
-        x0,y0 = corner_pos[0]
-        x3,y3 = corner_pos[2]
-        dx = x3 - x0
-        dy = y3 - y0
-        ux = dy   # reversed
-        uy = -dx  # reversed
+        # Correct heading vector using markers 0 and 3 (front corners)
+        x0, y0 = corner_pos[0]
+        x3, y3 = corner_pos[2]  # marker 3
+        dx_front = x3 - x0
+        dy_front = y3 - y0
+
+        # Heading vector perpendicular to front edge
+        ux = -dy_front
+        uy = dx_front
+        # Flip to ensure it points forward
+        ux *= -1
+        uy *= -1
         norm = np.sqrt(ux**2 + uy**2)
-        if norm>1e-8:
+        if norm > 1e-8:
             ux /= norm
             uy /= norm
         else:
-            ux=uy=0.0
+            ux = uy = 0.0
 
-        # goal
-        x_des = y_des = 0.0
+        # Goal position
+        x_des, y_des = 0.0, 0.0
         if markers_msg:
-            goal = next((pt for pt in markers_msg.markers if pt.marker_index==int(self.goal_marker_index)), None)
-            if goal:
+            goal = next((pt for pt in markers_msg.markers if pt.marker_index == int(self.goal_marker_index)), None)
+            if goal is not None:
                 x_des = goal.translation.x
                 y_des = goal.translation.y
             else:
@@ -216,56 +249,58 @@ class ControllerNode(Node):
             self.get_logger().warn("No goal data")
             return
 
-        # vector to goal
+        # Vector to goal
         gx = x_des - x_center
         gy = y_des - y_center
         g_norm = np.sqrt(gx**2 + gy**2)
-        if g_norm>1e-8:
+        if g_norm > 1e-8:
             gx /= g_norm
             gy /= g_norm
         else:
-            gx=gy=0.0
+            gx = gy = 0.0
 
-        # Angle difference
-        dot = ux*gx + uy*gy
-        cross = ux*gy - uy*gx
-        angle = angle_normalize(np.arctan2(cross, dot))
-        if abs(abs(angle)-np.pi)<0.02:
-            angle = np.sign(angle)*(np.pi-0.02)
+        # Angle between heading and goal
+        dot = ux * gx + uy * gy
+        cross = ux * gy - uy * gx
+        angle = np.arctan2(cross, dot)
+        angle = angle_normalize(angle)
 
+        # Heading alignment-first logic
         now = time.time()
-        dt = max(1e-6, now-self.prev_time)
-        d_angle = (angle - self.prev_angle)/dt if dt>0 else 0.0
-
-        # Phase 1: rotate to align with goal
-        if abs(angle) > self.angle_deadzone:
-            S_sat = 0.0  # don't move forward yet
-            w_des = (self.K_theta_p*angle + self.K_theta_d*d_angle)
-        else:
-            # Phase 2: move straight toward goal
-            dist_to_goal = np.sqrt((x_center - x_des)**2 + (y_center - y_des)**2)
-            if dist_to_goal > self.goal_thresh:
-                S_des = self.K_e*dist_to_goal
-                forward_scale = max(self.min_forward_scale, np.cos(angle)*self.forward_angle_slowing)
-                S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX) * forward_scale
-            else:
-                S_sat = 0.0
+        dt = max(1e-6, now - self.prev_time)
+        angle_error = angle
+        if abs(angle_error) < self.angle_deadzone:
+            # aligned, move forward toward goal
+            S_des = self.K_e * np.sqrt((x_des - x_center)**2 + (y_des - y_center)**2)
+            S_des = np.clip(S_des, -self.S_MAX, self.S_MAX)
             w_des = 0.0
+        else:
+            # not aligned, rotate in place
+            S_des = 0.0
+            w_des = self.K_theta_p * angle_error
 
-        wr_des = (S_sat - self.L*w_des)/self.r_wheel
-        wl_des = (S_sat + self.L*w_des)/self.r_wheel
+        # Reduce forward speed when turning
+        forward_scale = max(self.min_forward_scale, np.cos(angle) * self.forward_angle_slowing)
+        S_des *= forward_scale
 
+        # Wheel commands
+        wr_des = (S_des - self.L * w_des) / self.r_wheel
+        wl_des = (S_des + self.L * w_des) / self.r_wheel
+
+        # Clip wheel speeds
         wr_des_sat = np.clip(wr_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
         wl_des_sat = np.clip(wl_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
 
-        max_delta = self.speed_ramp_rate*dt
+        # Ramping
+        max_delta = self.speed_ramp_rate * dt
         delta_l = wl_des_sat - self.prev_wl
         delta_r = wr_des_sat - self.prev_wr
-        if abs(delta_l)>max_delta:
-            wl_des_sat = self.prev_wl + np.sign(delta_l)*max_delta
-        if abs(delta_r)>max_delta:
-            wr_des_sat = self.prev_wr + np.sign(delta_r)*max_delta
+        if abs(delta_l) > max_delta:
+            wl_des_sat = self.prev_wl + np.sign(delta_l) * max_delta
+        if abs(delta_r) > max_delta:
+            wr_des_sat = self.prev_wr + np.sign(delta_r) * max_delta
 
+        # Send motor commands
         try:
             self.motor.updateMotorSpeed(float(wl_des_sat), float(wr_des_sat))
         except Exception as e:
@@ -276,22 +311,25 @@ class ControllerNode(Node):
         self.prev_angle = angle
         self.prev_time = now
 
+        # Publish pose
         pose = Pose2D()
         pose.x = float(x_center)
         pose.y = float(y_center)
         pose.theta = float(np.arctan2(uy, ux))
         self.pose_pub.publish(pose)
 
+        # Publish markers
         arr = Float32MultiArray()
         if markers_msg:
-            data=[]
+            data = []
             for m in markers_msg.markers:
                 data.extend([float(m.marker_index), float(m.translation.x), float(m.translation.y)])
-            arr.data=data
+            arr.data = data
             self.markers_pub.publish(arr)
 
+        # Logging
         self.get_logger().info(
-            f"S_des={S_sat:.2f}, Theta_e={angle:.3f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}"
+            f"S_des={S_des:.2f}, Theta_e={angle:.3f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}"
         )
 
 def main(args=None):
@@ -299,6 +337,7 @@ def main(args=None):
     motor = st.SaberToothMotorDriver(True, True)
     node = ControllerNode(motor)
     atexit.register(motor.all_motors_off)
+
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
@@ -308,5 +347,5 @@ def main(args=None):
         node.destroy_node()
         rclpy.shutdown()
 
-if __name__=='__main__':
+if __name__ == '__main__':
     main()
