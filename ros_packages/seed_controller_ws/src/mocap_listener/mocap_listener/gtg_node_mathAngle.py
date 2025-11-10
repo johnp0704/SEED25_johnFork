@@ -226,8 +226,7 @@ class ControllerNode(Node):
         ux = -dy_front
         uy = dx_front
         # Flip to ensure it points forward
-        ux *= -1
-        uy *= -1
+
         norm = np.sqrt(ux**2 + uy**2)
         if norm > 1e-8:
             ux /= norm
