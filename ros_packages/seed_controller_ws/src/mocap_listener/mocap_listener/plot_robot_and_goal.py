@@ -1,73 +1,73 @@
-#!/usr/bin/env python3
-import rclpy
-from rclpy.node import Node
-from mocap4r2_msgs.msg import RigidBodies, Markers
-import matplotlib.pyplot as plt
-import numpy as np
+def handle_dump_marker_plot(self, request, response):
+    """Service handler that writes a PNG of the most recent marker geometry for offline inspection."""
+    with self._msg_lock:
+        markers_msg = self.latest_markers_msg
+        rb_msg = self.latest_rigidbodies_msg
 
-GOAL_MARKER_INDEX = 5
+    if markers_msg is None and rb_msg is None:
+        response.success = False
+        response.message = "No marker/rigidbody data received yet."
+        return response
 
-class PlotNode(Node):
-    def __init__(self):
-        super().__init__("plot_robot_and_goal")
+    fig, ax = plt.subplots(figsize=(6, 6))
 
-        self.latest_rigid = None
-        self.latest_markers = None
+    # Plot all markers
+    if markers_msg:
+        xs = [m.translation.x for m in markers_msg.markers]
+        ys = [m.translation.y for m in markers_msg.markers]
+        ax.scatter(xs, ys, marker='x', label='all markers')
+        for m in markers_msg.markers:
+            ax.text(m.translation.x, m.translation.y, f"{m.marker_index}", fontsize=8)
 
-        self.create_subscription(RigidBodies, '/rigid_bodies', self.rb_cb, 10)
-        self.create_subscription(Markers, '/markers', self.markers_cb, 10)
+    # Plot robot corners and heading
+    if rb_msg:
+        # try to plot the robot corners of body '1'
+        robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        if robot_body:
+            corner_pos = []
+            for i in [0, 2, 3, 4]:
+                corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
+                if corner:
+                    corner_pos.append((corner.translation.x, corner.translation.y))
+            if corner_pos:
+                cp = np.array(corner_pos)
+                ax.scatter(cp[:, 0], cp[:, 1], marker='o', label='robot corners', color='green')
+                for idx, (xx, yy) in enumerate(cp):
+                    ax.text(xx, yy, f"corner_{idx}", fontsize=8, color='green')
 
-        self.timer = self.create_timer(0.1, self.update_plot)
+                # Compute robot center
+                x_center = np.mean(cp[:, 0])
+                y_center = np.mean(cp[:, 1])
 
-        plt.ion()
-        self.fig, self.ax = plt.subplots()
-        self.robot_plot, = self.ax.plot([], [], 'bo-', linewidth=2)
-        self.goal_plot, = self.ax.plot([], [], 'rx', markersize=12)
+                # Front of robot using markers 2 and 3 (correct indices)
+                x_front = (cp[1, 0] + cp[2, 0]) / 2.0
+                y_front = (cp[1, 1] + cp[2, 1]) / 2.0
 
-    def rb_cb(self, msg):
-        self.latest_rigid = msg
+                # Heading vector
+                dx = x_front - x_center
+                dy = y_front - y_center
+                ax.arrow(x_center, y_center, dx, dy, head_width=0.02, head_length=0.03, fc='blue', ec='blue', label='heading')
 
-    def markers_cb(self, msg):
-        self.latest_markers = msg
+                # Draw line to goal if goal exists
+                goal = next((pt for pt in markers_msg.markers if pt.marker_index == int(self.goal_marker_index)), None)
+                if goal:
+                    x_goal = goal.translation.x
+                    y_goal = goal.translation.y
+                    ax.plot([x_front, x_goal], [y_front, y_goal], 'r--', label='robot-to-goal')
 
-    def update_plot(self):
-        if self.latest_rigid is None or self.latest_markers is None:
-            return
-
-        rb = next((r for r in self.latest_rigid.rigidbodies if r.rigid_body_name == '1'), None)
-        if rb is None:
-            return
-
-        pts = []
-        for idx in [0, 2, 3, 4]:
-            m = next((p for p in rb.markers if p.marker_index == idx), None)
-            if m is None:
-                return
-            pts.append([m.translation.x, m.translation.y])
-
-        pts = np.array(pts)
-        self.robot_plot.set_data(pts[:,0], pts[:,1])
-
-        goal = next((p for p in self.latest_markers.markers if p.marker_index == GOAL_MARKER_INDEX), None)
-        if goal:
-            self.goal_plot.set_data(goal.translation.x, goal.translation.y)
-
-        self.ax.set_aspect('equal', 'box')
-        self.ax.set_xlim(-2, 2)
-        self.ax.set_ylim(-2, 2)
-        plt.draw()
-        plt.pause(0.001)
-
-
-def main():
-    rclpy.init()
-    node = PlotNode()
+    ax.set_xlabel('x (m)')
+    ax.set_ylabel('y (m)')
+    ax.set_title('Latest Markers and Robot Corners (index labels)')
+    ax.legend()
+    ax.axis('equal')
+    # Save file
+    outpath = '/tmp/controller_marker_dump.png'
     try:
-        rclpy.spin(node)
-    except KeyboardInterrupt:
-        pass
-    rclpy.shutdown()
-
-
-if __name__ == "__main__":
-    main()
+        fig.savefig(outpath)
+        plt.close(fig)
+        response.success = True
+        response.message = f"Saved marker plot to {outpath}"
+    except Exception as e:
+        response.success = False
+        response.message = f"Failed to save plot: {e}"
+    return response

@@ -18,7 +18,8 @@ import os
 
 # Constants (default values are also set as ROS parameters below)
 GOAL_MARKER_INDEX = 5
-MAX_ACTUATOR_INPUT = 25.0
+# IMPORTANT: sabertooth expects -100..100 (user note). Set default to 100.
+MAX_ACTUATOR_INPUT = 100.0
 S_MAX = MAX_ACTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
 
@@ -65,6 +66,7 @@ class ControllerNode(Node):
         self.create_service(Trigger, 'dump_marker_plot', self.handle_dump_marker_plot, callback_group=cb_group)
 
         # Parameters (tunable live)
+        # NOTE: defaults include bigger actuator range (100) to match sabertooth expectation
         self.declare_parameters(
             namespace='',
             parameters=[
@@ -80,9 +82,10 @@ class ControllerNode(Node):
                 ('K_theta_d', float(0.0)),
                 ('angle_sat', float(0.5)),
                 ('angle_deadzone', float(0.05)),
-                ('speed_ramp_rate', float(50.0)),  # max actuator units per second change
+                ('speed_ramp_rate', float(200.0)),  # actuator units per second (faster default for 100-scale)
                 ('forward_angle_slowing', float(0.7)),  # how much to reduce forward speed at large angle (0..1)
-                ('min_forward_scale', float(0.05)),  # minimum forward speed scale when turning
+                ('min_forward_scale', float(0.05)),
+                ('nudge_pi_eps', float(0.02)),  # how far to nudge away from exact +/-pi
             ]
         )
 
@@ -113,7 +116,6 @@ class ControllerNode(Node):
 
     def _refresh_local_params(self):
         # Read parameters into local variables
-        p = self.get_parameters
         self.goal_marker_index = self.get_parameter('goal_marker_index').get_parameter_value().integer_value
         self.max_actuator_input = self.get_parameter('max_actuator_input').get_parameter_value().double_value
         self.s_max_scale = self.get_parameter('s_max_scale').get_parameter_value().double_value
@@ -130,23 +132,23 @@ class ControllerNode(Node):
         self.speed_ramp_rate = self.get_parameter('speed_ramp_rate').get_parameter_value().double_value
         self.forward_angle_slowing = self.get_parameter('forward_angle_slowing').get_parameter_value().double_value
         self.min_forward_scale = self.get_parameter('min_forward_scale').get_parameter_value().double_value
+        self.nudge_pi_eps = self.get_parameter('nudge_pi_eps').get_parameter_value().double_value
 
-        # recompute derived limits
+        # recompute derived limits (preserve original variable names)
         self.MAX_ACUTUATOR_INPUT = self.max_actuator_input
         self.S_MAX = self.s_max
 
     def _param_change_callback(self, params):
-        # When parameters are changed at runtime via `ros2 param set`, refresh local values.
-        for param in params:
-            name = param.name
-            # accept all declared params
-            if name in ['goal_marker_index', 'max_actuator_input', 's_max_scale', 'goal_thresh', 'refresh_rate',
-                        'r_wheel', 'L', 'K_e', 'K_theta_p', 'K_theta_d', 'angle_sat', 'angle_deadzone',
-                        'speed_ramp_rate', 'forward_angle_slowing', 'min_forward_scale']:
-                continue
-            # reject unknown param
-            return rclpy.parameter.SetParametersResult(successful=False, reason=f"Unknown param {name}")
-        # If we reach here, accept and refresh
+        # Accept only known parameters (same list as declared earlier)
+        names = {p.name for p in params}
+        allowed = {'goal_marker_index', 'max_actuator_input', 's_max_scale', 'goal_thresh', 'refresh_rate',
+                   'r_wheel', 'L', 'K_e', 'K_theta_p', 'K_theta_d', 'angle_sat', 'angle_deadzone',
+                   'speed_ramp_rate', 'forward_angle_slowing', 'min_forward_scale', 'nudge_pi_eps'}
+        if not names.issubset(allowed):
+            unknown = (names - allowed).pop()
+            return rclpy.parameter.SetParametersResult(successful=False, reason=f"Unknown param {unknown}")
+
+        # otherwise refresh
         self._refresh_local_params()
         self.get_logger().info("Parameters updated live")
         return rclpy.parameter.SetParametersResult(successful=True)
@@ -281,7 +283,7 @@ class ControllerNode(Node):
             Uy_des = 0.0
 
         S_des = np.sqrt(Ux_des ** 2 + Uy_des ** 2)
-        # clip magnitude
+        # clip magnitude to scaled S_MAX
         S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
 
         # Vector to goal (unit)
@@ -301,9 +303,8 @@ class ControllerNode(Node):
         angle = angle_normalize(raw_angle)
 
         # Avoid the unstable behavior at ±pi by nudging angle away from exact pi
-        if abs(abs(angle) - np.pi) < 0.02:
-            # nudge a little toward zero keeping sign
-            angle = np.sign(angle) * (np.pi - 0.02)
+        if abs(abs(angle) - np.pi) < self.nudge_pi_eps:
+            angle = np.sign(angle) * (np.pi - self.nudge_pi_eps)
 
         # Angular PD controller with deadzone + soft-scaling near zero to reduce stutter
         now = time.time()
@@ -326,11 +327,12 @@ class ControllerNode(Node):
             w_des = (self.K_theta_p * angle_error + self.K_theta_d * d_angle) * scale
 
         # reduce forward speed when large turning necessary
-        # use cosine-based scaling with floor
+        # use cosine-based scaling with floor and forward_angle_slowing
         forward_scale = max(self.min_forward_scale, np.cos(angle) * self.forward_angle_slowing)
         S_sat *= forward_scale
 
-        # Compute wheel commands (convert linear/angular to wheel speeds)
+        # Compute wheel commands (convert linear/angular to wheel speeds expressed in actuator units)
+        # NOTE: the node computes wheel commands in the same "actuator units" domain expected by sabertooth (-100..100).
         wr_des = (S_sat - self.L * w_des) / self.r_wheel
         wl_des = (S_sat + self.L * w_des) / self.r_wheel
 
@@ -338,9 +340,10 @@ class ControllerNode(Node):
         wr_des_sat = np.clip(wr_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
         wl_des_sat = np.clip(wl_des, -self.MAX_ACUTUATOR_INPUT, self.MAX_ACUTUATOR_INPUT)
 
-        # Ramping / slew-rate limiter: limit change per second
+        # Ramping / slew-rate limiter: limit change per second (speed_ramp_rate param is actuator units/sec)
         max_delta_per_sec = float(self.speed_ramp_rate)
         max_delta = max_delta_per_sec * dt
+
         # apply to left
         delta_l = wl_des_sat - self.prev_wl
         if abs(delta_l) > max_delta:
@@ -352,6 +355,7 @@ class ControllerNode(Node):
 
         # Send motor commands
         try:
+            # ensure float inputs as sabertooth driver expects numeric values
             self.motor.updateMotorSpeed(float(wl_des_sat), float(wr_des_sat))
         except Exception as e:
             self.get_logger().error(f"Motor update error: {e}")
