@@ -29,7 +29,7 @@ def angle_normalize(a):
 class ControllerNode(Node):
     def __init__(self, motor):
         super().__init__('controller_node')
-        self.get_logger().info("Starting GTG Controller node (heading 0-3 normal)")
+        self.get_logger().info("Starting GTG Controller node (heading 0-3 normal, goal alignment first)")
 
         cb_group = ReentrantCallbackGroup()
         self.subscription_rb = self.create_subscription(
@@ -177,7 +177,6 @@ class ControllerNode(Node):
             self.get_logger().info("Lost Body")
             return
 
-        # get corners
         corner_pos = []
         for i in [0,2,3,4]:
             corner = next((pt for pt in robot_body.markers if pt.marker_index==i), None)
@@ -186,27 +185,22 @@ class ControllerNode(Node):
                 return
             corner_pos.append([corner.translation.x, corner.translation.y])
 
-        # center of robot
         x_center = sum(c[0] for c in corner_pos)/len(corner_pos)
         y_center = sum(c[1] for c in corner_pos)/len(corner_pos)
 
-        # Heading: midpoint between 0 and 3
+        # Heading: midpoint between 0 and 3, normal to line, **reversed**
         x0,y0 = corner_pos[0]
-        x3,y3 = corner_pos[2]  # note: 0->3 front corners
-        mid_x = (x0 + x3)/2
-        mid_y = (y0 + y3)/2
-        # vector along front line
+        x3,y3 = corner_pos[2]
         dx = x3 - x0
         dy = y3 - y0
-        # heading vector = normal to front line
-        ux = -dy
-        uy = dx
+        ux = dy   # reversed
+        uy = -dx  # reversed
         norm = np.sqrt(ux**2 + uy**2)
         if norm>1e-8:
             ux /= norm
             uy /= norm
         else:
-            ux, uy = 0.0,0.0
+            ux=uy=0.0
 
         # goal
         x_des = y_des = 0.0
@@ -222,30 +216,20 @@ class ControllerNode(Node):
             self.get_logger().warn("No goal data")
             return
 
-        dist_to_goal = np.sqrt((x_center - x_des)**2 + (y_center - y_des)**2)
-        if dist_to_goal > self.goal_thresh:
-            Ux_des = self.K_e * (x_des - x_center)
-            Uy_des = self.K_e * (y_des - y_center)
-        else:
-            Ux_des = Uy_des = 0.0
-
-        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
-
         # vector to goal
         gx = x_des - x_center
         gy = y_des - y_center
         g_norm = np.sqrt(gx**2 + gy**2)
         if g_norm>1e-8:
-            gx/=g_norm
-            gy/=g_norm
+            gx /= g_norm
+            gy /= g_norm
         else:
             gx=gy=0.0
 
+        # Angle difference
         dot = ux*gx + uy*gy
         cross = ux*gy - uy*gx
-        raw_angle = np.arctan2(cross, dot)
-        angle = angle_normalize(raw_angle)
+        angle = angle_normalize(np.arctan2(cross, dot))
         if abs(abs(angle)-np.pi)<0.02:
             angle = np.sign(angle)*(np.pi-0.02)
 
@@ -253,15 +237,20 @@ class ControllerNode(Node):
         dt = max(1e-6, now-self.prev_time)
         d_angle = (angle - self.prev_angle)/dt if dt>0 else 0.0
 
-        if abs(angle)<self.angle_deadzone:
-            w_des = 0.0
+        # Phase 1: rotate to align with goal
+        if abs(angle) > self.angle_deadzone:
+            S_sat = 0.0  # don't move forward yet
+            w_des = (self.K_theta_p*angle + self.K_theta_d*d_angle)
         else:
-            angle_mag = abs(angle)
-            scale = angle_mag/self.angle_sat if angle_mag<self.angle_sat else 1.0
-            w_des = (self.K_theta_p*angle + self.K_theta_d*d_angle)*scale
-
-        forward_scale = max(self.min_forward_scale, np.cos(angle)*self.forward_angle_slowing)
-        S_sat *= forward_scale
+            # Phase 2: move straight toward goal
+            dist_to_goal = np.sqrt((x_center - x_des)**2 + (y_center - y_des)**2)
+            if dist_to_goal > self.goal_thresh:
+                S_des = self.K_e*dist_to_goal
+                forward_scale = max(self.min_forward_scale, np.cos(angle)*self.forward_angle_slowing)
+                S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX) * forward_scale
+            else:
+                S_sat = 0.0
+            w_des = 0.0
 
         wr_des = (S_sat - self.L*w_des)/self.r_wheel
         wl_des = (S_sat + self.L*w_des)/self.r_wheel
