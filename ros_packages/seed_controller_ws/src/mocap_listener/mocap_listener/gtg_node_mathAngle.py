@@ -63,6 +63,7 @@ class ControllerNode(Node):
             self.get_logger().info("Lost Body")
             return
 
+        # Get corner positions
         corner_pos = []
         for i in [0, 2, 3, 4]:
             corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
@@ -76,9 +77,9 @@ class ControllerNode(Node):
         x_center = sum(c[0] for c in corner_pos) / len(corner_pos)
         y_center = sum(c[1] for c in corner_pos) / len(corner_pos)
 
-        # Front of robot using markers 2 and 3
-        x_front = (corner_pos[2][0] + corner_pos[3][0]) / 2
-        y_front = (corner_pos[2][1] + corner_pos[3][1]) / 2
+        # Front of robot using markers 2 and 3 (correct indices)
+        x_front = (corner_pos[1][0] + corner_pos[2][0]) / 2
+        y_front = (corner_pos[1][1] + corner_pos[2][1]) / 2
 
         # Heading vector (unit)
         dx = x_front - x_center
@@ -90,7 +91,7 @@ class ControllerNode(Node):
         else:
             ux, uy = 0.0, 0.0
 
-        # Goal
+        # Get goal position
         x_des, y_des = 0.0, 0.0
         if self.latest_markers_msg:
             goal = next((pt for pt in self.latest_markers_msg.markers if pt.marker_index == GOAL_MARKER_INDEX), None)
@@ -104,23 +105,19 @@ class ControllerNode(Node):
             self.get_logger().warn("No goal data")
             return
 
-        # Control signals
-        pos = robot_body.pose.position
-        Ux_des = 0
-        Uy_des = 0
-        dist_to_goal = np.sqrt((pos.x - x_des) ** 2 + (pos.y - y_des) ** 2)
+        # Compute linear control signals from robot center
+        dist_to_goal = np.sqrt((x_center - x_des) ** 2 + (y_center - y_des) ** 2)
         if dist_to_goal > GOAL_THRESH:
-            Ux_des = K_e * (x_des - pos.x)
-            Uy_des = K_e * (y_des - pos.y)
+            Ux_des = K_e * (x_des - x_center)
+            Uy_des = K_e * (y_des - y_center)
+        else:
+            Ux_des = 0.0
+            Uy_des = 0.0
 
         S_des = np.sqrt(Ux_des ** 2 + Uy_des ** 2)
         S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
-        # Robot heading unit vector (pointing forward)
-        ux = -ux
-        uy = -uy
-
-        # Vector to goal
+        # Vector to goal (unit)
         gx = x_des - x_center
         gy = y_des - y_center
         g_norm = np.sqrt(gx ** 2 + gy ** 2)
