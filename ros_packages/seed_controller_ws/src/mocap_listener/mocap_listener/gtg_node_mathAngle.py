@@ -14,8 +14,8 @@ S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
 
 REFRESH_RATE = 10 #hz
-R_wheel = .08 #m
-L = .178 #m
+R_wheel = 0.08 #m
+L = 0.178 #m
 K_e = 30
 K_theta = 50
 
@@ -39,58 +39,49 @@ class ControllerNode(Node):
             REFRESH_RATE)
         
         self.motor = motor
-        atexit.register(self.motor.all_motors_off) # Should not be needed
-
+        atexit.register(self.motor.all_motors_off)
 
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
         self.latest_rigidbodies_msg = None
         self.latest_markers_msg = None
-        
-    
-
 
     def rigid_bodies_listener_callback(self, msg: RigidBodies):
-        self.latest_rigidbodies_msg = msg  # always store the newest message
+        self.latest_rigidbodies_msg = msg
 
     def markers_listener_callback(self, msg: Markers):
-        self.latest_markers_msg = msg  # always store the newest message
-
-        
+        self.latest_markers_msg = msg
 
     def controller_update(self):
-    # Get robot pose
-        robot_body = None
+        # Get robot pose
         if self.latest_rigidbodies_msg is not None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        else:
+            robot_body = None
+
         if self.latest_markers_msg is None:
             return
         
         if robot_body is None:
             self.get_logger().info("Lost Body")
             return
-        
-        pos = robot_body.pose.position
-        corner_pos = []
-        for i in range(5):
-            if i != 1:
-                corner = next((pt for pt in robot_body.markers if pt.marker_index == i), None)
-                if corner is None:
-                    self.get_logger().warn(f"Missing corner marker {i}, dumping!")
-                    print(self.latest_markers_msg.markers)
-                    return
 
-                x_corner_pos = corner.translation.x
-                y_corner_pos = corner.translation.y
-                corner_pos.append([x_corner_pos, y_corner_pos])
+        # --- Compute robot heading from front and back corner markers ---
+        front_markers = [m for m in robot_body.markers if m.marker_index in [0, 4]]
+        back_markers  = [m for m in robot_body.markers if m.marker_index in [2, 3]]
 
-        x_center = sum([c[0] for c in corner_pos]) / len(corner_pos)
-        y_center = sum([c[1] for c in corner_pos]) / len(corner_pos)
-        
-        x_direction_center = (corner_pos[2][-1] + corner_pos[3][-1]) / 2 #take center of 3rd and 4th croenr points, that the "front" of the robot
-        y_direction_center = (corner_pos[2][-2] + corner_pos[3][-2]) / 2
+        if len(front_markers) < 2 or len(back_markers) < 2:
+            self.get_logger().warn("Missing front/back markers for heading computation")
+            return
 
-        dx = x_direction_center - x_center
-        dy = y_direction_center - y_center
+        # Midpoints of front and back edges
+        front_x = np.mean([m.translation.x for m in front_markers])
+        front_y = np.mean([m.translation.y for m in front_markers])
+        back_x  = np.mean([m.translation.x for m in back_markers])
+        back_y  = np.mean([m.translation.y for m in back_markers])
+
+        # Heading vector points from back midpoint → front midpoint
+        dx = front_x - back_x
+        dy = front_y - back_y
         norm = np.sqrt(dx**2 + dy**2)
 
         if norm > 1e-8:
@@ -101,6 +92,9 @@ class ControllerNode(Node):
 
         unit_vector = [ux, uy]
 
+        # Robot center
+        x_center = np.mean([m.translation.x for m in front_markers + back_markers])
+        y_center = np.mean([m.translation.y for m in front_markers + back_markers])
 
         # Goal
         x_des, y_des = 0.0, 0.0
@@ -120,74 +114,53 @@ class ControllerNode(Node):
         Ux_des = 0
         Uy_des = 0
 
-        if (np.sqrt((pos.x - x_des)**2 + (pos.y - y_des)**2) > GOAL_THRESH):
-            Ux_des = K_e*(x_des - pos.x)
-            Uy_des = K_e*(y_des - pos.y)
+        robot_pos_x = x_center
+        robot_pos_y = y_center
+
+        if (np.sqrt((robot_pos_x - x_des)**2 + (robot_pos_y - y_des)**2) > GOAL_THRESH):
+            Ux_des = K_e * (x_des - robot_pos_x)
+            Uy_des = K_e * (y_des - robot_pos_y)
 
         S_des = np.sqrt(Ux_des**2 + Uy_des**2)
         S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
-        # Robot heading unit vector
-        # ux, uy = -unit_vector[0]  # from earlier
-        ux = -unit_vector[0]
-        uy = -unit_vector[1]
-        #FIXME should not be -
-
         # Vector to goal
-        gx = x_des - x_center
-        gy = y_des - y_center
+        gx = x_des - robot_pos_x
+        gy = y_des - robot_pos_y
         g_norm = np.sqrt(gx**2 + gy**2)
-
         if g_norm > 1e-8:
             gx /= g_norm
             gy /= g_norm
         else:
             gx, gy = 0.0, 0.0
 
-        # Signed angle between vectors
+        # Signed angle between heading and goal vector
         dot = ux * gx + uy * gy
         cross = ux * gy - uy * gx
-        angle = np.arctan2(cross, dot)   # radians, positive = goal to left, negative = goal to right
-
+        angle = np.arctan2(cross, dot)  # radians, positive = goal to left
 
         w_des = K_theta * angle
-
 
         wr_des = (S_sat - L * w_des) / R_wheel
         wl_des = (S_sat + L * w_des) / R_wheel
 
-        # wr_des_sat = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        # wl_des_sat = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-
-        maxInput = max(wr_des, wl_des)
-        if maxInput > MAX_ACUTUATOR_INPUT:
-            #Scale down by same factor
-            speed_adjust_factor = MAX_ACUTUATOR_INPUT/maxInput
-            wr_des_sat = wr_des * speed_adjust_factor
-            wl_des_sat = wl_des * speed_adjust_factor
-
-
-        wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        wl_des_sat_clip = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        # Saturate motor commands
+        wr_des_sat = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl_des_sat = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
         # Send commands to motors
-        self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
+        self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
 
         # Log for debugging
         self.get_logger().info(
-            # f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
-            f"S_des={S_sat:.2f}, Theta_e={angle:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat_clip:.1f}, R={wl_des_sat_clip:.1f}")
-            # f" | angle_to_goal={angle:.2f}, Theta_goal = {Theta_des:.2f}, Theta_e={error_theta:.2f}, Theta_e_wrap={error_theta_wrapped:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}")
-        
+            f"S_des={S_sat:.2f}, Theta_e={angle:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f} | Heading=({ux:.2f},{uy:.2f})"
+        )
 
-        
 
 def main(args=None):
     rclpy.init(args=args)
-    motor = st.SaberToothMotorDriver(True,True)
+    motor = st.SaberToothMotorDriver(True, True)
     node = ControllerNode(motor)
-
-    # motor.updateMotorSpeed(20,20)
 
     atexit.register(motor.all_motors_off)
 
@@ -195,12 +168,11 @@ def main(args=None):
         rclpy.spin(node)
     except KeyboardInterrupt:
         print("Exiting")
-        
         motor.all_motors_off()
-
 
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
