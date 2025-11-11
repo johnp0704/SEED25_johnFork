@@ -1,0 +1,6 @@
+train: C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\train
+val: C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\val
+
+names:
+  0: dandelion
+  1: no_dandelion
