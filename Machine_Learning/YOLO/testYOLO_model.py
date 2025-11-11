@@ -18,36 +18,36 @@ import os
 # CONFIGURATION
 # -----------------------------
 # Path to trained YOLO model (adjust as needed)
-model_path = r"C:\Users\johnp\runs\detect\train6\weights\best.pt"
+model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
 
 # Path to test image and label folders
-image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
-label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
+image_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
+label_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
 
 # Load trained YOLO model
 model = YOLO(model_path)
-print(f"✅ Loaded YOLO model from:\n{model_path}\n")
+print(f'Loaded YOLO model from:\n{model_path}\n')
 
 # -----------------------------
 # HELPER FUNCTIONS
 # -----------------------------
 def get_prediction(model, image_path):
-    """Runs YOLO inference on a single image and returns 1 if any detections, else 0."""
+    '''Runs YOLO inference on a single image and returns 1 if any detections, else 0.'''
     results = model(image_path, verbose=False)
     detections = results[0].boxes
     return 1 if len(detections) > 0 else 0
 
 
 def get_ground_truth(image_folder, label_folder):
-    """Build a dictionary mapping image paths to binary ground-truth labels."""
+    '''Build a dictionary mapping image paths to binary ground-truth labels.'''
     ground_truth = {}
     for root, _, filenames in os.walk(image_folder):
         for filename in filenames:
-            if not filename.lower().endswith(".png"):
+            if not filename.lower().endswith('.png'):
                 continue
 
             image_path = os.path.join(root, filename)
-            label_name = os.path.splitext(filename)[0] + ".txt"
+            label_name = os.path.splitext(filename)[0] + '.txt'
             label_path = os.path.join(label_folder, label_name)
 
             # A non-empty label file = dandelion present
@@ -62,7 +62,7 @@ def get_ground_truth(image_folder, label_folder):
 # -----------------------------
 # RUN EVALUATION
 # -----------------------------
-print("🔍 Evaluating YOLO model on test dataset...\n")
+print('Evaluating YOLO model on test dataset...\n')
 
 ground_truths = get_ground_truth(image_folder, label_folder)
 
@@ -92,13 +92,13 @@ precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 recall = TP / (TP + FN) if (TP + FN) > 0 else 0
 
 cm = confusion_matrix(y_true, y_pred)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=["No Dandelion", "Dandelion"])
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
 disp.plot(cmap=plt.cm.Blues)
-plt.title("Dandelion Detection Confusion Matrix")
+plt.title('Dandelion Detection Confusion Matrix')
 plt.show()
 
-print("✅ Evaluation Complete")
-print(f"Accuracy:  {accuracy:.2%}")
-print(f"Precision: {precision:.2%}")
-print(f"Recall:    {recall:.2%}")
-print(f"TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}")
+print('Evaluation Complete')
+print(f'Accuracy:  {accuracy:.2%}')
+print(f'Precision: {precision:.2%}')
+print(f'Recall:    {recall:.2%}')
+print(f'TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}')

@@ -1,7 +1,7 @@
 task: detect
 mode: train
 model: yolov8n.pt
-data: C:\UVM\SEED\SEED25_johnFork\Machine_Learning\dandelion.yaml
+data: C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\dandelion.yaml
 epochs: 30
 time: null
 patience: 100
