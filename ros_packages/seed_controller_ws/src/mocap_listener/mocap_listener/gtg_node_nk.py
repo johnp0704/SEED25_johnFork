@@ -73,7 +73,7 @@ class ControllerNode(Node):
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
-        self.get_logger().info(yaw)
+        self.get_logger().info(str(yaw))
 
 
         # # Unwrap Angle
