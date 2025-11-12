@@ -72,11 +72,11 @@ class ControllerNode(Node):
         self.ax.scatter(p[0], p[1], c='r', label='Robot')
         self.ax.scatter(p[0] + u[0], p[1] + u[1], c='r', label='Goal')
         self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
-        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector')
+        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector', length_length_includes_head=True)
 
         self.ax.set_xlim(-2, 2)
         self.ax.set_ylim(-2, 2)
-        # self.ax.set_aspect('equal', 'box')
+        self.ax.set_aspect('equal', 'box')
         self.ax.legend()
         self.ax.grid(True)
 
@@ -107,8 +107,11 @@ class ControllerNode(Node):
         p = np.array([x,y])
 
 
-        r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
-        _, _, yaw = r.as_euler('xyz', degrees=False)
+        r_mocap = R.from_quat([ori.x, ori.y, ori.z, ori.w])
+        # R_correction = R.from_euler('z', -90, degrees=True)
+        # r_ros = R_correction * r_mocap
+        _, _, yaw = r_mocap.as_euler('xzy', degrees=False)
+
 
         
         
