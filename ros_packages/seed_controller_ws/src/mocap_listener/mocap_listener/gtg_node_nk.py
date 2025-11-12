@@ -12,8 +12,8 @@ import matplotlib.pyplot as plt
 
 
 GOAL_MARKER_INDEX = 5
-MAX_ACUTUATOR_INPUT = 20
-S_MAX = MAX_ACUTUATOR_INPUT * 0.6
+MAX_ACUTUATOR_INPUT = 30
+S_MAX = (MAX_ACUTUATOR_INPUT-10) * 0.6
 GOAL_THRESH = 0. # m
 ANGLE_THRESH = np.deg2rad(10)
 
@@ -21,7 +21,7 @@ REFRESH_RATE = 10 #hz
 R_wheel = .08 #cm
 L = .178 #cm
 K_e = 30
-K_theta = -K_e * 2.5
+K_theta = -K_e * 5
 
 
 class ControllerNode(Node):
