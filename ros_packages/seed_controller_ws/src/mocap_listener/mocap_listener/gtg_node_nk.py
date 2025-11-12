@@ -96,13 +96,6 @@ class ControllerNode(Node):
         self.ax.legend()
         self.ax.grid(True)
 
-        
-        self.textbox = self.ax.text(
-            1.05, 0.5, info,
-            transform=self.ax.transAxes,
-            fontsize=10,
-            va='center', ha='left',)
-
 
         info = (
             f"X: {p[0]:.2f}\n"
@@ -113,7 +106,14 @@ class ControllerNode(Node):
             f"Goal Y: {goal[1]:.2f}\n"
             f"Dist: {np.linalg.norm(u):.2f} m"
         )
-        self.textbox.set_text(info)
+        
+
+        self.textbox = self.ax.text(
+            1.05, 0.5, info,
+            transform=self.ax.transAxes,
+            fontsize=10,
+            va='center', ha='left',)
+
 
         # Refresh the figure
         self.fig.canvas.draw()
