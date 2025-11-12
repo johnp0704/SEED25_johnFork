@@ -100,6 +100,7 @@ class ControllerNode(Node):
 
         if self.ax.get_legend() is not None:
             #Update legend
+            print("Clearing Legend!")
             self.ax.get_legend().remove()
         self.ax.legend() 
 
