@@ -75,10 +75,8 @@ class ControllerNode(Node):
         self.latest_markers_msg = msg  # always store the newest message
 
     def plot_robot(self, p, u, yaw, theta_des, angle_error):
-        # remove previous arrows if they exist
-        for artist in self.ax.lines + self.ax.patches:
-            artist.remove()
-        goal = p + u
+        self.ax.clear()
+
 
         # Re-plot robot position and heading
         heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
@@ -98,6 +96,11 @@ class ControllerNode(Node):
         self.ax.grid(True)
 
         
+        self.textbox = self.ax.text(
+            1.05, 0.5, info,
+            transform=self.ax.transAxes,
+            fontsize=10,
+            va='center', ha='left',)
 
 
         info = (
