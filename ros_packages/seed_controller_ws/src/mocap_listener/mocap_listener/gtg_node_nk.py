@@ -21,7 +21,7 @@ REFRESH_RATE = 10 #hz
 R_wheel = .08 #cm
 L = .178 #cm
 K_e = 30
-K_theta = -K_e * 1.5
+K_theta = -K_e * 2.5
 
 
 class ControllerNode(Node):
@@ -177,9 +177,9 @@ class ControllerNode(Node):
         self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
 
         # # Log for debugging
-        # self.get_logger().info(
+        self.get_logger().info(
         #     # f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
-        #     f" | yaw={yaw:.2f}, Theta_goal = {Theta_des:.2f}, Theta_e={error_theta:.2f}, Theta_e_wrap={error_theta_wrapped:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}")
+            f"Cmds L={wl_des_sat_clip:.1f}, R={wr_des_sat_clip:.1f}")
 
         
 
