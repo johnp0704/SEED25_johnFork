@@ -70,7 +70,7 @@ class ControllerNode(Node):
         # Re-plot robot position and heading
         heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
         self.ax.scatter(p[0], p[1], c='r', label='Robot')
-        self.ax.scatter(p[0] + u[1], p[1] + u[1], c='r', label='Goal')
+        self.ax.scatter(p[0] + u[0], p[1] + u[1], c='r', label='Goal')
         self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
         self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector')
 
@@ -90,7 +90,7 @@ class ControllerNode(Node):
 
     def controller_update(self):
     # Get robot pose
-        self.get_logger().info("Updating!")
+        # self.get_logger().info("Updating!")
         robot_body = None
         if self.latest_rigidbodies_msg is not None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
