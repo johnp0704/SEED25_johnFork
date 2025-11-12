@@ -113,7 +113,7 @@ class ControllerNode(Node):
             f"Goal X: {goal[0]:.2f}\n"
             f"Goal Y: {goal[1]:.2f}\n"
             f"Dist: {np.linalg.norm(u):.2f}\n"
-            f"Need to turn?: {F>ANGLE_THRESH}"
+            f"Need to turn?: {abs(angle_error)>ANGLE_THRESH}"
         )
         self.textbox.set_text(info)
 
