@@ -76,9 +76,10 @@ class ControllerNode(Node):
 
     def plot_robot(self, p, u, yaw, theta_des, angle_error):
         
-        for i in self.ax.lines:
-            if i != self.textbox:
-                i.remove
+        for artist in self.ax.lines + self.ax.patches + self.ax.collections:
+            artist.remove()
+        if self.ax.get_legend():
+            self.ax.get_legend().remove()
 
         goal = p + u
 
@@ -99,7 +100,6 @@ class ControllerNode(Node):
         self.ax.set_aspect('equal', 'box')
 
         if self.ax.get_legend() is not None:
-            #Update legend
             print("Clearing Legend!")
             self.ax.get_legend().remove()
         self.ax.legend() 
