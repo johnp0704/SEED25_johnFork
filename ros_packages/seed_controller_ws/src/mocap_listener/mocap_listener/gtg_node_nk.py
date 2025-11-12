@@ -52,7 +52,7 @@ class ControllerNode(Node):
         # Start Plotting
         self.get_logger().info("Starting Telematry")
         plt.ion()
-        self.fig, self.ax = plt.subplots(figsize=(6,6))
+        self.fig, self.ax = plt.subplots(figsize=(6,8))
 
         self.textbox = self.ax.text(
             1.05, 0.5,              # x, y position (in axes coordinates)
@@ -76,7 +76,7 @@ class ControllerNode(Node):
 
     def plot_robot(self, p, u, yaw, theta_des, angle_error):
         
-        for i in self.ax:
+        for i in self.ax.lines:
             if i != self.textbox:
                 i.remove
 
@@ -97,7 +97,12 @@ class ControllerNode(Node):
         self.ax.set_xlim(-2, 2)
         self.ax.set_ylim(-2, 2)
         self.ax.set_aspect('equal', 'box')
-        self.ax.legend()
+
+        if self.ax.get_legend() is not None:
+            #Update legend
+            self.ax.get_legend().remove()
+        self.ax.legend() 
+
         self.ax.grid(True)
 
     
