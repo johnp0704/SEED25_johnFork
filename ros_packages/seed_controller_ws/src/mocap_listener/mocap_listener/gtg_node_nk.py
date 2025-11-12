@@ -53,9 +53,7 @@ class ControllerNode(Node):
         self.get_logger().info("Starting Telematry")
         plt.ion()
         self.fig, self.ax = plt.subplots(figsize=(6,6))
-        self.robot_pos_plotting = None
-        self.goal_vec_plotting = None
-        self.heading_arrow_plotting = None
+
         
     
 
@@ -72,7 +70,8 @@ class ControllerNode(Node):
         # Re-plot robot position and heading
         heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
         self.ax.scatter(p[0], p[1], c='r', label='Robot')
-        self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02)
+        self.ax.scatter(p[0] + u[1], p[1] + u[1], c='r', label='Goal')
+        self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
         self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector')
 
         self.ax.set_xlim(-2, 2)
