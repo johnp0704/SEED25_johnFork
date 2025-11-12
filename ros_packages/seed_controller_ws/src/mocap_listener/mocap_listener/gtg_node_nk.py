@@ -73,7 +73,7 @@ class ControllerNode(Node):
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
-        self.get_logger().info(str(yaw))
+        
 
 
         # # Unwrap Angle
@@ -94,6 +94,9 @@ class ControllerNode(Node):
         else:
             self.get_logger().warn("No goal data")
             return
+
+
+        self.get_logger().info(f"Heading: {str(yaw)}, x_des: {str(x_des)}, y_des: {str(y_des)}")
 
         # # Compute control signals
         # Ux_des = 0
