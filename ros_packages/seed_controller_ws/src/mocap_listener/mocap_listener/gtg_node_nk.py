@@ -54,6 +54,16 @@ class ControllerNode(Node):
         plt.ion()
         self.fig, self.ax = plt.subplots(figsize=(6,6))
 
+        self.textbox = self.ax.text(
+            1.05, 0.5,              # x, y position (in axes coordinates)
+            "",                     # initial text
+            transform=self.ax.transAxes,  # position relative to axes
+            fontsize=10,
+            va='center',
+            ha='left',
+        )
+
+
         
     
 
@@ -64,14 +74,20 @@ class ControllerNode(Node):
     def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
 
-    def plot_robot(self, p, yaw, u):
+    def plot_robot(self, p, u, yaw, theta_des angle_error):
         self.ax.clear()  # Clear previous frame
+
+        goal = p + u
 
         # Re-plot robot position and heading
         heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
+        goal_heading_vec = np.array([np.cos(theta_des), np.sin(theta_des)])
+
         self.ax.scatter(p[0], p[1], c='r', label='Robot')
-        self.ax.scatter(p[0] + u[0], p[1] + u[1], c='r', label='Goal')
+        self.ax.scatter(goal[0], goal[1], c='r', label='Goal')
+        
         self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
+        self.ax.arrow(p[0], p[1], goal_heading_vec[0], goal_heading_vec[1], color='b', width=0.02, label = "Caluclated Goal Heading")
         self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector', length_includes_head=True)
 
         self.ax.set_xlim(-2, 2)
@@ -79,6 +95,20 @@ class ControllerNode(Node):
         self.ax.set_aspect('equal', 'box')
         self.ax.legend()
         self.ax.grid(True)
+
+        
+
+
+        info = (
+            f"X: {p[0]:.2f}\n"
+            f"Y: {p[1]:.2f}\n"
+            f"Yaw: {np.degrees(yaw):.1f}°\n"
+            f"Yaw error: {np.degrees(angle_error):.1f}°\n"
+            f"Goal X: {goal[0]:.2f}\n"
+            f"Goal Y: {goal[1]:.2f}\n"
+            f"Dist: {np.linalg.norm(u):.2f} m"
+        )
+        self.textbox.set_text(info)
 
         # Refresh the figure
         self.fig.canvas.draw()
@@ -114,11 +144,6 @@ class ControllerNode(Node):
 
 
         
-        
-
-        # # Unwrap Angle
-        # if yaw < 0:
-        #     yaw = 2*np.pi + yaw
 
 
         # Goal
@@ -147,24 +172,23 @@ class ControllerNode(Node):
         dy = y_des - y
 
         u = np.array([dx, dy])
-
-
-        self.plot_robot(p, yaw, u)
-
-        
-
         dist_to_goal = np.linalg.norm(u)
 
         if (dist_to_goal > GOAL_THRESH):
             Ux_des = K_e*(x_des - pos.x)
             Uy_des = K_e*(y_des - pos.y)
 
+        
+
+        theta_des = np.arctan2(Uy_des, Ux_des)
+        error_theta = theta_des - yaw
+        error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
+
+        self.plot_robot(p, u, yaw, theta_des, error_theta_wrapped)
+
+
         # S_des = np.sqrt(Ux_des**2 + Uy_des**2)
         # S_sat = np.clip(S_des, -S_MAX, S_MAX)
-
-        # Theta_des = np.arctan2(Uy_des, Ux_des)
-        # error_theta = Theta_des - yaw
-        # error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
 
         # w_des = 0
         # if error_theta_wrapped > ANGLE_THRESH:
