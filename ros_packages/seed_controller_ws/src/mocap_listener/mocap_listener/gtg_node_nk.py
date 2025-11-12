@@ -76,6 +76,7 @@ class ControllerNode(Node):
 
     def plot_robot(self, p, u, yaw, theta_des, angle_error):
         self.ax.clear()
+        goal = p + u
 
 
         # Re-plot robot position and heading
