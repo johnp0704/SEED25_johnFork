@@ -23,6 +23,7 @@ setup(
         'rigid_listener = mocap_listener.rigid_listener:main',
         'gtg_node = mocap_listener.gtg_node:main',
         'gtg_node_nk = mocap_listener.gtg_node_nk:main',
+        'nk_telem.py = mocap_listener.nk_telem.py:main',
         'gtg_node_mathAngle = mocap_listener.gtg_node_mathAngle:main',
         'telemetry_node = mocap_listener.telemetry_node:main',
         'plot_robot_and_goal = mocap_listener.plot_robot_and_goal:main',

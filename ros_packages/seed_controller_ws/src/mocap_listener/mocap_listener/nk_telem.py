@@ -17,7 +17,7 @@ S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0. # m
 ANGLE_THRESH = np.deg2rad(10)
 
-REFRESH_RATE = 10 #hz
+REFRESH_RATE = 20 #hz
 R_wheel = .08 #cm
 L = .178 #cm
 K_e = 30
@@ -51,18 +51,18 @@ class ControllerNode(Node):
         self.latest_markers_msg = None
 
         # Start Plotting
-        # self.get_logger().info("Starting Telematry")
-        # plt.ion()
-        # self.fig, self.ax = plt.subplots(figsize=(8,6))
+        self.get_logger().info("Starting Telematry")
+        plt.ion()
+        self.fig, self.ax = plt.subplots(figsize=(8,6))
 
-        # self.textbox = self.ax.text(
-        #     1.05, 0.5,              # x, y position (in axes coordinates)
-        #     "",                     # initial text
-        #     transform=self.ax.transAxes,  # position relative to axes
-        #     fontsize=10,
-        #     va='center',
-        #     ha='left',
-        # )
+        self.textbox = self.ax.text(
+            1.05, 0.5,              # x, y position (in axes coordinates)
+            "",                     # initial text
+            transform=self.ax.transAxes,  # position relative to axes
+            fontsize=10,
+            va='center',
+            ha='left',
+        )
 
 
         
@@ -195,42 +195,7 @@ class ControllerNode(Node):
         error_theta = theta_des - yaw
         error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
 
-        # self.plot_robot(p, u, yaw, theta_des, error_theta_wrapped)
-
-
-        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -S_MAX, S_MAX)
-
-        w_des = 0
-        if error_theta_wrapped > ANGLE_THRESH:
-            w_des = K_theta*(error_theta_wrapped) 
-
-        wr_des = (S_sat - L * w_des) / R_wheel
-        wl_des = (S_sat + L * w_des) / R_wheel
-
-
-        maxInput = max(wr_des, wl_des)
-        if maxInput > MAX_ACUTUATOR_INPUT:
-            #Scale down by same factor
-            speed_adjust_factor = MAX_ACUTUATOR_INPUT/maxInput
-            wr_des_sat = wr_des * speed_adjust_factor
-            wl_des_sat = wl_des * speed_adjust_factor
-
-        else:
-            wr_des_sat = wr_des
-            wl_des_sat = wl_des
-
-
-        wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        wl_des_sat_clip = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-
-        # Send commands to motors
-        self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
-
-        # # Log for debugging
-        # self.get_logger().info(
-        #     # f"X={pos.x:.2f}, Y={pos.y:.2f}, Yaw={yaw:.2f} | Goal=({x_des:.2f}, {y_des:.2f}) | S_des={S_sat:.2f}, Theta_des={Theta_des:.2f}, w_des={w_des:.2f} | Cmds L={wl_des:.1f}, R={wr_des:.1f}")
-        #     f" | yaw={yaw:.2f}, Theta_goal = {Theta_des:.2f}, Theta_e={error_theta:.2f}, Theta_e_wrap={error_theta_wrapped:.2f}, w_des={w_des:.2f} | Cmds L={wl_des_sat:.1f}, R={wr_des_sat:.1f}")
+        self.plot_robot(p, u, yaw, theta_des, error_theta_wrapped)
 
         
 
