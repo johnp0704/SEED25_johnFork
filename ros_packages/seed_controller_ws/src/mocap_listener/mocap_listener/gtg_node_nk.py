@@ -74,7 +74,7 @@ class ControllerNode(Node):
     def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
 
-    def plot_robot(self, p, u, yaw, theta_des angle_error):
+    def plot_robot(self, p, u, yaw, theta_des, angle_error):
         self.ax.clear()  # Clear previous frame
 
         goal = p + u
