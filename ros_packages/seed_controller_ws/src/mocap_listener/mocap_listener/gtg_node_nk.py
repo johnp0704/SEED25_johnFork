@@ -14,7 +14,7 @@ GOAL_MARKER_INDEX = 5
 MAX_ACUTUATOR_INPUT = 40
 S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0.3
-ANGLE_THRESH = np.deg2rad(5)
+ANGLE_THRESH = np.deg2rad(10)
 
 REFRESH_RATE = 10 #hz
 R_wheel = .08 #cm
@@ -52,7 +52,7 @@ class ControllerNode(Node):
         # Start Plotting
         self.get_logger().info("Starting Telematry")
         plt.ion()
-        self.fig, self.ax = plt.subplots(figsize=(6,8))
+        self.fig, self.ax = plt.subplots(figsize=(8,6))
 
         self.textbox = self.ax.text(
             1.05, 0.5,              # x, y position (in axes coordinates)
@@ -128,7 +128,7 @@ class ControllerNode(Node):
         
 
     def controller_update(self):
-    # Get robot pose
+        # Get robot pose
         # self.get_logger().info("Updating!")
         robot_body = None
         if self.latest_rigidbodies_msg is not None:
@@ -196,36 +196,34 @@ class ControllerNode(Node):
         self.plot_robot(p, u, yaw, theta_des, error_theta_wrapped)
 
 
-        # S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        # S_sat = np.clip(S_des, -S_MAX, S_MAX)
+        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
+        S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
-        # w_des = 0
-        # if error_theta_wrapped > ANGLE_THRESH:
-        #     w_des = K_theta*(error_theta_wrapped) 
+        w_des = 0
+        if error_theta_wrapped > ANGLE_THRESH:
+            w_des = K_theta*(error_theta_wrapped) 
 
-
-
-        # wr_des = (S_sat - L * w_des) / R_wheel
-        # wl_des = (S_sat + L * w_des) / R_wheel
+        wr_des = (S_sat - L * w_des) / R_wheel
+        wl_des = (S_sat + L * w_des) / R_wheel
 
 
-        # maxInput = max(wr_des, wl_des)
-        # if maxInput > MAX_ACUTUATOR_INPUT:
-        #     #Scale down by same factor
-        #     speed_adjust_factor = MAX_ACUTUATOR_INPUT/maxInput
-        #     wr_des_sat = wr_des * speed_adjust_factor
-        #     wl_des_sat = wl_des * speed_adjust_factor
+        maxInput = max(wr_des, wl_des)
+        if maxInput > MAX_ACUTUATOR_INPUT:
+            #Scale down by same factor
+            speed_adjust_factor = MAX_ACUTUATOR_INPUT/maxInput
+            wr_des_sat = wr_des * speed_adjust_factor
+            wl_des_sat = wl_des * speed_adjust_factor
 
-        # else:
-        #     wr_des_sat = wr_des
-        #     wl_des_sat = wl_des
+        else:
+            wr_des_sat = wr_des
+            wl_des_sat = wl_des
 
 
-        # wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
-        # wl_des_sat_clip = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wr_des_sat_clip = np.clip(wr_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
+        wl_des_sat_clip = np.clip(wl_des, -MAX_ACUTUATOR_INPUT, MAX_ACUTUATOR_INPUT)
 
-        # # Send commands to motors
-        # self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
+        # Send commands to motors
+        self.motor.updateMotorSpeed(wl_des_sat_clip, wr_des_sat_clip)
 
         # # Log for debugging
         # self.get_logger().info(
