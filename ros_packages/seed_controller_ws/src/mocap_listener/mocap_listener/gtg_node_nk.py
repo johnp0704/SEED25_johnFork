@@ -50,6 +50,7 @@ class ControllerNode(Node):
         self.latest_markers_msg = None
 
         # Start Plotting
+        self.get_logger().info("Starting Telematry")
         plt.ion()
         self.fig, self.ax = plt.subplots(figsize=(6,6))
         self.robot_pos_plotting = None
@@ -78,6 +79,7 @@ class ControllerNode(Node):
 
     def controller_update(self):
     # Get robot pose
+        self.get_logger.info("Updating!")
         robot_body = None
         if self.latest_rigidbodies_msg is not None:
             robot_body = next((rb for rb in self.latest_rigidbodies_msg.rigidbodies if rb.rigid_body_name == '1'), None)
