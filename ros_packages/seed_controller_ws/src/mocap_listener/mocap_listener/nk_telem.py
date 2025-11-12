@@ -113,7 +113,7 @@ class ControllerNode(Node):
             f"Goal X: {goal[0]:.2f}\n"
             f"Goal Y: {goal[1]:.2f}\n"
             f"Dist: {np.linalg.norm(u):.2f}\n"
-            f"Need to turn?: {angle_error>ANGLE_THRESH}"
+            f"Need to turn?: {F>ANGLE_THRESH}"
         )
         self.textbox.set_text(info)
 
@@ -182,8 +182,9 @@ class ControllerNode(Node):
         dist_to_goal = np.linalg.norm(u)
 
         if (dist_to_goal > GOAL_THRESH):
-            Ux_des = K_e*(x_des - pos.x)
-            Uy_des = K_e*(y_des - pos.y)
+            Ux_des = (x_des - pos.x)
+            Uy_des = (y_des - pos.y)
+            #FIXME add k_e maybe for nice scaling? optional...
 
         
 
