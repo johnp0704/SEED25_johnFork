@@ -7,6 +7,8 @@ from mocap_listener import sabertooth as st
 import atexit
 from mocap_listener import PID as PID
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 GOAL_MARKER_INDEX = 5
 MAX_ACUTUATOR_INPUT = 40
@@ -46,6 +48,13 @@ class ControllerNode(Node):
         self.timer = self.create_timer(1/REFRESH_RATE, self.controller_update)
         self.latest_rigidbodies_msg = None
         self.latest_markers_msg = None
+
+        # Start Plotting
+        plt.ion()
+        self.fig, self.ax = plt.subplots(figsize=(6,6))
+        self.robot_pos_plotting = None
+        self.goal_vec_plotting = None
+        self.heading_arrow_plotting = None
         
     
 
@@ -55,6 +64,15 @@ class ControllerNode(Node):
 
     def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
+
+    def plot_robot(self, p, yaw, u):
+
+        heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
+
+        self.robot_pos_plotting = self.ax.scatter(p[0], p[1])
+        self.goal_vec_plotting = self.ax.arrow(p[0], p[1], u[0], u[1])
+        self.heading_arrow_plotting = self.ax.arrowp[0], p[1], heading_vec[0], heading_vec[1]
+        
 
         
 
@@ -70,11 +88,17 @@ class ControllerNode(Node):
         pos = robot_body.pose.position
         ori = robot_body.pose.orientation
 
+        x = pos.x
+        y = pos.y
+
+        p = np.array([x,y])
+
+
         r = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         _, _, yaw = r.as_euler('xyz', degrees=False)
 
         
-
+        
 
         # # Unwrap Angle
         # if yaw < 0:
@@ -94,17 +118,30 @@ class ControllerNode(Node):
         else:
             self.get_logger().warn("No goal data")
             return
+        
 
 
-        self.get_logger().info(f"Heading: {str(yaw)}, x_des: {str(x_des)}, y_des: {str(y_des)}")
+        # self.get_logger().info(f"Heading: {str(yaw)}, x: {str(x)}, y: {str(y)}")
 
-        # # Compute control signals
-        # Ux_des = 0
-        # Uy_des = 0
+        # Compute control signals
+        Ux_des = 0
+        Uy_des = 0
 
-        # if (np.sqrt((pos.x - x_des)**2 + (pos.y - y_des)**2) > GOAL_THRESH):
-        #     Ux_des = K_e*(x_des - pos.x)
-        #     Uy_des = K_e*(y_des - pos.y)
+        dx = x_des - x
+        dy = y_des - y
+
+        u = np.array([dx, dy])
+
+
+        self.plot_robot(p, yaw, u)
+
+        
+
+        dist_to_goal = np.linalg.norm(u)
+
+        if (dist_to_goal > GOAL_THRESH):
+            Ux_des = K_e*(x_des - pos.x)
+            Uy_des = K_e*(y_des - pos.y)
 
         # S_des = np.sqrt(Ux_des**2 + Uy_des**2)
         # S_sat = np.clip(S_des, -S_MAX, S_MAX)
