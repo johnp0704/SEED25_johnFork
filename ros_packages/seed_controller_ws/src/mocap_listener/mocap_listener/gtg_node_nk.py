@@ -110,7 +110,7 @@ class ControllerNode(Node):
         r_mocap = R.from_quat([ori.x, ori.y, ori.z, ori.w])
         R_correction = R.from_euler('z', -90, degrees=True)
         r_ros = R_correction * r_mocap
-        _, _, yaw = r_mocap.as_euler('xyz', degrees=False)
+        _, _, yaw = r_ros.as_euler('xyz', degrees=False)
 
 
         
