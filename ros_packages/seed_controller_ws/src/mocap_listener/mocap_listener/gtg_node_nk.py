@@ -71,7 +71,7 @@ class ControllerNode(Node):
 
         self.robot_pos_plotting = self.ax.scatter(p[0], p[1])
         self.goal_vec_plotting = self.ax.arrow(p[0], p[1], u[0], u[1])
-        self.heading_arrow_plotting = self.ax.arrowp[0], p[1], heading_vec[0], heading_vec[1]
+        self.heading_arrow_plotting = self.ax.arrow[0], p[1], heading_vec[0], heading_vec[1]
         
 
         
