@@ -16,12 +16,8 @@ MAX_ACUTUATOR_INPUT = 20
 S_MAX = MAX_ACUTUATOR_INPUT * 0.6
 GOAL_THRESH = 0. # m
 ANGLE_THRESH = np.deg2rad(10)
+REFRESH_RATE = 10 #hz
 
-REFRESH_RATE = 20 #hz
-R_wheel = .08 #cm
-L = .178 #cm
-K_e = 30
-K_theta = K_e * 1.5
 
 
 class ControllerNode(Node):
@@ -116,7 +112,7 @@ class ControllerNode(Node):
             f"Yaw error: {np.degrees(angle_error):.1f}°\n"
             f"Goal X: {goal[0]:.2f}\n"
             f"Goal Y: {goal[1]:.2f}\n"
-            f"Dist: {np.linalg.norm(u):.2f} m"
+            f"Dist: {np.linalg.norm(u):.2f}\n"
             f"Need to turn?: {angle_error>ANGLE_THRESH}"
         )
         self.textbox.set_text(info)

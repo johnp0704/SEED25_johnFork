@@ -74,58 +74,7 @@ class ControllerNode(Node):
 
     def markers_listener_callback(self, msg: Markers):
         self.latest_markers_msg = msg  # always store the newest message
-
-    def plot_robot(self, p, u, yaw, theta_des, angle_error):
-        
-        for artist in self.ax.lines + self.ax.patches + self.ax.collections:
-            artist.remove()
-        if self.ax.get_legend():
-            self.ax.get_legend().remove()
-
-        goal = p + u
-
-
-        # Re-plot robot position and heading
-        heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
-        goal_heading_vec = np.array([np.cos(theta_des), np.sin(theta_des)])
-
-        self.ax.scatter(p[0], p[1], c='r', label='Robot')
-        self.ax.scatter(goal[0], goal[1], c='r', label='Goal')
-        
-        self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
-        self.ax.arrow(p[0], p[1], goal_heading_vec[0], goal_heading_vec[1], color='b', width=0.02, label = "Caluclated Goal Heading")
-        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector', length_includes_head=True)
-
-        self.ax.set_xlim(-2, 2)
-        self.ax.set_ylim(-2, 2)
-        self.ax.set_aspect('equal', 'box')
-
-        if self.ax.get_legend() is not None:
-            print("Clearing Legend!")
-            self.ax.get_legend().remove()
-        self.ax.legend() 
-
-        self.ax.grid(True)
-
-    
-
-        info = (
-            f"X: {p[0]:.2f}\n"
-            f"Y: {p[1]:.2f}\n"
-            f"Yaw: {np.degrees(yaw):.1f}°\n"
-            f"Yaw error: {np.degrees(angle_error):.1f}°\n"
-            f"Goal X: {goal[0]:.2f}\n"
-            f"Goal Y: {goal[1]:.2f}\n"
-            f"Dist: {np.linalg.norm(u):.2f} m"
-            f"Need to turn?: {angle_error>ANGLE_THRESH}"
-        )
-        self.textbox.set_text(info)
-
-        # Refresh the figure
-        self.fig.canvas.draw()
-        self.fig.canvas.flush_events()
-
-        
+ 
 
         
 
@@ -202,7 +151,7 @@ class ControllerNode(Node):
         S_sat = np.clip(S_des, -S_MAX, S_MAX)
 
         w_des = 0
-        if error_theta_wrapped > ANGLE_THRESH:
+        if abs(error_theta_wrapped) > ANGLE_THRESH:
             w_des = K_theta*(error_theta_wrapped) 
 
         wr_des = (S_sat - L * w_des) / R_wheel
