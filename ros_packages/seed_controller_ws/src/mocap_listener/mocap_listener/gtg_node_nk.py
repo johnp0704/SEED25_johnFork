@@ -67,12 +67,24 @@ class ControllerNode(Node):
         self.latest_markers_msg = msg  # always store the newest message
 
     def plot_robot(self, p, yaw, u):
+        self.ax.clear()  # Clear previous frame
 
+        # Re-plot robot position and heading
         heading_vec = np.array([np.cos(yaw), np.sin(yaw)])
+        self.ax.scatter(p[0], p[1], c='r', label='Robot')
+        self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02)
+        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector')
 
-        self.robot_pos_plotting = self.ax.scatter(p[0], p[1])
-        self.goal_vec_plotting = self.ax.arrow(p[0], p[1], u[0], u[1])
-        self.heading_arrow_plotting = self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1])
+        self.ax.set_xlim(-2, 2)
+        self.ax.set_ylim(-2, 2)
+        # self.ax.set_aspect('equal', 'box')
+        self.ax.legend()
+        self.ax.grid(True)
+
+        # Refresh the figure
+        self.fig.canvas.draw()
+        self.fig.canvas.flush_events()
+
         
 
         
