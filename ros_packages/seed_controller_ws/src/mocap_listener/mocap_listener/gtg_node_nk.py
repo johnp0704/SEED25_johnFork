@@ -72,7 +72,7 @@ class ControllerNode(Node):
         self.ax.scatter(p[0], p[1], c='r', label='Robot')
         self.ax.scatter(p[0] + u[0], p[1] + u[1], c='r', label='Goal')
         self.ax.arrow(p[0], p[1], heading_vec[0], heading_vec[1], color='b', width=0.02, label = "Heading")
-        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector', length_length_includes_head=True)
+        self.ax.arrow(p[0], p[1], u[0], u[1], color='g', width=0.02, label='Goal vector', length_includes_head=True)
 
         self.ax.set_xlim(-2, 2)
         self.ax.set_ylim(-2, 2)
