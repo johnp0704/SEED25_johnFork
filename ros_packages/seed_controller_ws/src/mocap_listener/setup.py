@@ -25,6 +25,7 @@ setup(
         'gtg_node_nk = mocap_listener.gtg_node_nk:main',
         'gtg_node_mathAngle = mocap_listener.gtg_node_mathAngle:main',
         'telemetry_node = mocap_listener.telemetry_node:main',
+        'plot_robot_and_goal = mocap_listener.plot_robot_and_goal:main',
     ],
     },
 )
