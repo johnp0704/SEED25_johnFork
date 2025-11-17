@@ -18,11 +18,11 @@ import os
 # CONFIGURATION
 # -----------------------------
 # Path to trained YOLO model (adjust as needed)
-model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
+model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
 
 # Path to test image and label folders
-image_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
-label_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
+image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
+label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
 
 # Load trained YOLO model
 model = YOLO(model_path)
