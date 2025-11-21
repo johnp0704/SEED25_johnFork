@@ -9,10 +9,10 @@ from dandelion_detr_dataset import DandelionDataset
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Paths
-train_img_dir = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\dandelion_dataset\train\images"
-val_img_dir   = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\dandelion_dataset\val\images"
-train_ann     = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\dandelion_dataset\annotations\instances_train.json"
-val_ann       = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\dandelion_dataset\annotations\instances_val.json"
+train_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\train\images"
+val_img_dir   = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
+train_ann     = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_train.json"
+val_ann       = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
 
 # Labels
 id2label = {0: "dandelion"}
@@ -99,7 +99,40 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch+1} validation loss: {val_loss:.4f}")
 
 # Save model
-model.save_pretrained("detr-dandelion")
-processor.save_pretrained("detr-dandelion")
+save_path = r"C:\Users\samst\Downloads\detr-dandelions-model"
 
-print("Model saved to detr-dandelion/")
+os.makedirs(save_path, exist_ok=True)
+
+model.save_pretrained(save_path)
+processor.save_pretrained(save_path)
+
+# --- Verification section ---
+required_files = [
+    "config.json",
+    "preprocessor_config.json",
+    "pytorch_model.bin"
+]
+
+print("\nVerifying saved model...")
+
+if not os.path.exists(save_path):
+    raise FileNotFoundError(f"❌ Save directory does NOT exist: {save_path}")
+
+missing = []
+for f in required_files:
+    fp = os.path.join(save_path, f)
+    if not os.path.exists(fp):
+        missing.append(f)
+
+if len(missing) == 0:
+    print("✅ Model saved successfully!")
+    print("📁 Saved to:", save_path)
+    print("📦 Files found:")
+    for f in required_files:
+        print("   ✔", f)
+else:
+    print("❌ Missing model files:")
+    for f in missing:
+        print("   ✘", f)
+    raise RuntimeError("Model save failed — required files missing.")
+

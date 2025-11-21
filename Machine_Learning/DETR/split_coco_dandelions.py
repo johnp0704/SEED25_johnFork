@@ -3,10 +3,10 @@ import json
 import random
 import shutil
 
-coco_ann_file = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\annotations\instances_default.json"
-cvat_images_dir = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\Wave_3_test\images\train"
+coco_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\annotations\instances_default.json"
+cvat_images_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave_3_test\images\train"
 
-dataset_root = r"C:\Users\samst\OneDrive\Documents\Machine Learning\Final project\dandelion_dataset"
+dataset_root = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
 train_images_dir = os.path.join(dataset_root, "train", "images")
 val_images_dir   = os.path.join(dataset_root, "val", "images")
 ann_output_dir   = os.path.join(dataset_root, "annotations")
