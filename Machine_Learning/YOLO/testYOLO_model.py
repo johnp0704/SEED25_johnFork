@@ -94,7 +94,7 @@ recall = TP / (TP + FN) if (TP + FN) > 0 else 0
 cm = confusion_matrix(y_true, y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
 disp.plot(cmap=plt.cm.Blues)
-plt.title('Dandelion Detection Confusion Matrix')
+plt.title('YOLO Confusion Matrix')
 plt.show()
 
 print('Evaluation Complete')
