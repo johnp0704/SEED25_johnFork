@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 
 # Load model
-model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine Learning\DETR\detr-dandelion"
+model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine_Learning\DETR\detr-dandelion"
 
 processor = DetrImageProcessor.from_pretrained(model_path)
 model = DetrForObjectDetection.from_pretrained(model_path)

@@ -6,7 +6,7 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.5):
+def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
 
     # Load model
     processor = DetrImageProcessor.from_pretrained(model_path)
@@ -14,13 +14,12 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.5):
     model.to("cuda" if torch.cuda.is_available() else "cpu")
     model.eval()
 
+
     # Load COCO validation annotations
     with open(val_ann_file, "r") as f:
         coco = json.load(f)
 
-    # ========== Ground-truth labels ==========
-    # GT 1 = image has a dandelion (at least one annotation)
-    # GT 0 = no dandelion
+    # Prepare lists for true and predicted labels
     y_true = []
     y_pred = []
 
@@ -35,11 +34,11 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.5):
         image_path = os.path.join(val_img_dir, filename)
         image = Image.open(image_path).convert("RGB")
 
-        # ---------- Ground-truth ----------
+        # Ground-truth
         gt_has_dandelion = len(img_id_to_anns[img_id]) > 0
         y_true.append(1 if gt_has_dandelion else 0)
 
-        # ---------- Model prediction ----------
+        # Model prediction
         inputs = processor(images=image, return_tensors="pt").to(model.device)
         with torch.no_grad():
             outputs = model(**inputs)
@@ -53,8 +52,8 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.5):
         pred_has_dandelion = len(results["boxes"]) > 0
         y_pred.append(1 if pred_has_dandelion else 0)
 
-    # ========== Confusion Matrix ==========
-    cm = confusion_matrix(y_true, y_pred)
+    # Confusion Matrix
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
     labels = ["No Dandelion", "Dandelion"]
 
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
@@ -69,7 +68,7 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.5):
 
 
 if __name__ == "__main__":
-    model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine Learning\DETR\detr-dandelion"
+    model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine_Learning\DETR\detr-dandelion"
     val_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
     val_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
 

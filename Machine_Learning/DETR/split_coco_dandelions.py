@@ -3,67 +3,161 @@ import json
 import random
 import shutil
 
-coco_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\annotations\instances_default.json"
-cvat_images_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave_3_test\images\train"
+# --------------------------------------------------------
+# 1. COCO annotation wave folders (ONLY THESE FIVE)
+# --------------------------------------------------------
+COCO_WAVE_DIRS = [
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 3",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 4",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 6",
+]
 
-dataset_root = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
-train_images_dir = os.path.join(dataset_root, "train", "images")
-val_images_dir   = os.path.join(dataset_root, "val", "images")
-ann_output_dir   = os.path.join(dataset_root, "annotations")
+# --------------------------------------------------------
+# 2. RAW image wave folders (must match same waves)
+# --------------------------------------------------------
+RAW_WAVE_DIRS = [
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5",
+    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6",
+]
 
-train_ratio = 0.8
+# --------------------------------------------------------
+# 3. DETR output folder
+# --------------------------------------------------------
+DATASET_ROOT = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
+
+TRAIN_RATIO = 0.7
+VAL_RATIO   = 0.2
+TEST_RATIO  = 0.1
+
+
+# --------------------------------------------------------
+# Search raw waves for an image filename
+# --------------------------------------------------------
+def find_raw_image(filename):
+    for wave in RAW_WAVE_DIRS:
+        path = os.path.join(wave, filename)
+        if os.path.exists(path):
+            return path
+    return None
+
 
 def main():
-    os.makedirs(train_images_dir, exist_ok=True)
-    os.makedirs(val_images_dir, exist_ok=True)
-    os.makedirs(ann_output_dir, exist_ok=True)
 
-    with open(coco_ann_file, "r") as f:
-        coco = json.load(f)
+    merged_images = []
+    merged_annotations = []
+    categories_ref = None
 
-    images = coco["images"]
-    annotations = coco["annotations"]
-    categories = coco["categories"]
+    next_image_id = 1
+    next_ann_id = 1
 
+    # ----------------------------------------------------
+    # MERGE COCO JSONS
+    # ----------------------------------------------------
+    for wave_dir in COCO_WAVE_DIRS:
+        ann_path = os.path.join(wave_dir, "annotations", "instances_default.json")
+
+        print(f"Loading {ann_path}")
+        with open(ann_path, "r") as f:
+            coco = json.load(f)
+
+        if categories_ref is None:
+            categories_ref = coco["categories"]
+
+        # Remap image IDs
+        old_to_new = {}
+
+        for img in coco["images"]:
+            old_id = img["id"]
+            img["id"] = next_image_id
+            old_to_new[old_id] = next_image_id
+            merged_images.append(img)
+            next_image_id += 1
+
+        # Remap annotations
+        for ann in coco["annotations"]:
+            ann["id"] = next_ann_id
+            ann["image_id"] = old_to_new[ann["image_id"]]
+            merged_annotations.append(ann)
+            next_ann_id += 1
+
+    # ----------------------------------------------------
+    # RANDOM SPLIT 70/20/10
+    # ----------------------------------------------------
     random.seed(42)
-    random.shuffle(images)
+    random.shuffle(merged_images)
 
-    n_train = int(len(images) * train_ratio)
-    train_images = images[:n_train]
-    val_images = images[n_train:]
+    total = len(merged_images)
+    n_train = int(total * TRAIN_RATIO)
+    n_val   = int(total * VAL_RATIO)
+    n_test  = total - n_train - n_val
 
-    train_ids = set(img["id"] for img in train_images)
-    val_ids   = set(img["id"] for img in val_images)
+    train_imgs = merged_images[:n_train]
+    val_imgs   = merged_images[n_train:n_train+n_val]
+    test_imgs  = merged_images[n_train+n_val:]
 
-    train_annotations = [ann for ann in annotations if ann["image_id"] in train_ids]
-    val_annotations   = [ann for ann in annotations if ann["image_id"] in val_ids]
+    train_ids = {img["id"] for img in train_imgs}
+    val_ids   = {img["id"] for img in val_imgs}
+    test_ids  = {img["id"] for img in test_imgs}
 
-    def copy_images(image_list, dest_dir):
-        for img_info in image_list:
-            src_path = os.path.join(cvat_images_dir, img_info["file_name"])
-            dst_path = os.path.join(dest_dir, img_info["file_name"])
-            if os.path.exists(src_path):
-                shutil.copy2(src_path, dst_path)
-            else:
-                print(f"Warning: {src_path} not found")
+    train_anns = [a for a in merged_annotations if a["image_id"] in train_ids]
+    val_anns   = [a for a in merged_annotations if a["image_id"] in val_ids]
+    test_anns  = [a for a in merged_annotations if a["image_id"] in test_ids]
+
+    # ----------------------------------------------------
+    # CREATE OUTPUT FOLDERS
+    # ----------------------------------------------------
+    train_dir = os.path.join(DATASET_ROOT, "train", "images")
+    val_dir   = os.path.join(DATASET_ROOT, "val", "images")
+    test_dir  = os.path.join(DATASET_ROOT, "test", "images")
+    ann_dir   = os.path.join(DATASET_ROOT, "annotations")
+
+    for d in [train_dir, val_dir, test_dir, ann_dir]:
+        os.makedirs(d, exist_ok=True)
+
+    # ----------------------------------------------------
+    # COPY IMAGES FROM RAW WAVES
+    # ----------------------------------------------------
+    def copy_set(img_list, dest):
+        for img in img_list:
+            fname = img["file_name"]
+            src = find_raw_image(fname)
+            if not src:
+                print(f"❌ Missing raw image: {fname}")
+                continue
+            shutil.copy2(src, os.path.join(dest, fname))
 
     print("Copying training images...")
-    copy_images(train_images, train_images_dir)
+    copy_set(train_imgs, train_dir)
 
     print("Copying validation images...")
-    copy_images(val_images, val_images_dir)
+    copy_set(val_imgs, val_dir)
 
-    train_coco = {"images": train_images, "annotations": train_annotations, "categories": categories}
-    val_coco   = {"images": val_images, "annotations": val_annotations, "categories": categories}
+    print("Copying test images...")
+    copy_set(test_imgs, test_dir)
 
-    with open(os.path.join(ann_output_dir, "instances_train.json"), "w") as f:
-        json.dump(train_coco, f)
-    with open(os.path.join(ann_output_dir, "instances_val.json"), "w") as f:
-        json.dump(val_coco, f)
+    # ----------------------------------------------------
+    # WRITE NEW JSON FILES
+    # ----------------------------------------------------
+    def save_json(name, imgs, anns):
+        out = {"images": imgs, "annotations": anns, "categories": categories_ref}
+        with open(os.path.join(ann_dir, name), "w") as f:
+            json.dump(out, f)
 
-    print(f"Created dataset in: {dataset_root}")
-    print(f"Train: {len(train_images)} images")
-    print(f"Val:   {len(val_images)} images")
+    save_json("instances_train.json", train_imgs, train_anns)
+    save_json("instances_val.json", val_imgs, val_anns)
+    save_json("instances_test.json", test_imgs, test_anns)
+
+    print("\n🎉 DONE! Merged + Split COCO Dataset Created")
+    print(f"Total images: {total}")
+    print(f"Train: {len(train_imgs)}")
+    print(f"Val:   {len(val_imgs)}")
+    print(f"Test:  {len(test_imgs)}")
+
 
 if __name__ == "__main__":
     main()
