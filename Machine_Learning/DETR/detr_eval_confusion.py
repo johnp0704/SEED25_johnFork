@@ -6,35 +6,41 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
+def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.05):
 
-    # Load model
+    # -----------------------------
+    # LOAD MODEL
+    # -----------------------------
     processor = DetrImageProcessor.from_pretrained(model_path)
     model = DetrForObjectDetection.from_pretrained(model_path)
     model.to("cuda" if torch.cuda.is_available() else "cpu")
     model.eval()
 
-
-    # Load COCO validation annotations
+    # -----------------------------
+    # LOAD COCO ANNOTATIONS
+    # -----------------------------
     with open(val_ann_file, "r") as f:
         coco = json.load(f)
 
-    # Prepare lists for true and predicted labels
+    # For storing predicted + true binary labels
     y_true = []
     y_pred = []
 
+    # Map image IDs -> annotations
     img_id_to_anns = {img["id"]: [] for img in coco["images"]}
     for ann in coco["annotations"]:
         img_id_to_anns[ann["image_id"]].append(ann)
 
-    # Loop over every validation image
+    # -----------------------------
+    # RUN INFERENCE ON ALL IMAGES
+    # -----------------------------
     for img_info in coco["images"]:
         img_id = img_info["id"]
         filename = img_info["file_name"]
         image_path = os.path.join(val_img_dir, filename)
         image = Image.open(image_path).convert("RGB")
 
-        # Ground-truth
+        # Ground truth label
         gt_has_dandelion = len(img_id_to_anns[img_id]) > 0
         y_true.append(1 if gt_has_dandelion else 0)
 
@@ -43,6 +49,7 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
         with torch.no_grad():
             outputs = model(**inputs)
 
+        # Post process outputs
         results = processor.post_process_object_detection(
             outputs,
             target_sizes=[image.size[::-1]],
@@ -52,24 +59,43 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
         pred_has_dandelion = len(results["boxes"]) > 0
         y_pred.append(1 if pred_has_dandelion else 0)
 
-    # Confusion Matrix
+    # -----------------------------
+    # CONFUSION MATRIX + METRICS
+    # -----------------------------
     cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
-    labels = ["No Dandelion", "Dandelion"]
+    TN, FP, FN, TP = cm.ravel()
 
+    accuracy  = (TP + TN) / (TP + TN + FP + FN)
+    precision = TP / (TP + FP) if (TP + FP) > 0 else 0
+    recall    = TP / (TP + FN) if (TP + FN) > 0 else 0
+
+    # Plot confusion matrix
+    labels = ["No Dandelion", "Dandelion"]
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
     disp.plot(cmap="Greens")
     plt.title("DETR Image-Level Confusion Matrix")
     plt.show()
 
+    # Print results
     print("\nConfusion Matrix:")
     print(cm)
+
+    print("\nDETR Evaluation Metrics")
+    print(f"Accuracy:  {accuracy:.2%}")
+    print(f"Precision: {precision:.2%}")
+    print(f"Recall:    {recall:.2%}")
+    print(f"TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}")
 
     return cm
 
 
+# ----------------------------------------------------------
+# RUN THE SCRIPT
+# ----------------------------------------------------------
 if __name__ == "__main__":
     model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine_Learning\DETR\detr-dandelion"
-    val_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
-    val_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
+    val_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
+    val_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
     evaluate_model(model_path, val_img_dir, val_ann_file)
+
