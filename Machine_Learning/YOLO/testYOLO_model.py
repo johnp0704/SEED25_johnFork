@@ -16,7 +16,7 @@ import os
 
 #============Config==================
 # Path to trained YOLO model (adjust as needed)
-model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
+model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v3\weights\best.pt"
 
 # Path to test image and label folders (adjust as needed)
 image_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
