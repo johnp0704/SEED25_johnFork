@@ -14,23 +14,19 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 import os
 
-# -----------------------------
-# CONFIGURATION
-# -----------------------------
+#============Config==================
 # Path to trained YOLO model (adjust as needed)
 model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
 
-# Path to test image and label folders
-image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
-label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
+# Path to test image and label folders (adjust as needed)
+image_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
+label_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
 
 # Load trained YOLO model
 model = YOLO(model_path)
 print(f'Loaded YOLO model from:\n{model_path}\n')
 
-# -----------------------------
-# HELPER FUNCTIONS
-# -----------------------------
+#==============Helper Functions=================
 def get_prediction(model, image_path):
     '''Runs YOLO inference on a single image and returns 1 if any detections, else 0.'''
     results = model(image_path, verbose=False)
@@ -59,11 +55,7 @@ def get_ground_truth(image_folder, label_folder):
     return ground_truth
 
 
-# -----------------------------
-# RUN EVALUATION
-# -----------------------------
-print('Evaluating YOLO model on test dataset...\n')
-
+#===============Evaluate=====================
 ground_truths = get_ground_truth(image_folder, label_folder)
 
 y_true = []
@@ -84,9 +76,7 @@ for image_path, actual in ground_truths.items():
     elif pred == 0 and actual == 1:
         FN += 1
 
-# -----------------------------
-# METRICS & VISUALIZATION
-# -----------------------------
+#===============Metrics and Confusion Matrix================
 accuracy = (TP + TN) / (TP + TN + FP + FN)
 precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 recall = TP / (TP + FN) if (TP + FN) > 0 else 0
