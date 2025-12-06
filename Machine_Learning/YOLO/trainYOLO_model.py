@@ -18,7 +18,8 @@ model.train(
     epochs=30,
     imgsz=1280,
     batch=-1, #autotune batch size based on GPU memory
-    project=r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs",  # base folder
-    name="dandelion_train_v1",  # subfolder for this specific run
+    project=r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs",  #base folder
+    name="dandelion_train_v1",  #subfolder for this specific run
+    device = '0' #can change if you have multiple GPUs
 )
 
