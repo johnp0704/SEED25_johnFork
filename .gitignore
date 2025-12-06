@@ -6,3 +6,6 @@ ros_packages/seed_controller_ws/install/
 ros_packages/seed_controller_ws/build/
 ros_packages/seed_controller_ws/log/
 ros_packages/seed_controller_ws/src/mocap_listener/mocap_listener/test.txt
+
+Images/Testing Annotated/YOLOTestingAnnotations/Data/
+
