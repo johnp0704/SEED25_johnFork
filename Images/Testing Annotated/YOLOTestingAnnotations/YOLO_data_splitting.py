@@ -1,3 +1,11 @@
+'''
+John Poirier
+This script takes the pre-organized data and labels and properly splits it into
+random splits of 70% training, 10% validation, and 20% testing.
+NOTE: the data folder created is NOT tracked by git
+'''
+
+
 import os
 import shutil
 import random
