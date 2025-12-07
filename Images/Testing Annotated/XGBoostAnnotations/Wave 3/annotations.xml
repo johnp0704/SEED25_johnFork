@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<annotations>
+  <version>1.1</version>
+  <meta>
+    <task>
+      <id>1738196</id>
+      <name>SEED 485 Dandelion Wave 3</name>
+      <size>100</size>
+      <mode>annotation</mode>
+      <overlap>0</overlap>
+      <bugtracker></bugtracker>
+      <created>2025-10-30 17:45:33.926773+00:00</created>
+      <updated>2025-11-07 18:50:24.377630+00:00</updated>
+      <subset>default</subset>
+      <start_frame>0</start_frame>
+      <stop_frame>99</stop_frame>
+      <frame_filter></frame_filter>
+      <segments>
+        <segment>
+          <id>3193548</id>
+          <start>0</start>
+          <stop>99</stop>
+          <url>https://app.cvat.ai/api/jobs/3192175</url>
+        </segment>
+      </segments>
+      <owner>
+        <username>sam026</username>
+        <email>samstarzec@gmail.com</email>
+      </owner>
+      <assignee></assignee>
+      <labels>
+        <label>
+          <name>Dandelion</name>
+          <color>#cc9933</color>
+          <type>any</type>
+          <attributes>
+          </attributes>
+        </label>
+      </labels>
+    </task>
+    <dumped>2025-12-05 18:40:34.332028+00:00</dumped>
+  </meta>
+  <image id="0" name="photo_20251017_1063.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="42.00" ytl="288.80" xbr="338.38" ybr="652.97" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="438.80" ytl="289.73" xbr="1032.43" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="1" name="photo_20251017_1064.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="580.50" ytl="300.54" xbr="1197.84" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="2" name="photo_20251017_1065.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="576.73" ytl="282.16" xbr="1182.60" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="3" name="photo_20251017_1066.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="598.85" ytl="230.54" xbr="1177.68" ybr="718.43" z_order="0">
+    </box>
+  </image>
+  <image id="4" name="photo_20251017_1067.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="355.52" ytl="214.57" xbr="1028.98" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="5" name="photo_20251017_1068.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="436.63" ytl="303.05" xbr="1100.26" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="6" name="photo_20251017_1069.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="362.90" ytl="406.28" xbr="1122.38" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="7" name="photo_20251017_1070.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="357.98" ytl="347.30" xbr="1186.28" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="8" name="photo_20251017_1071.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="412.06" ytl="189.99" xbr="1155.56" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="9" name="photo_20251017_1072.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="412.06" ytl="282.16" xbr="1123.61" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="10" name="photo_20251017_1073.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="367.81" ytl="276.01" xbr="1105.17" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="374.73" ytl="148.70" xbr="717.35" ybr="304.02" z_order="0">
+    </box>
+  </image>
+  <image id="11" name="photo_20251017_1074.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="404.68" ytl="237.92" xbr="1129.75" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="450.44" ytl="133.35" xbr="794.35" ybr="286.05" z_order="0">
+    </box>
+  </image>
+  <image id="12" name="photo_20251017_1075.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="405.91" ytl="246.52" xbr="1071.99" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="481.23" ytl="175.69" xbr="854.66" ybr="257.82" z_order="0">
+    </box>
+  </image>
+  <image id="13" name="photo_20251017_1076.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="450.44" ytl="147.46" xbr="839.26" ybr="234.72" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="378.87" ytl="235.46" xbr="1083.05" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="14" name="photo_20251017_1077.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="438.89" ytl="206.49" xbr="805.90" ybr="314.28" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="365.36" ytl="290.80" xbr="1027.75" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="15" name="photo_20251017_1078.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="458.75" ytl="289.00" xbr="1035.12" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="610.84" ytl="183.39" xbr="994.54" ybr="283.49" z_order="0">
+    </box>
+  </image>
+  <image id="16" name="photo_20251017_1079.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="463.67" ytl="283.39" xbr="1052.33" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="615.98" ytl="198.79" xbr="1031.75" ybr="291.19" z_order="0">
+    </box>
+  </image>
+  <image id="17" name="photo_20251017_1080.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="466.13" ytl="110.11" xbr="1117.46" ybr="611.51" z_order="0">
+    </box>
+  </image>
+  <image id="18" name="photo_20251017_1081.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="549.70" ytl="0.00" xbr="882.74" ybr="76.93" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="483.33" ytl="58.49" xbr="1026.52" ybr="527.94" z_order="0">
+    </box>
+  </image>
+  <image id="19" name="photo_20251017_1082.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="372.73" ytl="70.78" xbr="942.95" ybr="520.57" z_order="0">
+    </box>
+  </image>
+  <image id="20" name="photo_20251017_1083.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="650.47" ytl="518.10" xbr="1004.40" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="21" name="photo_20251017_1084.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="624.66" ytl="444.38" xbr="1004.40" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="22" name="photo_20251017_1085.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="625.89" ytl="449.29" xbr="1000.71" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="23" name="photo_20251017_1086.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="679.96" ytl="403.82" xbr="1027.75" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="24" name="photo_20251017_1087.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="806.54" ytl="353.44" xbr="1165.39" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="25" name="photo_20251017_1088.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="743.87" ytl="311.65" xbr="1086.74" ybr="653.29" z_order="0">
+    </box>
+  </image>
+  <image id="26" name="photo_20251017_1089.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="845.87" ytl="368.18" xbr="1226.84" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="27" name="photo_20251017_1090.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="765.99" ytl="429.63" xbr="1166.62" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="28" name="photo_20251017_1091.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="800.40" ytl="514.43" xbr="1105.17" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="29" name="photo_20251017_1092.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="796.71" ytl="508.28" xbr="1110.09" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="30" name="photo_20251017_1093.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="834.81" ytl="457.89" xbr="1247.73" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="31" name="photo_20251017_1094.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="822.52" ytl="327.63" xbr="1232.98" ybr="700.30" z_order="0">
+    </box>
+  </image>
+  <image id="32" name="photo_20251017_1095.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="702.08" ytl="296.90" xbr="1115.00" ybr="665.58" z_order="0">
+    </box>
+  </image>
+  <image id="33" name="photo_20251017_1096.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="663.99" ytl="387.85" xbr="1085.51" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="34" name="photo_20251017_1097.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="678.73" ytl="525.49" xbr="1071.99" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="35" name="photo_20251017_1098.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="771.65" ytl="556.12" xbr="1008.57" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="36" name="photo_20251017_1099.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="855.70" ytl="513.20" xbr="1280.00" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="37" name="photo_20251017_1100.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="860.62" ytl="385.39" xbr="1280.00" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="38" name="photo_20251017_1101.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="721.75" ytl="299.36" xbr="1143.27" ybr="687.70" z_order="0">
+    </box>
+  </image>
+  <image id="39" name="photo_20251017_1102.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="589.02" ytl="284.62" xbr="1038.81" ybr="692.62" z_order="0">
+    </box>
+  </image>
+  <image id="40" name="photo_20251017_1103.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="569.36" ytl="448.06" xbr="1026.52" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="41" name="photo_20251017_1104.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="634.49" ytl="562.35" xbr="1028.98" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="42" name="photo_20251017_1105.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="687.34" ytl="400.13" xbr="1119.92" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="43" name="photo_20251017_1106.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="742.64" ytl="362.04" xbr="1154.33" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="44" name="photo_20251017_1107.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="762.30" ytl="186.30" xbr="1127.29" ybr="547.61" z_order="0">
+    </box>
+  </image>
+  <image id="45" name="photo_20251017_1108.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="692.25" ytl="260.04" xbr="1025.29" ybr="616.43" z_order="0">
+    </box>
+  </image>
+  <image id="46" name="photo_20251017_1109.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="571.82" ytl="411.20" xbr="955.24" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="47" name="photo_20251017_1110.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="1123.61" ytl="488.62" xbr="1267.39" ybr="545.15" z_order="0">
+    </box>
+  </image>
+  <image id="48" name="photo_20251017_1111.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="1138.35" ytl="475.10" xbr="1280.00" ybr="542.69" z_order="0">
+    </box>
+  </image>
+  <image id="49" name="photo_20251017_1112.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="722.98" ytl="424.71" xbr="1123.61" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="50" name="photo_20251017_1113.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="682.42" ytl="262.49" xbr="1017.92" ybr="617.66" z_order="0">
+    </box>
+  </image>
+  <image id="51" name="photo_20251017_1114.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="511.60" ytl="183.84" xbr="799.17" ybr="514.43" z_order="0">
+    </box>
+  </image>
+  <image id="52" name="photo_20251017_1115.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="617.29" ytl="213.34" xbr="961.39" ybr="593.08" z_order="0">
+    </box>
+  </image>
+  <image id="53" name="photo_20251017_1116.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="526.30" ytl="342.38" xbr="893.80" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="54" name="photo_20251017_1117.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="564.44" ytl="473.87" xbr="901.17" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="55" name="photo_20251017_1118.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="644.32" ytl="488.62" xbr="955.24" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="56" name="photo_20251017_1119.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="506.68" ytl="427.17" xbr="856.90" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="57" name="photo_20251017_1120.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="600.08" ytl="256.35" xbr="947.87" ybr="554.98" z_order="0">
+    </box>
+  </image>
+  <image id="58" name="photo_20251017_1121.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="576.73" ytl="124.85" xbr="911.00" ybr="397.68" z_order="0">
+    </box>
+  </image>
+  <image id="59" name="photo_20251017_1122.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="407.14" ytl="196.13" xbr="748.78" ybr="505.82" z_order="0">
+    </box>
+  </image>
+  <image id="60" name="photo_20251017_1123.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="279.33" ytl="382.93" xbr="692.25" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="61" name="photo_20251017_1124.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="280.56" ytl="459.12" xbr="738.95" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="62" name="photo_20251017_1125.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="365.36" ytl="413.65" xbr="822.52" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="63" name="photo_20251017_1126.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="598.85" ytl="333.77" xbr="1085.51" ybr="649.61" z_order="0">
+    </box>
+  </image>
+  <image id="64" name="photo_20251017_1127.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="697.17" ytl="242.80" xbr="1137.13" ybr="492.30" z_order="0">
+    </box>
+  </image>
+  <image id="65" name="photo_20251017_1128.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="726.66" ytl="110.11" xbr="1127.29" ybr="315.34" z_order="0">
+    </box>
+  </image>
+  <image id="66" name="photo_20251017_1129.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="765.99" ytl="80.60" xbr="1198.57" ybr="284.61" z_order="0">
+    </box>
+  </image>
+  <image id="67" name="photo_20251017_1130.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="925.75" ytl="92.90" xbr="1280.00" ybr="321.48" z_order="0">
+    </box>
+  </image>
+  <image id="68" name="photo_20251017_1131.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="801.63" ytl="167.87" xbr="1204.72" ybr="360.81" z_order="0">
+    </box>
+  </image>
+  <image id="69" name="photo_20251017_1132.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="692.25" ytl="225.63" xbr="1070.76" ybr="418.57" z_order="0">
+    </box>
+  </image>
+  <image id="70" name="photo_20251017_1133.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="618.52" ytl="320.30" xbr="1001.94" ybr="529.17" z_order="0">
+    </box>
+  </image>
+  <image id="71" name="photo_20251017_1134.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="564.44" ytl="390.30" xbr="976.14" ybr="616.43" z_order="0">
+    </box>
+  </image>
+  <image id="72" name="photo_20251017_1135.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="444.01" ytl="532.86" xbr="904.86" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="73" name="photo_20251017_1136.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="483.33" ytl="525.49" xbr="969.99" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="74" name="photo_20251017_1137.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="672.59" ytl="336.23" xbr="1089.20" ybr="562.35" z_order="0">
+    </box>
+  </image>
+  <image id="75" name="photo_20251017_1138.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="673.82" ytl="201.05" xbr="1048.64" ybr="375.56" z_order="0">
+    </box>
+  </image>
+  <image id="76" name="photo_20251017_1139.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="677.50" ytl="365.72" xbr="899.94" ybr="527.94" z_order="0">
+    </box>
+  </image>
+  <image id="77" name="photo_20251017_1140.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="650.47" ytl="221.94" xbr="957.70" ybr="451.75" z_order="0">
+    </box>
+  </image>
+  <image id="78" name="photo_20251017_1141.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="622.20" ytl="295.68" xbr="962.62" ybr="631.17" z_order="0">
+    </box>
+  </image>
+  <image id="79" name="photo_20251017_1142.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="601.31" ytl="418.57" xbr="1032.67" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="80" name="photo_20251017_1143.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="608.68" ytl="427.17" xbr="1009.32" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="81" name="photo_20251017_1144.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="748.78" ytl="230.54" xbr="1038.81" ybr="545.15" z_order="0">
+    </box>
+  </image>
+  <image id="82" name="photo_20251017_1145.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="547.24" ytl="306.74" xbr="872.90" ybr="676.64" z_order="0">
+    </box>
+  </image>
+  <image id="83" name="photo_20251017_1146.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="566.90" ytl="511.97" xbr="876.59" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="84" name="photo_20251017_1147.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="677.50" ytl="471.41" xbr="1003.17" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="85" name="photo_20251017_1148.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="709.46" ytl="368.18" xbr="1026.52" ybr="643.50" z_order="0">
+    </box>
+  </image>
+  <image id="86" name="photo_20251017_1149.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="695.94" ytl="0.00" xbr="1003.17" ybr="266.18" z_order="0">
+    </box>
+  </image>
+  <image id="87" name="photo_20251017_1150.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="644.32" ytl="397.68" xbr="1031.44" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="88" name="photo_20251017_1151.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="769.67" ytl="16.71" xbr="1119.92" ybr="301.82" z_order="0">
+    </box>
+  </image>
+  <image id="89" name="photo_20251017_1152.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="703.31" ytl="0.00" xbr="1067.08" ybr="321.48" z_order="0">
+    </box>
+  </image>
+  <image id="90" name="photo_20251017_1153.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="694.71" ytl="478.79" xbr="1046.18" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="91" name="photo_20251017_1154.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="922.30" ytl="420.63" xbr="1077.88" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="998.85" ytl="157.62" xbr="1070.50" ybr="463.79" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1071.62" ytl="184.35" xbr="1134.92" ybr="469.86" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="0.00" ytl="211.08" xbr="379.22" ybr="576.78" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="548.02" ytl="496.16" xbr="805.06" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="92" name="photo_20251017_1155.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="568.76" ytl="497.80" xbr="793.52" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1080.13" ytl="200.14" xbr="1142.21" ybr="480.79" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1007.35" ytl="170.98" xbr="1075.40" ybr="473.51" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="925.95" ytl="439.49" xbr="1041.37" ybr="715.10" z_order="0">
+    </box>
+  </image>
+  <image id="93" name="photo_20251017_1156.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="665.95" ytl="472.29" xbr="826.33" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1010.88" ytl="509.95" xbr="1147.07" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1146.95" ytl="283.97" xbr="1258.80" ybr="601.07" z_order="0">
+    </box>
+  </image>
+  <image id="94" name="photo_20251017_1157.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="972.12" ytl="484.44" xbr="1076.61" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1113.05" ytl="274.25" xbr="1203.00" ybr="609.58" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1213.89" ytl="361.73" xbr="1280.00" ybr="588.92" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="610.06" ytl="466.22" xbr="788.66" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="95" name="photo_20251017_1158.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="593.06" ytl="458.93" xbr="760.72" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1092.40" ytl="325.28" xbr="1177.40" ybr="633.88" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1188.38" ytl="410.33" xbr="1280.00" ybr="595.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="927.17" ytl="517.24" xbr="1045.02" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="96" name="photo_20251017_1159.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="862.77" ytl="507.52" xbr="951.47" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1035.30" ytl="299.77" xbr="1106.98" ybr="614.44" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1126.30" ytl="322.85" xbr="1261.30" ybr="598.64" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="494.64" ytl="467.43" xbr="685.39" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="97" name="photo_20251017_1160.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="1081.34" ytl="366.59" xbr="1244.27" ybr="607.15" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="989.13" ytl="345.94" xbr="1059.60" ybr="667.90" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="797.17" ytl="526.96" xbr="889.50" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="430.25" ytl="473.50" xbr="608.85" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="98" name="photo_20251017_1161.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="987.79" ytl="418.83" xbr="1172.59" ybr="641.17" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="899.22" ytl="373.88" xbr="976.98" ybr="706.77" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="685.39" ytl="535.47" xbr="787.45" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="316.05" ytl="443.13" xbr="500.72" ybr="720.00" z_order="0">
+    </box>
+  </image>
+  <image id="99" name="photo_20251017_1162.png" width="1280" height="720">
+    <box label="Dandelion" source="manual" occluded="0" xtl="294.18" ytl="445.56" xbr="491.00" ybr="720.00" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="916.23" ytl="375.09" xbr="991.60" ybr="701.91" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="1007.23" ytl="403.04" xbr="1212.68" ybr="646.03" z_order="0">
+    </box>
+    <box label="Dandelion" source="manual" occluded="0" xtl="686.61" ytl="548.83" xbr="771.65" ybr="720.00" z_order="0">
+    </box>
+  </image>
+</annotations>
