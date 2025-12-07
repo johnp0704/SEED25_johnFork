@@ -54,7 +54,7 @@ for folder in os.listdir(BASE_DIR):
                     if os.path.exists(label_src):
                         all_pairs.append((img_src, label_src))
                     else:
-                        print(f'⚠️ WARNING: Missing label for {img_file} in {folder}')
+                        print(f'WARNING: Missing label for {img_file} in {folder}')
 
 print(f'Total image-label pairs collected: {len(all_pairs)}\n')
 
