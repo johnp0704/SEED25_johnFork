@@ -6,7 +6,11 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
+<<<<<<< Updated upstream
 def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
+=======
+def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.02):
+>>>>>>> Stashed changes
 
     # Load model
     processor = DetrImageProcessor.from_pretrained(model_path)
