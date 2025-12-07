@@ -12,10 +12,10 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # =============================
 # PATHS
 # =============================
-train_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\train\images"
-val_img_dir   = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
-train_ann     = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_train.json"
-val_ann       = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
+train_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\train\images"
+val_img_dir   = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
+train_ann     = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_train.json"
+val_ann       = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
 
 id2label = {0: "dandelion"}
 label2id = {"dandelion": 0}
@@ -81,6 +81,11 @@ scheduler = StepLR(optimizer, step_size=15, gamma=0.5)
 # TRAINING LOOP
 # =============================
 num_epochs = 40   # GOOD FOR SMALL DATASETS
+
+#confirm cuda
+print("CUDA available? ->", torch.cuda.is_available())
+print("Device in use:  ", device)
+print("GPU name:       ", torch.cuda.get_device_name(0) if torch.cuda.is_available() else "CPU only")
 
 for epoch in range(num_epochs):
     model.train()
