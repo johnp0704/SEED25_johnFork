@@ -109,7 +109,7 @@ def lr_lambda(current_epoch: int):
 scheduler = LambdaLR(optimizer, lr_lambda=lr_lambda)
 
 best_val_loss = float("inf")
-best_model_path = r"C:\Users\samst\Downloads\detr-dandelions-model_best"
+best_model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
 
 for epoch in range(num_epochs):
     model.train()
