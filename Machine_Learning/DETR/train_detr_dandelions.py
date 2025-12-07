@@ -99,7 +99,7 @@ def main():
             {"params": non_backbone_params, "lr": head_lr, "weight_decay": 1e-4},
         ])
 
-    num_epochs = 60
+    num_epochs = 15 #would break at 20 for me
     scheduler = LambdaLR(optimizer, lr_lambda=lambda e: 0.5 * (1.0 + math.cos(math.pi * e / num_epochs)))
 
     # MIXED PRECISION INITIALIZATION

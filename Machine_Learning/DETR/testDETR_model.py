@@ -15,7 +15,7 @@ val_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\
 val_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
 # Global detection threshold
-THRESHOLD = 0.8
+THRESHOLD = 0.9
 
 #==============Helper Functions=================
 def get_prediction(image_path, model, processor, threshold):
