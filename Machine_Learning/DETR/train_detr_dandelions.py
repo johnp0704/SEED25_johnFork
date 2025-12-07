@@ -9,9 +9,7 @@ import torchvision.transforms as T
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-# =============================
-# PATHS
-# =============================
+# Paths
 train_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\train\images"
 val_img_dir   = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
 train_ann     = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_train.json"
@@ -20,9 +18,7 @@ val_ann       = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\S
 id2label = {0: "dandelion"}
 label2id = {"dandelion": 0}
 
-# =============================
-# AUGMENTATION
-# =============================
+# Augmentations
 augment = T.Compose([
     T.ColorJitter(brightness=0.3, contrast=0.3, saturation=0.3),
     T.RandomHorizontalFlip(p=0.5),
@@ -30,9 +26,7 @@ augment = T.Compose([
     T.RandomRotation(10),
 ])
 
-# =============================
-# MODEL
-# =============================
+# Model
 processor = DetrImageProcessor.from_pretrained("facebook/detr-resnet-50")
 
 model = DetrForObjectDetection.from_pretrained(
@@ -45,18 +39,14 @@ model = DetrForObjectDetection.from_pretrained(
 
 model.to(device)
 
-# =============================
-# FREEZE BACKBONE FOR 10 EPOCHS
-# =============================
+# Freeze backbone
 for name, param in model.named_parameters():
     if "backbone" in name:
         param.requires_grad = False
 
 frozen_backbone_epochs = 10
 
-# =============================
-# DATASETS
-# =============================
+# Dataset
 train_dataset = DandelionDataset(train_img_dir, train_ann, processor, augment=augment)
 val_dataset   = DandelionDataset(val_img_dir,   val_ann,  processor)
 
@@ -71,24 +61,20 @@ def collate_fn(batch):
 train_loader = DataLoader(train_dataset, batch_size=4, shuffle=True, collate_fn=collate_fn)
 val_loader   = DataLoader(val_dataset,   batch_size=4, shuffle=False, collate_fn=collate_fn)
 
-# =============================
-# OPTIMIZER + SCHEDULER
-# =============================
+# Optimizer
 optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4, weight_decay=1e-4)
 scheduler = StepLR(optimizer, step_size=15, gamma=0.5)
 
-# =============================
-# TRAINING LOOP
-# =============================
-num_epochs = 40   # GOOD FOR SMALL DATASETS
+# Train loop
+num_epochs = 40
 
 for epoch in range(num_epochs):
     model.train()
     total_loss = 0
 
-    # unfreeze backbone after warmup
+    # Unfreeze
     if epoch == frozen_backbone_epochs:
-        print("🔓 Unfreezing backbone...")
+        print("Unfreezing backbone...")
         for name, param in model.named_parameters():
             if "backbone" in name:
                 param.requires_grad = True
@@ -114,9 +100,7 @@ for epoch in range(num_epochs):
 
     print(f"Training Loss: {total_loss / len(train_loader):.4f}")
 
-    # =============================
-    # VALIDATION
-    # =============================
+    # Validate
     model.eval()
     val_loss = 0
 
@@ -133,12 +117,10 @@ for epoch in range(num_epochs):
     print(f"Validation Loss: {val_loss / len(val_loader):.4f}")
 
 
-# =============================
-# SAVE MODEL
-# =============================
+# Save model
 save_path = r"C:\Users\samst\Downloads\detr-dandelions-model_final"
 os.makedirs(save_path, exist_ok=True)
 model.save_pretrained(save_path)
 processor.save_pretrained(save_path)
 
-print("🎉 Model training complete!")
+print("Model training complete")
