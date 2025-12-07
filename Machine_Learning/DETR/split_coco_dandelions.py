@@ -28,10 +28,6 @@ RAW_WAVE_DIRS = [
 ]
 
 # DETR output
-DATASET_ROOT = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
-# --------------------------------------------------------
-# 3. DETR output folder
-# --------------------------------------------------------
 DATASET_ROOT = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
 
 TRAIN_RATIO = 0.7
@@ -85,9 +81,7 @@ def main():
             merged_annotations.append(ann)
             next_ann_id += 1
 
-    # ----------------------------------------------------
-    # RANDOM SPLIT 70/10/20
-    # ----------------------------------------------------
+    # Split 70/10/20
     random.seed(42)
     random.shuffle(merged_images)
 
