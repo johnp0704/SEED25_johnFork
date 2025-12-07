@@ -116,7 +116,7 @@ for epoch in range(num_epochs):
     total_loss = 0.0
 
     # Unfreeze
-    if epoch == frozen_backbone_epochs - 1:
+    if epoch == frozen_backbone_epochs:
         print("Unfreezing backbone...")
         for name, param in model.named_parameters():
             if "backbone" in name:
