@@ -42,6 +42,10 @@ for folder in os.listdir(BASE_DIR):
         images_path = os.path.join(folder_path, 'images')
         labels_path = os.path.join(folder_path, 'labels')
 
+        print(f"Checking folder: {folder}")
+        print(f"  images exists: {os.path.exists(images_path)} -> {images_path}")
+        print(f"  labels exists: {os.path.exists(labels_path)} -> {labels_path}")
+        
         if os.path.exists(images_path) and os.path.exists(labels_path):
             for img_file in os.listdir(images_path):
                 if img_file.endswith('.png'):
@@ -50,7 +54,7 @@ for folder in os.listdir(BASE_DIR):
                     if os.path.exists(label_src):
                         all_pairs.append((img_src, label_src))
                     else:
-                        print(f'⚠️ WARNING: Missing label for {img_file} in {folder}')
+                        print(f'WARNING: Missing label for {img_file} in {folder}')
 
 print(f'Total image-label pairs collected: {len(all_pairs)}\n')
 

@@ -5,24 +5,34 @@ import shutil
 
 # Coco annotations
 COCO_WAVE_DIRS = [
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 3",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 4",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 2",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 3",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 4",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 7",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 8",
 ]
 
 # Imagaes
 RAW_WAVE_DIRS = [
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 7",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8",
 ]
 
 # DETR output
 DATASET_ROOT = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
+# --------------------------------------------------------
+# 3. DETR output folder
+# --------------------------------------------------------
+DATASET_ROOT = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
 
 TRAIN_RATIO = 0.7
 VAL_RATIO   = 0.1
@@ -75,7 +85,9 @@ def main():
             merged_annotations.append(ann)
             next_ann_id += 1
 
-    # Random split 70/20/10
+    # ----------------------------------------------------
+    # RANDOM SPLIT 70/10/20
+    # ----------------------------------------------------
     random.seed(42)
     random.shuffle(merged_images)
 
