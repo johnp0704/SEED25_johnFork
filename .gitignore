@@ -10,3 +10,4 @@ ros_packages/seed_controller_ws/src/mocap_listener/mocap_listener/test.txt
 Images/Testing Annotated/YOLOTestingAnnotations/Data/
 
 Images\Testing Annotated\DETRannotations\dandelion_dataset_detr
+Machine_Learning\DETR\detr-dandelions-model_final
