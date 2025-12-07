@@ -3,9 +3,7 @@ import json
 import random
 import shutil
 
-# --------------------------------------------------------
-# 1. COCO annotation wave folders (ONLY THESE FIVE)
-# --------------------------------------------------------
+# Coco annotations
 COCO_WAVE_DIRS = [
     r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
     r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 2",
@@ -17,9 +15,7 @@ COCO_WAVE_DIRS = [
     r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 8",
 ]
 
-# --------------------------------------------------------
-# 2. RAW image wave folders (must match same waves)
-# --------------------------------------------------------
+# Imagaes
 RAW_WAVE_DIRS = [
     r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
     r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2",
@@ -31,9 +27,7 @@ RAW_WAVE_DIRS = [
     r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8",
 ]
 
-# --------------------------------------------------------
-# 3. DETR output folder
-# --------------------------------------------------------
+# DETR output
 DATASET_ROOT = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
 
 TRAIN_RATIO = 0.7
@@ -41,9 +35,7 @@ VAL_RATIO   = 0.1
 TEST_RATIO  = 0.2
 
 
-# --------------------------------------------------------
-# Search raw waves for an image filename
-# --------------------------------------------------------
+# Search for raw image in wave dirs
 def find_raw_image(filename):
     for wave in RAW_WAVE_DIRS:
         path = os.path.join(wave, filename)
@@ -61,9 +53,7 @@ def main():
     next_image_id = 1
     next_ann_id = 1
 
-    # ----------------------------------------------------
-    # MERGE COCO JSONS
-    # ----------------------------------------------------
+    # Merge COCO annotations
     for wave_dir in COCO_WAVE_DIRS:
         ann_path = os.path.join(wave_dir, "annotations", "instances_default.json")
 
@@ -91,9 +81,7 @@ def main():
             merged_annotations.append(ann)
             next_ann_id += 1
 
-    # ----------------------------------------------------
-    # RANDOM SPLIT 70/10/20
-    # ----------------------------------------------------
+    # Split 70/10/20
     random.seed(42)
     random.shuffle(merged_images)
 
@@ -114,9 +102,7 @@ def main():
     val_anns   = [a for a in merged_annotations if a["image_id"] in val_ids]
     test_anns  = [a for a in merged_annotations if a["image_id"] in test_ids]
 
-    # ----------------------------------------------------
-    # CREATE OUTPUT FOLDERS
-    # ----------------------------------------------------
+    # Create output folder
     train_dir = os.path.join(DATASET_ROOT, "train", "images")
     val_dir   = os.path.join(DATASET_ROOT, "val", "images")
     test_dir  = os.path.join(DATASET_ROOT, "test", "images")
@@ -125,9 +111,7 @@ def main():
     for d in [train_dir, val_dir, test_dir, ann_dir]:
         os.makedirs(d, exist_ok=True)
 
-    # ----------------------------------------------------
-    # COPY IMAGES FROM RAW WAVES
-    # ----------------------------------------------------
+    # Copy images
     def copy_set(img_list, dest):
         for img in img_list:
             fname = img["file_name"]
@@ -146,9 +130,7 @@ def main():
     print("Copying test images...")
     copy_set(test_imgs, test_dir)
 
-    # ----------------------------------------------------
-    # WRITE NEW JSON FILES
-    # ----------------------------------------------------
+    # Write new json
     def save_json(name, imgs, anns):
         out = {"images": imgs, "annotations": anns, "categories": categories_ref}
         with open(os.path.join(ann_dir, name), "w") as f:
