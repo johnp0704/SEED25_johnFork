@@ -7,32 +7,38 @@ import shutil
 # 1. COCO annotation wave folders (ONLY THESE FIVE)
 # --------------------------------------------------------
 COCO_WAVE_DIRS = [
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 3",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 4",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 1",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 2",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 3",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 4",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 7",
+    r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 8",
 ]
 
 # --------------------------------------------------------
 # 2. RAW image wave folders (must match same waves)
 # --------------------------------------------------------
 RAW_WAVE_DIRS = [
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5",
-    r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 7",
+    r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8",
 ]
 
 # --------------------------------------------------------
 # 3. DETR output folder
 # --------------------------------------------------------
-DATASET_ROOT = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
+DATASET_ROOT = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr"
 
 TRAIN_RATIO = 0.7
-VAL_RATIO   = 0.2
-TEST_RATIO  = 0.1
+VAL_RATIO   = 0.1
+TEST_RATIO  = 0.2
 
 
 # --------------------------------------------------------
@@ -86,7 +92,7 @@ def main():
             next_ann_id += 1
 
     # ----------------------------------------------------
-    # RANDOM SPLIT 70/20/10
+    # RANDOM SPLIT 70/10/20
     # ----------------------------------------------------
     random.seed(42)
     random.shuffle(merged_images)
@@ -127,7 +133,7 @@ def main():
             fname = img["file_name"]
             src = find_raw_image(fname)
             if not src:
-                print(f"❌ Missing raw image: {fname}")
+                print(f"Missing raw image: {fname}")
                 continue
             shutil.copy2(src, os.path.join(dest, fname))
 
@@ -152,7 +158,7 @@ def main():
     save_json("instances_val.json", val_imgs, val_anns)
     save_json("instances_test.json", test_imgs, test_anns)
 
-    print("\n🎉 DONE! Merged + Split COCO Dataset Created")
+    print("\nDONE! Merged + Split COCO Dataset Created")
     print(f"Total images: {total}")
     print(f"Train: {len(train_imgs)}")
     print(f"Val:   {len(val_imgs)}")
