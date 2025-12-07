@@ -2,12 +2,17 @@ import os
 import glob # Useful for finding all files matching a pattern
 
 # ================= Configuration =================
-#set paths to the YOLO data paths, and output for logisitc regression
-BASE_DIR = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels"
-OUTPUT_DIR = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\LogRegannotations"
+#set to folder containing 'images' and 'labels' folders for YOLO  Data
+BASE_DIR = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data"
+
+#root folder paths
+OUTPUT_ROOT = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\LogRegannotations"
+
+#set final output directory to include the 'labels' subfolder
+OUTPUT_DIR = os.path.join(OUTPUT_ROOT, "labels")
 
 #sets we are looking for
-DATA_SETS = ['train', 'val', 'test'] 
+DATA_SETS = ['train', 'val', 'test']
 
 # =================Helper Function=================
 def get_label_from_yolo(txt_path):
@@ -90,5 +95,49 @@ def create_logistic_regression_labels():
     print(f'\nFiles saved in: {OUTPUT_DIR}')
 
 
+# =================File Organization=================
+def organize_files(output_root):
+    """
+    Moves the content of the generated single files (e.g., train_binary_labels.txt)
+    into the desired separate structure (e.g., /labels/train/binary_labels.txt).
+    """
+    DATA_SETS = ['train', 'val', 'test']
+    
+    #current location of files
+    temp_label_dir = os.path.join(output_root, "labels")
+    
+    for split in DATA_SETS:
+        #temporary input files
+        temp_image_path_file = os.path.join(temp_label_dir, f"{split}_image_paths.txt")
+        temp_label_file = os.path.join(temp_label_dir, f"{split}_binary_labels.txt")
+
+        #error handling courtesy of Gemini 3
+        if not os.path.exists(temp_label_file) or not os.path.exists(temp_image_path_file):
+            print(f"Warning: Temporary files for {split} not found. Skipping organization.")
+            continue
+
+        #destination folders
+        final_label_dir = os.path.join(temp_label_dir, split)
+        final_image_dir = os.path.join(output_root, "images", split)
+
+        #make destination folders
+        os.makedirs(final_label_dir, exist_ok=True)
+        os.makedirs(final_image_dir, exist_ok=True)
+        
+        #move labels
+        final_label_path = os.path.join(final_label_dir, "binary_labels.txt")
+        os.rename(temp_label_file, final_label_path)
+        print(f"Labels moved to: {final_label_path}")
+        
+        #move image paths
+        final_image_path = os.path.join(final_image_dir, "image_paths.txt")
+        os.rename(temp_image_path_file, final_image_path)
+        print(f"Image Paths moved to: {final_image_path}")
+
+    print("File organization complete")
+    
+# ================= Main Execution Block Amendment =================
+
 if __name__ == '__main__':
-    create_logistic_regression_labels()
+    create_logistic_regression_labels() 
+    organize_files(OUTPUT_ROOT)
