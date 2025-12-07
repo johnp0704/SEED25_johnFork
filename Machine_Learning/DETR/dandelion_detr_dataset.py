@@ -43,6 +43,7 @@ class DandelionDataset(Dataset):
         image = Image.open(path).convert('RGB')
 
         anns = self.img2anns[img_id]
+        # Skip empty images safely
         if len(anns) == 0:
             return self.__getitem__((idx + 1) % len(self))
 
@@ -51,18 +52,14 @@ class DandelionDataset(Dataset):
             x, y, w, h = a['bbox']
             annotations.append({
                 'bbox': [x, y, w, h],
-                'category_id': a['category_id'],
+                'category_id': 0, # Forced alignment
                 'area': w * h,
                 'iscrowd': 0
             })
 
         target = {'image_id': img_id, 'annotations': annotations}
 
-        #======Apply augmentation===========
-        if self.augment is not None:
-            image = self.augment(image)
-
-        #========DETR Processor==========
+        # IMPORTANT: DetrImageProcessor handles the normalization and resizing automatically
         encoding = self.processor(
             images=image,
             annotations=target,
@@ -72,4 +69,8 @@ class DandelionDataset(Dataset):
         pixel_values = encoding['pixel_values'].squeeze()
         labels = encoding['labels'][0]
 
-        return {'pixel_values': pixel_values, 'labels': labels}
+        return {
+            'pixel_values': pixel_values, 
+            'labels': labels, 
+            'orig_size': torch.tensor(image.size[::-1]) # Required for mAP
+        }
