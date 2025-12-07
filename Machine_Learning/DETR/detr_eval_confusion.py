@@ -6,11 +6,7 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-<<<<<<< Updated upstream
 def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
-=======
-def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.02):
->>>>>>> Stashed changes
 
     # Load model
     processor = DetrImageProcessor.from_pretrained(model_path)
@@ -72,8 +68,8 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.02):
 
 
 if __name__ == "__main__":
-    model_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Machine_Learning\DETR\detr-dandelion"
-    val_img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\val\images"
-    val_ann_file = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_val.json"
+    model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
+    val_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
+    val_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
     evaluate_model(model_path, val_img_dir, val_ann_file)
