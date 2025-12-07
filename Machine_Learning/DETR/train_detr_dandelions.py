@@ -176,9 +176,15 @@ for epoch in range(num_epochs):
         print(f"Best model saved: {best_val_loss:.4f}")
 
 # Save model
-save_path = r"C:\Users\samst\Downloads\detr-dandelions-model_final"
+save_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_final"
 os.makedirs(save_path, exist_ok=True)
 model.save_pretrained(save_path)
 processor.save_pretrained(save_path)
 
 print("Model training complete")
+
+# Confirm final save location
+print("Model and processor successfully saved.")
+print("Save directory:")
+print(os.path.abspath(save_path))
+
