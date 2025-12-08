@@ -20,78 +20,80 @@ from tensorflow.keras.applications.resnet50 import ResNet50, preprocess_input
 from tensorflow.keras.preprocessing import image
 from tensorflow.keras.utils import load_img, img_to_array
 
-<<<<<<< Updated upstream
-# Config
-=======
 # config
->>>>>>> Stashed changes
 
 # Wave
 WAVES = [
     {
         "name": "wave1",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 1\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 1",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1"
     },
-    # {
-    #     "name": "wave2",
-    #     "xml_path": r"C:\path\to\wave2\annotations.xml",
-    #     "image_dir": r"C:\path\to\wave2\images"
-    # },
+    {
+        "name": "wave2",
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 2",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2"
+    },
     {
         "name": "wave3",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 3\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 3",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3"
     },
     {
         "name": "wave4",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 4\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 4",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4"
     },
     {
         "name": "wave5",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 5\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 5",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
     },
     {
         "name": "wave6",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 6\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 6",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6"
     },
-    # {
-    #     "name": "wave7",
-    #     "xml_path": r"C:\path\to\wave1\annotations.xml",
-    #     "image_dir": r"C:\path\to\wave1\images"
-    # },
+    {
+        "name": "wave7",
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 7",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 7"
+    },
     {
         "name": "wave8",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 8\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 8",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8"
     }
 ]
 
 IMG_SIZE = (224, 224) # ResNet50 input size
-<<<<<<< Updated upstream
-RANDOM_STATE = 42
-=======
 RANDOM_STATE = 42 # for reproducible splits
->>>>>>> Stashed changes
 FEATURE_CACHE = None
 
 
 # Get image labels from CVAT XMLs
-<<<<<<< Updated upstream
-def parse_cvat_xml(xml_path, image_dir, wave_name):
-    # Parses CVAT XML and returns dataframe with image paths and labels
-=======
 
-def parse_cvat_xml(xml_path, image_dir, wave_name):
+def parse_cvat_xml(xml_dir, image_dir, wave_name):
+    """
+    xml_dir: directory containing the CVAT XML file
+    """
+    # find XML file inside xml_dir
+    xml_files = [f for f in os.listdir(xml_dir) if f.lower().endswith(".xml")]
+    if len(xml_files) == 0:
+        raise FileNotFoundError(f"No XML file found in directory: {xml_dir}")
+    if len(xml_files) > 1:
+        print(f"WARNING: Multiple XML files found in {xml_dir}, using the first one.")
+
+    xml_path = os.path.join(xml_dir, xml_files[0])
+
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
     """
     Parse a single CVAT 'CVAT for images 1.1' XML file.
     Returns a DataFrame with columns: ['wave', 'filename', 'full_path', 'label']
     label = 1 if image has at least one <box> (dandelion present), else 0.
     """
->>>>>>> Stashed changes
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
@@ -126,13 +128,9 @@ def parse_cvat_xml(xml_path, image_dir, wave_name):
 
 
 def build_labels_dataframe(waves_config):
-<<<<<<< Updated upstream
-    # Combines waves into dataframe
-=======
     """
     Combine all waves into a single DataFrame.
     """
->>>>>>> Stashed changes
     dfs = []
     for w in waves_config:
         df_wave = parse_cvat_xml(w["xml_path"], w["image_dir"], w["name"])
@@ -149,12 +147,9 @@ resnet_model = ResNet50(weights='imagenet', include_top=False, pooling='avg')
 
 
 def extract_feature_for_image(img_path):
-<<<<<<< Updated upstream
-=======
     """
     Load an image from disk, preprocess for ResNet50, and return a 2048-dim feature vector.
     """
->>>>>>> Stashed changes
     if not os.path.exists(img_path):
         raise FileNotFoundError(f"Image not found: {img_path}")
 
@@ -167,15 +162,12 @@ def extract_feature_for_image(img_path):
 
 
 def extract_features(df, cache_path=None):
-<<<<<<< Updated upstream
-=======
     """
     Given a DataFrame with 'full_path', return:
         X: numpy array of shape (N, feature_dim)
         y: labels array of shape (N,)
     If cache_path is provided and exists, load features from there instead of recomputing.
     """
->>>>>>> Stashed changes
     if cache_path is not None and os.path.exists(cache_path):
         print(f"Loading cached features from {cache_path}")
         cache = np.load(cache_path, allow_pickle=True).item()
@@ -198,11 +190,7 @@ def extract_features(df, cache_path=None):
         y_list.append(label)
 
         if (idx + 1) % 20 == 0:
-<<<<<<< Updated upstream
-            print(f"Processed {idx + 1}/{len(df)} images")
-=======
             print(f"Processed {idx + 1}/{len(df)} images...")
->>>>>>> Stashed changes
 
     X = np.array(X_list)
     y = np.array(y_list)
@@ -216,28 +204,21 @@ def extract_features(df, cache_path=None):
 
 # 70/20/10 Split
 
-def split_70_20_10(X, y, random_state=RANDOM_STATE):
-<<<<<<< Updated upstream
-=======
+def split_70_10_20(X, y, random_state=RANDOM_STATE):
     """
     Perform a stratified 70/20/10 split.
     1) First split into 70% train and 30% temp.
     2) Then split temp into (2/3 val, 1/3 test) → 20% / 10%.
     """
->>>>>>> Stashed changes
-    X_train, X_temp, y_train, y_temp = train_test_split(
-        X, y,
-        test_size=0.30,
-        random_state=random_state,
-        stratify=y
+    # 1. Split off 20% test
+    X_trainval, X_test, y_trainval, y_test = train_test_split(
+        X, y, test_size=0.20, random_state=42, stratify=y
     )
 
-    # 20/10 split from remaining 30% → val = 2/3 of 30% = 20%, test = 1/3 = 10%
-    X_val, X_test, y_val, y_test = train_test_split(
-        X_temp, y_temp,
-        test_size=1/3,
-        random_state=random_state,
-        stratify=y_temp
+    # 2. Split remaining into 10% val and 70% train
+    # 10% of whole dataset = 0.10 / 0.80 = 0.125
+    X_train, X_val, y_train, y_val = train_test_split(
+        X_trainval, y_trainval, test_size=0.125, random_state=42, stratify=y_trainval
     )
 
     print("Split sizes:")
@@ -251,25 +232,19 @@ def split_70_20_10(X, y, random_state=RANDOM_STATE):
 # Train XGBoost Binary Classifier
 
 class BoosterWrapper:
-<<<<<<< Updated upstream
-=======
     """
     A lightweight wrapper that mimics XGBClassifier predict/predict_proba,
     but internally uses a trained Booster. This avoids sklearn attribute
     restrictions and works for all XGBoost versions.
     """
->>>>>>> Stashed changes
     def __init__(self, booster):
         self.booster = booster
 
     def predict_proba(self, X):
         dX = xgb.DMatrix(X)
         probs = self.booster.predict(dX)
-<<<<<<< Updated upstream
-=======
         # Return 2-column soft probabilities like sklearn:
         # column 0 = P(class=0), column 1 = P(class=1)
->>>>>>> Stashed changes
         return np.column_stack([1 - probs, probs])
 
     def predict(self, X):
@@ -281,14 +256,10 @@ class BoosterWrapper:
 
 
 def train_xgboost_binary(X_train, y_train, X_val, y_val):
-<<<<<<< Updated upstream
-    # Train XGBoost binary classifier
-=======
     """
     Train binary XGBoost model using low-level Booster API with early stopping.
     Returns a BoosterWrapper that behaves like a classifier.
     """
->>>>>>> Stashed changes
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dval   = xgb.DMatrix(X_val, label=y_val)
 
@@ -321,19 +292,12 @@ def train_xgboost_binary(X_train, y_train, X_val, y_val):
 # Model Evaluation
 
 def evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test):
-<<<<<<< Updated upstream
-    # Print classification report and confusion matrix for each split
-    def evaluate_split(name, Xs, ys):
-        y_pred = model.predict(Xs)
-        print(f"\n{name}")
-=======
     """
     Print classification reports and confusion matrices for train/val/test.
     """
     def evaluate_split(name, Xs, ys):
         y_pred = model.predict(Xs)
         print(f"\n===== {name} =====")
->>>>>>> Stashed changes
         print(classification_report(ys, y_pred, digits=4))
         print("Confusion matrix:")
         print(confusion_matrix(ys, y_pred))
@@ -344,45 +308,36 @@ def evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test):
 
 
 # Main pipeline
-<<<<<<< Updated upstream
-def main():
-=======
 
 def main():
     # 1) Parse all CVAT XMLs → labels DataFrame
->>>>>>> Stashed changes
     df = build_labels_dataframe(WAVES)
     print("Total images in labels DF:", len(df))
     print(df['label'].value_counts(dropna=False))
 
-<<<<<<< Updated upstream
-    # Extract CNN features
-=======
     # IMPORTANT: You must ensure some images truly have label=0
     # (i.e., at least a few frames with no bounding boxes).
     # If label=1 for all rows, the model cannot do binary classification.
 
     # 2) Extract CNN features
->>>>>>> Stashed changes
     X, y = extract_features(df, cache_path=FEATURE_CACHE)
     print("Feature matrix shape:", X.shape)
     print("Labels shape:", y.shape)
 
-<<<<<<< Updated upstream
-    # 70/20/10 split
-    X_train, X_val, X_test, y_train, y_val, y_test = split_70_20_10(X, y)
+    # 3) 70/10/20 split
+    X_train, X_val, X_test, y_train, y_val, y_test = split_70_10_20(X, y)
 
-    # Train XGBoost
-    model = train_xgboost_binary(X_train, y_train, X_val, y_val)
+    # --- SAVE SPLITS FOR LATER EVALUATION ---
+    # Save file paths for test set
+    test_indices = np.arange(len(y))[(len(y_train)+len(y_val)):]  # indices in original DF
+    df_test = df.iloc[test_indices].copy()
+    test_image_paths_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_image_paths.txt"
+    test_labels_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_labels.txt"
 
-    # Evaluate
-    evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test)
-
-    # Save model
-    model_output_path = r"C:\Users\samst\Downloads\xgboost_model.json"
-=======
-    # 3) 70/20/10 split
-    X_train, X_val, X_test, y_train, y_val, y_test = split_70_20_10(X, y)
+    df_test['full_path'].to_csv(test_image_paths_file, index=False, header=False)
+    df_test['label'].to_csv(test_labels_file, index=False, header=False)
+    print(f"Saved test image paths to: {test_image_paths_file}")
+    print(f"Saved test labels to: {test_labels_file}")
 
     # 4) Train XGBoost
     model = train_xgboost_binary(X_train, y_train, X_val, y_val)
@@ -391,9 +346,9 @@ def main():
     evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test)
 
     # 6) Save model
-    model_output_path = r"C:\Users\samst\Downloads"
->>>>>>> Stashed changes
+    model_output_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\xgb_model.json"
     model.save_model(model_output_path)
+
     print(f"\nSaved XGBoost model to: {model_output_path}")
 
 

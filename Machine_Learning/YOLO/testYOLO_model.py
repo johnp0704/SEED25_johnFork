@@ -93,3 +93,8 @@ disp.plot(cmap=plt.cm.Blues)
 plt.title('YOLO Confusion Matrix')
 plt.show()
 
+cm = confusion_matrix(y_true, y_pred, normalize='true')
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
+disp.plot(cmap=plt.cm.Blues)
+plt.title('YOLO Confusion Matrix')
+plt.show()

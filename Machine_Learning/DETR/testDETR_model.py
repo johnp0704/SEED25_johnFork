@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
 
 # COCO formatted data
-val_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
-val_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
+test_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
+test_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
 # Global detection threshold
 THRESHOLD = 0.9
@@ -76,7 +76,7 @@ def main():
     print(f'Loaded DETR model from:\n{model_path}\n')
 
     # Load data
-    ground_truths = load_coco_ground_truth(val_ann_file)
+    ground_truths = load_coco_ground_truth(test_ann_file)
 
     y_true = []
     y_pred = []
@@ -84,7 +84,7 @@ def main():
 
     print("Evaluating model...")
     for filename, actual in ground_truths.items():
-        image_path = os.path.join(val_img_dir, filename)
+        image_path = os.path.join(test_img_dir, filename)
         
         # Check if file exists to prevent errors
         if not os.path.exists(image_path):
