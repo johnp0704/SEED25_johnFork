@@ -7,14 +7,14 @@ from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
 #============Config==================
-# Directory containing config.json and model.safetensors
+#directory containing config.json and model.safetensors
 model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
 
-# COCO formatted data
+#COCO formatted data
 test_img_dir = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
 test_ann_file = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
-# Global detection threshold
+#global detection threshold
 THRESHOLD = 0.9
 
 #==============Helper Functions=================
@@ -26,7 +26,7 @@ def get_prediction(image_path, model, processor, threshold):
     with torch.no_grad():
         outputs = model(**inputs)
 
-    # Convert results back to image scale to extract bounding boxes
+    #convert results back to image scale to extract bounding boxes
     results = processor.post_process_object_detection(
         outputs, 
         target_sizes=[image.size[::-1]], 
@@ -37,9 +37,9 @@ def get_prediction(image_path, model, processor, threshold):
     with torch.no_grad():
         outputs = model(**inputs)
 
-    # View top probability for query 0
+    #view top probability for query 0
     probs = outputs.logits.softmax(-1)
-    # Grab the highest prob for any of the 100 queries, excluding the last class (background)
+    #grab the highest prob for any of the 100 queries
     max_val, max_idx = probs[0, :, :-1].max(-1) 
     print(f"Max detection probability found in image: {max_val.max().item():.4f}")
 
@@ -50,10 +50,10 @@ def load_coco_ground_truth(val_ann_file):
     with open(val_ann_file, "r") as f:
         coco = json.load(f)
 
-    # Initialize dict with 0 (no dandelion)
+    #initialize dict with 0 (no dandelion)
     ground_truth = {img["file_name"]: 0 for img in coco["images"]}
     
-    # Update to 1 if there is an annotation linked to that image_id
+    #update to 1 if there is an annotation linked to that image id
     id_to_filename = {img["id"]: img["file_name"] for img in coco["images"]}
     for ann in coco["annotations"]:
         filename = id_to_filename[ann["image_id"]]
@@ -63,7 +63,7 @@ def load_coco_ground_truth(val_ann_file):
 
 #===============Evaluate=====================
 def main():
-    # Load model and processor
+    #load model and processor
     processor = DetrImageProcessor.from_pretrained(model_path)
     model = DetrForObjectDetection.from_pretrained(model_path)
 
@@ -75,18 +75,18 @@ def main():
     model.eval()
     print(f'Loaded DETR model from:\n{model_path}\n')
 
-    # Load data
+    #load data
     ground_truths = load_coco_ground_truth(test_ann_file)
 
     y_true = []
     y_pred = []
     TP = TN = FP = FN = 0
 
-    print("Evaluating model...")
+    print("Evaluating model")
     for filename, actual in ground_truths.items():
         image_path = os.path.join(test_img_dir, filename)
         
-        # Check if file exists to prevent errors
+        #check if file exists
         if not os.path.exists(image_path):
             continue
             

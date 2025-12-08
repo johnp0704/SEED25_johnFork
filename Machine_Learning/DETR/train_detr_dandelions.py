@@ -189,7 +189,7 @@ print(os.path.abspath(save_path))
 import random
 from PIL import Image, ImageDraw
 
-print("\nRunning quick DETR sanity test...")
+print("\nRunning quick DETR sanity test")
 
 # Load processor + model from final save path
 test_processor = DetrImageProcessor.from_pretrained(save_path)
