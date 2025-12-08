@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 MODEL_PATH = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
 IMAGE_DIR  = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
 OUTPUT_DIR = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\Vis_results"
-THRESHOLD  = 0.9  # DETR usually needs very low threshold
+THRESHOLD  = 0.9
 
 
 # Load model

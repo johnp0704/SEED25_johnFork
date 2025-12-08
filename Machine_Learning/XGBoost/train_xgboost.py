@@ -21,7 +21,6 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.utils import load_img, img_to_array
 
 # Config
-
 # Wave
 WAVES = [
     {
@@ -72,11 +71,7 @@ FEATURE_CACHE = None
 
 
 # Get image labels from CVAT XMLs
-
 def parse_cvat_xml(xml_dir, image_dir, wave_name):
-    """
-    xml_dir: directory containing the CVAT XML file
-    """
     # find XML file inside xml_dir
     xml_files = [f for f in os.listdir(xml_dir) if f.lower().endswith(".xml")]
     if len(xml_files) == 0:
@@ -89,11 +84,6 @@ def parse_cvat_xml(xml_dir, image_dir, wave_name):
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    """
-    Parse a single CVAT 'CVAT for images 1.1' XML file.
-    Returns a DataFrame with columns: ['wave', 'filename', 'full_path', 'label']
-    label = 1 if image has at least one <box> (dandelion present), else 0.
-    """
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
@@ -139,7 +129,6 @@ def build_labels_dataframe(waves_config):
 
 
 # CNN Feature Extraction
-
 # Load ResNet50 once (without top classification layer)
 resnet_model = ResNet50(weights='imagenet', include_top=False, pooling='avg')
 
@@ -152,7 +141,7 @@ def extract_feature_for_image(img_path):
     x = img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
-    feat = resnet_model.predict(x, verbose=0)[0]  # Shape (2048,)
+    feat = resnet_model.predict(x, verbose=0)[0]
     return feat
 
 
@@ -179,7 +168,7 @@ def extract_features(df, cache_path=None):
         y_list.append(label)
 
         if (idx + 1) % 20 == 0:
-            print(f"Processed {idx + 1}/{len(df)} images...")
+            print(f"Processed {idx + 1}/{len(df)} images")
 
     X = np.array(X_list)
     y = np.array(y_list)
@@ -191,7 +180,7 @@ def extract_features(df, cache_path=None):
     return X, y
 
 
-# 70/20/10 Split
+# 70/10/20 Split
 def split_70_10_20(X, y, random_state=RANDOM_STATE):
     # Split data into 70% train, 10% val, 20% test
     X_trainval, X_test, y_trainval, y_test = train_test_split(
@@ -209,7 +198,7 @@ def split_70_10_20(X, y, random_state=RANDOM_STATE):
     return X_train, X_val, X_test, y_train, y_val, y_test
 
 
-# Train XGBoost Binary Classifier
+# Train XGBoost
 class BoosterWrapper:
     def __init__(self, booster):
         self.booster = booster
@@ -228,7 +217,7 @@ class BoosterWrapper:
 
 
 def train_xgboost_binary(X_train, y_train, X_val, y_val):
-    # Train XGBoost binary classifier
+    # Train XGBoost
     dtrain = xgb.DMatrix(X_train, label=y_train)
     dval   = xgb.DMatrix(X_val, label=y_val)
 
@@ -260,7 +249,7 @@ def train_xgboost_binary(X_train, y_train, X_val, y_val):
 
 # Model Evaluation
 def evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test):
-    # Print classification report and confusion matrix for each split
+    # Print classification report and confusion matrices
     def evaluate_split(name, Xs, ys):
         y_pred = model.predict(Xs)
         print(f"\n{name}")
@@ -285,7 +274,7 @@ def main():
     print("Labels shape:", y.shape)
 
     # 70/20/10 split
-    X_train, X_val, X_test, y_train, y_val, y_test = split_70_20_10(X, y)
+    X_train, X_val, X_test, y_train, y_val, y_test = split_70_10_20(X, y)
 
     # Save splits info
     # Save file paths for test set

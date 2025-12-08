@@ -82,7 +82,7 @@ def evaluate(model_path, paths_file, labels_file):
     print("\nXGBoost Test Results:")
     print(classification_report(y_true, y_pred, digits=4))
 
-    # --- RAW CONFUSION MATRIX ---
+    #confusion martrices
     cm_raw = confusion_matrix(y_true, y_pred, labels=[0, 1])
 
     print("\nRaw Confusion Matrix:")
@@ -93,7 +93,6 @@ def evaluate(model_path, paths_file, labels_file):
     plt.title("XGBoost Confusion Matrix (Raw Counts)")
     plt.show()
 
-    # --- NORMALIZED CONFUSION MATRIX ---
     cm_norm = confusion_matrix(y_true, y_pred, labels=[0, 1], normalize="true")
 
     print("\nNormalized Confusion Matrix:")

@@ -12,10 +12,10 @@ import random
 
 #=================Config===============
 #base folder containing 'Wave' folders
-BASE_DIR = r'C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations'
+BASE_DIR = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations"
 
 #output folder
-DATA_DIR = r'C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data'
+DATA_DIR = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data"
 
 #random seed for reproducibility
 random.seed(42)

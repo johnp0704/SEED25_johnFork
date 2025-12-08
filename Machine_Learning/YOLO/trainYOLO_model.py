@@ -3,17 +3,14 @@ John Poirier
 SEED 485: The AWGR Autonomous Weeding Garden Robot
 '''
 
-'''Very simple binary classification example; given 100 annotated training images (dandelion wave 1), and given 1 new test image, classify if the image
-has a dandelion. Does not worry about where or how many. This file is just the model training.'''
-
 #Make sure to install ultralytics
 from ultralytics import YOLO
 
 if __name__ == '__main__': #required so worker scripts don't run this when called
-    # Load a pretrained YOLO model
+    #load a pretrained YOLO model
     model = YOLO("yolov8n.pt")  # or "yolo11n.pt" if you runnin YOLOv11, have to delete each time you train? I guess?
 
-    # Train it on your data
+    #train it on your data
     model.train(
         data=r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\dandelion.yaml", #gotta change to your local repo path
         epochs=30,

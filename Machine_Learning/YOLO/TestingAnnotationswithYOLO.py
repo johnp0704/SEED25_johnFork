@@ -9,14 +9,14 @@ Useful for understanding how to use annotated data.'''
 
 import os #needed for reading and path commands
 
-# Path to dataset
+#path to dataset
 DATASET_DIR = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations" #will have to be changed on user-basis
 
 
 def main():
     image_counts = {} #Create dictionary
 
-    # For all in dataset
+    #for all in dataset
     for path, _, files in os.walk(DATASET_DIR): #taking path string and file names
         for file in files: #for each file 
             if file.endswith(".txt"): #if it is a txt file
@@ -43,7 +43,7 @@ def main():
                     "image": img_path or "(image not found)"
                 } #Index by file name, save number of dandelions annotated and path
 
-    # Print results
+    #print results
     total_images = len(image_counts) #number of images looked at
     total_dandelions = sum(info["count"] for info in image_counts.values()) #sum the number of annotated dandelions in all images
 
