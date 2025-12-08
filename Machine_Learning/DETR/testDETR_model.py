@@ -122,5 +122,11 @@ def main():
     plt.title('DETR Confusion Matrix')
     plt.show()
 
+    cm = confusion_matrix(y_true, y_pred, labels=[0, 1], normalize='true')
+    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
+    disp.plot(cmap=plt.cm.Greens)
+    plt.title('DETR Confusion Matrix')
+    plt.show()
+
 if __name__ == "__main__":
     main()
