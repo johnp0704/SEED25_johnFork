@@ -1,23 +1,23 @@
 import os
 import glob
 
-# ================= Configuration =================
-# Set to folder containing YOLO 'images' and 'labels'
+#=================Config=================
+#fet to folder containing YOLO 'images' and 'labels'
 BASE_DIR = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data"
 
-# Output folder (no subfolders — flat output)
+#output folder
 OUTPUT_DIR = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\LogRegannotations"
 
-# sets we are looking for
+#sets we are looking for
 DATA_SETS = ['train', 'val', 'test']
 
 
-# ================= Helper Function =================
+#=================Helper Functions=================
 def get_label_from_yolo(txt_path):
-    """
+    '''
     Reads a YOLO text file and determines if a dandelion (class 0) is present.
     Returns: 1 if class 0 is found, 0 otherwise.
-    """
+    '''
     if not os.path.exists(txt_path):
         return 0
 
@@ -38,57 +38,51 @@ def get_label_from_yolo(txt_path):
         return 0
 
 
-# ================= Main =================
+#=================Main=================
 def create_flat_logistic_regression_files():
-    """
+    '''
     Creates train_image_paths.txt, train_binary_labels.txt, etc.
-    in OUTPUT_DIR with no subfolders.
-    """
+    '''
     os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-    print(f"\nReading YOLO dataset from: {BASE_DIR}")
-    print(f"Outputting flat files to: {OUTPUT_DIR}\n")
+    print(f'\nReading YOLO dataset from: {BASE_DIR}')
+    print(f'Outputting files to: {OUTPUT_DIR}\n')
 
     for split in DATA_SETS:
+        #YOLO folders
+        image_dir = os.path.join(BASE_DIR, 'images', split)
+        label_dir = os.path.join(BASE_DIR, 'labels', split)
 
-        # YOLO folders
-        image_dir = os.path.join(BASE_DIR, "images", split)
-        label_dir = os.path.join(BASE_DIR, "labels", split)
+        #output file paths
+        out_img_paths = os.path.join(OUTPUT_DIR, f'{split}_image_paths.txt')
+        out_labels = os.path.join(OUTPUT_DIR, f'{split}_binary_labels.txt')
 
-        # Output file paths (flat structure)
-        out_img_paths = os.path.join(OUTPUT_DIR, f"{split}_image_paths.txt")
-        out_labels = os.path.join(OUTPUT_DIR, f"{split}_binary_labels.txt")
-
-        image_files = glob.glob(os.path.join(image_dir, "*.png"))
+        image_files = glob.glob(os.path.join(image_dir, '*.png'))
 
         all_image_paths = []
         all_binary_labels = []
 
-        print(f"Processing {split}: {len(image_files)} images found.")
+        print(f'Processing {split}: {len(image_files)} images found.')
 
         for image_path in image_files:
-
             filename = os.path.splitext(os.path.basename(image_path))[0]
-            yolo_txt = os.path.join(label_dir, f"{filename}.txt")
+            yolo_txt = os.path.join(label_dir, f'{filename}.txt')
 
             label = get_label_from_yolo(yolo_txt)
 
             all_image_paths.append(image_path)
             all_binary_labels.append(str(label))
 
-        # Write output files
-        with open(out_img_paths, "w") as f:
-            f.write("\n".join(all_image_paths))
+        with open(out_img_paths, 'w') as f:
+            f.write('\n'.join(all_image_paths))
 
-        with open(out_labels, "w") as f:
-            f.write("\n".join(all_binary_labels))
+        with open(out_labels, 'w') as f:
+            f.write('\n'.join(all_binary_labels))
 
-        print(f"  Saved: {out_img_paths}")
-        print(f"  Saved: {out_labels}")
-
-    print("\nDone! Logistic regression files generated.")
+        print(f'  Saved: {out_img_paths}')
+        print(f'  Saved: {out_labels}')
 
 
-# ================= Run =================
-if __name__ == "__main__":
+#=================Run=================
+if __name__ == '__main__':
     create_flat_logistic_regression_files()
