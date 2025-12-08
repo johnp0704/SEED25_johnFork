@@ -34,7 +34,7 @@ augment = T.Compose([
 
 # Model + Processor
 config = DetrConfig.from_pretrained("facebook/detr-resnet-50")
-config.num_labels = 2                         # <-- IMPORTANT
+config.num_labels = 2
 config.id2label = id2label
 config.label2id = label2id
 
@@ -121,7 +121,7 @@ for epoch in range(num_epochs):
     total_loss = 0.0
 
     current_lrs = [group["lr"] for group in optimizer.param_groups]
-    print(f"\nEpoch [{epoch+1}/{num_epochs}] - LRs: heads={current_lrs[1]:.6f}, backbone={current_lrs[0]:.6f}")
+    print(f"\nEpoch [{epoch+1}/{num_epochs}] LRs: heads={current_lrs[1]:.6f}, backbone={current_lrs[0]:.6f}")
 
     optimizer.zero_grad()
 
@@ -154,7 +154,7 @@ for epoch in range(num_epochs):
     val_loss = 0.0
 
     with torch.no_grad():
-        for batch in tqdm(val_loader, desc=f"Epoch {epoch+1}/{num_epochs} - Validation"):
+        for batch in tqdm(val_loader, desc=f"Epoch {epoch+1}/{num_epochs} Validation"):
             if batch is None:
                 continue
 
@@ -211,7 +211,7 @@ with torch.no_grad():
 results = test_processor.post_process_object_detection(
     outputs,
     target_sizes=torch.tensor([[sample_image.height, sample_image.width]]).to(device),
-    threshold=0.3
+    threshold=0.9
 )[0]
 
 draw = ImageDraw.Draw(sample_image)
@@ -219,7 +219,7 @@ draw = ImageDraw.Draw(sample_image)
 det_count = 0
 for score, label, box in zip(results["scores"], results["labels"], results["boxes"]):
     score = score.cpu().item()
-    if score < 0.3:
+    if score < 0.9:
         continue
 
     det_count += 1

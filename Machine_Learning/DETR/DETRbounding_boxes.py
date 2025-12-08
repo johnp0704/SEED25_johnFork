@@ -6,9 +6,9 @@ from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
 
 # Paths
-MODEL_PATH = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best_new_n"
-IMAGE_DIR  = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
-OUTPUT_DIR = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Machine_Learning\DETR\vis_results"
+MODEL_PATH = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
+IMAGE_DIR  = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
+OUTPUT_DIR = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\Vis_results"
 THRESHOLD  = 0.9  # DETR usually needs very low threshold
 
 
@@ -48,7 +48,7 @@ def visualize_image(image_path):
 
     draw = ImageDraw.Draw(image)
 
-    # Optional font
+    # Font
     try:
         font = ImageFont.truetype("arial.ttf", 20)
     except:

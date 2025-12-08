@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 
 #============Config==================
 # Directory containing config.json and model.safetensors
-model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
+model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
 
 # COCO formatted data
-test_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
-test_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
+test_img_dir = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
+test_ann_file = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
 
 # Global detection threshold
 THRESHOLD = 0.9
