@@ -15,14 +15,14 @@ import matplotlib.pyplot as plt
 import os
 
 #============Config==================
-# Path to trained YOLO model (adjust as needed)
+#path to trained YOLO model (adjust as needed)
 model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v3\weights\best.pt"
 
-# Path to test image and label folders (adjust as needed)
+#path to test image and label folders (adjust as needed)
 image_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
 label_folder = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
 
-# Load trained YOLO model
+#load trained YOLO model
 model = YOLO(model_path)
 print(f'Loaded YOLO model from:\n{model_path}\n')
 
