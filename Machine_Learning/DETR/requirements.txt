@@ -3,3 +3,5 @@ torchvision
 transformers
 tqdm
 timm
+torchmetrics
+torchmetrics[detection]

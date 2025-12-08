@@ -2,7 +2,6 @@ import os
 import json
 import numpy as np
 import matplotlib.pyplot as plt
-import xml.etree.ElementTree as ET
 
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report
 import xgboost as xgb
@@ -23,6 +22,7 @@ def extract_feature(img_path):
     feat = resnet_model.predict(arr, verbose=0)[0]
     return feat.reshape(1, -1)
 
+
 # XGBoost Booster Wrapper
 class BoosterWrapper:
     def __init__(self, booster):
@@ -38,100 +38,82 @@ class BoosterWrapper:
         return (probs >= 0.5).astype(int)
 
 
-# Parse annotations
-def parse_cvat_xml(xml_path, image_dir):
-    tree = ET.parse(xml_path)
-    root = tree.getroot()
+# Load test dataset from .txt files
+def load_test_data(paths_file, labels_file):
+    with open(paths_file, "r") as f:
+        img_paths = [line.strip() for line in f.readlines()]
 
-    data = []
+    with open(labels_file, "r") as f:
+        labels = [int(line.strip()) for line in f.readlines()]
 
-    for img_tag in root.findall("image"):
-        filename = img_tag.get("name")
+    if len(img_paths) != len(labels):
+        raise ValueError("Image path count does not match label count!")
 
-        has_obj = any([
-            len(img_tag.findall("box")),
-            len(img_tag.findall("polygon")),
-            len(img_tag.findall("polyline")),
-            len(img_tag.findall("points")),
-        ])
-
-        label = 1 if has_obj else 0
-        full_path = os.path.join(image_dir, filename)
-
-        if not os.path.exists(full_path):
-            print(f"WARNING: Image missing {full_path}")
-            continue
-
-        data.append((full_path, label))
-
-    return data
+    dataset = [(img_paths[i], labels[i]) for i in range(len(img_paths))]
+    return dataset
 
 
 # Evaluate model
-def evaluate(model_path, xml_path, img_dir):
+def evaluate(model_path, paths_file, labels_file):
 
-    # Booster
     booster = xgb.Booster()
     booster.load_model(model_path)
     model = BoosterWrapper(booster)
 
-    # Validation data
-    dataset = parse_cvat_xml(xml_path, img_dir)
+    dataset = load_test_data(paths_file, labels_file)
 
     y_true = []
     y_pred = []
 
-    print(f"\nLoaded {len(dataset)} images from validation set.")
+    print(f"\nLoaded {len(dataset)} test images.")
 
-    # Prediction
     for img_path, label in dataset:
-        feat = extract_feature(img_path)     # shape (1, 2048)
+
+        if not os.path.exists(img_path):
+            print(f"WARNING: Missing image: {img_path}")
+            continue
+
+        feat = extract_feature(img_path)
         pred = model.predict(feat)[0]
 
         y_true.append(label)
         y_pred.append(pred)
 
-    print("\nXGBoost Validation Results")
+    print("\nXGBoost Test Results:")
     print(classification_report(y_true, y_pred, digits=4))
 
-    # Confusion Matrix
-    cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
-    labels = ["No Dandelion", "Dandelion"]
+    # --- RAW CONFUSION MATRIX ---
+    cm_raw = confusion_matrix(y_true, y_pred, labels=[0, 1])
 
-    fig, ax = plt.subplots(figsize=(6, 6))
-    disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=labels)
+    print("\nRaw Confusion Matrix:")
+    print(cm_raw)
 
-    disp.plot(
-        cmap="Greens",
-        colorbar=True,
-        values_format="d",
-        ax=ax
-    )
-
-    ax.set_title("XGBoost Confusion Matrix — Validation Set", fontsize=16, pad=20)
-    ax.set_xlabel("Predicted Label", fontsize=14)
-    ax.set_ylabel("True Label", fontsize=14)
-    ax.set_aspect("equal")
-
-    for spine in ax.spines.values():
-        spine.set_linewidth(1.5)
-
-    plt.tight_layout()
+    disp_raw = ConfusionMatrixDisplay(cm_raw, display_labels=["No Dandelion", "Dandelion"])
+    disp_raw.plot(cmap=plt.cm.Purples)
+    plt.title("XGBoost Confusion Matrix (Raw Counts)")
     plt.show()
 
-    print("\nConfusion Matrix:")
-    print(cm)
+    # --- NORMALIZED CONFUSION MATRIX ---
+    cm_norm = confusion_matrix(y_true, y_pred, labels=[0, 1], normalize="true")
 
-    return cm
+    print("\nNormalized Confusion Matrix:")
+    print(cm_norm)
+
+    disp_norm = ConfusionMatrixDisplay(cm_norm, display_labels=["No Dandelion", "Dandelion"])
+    disp_norm.plot(cmap=plt.cm.Purples)
+    plt.title("XGBoost Confusion Matrix (Normalized)")
+    plt.show()
+
+    return cm_raw, cm_norm
+
 
 
 # Run evaluation
 if __name__ == "__main__":
 
-    model_path = r"C:\Users\samst\Downloads\xgboost_model.json"
+    model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\xgb_model.json"
 
-    xml_path = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 5\annotations.xml"
+    paths_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_image_paths.txt"
+    labels_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_labels.txt"
 
-    img_dir = r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
-
-    evaluate(model_path, xml_path, img_dir)
+    evaluate(model_path, paths_file, labels_file)

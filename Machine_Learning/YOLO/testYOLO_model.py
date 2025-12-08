@@ -81,14 +81,20 @@ accuracy = (TP + TN) / (TP + TN + FP + FN)
 precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 recall = TP / (TP + FN) if (TP + FN) > 0 else 0
 
+print('Evaluation Complete')
+print(f'Accuracy:  {accuracy:.2%}')
+print(f'Precision: {precision:.2%}')
+print(f'Recall:    {recall:.2%}')
+print(f'TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}')
+
 cm = confusion_matrix(y_true, y_pred)
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
 disp.plot(cmap=plt.cm.Blues)
 plt.title('YOLO Confusion Matrix')
 plt.show()
 
-print('Evaluation Complete')
-print(f'Accuracy:  {accuracy:.2%}')
-print(f'Precision: {precision:.2%}')
-print(f'Recall:    {recall:.2%}')
-print(f'TP: {TP}, TN: {TN}, FP: {FP}, FN: {FN}')
+cm = confusion_matrix(y_true, y_pred, normalize='true')
+disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
+disp.plot(cmap=plt.cm.Blues)
+plt.title('YOLO Confusion Matrix')
+plt.show()

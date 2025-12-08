@@ -26,54 +26,74 @@ from tensorflow.keras.utils import load_img, img_to_array
 WAVES = [
     {
         "name": "wave1",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 1\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 1",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 1"
     },
-    # {
-    #     "name": "wave2",
-    #     "xml_path": r"C:\path\to\wave2\annotations.xml",
-    #     "image_dir": r"C:\path\to\wave2\images"
-    # },
+    {
+        "name": "wave2",
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 2",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 2"
+    },
     {
         "name": "wave3",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 3\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 3",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 3"
     },
     {
         "name": "wave4",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 4\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 4",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 4"
     },
     {
         "name": "wave5",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 5\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 5",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
     },
     {
         "name": "wave6",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 6\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 6",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 6"
     },
-    # {
-    #     "name": "wave7",
-    #     "xml_path": r"C:\path\to\wave1\annotations.xml",
-    #     "image_dir": r"C:\path\to\wave1\images"
-    # },
+    {
+        "name": "wave7",
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 7",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 7"
+    },
     {
         "name": "wave8",
-        "xml_path": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 8\annotations.xml",
-        "image_dir": r"C:\Users\samst\OneDrive\Documents\GitHub\Micro Final Project\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8"
+        "xml_path": r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\XGBoostAnnotations\Wave 8",
+        "image_dir": r"C:\UVM\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 8"
     }
 ]
 
 IMG_SIZE = (224, 224) # ResNet50 input size
-RANDOM_STATE = 42
+RANDOM_STATE = 42 # for reproducible splits
 FEATURE_CACHE = None
 
 
 # Get image labels from CVAT XMLs
-def parse_cvat_xml(xml_path, image_dir, wave_name):
-    # Parses CVAT XML and returns dataframe with image paths and labels
+
+def parse_cvat_xml(xml_dir, image_dir, wave_name):
+    """
+    xml_dir: directory containing the CVAT XML file
+    """
+    # find XML file inside xml_dir
+    xml_files = [f for f in os.listdir(xml_dir) if f.lower().endswith(".xml")]
+    if len(xml_files) == 0:
+        raise FileNotFoundError(f"No XML file found in directory: {xml_dir}")
+    if len(xml_files) > 1:
+        print(f"WARNING: Multiple XML files found in {xml_dir}, using the first one.")
+
+    xml_path = os.path.join(xml_dir, xml_files[0])
+
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+
+    """
+    Parse a single CVAT 'CVAT for images 1.1' XML file.
+    Returns a DataFrame with columns: ['wave', 'filename', 'full_path', 'label']
+    label = 1 if image has at least one <box> (dandelion present), else 0.
+    """
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
@@ -132,7 +152,7 @@ def extract_feature_for_image(img_path):
     x = img_to_array(img)
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
-    feat = resnet_model.predict(x, verbose=0)[0]  # shape (2048,)
+    feat = resnet_model.predict(x, verbose=0)[0]  # Shape (2048,)
     return feat
 
 
@@ -159,7 +179,7 @@ def extract_features(df, cache_path=None):
         y_list.append(label)
 
         if (idx + 1) % 20 == 0:
-            print(f"Processed {idx + 1}/{len(df)} images")
+            print(f"Processed {idx + 1}/{len(df)} images...")
 
     X = np.array(X_list)
     y = np.array(y_list)
@@ -172,21 +192,13 @@ def extract_features(df, cache_path=None):
 
 
 # 70/20/10 Split
-
-def split_70_20_10(X, y, random_state=RANDOM_STATE):
-    X_train, X_temp, y_train, y_temp = train_test_split(
-        X, y,
-        test_size=0.30,
-        random_state=random_state,
-        stratify=y
+def split_70_10_20(X, y, random_state=RANDOM_STATE):
+    # Split data into 70% train, 10% val, 20% test
+    X_trainval, X_test, y_trainval, y_test = train_test_split(
+        X, y, test_size=0.20, random_state=42, stratify=y
     )
-
-    # 20/10 split from remaining 30% → val = 2/3 of 30% = 20%, test = 1/3 = 10%
-    X_val, X_test, y_val, y_test = train_test_split(
-        X_temp, y_temp,
-        test_size=1/3,
-        random_state=random_state,
-        stratify=y_temp
+    X_train, X_val, y_train, y_val = train_test_split(
+        X_trainval, y_trainval, test_size=0.125, random_state=42, stratify=y_trainval
     )
 
     print("Split sizes:")
@@ -198,7 +210,6 @@ def split_70_20_10(X, y, random_state=RANDOM_STATE):
 
 
 # Train XGBoost Binary Classifier
-
 class BoosterWrapper:
     def __init__(self, booster):
         self.booster = booster
@@ -244,11 +255,10 @@ def train_xgboost_binary(X_train, y_train, X_val, y_val):
 
     print(f"Best iteration: {booster.best_iteration}")
 
-    # Return wrapped booster with sklearn-like API
+    # Return wrapped booster
     return BoosterWrapper(booster)
 
 # Model Evaluation
-
 def evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test):
     # Print classification report and confusion matrix for each split
     def evaluate_split(name, Xs, ys):
@@ -277,6 +287,18 @@ def main():
     # 70/20/10 split
     X_train, X_val, X_test, y_train, y_val, y_test = split_70_20_10(X, y)
 
+    # Save splits info
+    # Save file paths for test set
+    test_indices = np.arange(len(y))[(len(y_train)+len(y_val)):]  # indices in original DF
+    df_test = df.iloc[test_indices].copy()
+    test_image_paths_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_image_paths.txt"
+    test_labels_file = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\test_labels.txt"
+
+    df_test['full_path'].to_csv(test_image_paths_file, index=False, header=False)
+    df_test['label'].to_csv(test_labels_file, index=False, header=False)
+    print(f"Saved test image paths to: {test_image_paths_file}")
+    print(f"Saved test labels to: {test_labels_file}")
+
     # Train XGBoost
     model = train_xgboost_binary(X_train, y_train, X_val, y_val)
 
@@ -284,8 +306,9 @@ def main():
     evaluate_model(model, X_train, y_train, X_val, y_val, X_test, y_test)
 
     # Save model
-    model_output_path = r"C:\Users\samst\Downloads\xgboost_model.json"
+    model_output_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\XGBoost\xgb_model.json"
     model.save_model(model_output_path)
+
     print(f"\nSaved XGBoost model to: {model_output_path}")
 
 
