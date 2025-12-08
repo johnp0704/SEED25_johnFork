@@ -6,7 +6,7 @@ import os
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 import matplotlib.pyplot as plt
 
-def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
+def evaluate_model(model_path, train_img_dir, train_ann_file, threshold=0.9):
 
     # Load model
     processor = DetrImageProcessor.from_pretrained(model_path)
@@ -16,7 +16,7 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
 
 
     # Load COCO validation annotations
-    with open(val_ann_file, "r") as f:
+    with open(train_ann_file, "r") as f:
         coco = json.load(f)
 
     # Prepare lists for true and predicted labels
@@ -31,10 +31,10 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
     for img_info in coco["images"]:
         img_id = img_info["id"]
         filename = img_info["file_name"]
-        image_path = os.path.join(val_img_dir, filename)
+        image_path = os.path.join(train_img_dir, filename)
         image = Image.open(image_path).convert("RGB")
 
-        # Ground-truth
+        # Ground truth
         gt_has_dandelion = len(img_id_to_anns[img_id]) > 0
         y_true.append(1 if gt_has_dandelion else 0)
 
@@ -68,8 +68,31 @@ def evaluate_model(model_path, val_img_dir, val_ann_file, threshold=0.01):
 
 
 if __name__ == "__main__":
-    model_path = r"C:\UVM\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best"
-    val_img_dir = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\test\images"
-    val_ann_file = r"C:\UVM\SEED25_johnFork\Images\Testing Annotated\DETRannotations\dandelion_dataset_detr\annotations\instances_test.json"
+    model_path = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best_new_n"
+    train_img_dir = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Images\Preliminary Images\Dandelion\RGB\Wave 5"
+    train_ann_file = r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Images\Testing Annotated\DETRannotations\COCO Wave 5\annotations\instances_default.json"
 
-    evaluate_model(model_path, val_img_dir, val_ann_file)
+evaluate_model(model_path, train_img_dir, train_ann_file)
+
+from transformers import DetrForObjectDetection
+
+m = DetrForObjectDetection.from_pretrained(
+    r"C:\Users\Samuel\OneDrive\Documents\GitHub\SEED25_johnFork\Machine_Learning\DETR\detr-dandelions-model_best_new_n"
+)
+
+print("Loaded num_labels:", m.config.num_labels)
+
+state_dict = m.state_dict()
+print("Head weight example:", state_dict["class_labels_classifier.weight"][0][:10])
+
+sample = os.listdir(train_img_dir)[0]
+img = Image.open(os.path.join(train_img_dir, sample)).convert("RGB")
+
+processor = DetrImageProcessor.from_pretrained(model_path)
+model = DetrForObjectDetection.from_pretrained(model_path).to("cuda")
+
+inputs = processor(images=img, return_tensors="pt").to("cuda")
+outputs = model(**inputs)
+
+res = processor.post_process_object_detection(outputs, target_sizes=[img.size[::-1]], threshold=0.5)[0]
+print(res)

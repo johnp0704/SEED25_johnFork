@@ -38,13 +38,15 @@
   "giou_cost": 2,
   "giou_loss_coefficient": 2,
   "id2label": {
-    "0": "dandelion"
+    "0": "no_object",
+    "1": "dandelion"
   },
   "init_std": 0.02,
   "init_xavier_std": 1.0,
   "is_encoder_decoder": true,
   "label2id": {
-    "dandelion": 0
+    "dandelion": 1,
+    "no_object": 0
   },
   "mask_loss_coefficient": 1,
   "max_position_embeddings": 1024,
