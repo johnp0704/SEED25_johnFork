@@ -6,8 +6,8 @@ from datetime import datetime
 import time
 
 # Define absolute paths for saving images (Change if needed)
-rgb_folder = r"C:\UVM\SEED\Images\Preliminary Images\Dandelion\RGB"
-depth_folder = r"C:\UVM\SEED\Images\Preliminary Images\Dandelion\Depth"
+rgb_folder = r"C:\UVM\SEED\Images\Preliminary Images\Red\RGB"
+depth_folder = r"C:\UVM\SEED\Images\Preliminary Images\Red\Depth"
 
 # Create folders if they don't exist
 os.makedirs(rgb_folder, exist_ok=True)

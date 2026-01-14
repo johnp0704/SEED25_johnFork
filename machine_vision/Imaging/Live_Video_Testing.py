@@ -5,7 +5,7 @@ import math
 from ultralytics import YOLO
 
 #============Config===================
-# Path to trained model
+#path to trained model
 model_path = r"C:\UVM\SEED\SEED25\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
 
 #==========Initialize Model=================
@@ -13,14 +13,14 @@ print(f"Loading YOLO model from: {model_path}")
 model = YOLO(model_path)
 print("Model loaded successfully.")
 
-#Class names
+#class names
 classNames = ["No Dandelion", "Dandelion"] 
 
 #=============Initialize Realsense============
 pipeline = rs.pipeline()
 config = rs.config()
 
-#Enable streams
+#enable streams
 config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
 config.enable_stream(rs.stream.depth, 1280, 720, rs.format.z16, 30)
 
@@ -43,7 +43,6 @@ try:
         depth_image = np.asanyarray(depth_frame.get_data())
 
         #3) Run YOLO Inference directly on the current frame
-        #stream=True is efficient for video loops
         results = model(color_image, stream=True, verbose=False)
 
         #4) Process Detections and Draw Bounding Boxes
