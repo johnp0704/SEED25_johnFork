@@ -1,0 +1,156 @@
+import pyrealsense2 as rs
+import numpy as np
+import cv2
+
+# ==========================================
+# USER CONFIGURATION SECTION
+# ==========================================
+
+# 1. RED COLOR CALIBRATION (HSV)
+# Red wraps around 0/180 Hue. We define two ranges.
+# Tune these values based on your specific "Red" images.
+LOWER_RED1 = np.array([0, 120, 70])
+UPPER_RED1 = np.array([10, 255, 255])
+LOWER_RED2 = np.array([170, 120, 70])
+UPPER_RED2 = np.array([180, 255, 255])
+
+# 2. BIRD'S EYE VIEW (BEV) SETTINGS
+# Output image dimensions (width, height)
+BEV_WIDTH = 400
+BEV_HEIGHT = 600
+
+# PIXELS_PER_METER: This defines your "scale".
+# If your BEV_HEIGHT (600px) represents 3 meters of real-world distance:
+# Then PIXELS_PER_METER = 200.
+PIXELS_PER_METER = 200 
+
+# SOURCE POINTS: The 4 points on the raw CAMERA image that form a rectangle on the floor.
+# Order: Top-Left, Top-Right, Bottom-Left, Bottom-Right
+# IMPORTANT: You must measure these pixel coordinates with your camera in its fixed position!
+# These are placeholder values for a standard 640x480 stream.
+SRC_POINTS = np.float32([
+    [200, 300],  # Top-Left (further away)
+    [440, 300],  # Top-Right (further away)
+    [100, 480],  # Bottom-Left (closer to robot)
+    [540, 480]   # Bottom-Right (closer to robot)
+])
+
+# DESTINATION POINTS: Where those points map to in the flat BEV image
+# We map them to a rectangle that fills our BEV window (or a sub-region)
+DST_POINTS = np.float32([
+    [0, 0],             # Top-Left
+    [BEV_WIDTH, 0],     # Top-Right
+    [0, BEV_HEIGHT],    # Bottom-Left
+    [BEV_WIDTH, BEV_HEIGHT] # Bottom-Right
+])
+
+# ==========================================
+
+def get_red_mask(image_hsv):
+    """Combines two HSV ranges to robustly detect red."""
+    mask1 = cv2.inRange(image_hsv, LOWER_RED1, UPPER_RED1)
+    mask2 = cv2.inRange(image_hsv, LOWER_RED2, UPPER_RED2)
+    return cv2.bitwise_or(mask1, mask2)
+
+def main():
+    # 1. Configure RealSense Pipeline
+    pipeline = rs.pipeline()
+    config = rs.config()
+    
+    # Enable RGB stream (640x480 at 30fps is standard)
+    config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+    
+    # Start streaming
+    print("[INFO] Starting RealSense Camera...")
+    profile = pipeline.start(config)
+
+    # Calculate Perspective Matrix (Homography) once
+    # This matrix transforms "Camera View" -> "Bird's Eye View"
+    matrix = cv2.getPerspectiveTransform(SRC_POINTS, DST_POINTS)
+
+    try:
+        while True:
+            # 2. Wait for frames
+            frames = pipeline.wait_for_frames()
+            color_frame = frames.get_color_frame()
+            if not color_frame:
+                continue
+
+            # Convert to numpy array
+            frame = np.asanyarray(color_frame.get_data())
+
+            # 3. Apply Bird's Eye View Transform
+            # This warps the camera perspective into a flat top-down map
+            bev_image = cv2.warpPerspective(frame, matrix, (BEV_WIDTH, BEV_HEIGHT))
+
+            # 4. Detect Red in the BEV Image
+            hsv_bev = cv2.cvtColor(bev_image, cv2.COLOR_BGR2HSV)
+            red_mask = get_red_mask(hsv_bev)
+
+            # Clean up noise (optional morphological operations)
+            kernel = np.ones((5, 5), np.uint8)
+            red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_OPEN, kernel)
+
+            # 5. Find Contours of the Red Object
+            contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            target_x_m = 0
+            target_y_m = 0
+            detected = False
+
+            if contours:
+                # Find the largest red object
+                largest_contour = max(contours, key=cv2.contourArea)
+                
+                if cv2.contourArea(largest_contour) > 100: # Filter small noise
+                    detected = True
+                    M = cv2.moments(largest_contour)
+                    if M["m00"] != 0:
+                        # Centroid in Pixel Coordinates (BEV Frame)
+                        cX = int(M["m10"] / M["m00"])
+                        cY = int(M["m01"] / M["m00"])
+
+                        # Draw the centroid
+                        cv2.circle(bev_image, (cX, cY), 7, (255, 255, 255), -1)
+                        cv2.drawContours(bev_image, [largest_contour], -1, (0, 255, 0), 2)
+
+                        # 6. Calculate Relative Position
+                        # Assumption: Robot camera is at Bottom-Center of BEV Image
+                        # Robot X (Pixel) = BEV_WIDTH / 2
+                        # Robot Y (Pixel) = BEV_HEIGHT
+                        
+                        robot_pixel_x = BEV_WIDTH / 2
+                        robot_pixel_y = BEV_HEIGHT
+
+                        # Delta in Pixels
+                        dx_px = cX - robot_pixel_x
+                        dy_px = robot_pixel_y - cY  # Inverted because Y grows downwards in images
+
+                        # Convert to Meters
+                        # X: Negative = Left, Positive = Right
+                        # Y: Positive = Forward distance
+                        target_x_m = dx_px / PIXELS_PER_METER
+                        target_y_m = dy_px / PIXELS_PER_METER
+
+                        label = f"X: {target_x_m:.2f}m, Y: {target_y_m:.2f}m"
+                        cv2.putText(bev_image, label, (cX - 20, cY - 20), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+
+            # Display Results
+            # Draw the source points on original frame for debugging
+            cv2.polylines(frame, [np.int32(SRC_POINTS)], True, (0, 255, 255), 2)
+            
+            cv2.imshow("Raw RealSense Feed (Source Region)", frame)
+            cv2.imshow("Bird's Eye View (Red Detection)", bev_image)
+            # cv2.imshow("Red Mask", red_mask) # Uncomment to debug color filtering
+
+            key = cv2.waitKey(1)
+            if key == 27: # Press 'ESC' to exit
+                break
+
+    finally:
+        pipeline.stop()
+        cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    main()
