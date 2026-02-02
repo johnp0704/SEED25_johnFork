@@ -103,7 +103,7 @@ def main():
                 rel_y = dy_px / pixels_per_meter
 
                 rel_x -= 0.1 #meter offset of auger from camera
-                rel_y -= 0.16 #meter offset of auger from camera fov
+                rel_y += 0.16 #meter offset of auger from camera fov
 
                 #map to robot frame (X=forward, Y=left)
                 x_robot = rel_y
