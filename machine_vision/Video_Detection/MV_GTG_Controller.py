@@ -99,8 +99,8 @@ def main():
                 rel_x = dx_px / pixels_per_meter
                 rel_y = dy_px / pixels_per_meter
 
-                rel_x += 0.1 #Tuning for auger positioning
-                rel_y -= 0.16
+                rel_x -= 0.1 #Tuning for auger positioning
+                rel_y += 0.16
 
                 # Robot Frame: X=Forward, Y=Left
                 x_robot = rel_y
