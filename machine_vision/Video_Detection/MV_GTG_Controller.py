@@ -12,7 +12,7 @@ import sabertooth as st
 from PID import PID
 
 # =======Config======
-LOAD_FILE = r'C:\UVM\SEED\SEED25\machine_vision\Video_Detection\calibration_data.npz'
+LOAD_FILE = r'calibration_data.npz'
 
 #controller constants
 MAX_ACUTUATOR_INPUT = 30 
@@ -49,7 +49,7 @@ def main():
     config.enable_stream(rs.stream.color, 1280, 720, rs.format.bgr8, 30)
     pipeline.start(config)
 
-    #3)I nitialize motors
+    #3)Initialize motors
     print('Initializing Motors')
     try:
         motor = st.SaberToothMotorDriver(True, True)

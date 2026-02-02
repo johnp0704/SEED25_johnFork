@@ -12,8 +12,8 @@ DIST_TO_CARDBOARD_M = 0.42
 PIXELS_PER_METER = 400
 BEV_WIDTH = 650
 BEV_HEIGHT = 500
-ROBOT_POS_X = BEV_WIDTH // 2
-ROBOT_POS_Y = BEV_HEIGHT
+ROBOT_POS_X = BEV_WIDTH // 2 + 50 #+ is tuning parameter
+ROBOT_POS_Y = BEV_HEIGHT - 50 #- is tuning parameter
 
 #output directory
 SAVE_FILE = r"C:\UVM\SEED\SEED25\machine_vision\Video_Detection\calibration_data.npz"
