@@ -103,6 +103,9 @@ def main():
                 rel_x = dx_px / pixels_per_meter
                 rel_y = dy_px / pixels_per_meter
 
+                rel_x -= 0.1 #meter offset of auger from camera
+                rel_y -= 0.16 #meter offset of auger from camera fov
+
                 label = f'X:{rel_x:.2f}m Y:{rel_y:.2f}m'
                 cv2.putText(bev_image, label, (cX, cY - 15), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
