@@ -2,7 +2,7 @@
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
-from geometry_msgs.msg import Twist  # or whatever you plan to command
+import tf.transformations as tf
 
 class ControllerNode(Node):
     def __init__(self):
@@ -15,11 +15,9 @@ class ControllerNode(Node):
             self.listener_callback,
             10)
 
-        # Publisher for velocity/commands
-        self.publisher = self.create_publisher(Twist, '/cmd_vel', 10)
+        
 
     def listener_callback(self, msg: RigidBodies):
-        # For example: track rigid body '1'
         target = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if target is None:
             return
@@ -27,14 +25,15 @@ class ControllerNode(Node):
         pos = target.pose.position
         ori = target.pose.orientation
 
-        # Example simple controller logic
-        cmd = Twist()
-        cmd.linear.x = -pos.x * 0.5
-        cmd.linear.y = -pos.y * 0.5
-        cmd.angular.z = -ori.z * 0.5
+        _, _, yaw = tf.euler_from_quaternion(ori)
 
-        self.publisher.publish(cmd)
-        self.get_logger().info(f"Published control: x={cmd.linear.x:.3f}, y={cmd.linear.y:.3f}")
+        self.get_logger().info(
+                f"X=({pos.x:.3f}, Y={pos.y:.3f}, Dir=({yaw:.3f}"  
+            )
+
+        
+
+        
 
 def main(args=None):
     rclpy.init(args=args)
