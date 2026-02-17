@@ -1,4 +1,4 @@
-25696757819307572
+25703842939655788
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -94108,6 +94108,20 @@ rotary encoder illuminated switch vertical
 9
 8
 Seed_footprints
+01530008
+<b>01530008</b><br>
+
+0
+2
+2
+Seed_footprints
+01530008 (FuseHold)
+<b>01530008</b><br>
+
+0
+2
+2
+Seed_footprints
 CONN_1757268_PXC
 
 1757268 
@@ -94142,6 +94156,20 @@ PHOENIX_1757242
 0
 2
 2
+Seed_footprints
+SOT91P240X102-3N
+
+
+0
+3
+3
+Seed_footprints
+Untitled
+
+
+0
+0
+0
 Sensor
 ASAIR_AM2302_P2.54mm_Lead2.75mm_TabDown
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/AM2302.pdf

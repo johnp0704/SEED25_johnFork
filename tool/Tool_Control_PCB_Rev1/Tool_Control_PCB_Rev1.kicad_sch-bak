@@ -3943,12 +3943,6 @@
 		(uuid "18737727-40d6-4eb1-bbba-4982852c2e0c")
 	)
 	(junction
-		(at 327.66 119.38)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "2c0c81d8-5532-4ecc-b03c-8f59f6c62c97")
-	)
-	(junction
 		(at 345.44 207.01)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4003,12 +3997,6 @@
 		(uuid "9c2d26d0-2f98-4420-953a-f70a7104aa08")
 	)
 	(junction
-		(at 327.66 116.84)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "b1ab7eae-6eb6-4266-a362-2a9bf4b72d87")
-	)
-	(junction
 		(at 175.26 40.64)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -4031,16 +4019,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "e7a88a14-732f-4802-98d8-a88a863647e1")
-	)
-	(wire
-		(pts
-			(xy 311.15 114.3) (xy 325.12 114.3)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "04ab3c36-012f-4449-89fc-37d5c4c45c0a")
 	)
 	(wire
 		(pts
@@ -4221,16 +4199,6 @@
 			(type default)
 		)
 		(uuid "275d3e8a-bcac-4062-bb05-2c2ad658366c")
-	)
-	(wire
-		(pts
-			(xy 325.12 119.38) (xy 325.12 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "299b1c03-da04-4d3d-a447-dc753667ff26")
 	)
 	(wire
 		(pts
@@ -4574,16 +4542,6 @@
 	)
 	(wire
 		(pts
-			(xy 327.66 119.38) (xy 325.12 119.38)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8a9f8a57-0204-4dec-8cba-3b9bc6035a5b")
-	)
-	(wire
-		(pts
 			(xy 201.93 67.31) (xy 201.93 62.23)
 		)
 		(stroke
@@ -4691,16 +4649,6 @@
 			(type default)
 		)
 		(uuid "a396577f-6b78-4a8e-8bd0-7d08b6754b0b")
-	)
-	(wire
-		(pts
-			(xy 325.12 116.84) (xy 327.66 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "aa141612-6a43-4961-8c46-f385fd21246e")
 	)
 	(wire
 		(pts
@@ -4944,16 +4892,6 @@
 	)
 	(wire
 		(pts
-			(xy 325.12 121.92) (xy 311.15 121.92)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "d8ebb896-7663-4ff9-8779-444505e27558")
-	)
-	(wire
-		(pts
 			(xy 312.42 67.31) (xy 312.42 64.77)
 		)
 		(stroke
@@ -5031,16 +4969,6 @@
 			(type default)
 		)
 		(uuid "e455cda1-6118-4c47-b780-aaa8976e77fa")
-	)
-	(wire
-		(pts
-			(xy 325.12 114.3) (xy 325.12 116.84)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "eaccea2a-0a1f-489c-ad0c-13879a50092c")
 	)
 	(wire
 		(pts
@@ -37342,76 +37270,6 @@
 			(project "Tool_Control_PCB_Rev1"
 				(path "/de4190c7-299d-4b09-a5bb-1507f5198c1c"
 					(reference "TP4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:D_Schottky")
-		(at 311.15 118.11 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "9ef3a682-853c-43c7-8bd4-8bbf98010b5b")
-		(property "Reference" "D4"
-			(at 313.69 116.5224 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "D_Schottky"
-			(at 313.69 119.0624 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Diode_SMD:D_SMC_Handsoldering"
-			(at 311.15 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 311.15 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Schottky diode"
-			(at 311.15 118.11 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "a96d439d-99f6-47cf-aa22-636fc5cdc397")
-		)
-		(pin "1"
-			(uuid "a6b40d83-8fd2-4379-aef8-964b842b1b2c")
-		)
-		(instances
-			(project "Tool_Control_PCB_Rev1"
-				(path "/de4190c7-299d-4b09-a5bb-1507f5198c1c"
-					(reference "D4")
 					(unit 1)
 				)
 			)
