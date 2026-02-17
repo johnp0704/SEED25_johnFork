@@ -15,7 +15,7 @@ class RedDataset(Dataset):
         """
         self.images_dir = images_dir
         self.processor = processor
-        self.augment = augment   # <= NEW
+        self.augment = augment
 
         with open(annotation_file, "r") as f:
             coco = json.load(f)
