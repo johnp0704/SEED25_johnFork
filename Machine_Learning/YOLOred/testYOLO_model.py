@@ -18,11 +18,11 @@ import os
 # CONFIGURATION
 # -----------------------------
 # Path to trained YOLO model (adjust as needed)
-model_path = r"C:\UVM\SEED\SEED25_johnFork\Machine_Learning\YOLO\runs\dandelion_train_v1\weights\best.pt"
+model_path = r"C:\UVM\SEED25\Machine_Learning\YOLOred\runs\red_train_7\weights\best.pt"
 
 # Path to test image and label folders
-image_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\images\test"
-label_folder = r"C:\UVM\SEED\SEED25_johnFork\Images\Testing Annotated\YOLOTestingAnnotations\Data\labels\test"
+image_folder = r"C:\UVM\SEED25\Images\Testing Annotated\YOLOredannotations\Data\images\test"
+label_folder = r"C:\UVM\SEED25\Images\Testing Annotated\YOLOredannotations\Data\labels\test"
 
 # Load trained YOLO model
 model = YOLO(model_path)
@@ -91,7 +91,8 @@ accuracy = (TP + TN) / (TP + TN + FP + FN)
 precision = TP / (TP + FP) if (TP + FP) > 0 else 0
 recall = TP / (TP + FN) if (TP + FN) > 0 else 0
 
-cm = confusion_matrix(y_true, y_pred)
+# Force the matrix to be 2x2 by explicitly defining the labels
+cm = confusion_matrix(y_true, y_pred, labels=[0, 1])
 disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['No Dandelion', 'Dandelion'])
 disp.plot(cmap=plt.cm.Blues)
 plt.title('YOLO Confusion Matrix')
