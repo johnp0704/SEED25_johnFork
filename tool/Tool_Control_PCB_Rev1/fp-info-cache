@@ -1,4 +1,4 @@
-25703842939655788
+25703843219790370
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -94143,6 +94143,13 @@ Through hole pin header THT 1x03 2.54mm single row
 3
 3
 Seed_footprints
+M3 bolt
+
+
+0
+1
+1
+Seed_footprints
 MODULE_ESP32_DEVKIT_V1
 
 
@@ -94163,13 +94170,6 @@ SOT91P240X102-3N
 0
 3
 3
-Seed_footprints
-Untitled
-
-
-0
-0
-0
 Sensor
 ASAIR_AM2302_P2.54mm_Lead2.75mm_TabDown
 Temperature and humidity module, http://akizukidenshi.com/download/ds/aosong/AM2302.pdf

@@ -37,9 +37,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.8,
-          "height": 1.27,
-          "width": 2.54
+          "drill": 1.02,
+          "height": 2.0,
+          "width": 2.0
         },
         "silk_line_width": 0.1,
         "silk_text_italic": false,
@@ -58,7 +58,32 @@
           "width": 0.0
         }
       ],
-      "drc_exclusions": [],
+      "drc_exclusions": [
+        [
+          "footprint_filters_mismatch|134000000|52750000|6a4452ee-fa5a-486a-ab0b-7f230e2fbfc5|00000000-0000-0000-0000-000000000000",
+          ""
+        ],
+        [
+          "pth_inside_courtyard|66500000|67500000|72b17cef-4166-48af-b1c0-5058dc988d11|b13baaf7-8e83-471d-a45e-448e99542b53",
+          "This is a bolt hole"
+        ],
+        [
+          "pth_inside_courtyard|89000000|67500000|fd23ca49-dd60-4ee7-b536-ee8312058ba9|b13baaf7-8e83-471d-a45e-448e99542b53",
+          "This is a bolt hole"
+        ],
+        [
+          "silk_edge_clearance|125960000|95750000|2692f38d-1187-4c66-ac0a-4b03d5e9841e|cc8576ca-4755-4f30-a27d-dfaf8dd058c6",
+          ""
+        ],
+        [
+          "silk_edge_clearance|51657500|85250000|2692f38d-1187-4c66-ac0a-4b03d5e9841e|78c98925-ff88-452a-ac31-db3af6af91ab",
+          ""
+        ],
+        [
+          "silk_over_copper|55000000|86402000|82f2b94e-9a65-4be1-a6a5-79f4e23c6944|00000000-0000-0000-0000-000000000000",
+          ""
+        ]
+      ],
       "meta": {
         "version": 2
       },
@@ -76,7 +101,7 @@
         "duplicate_footprints": "warning",
         "extra_footprint": "warning",
         "footprint": "error",
-        "footprint_filters_mismatch": "ignore",
+        "footprint_filters_mismatch": "warning",
         "footprint_symbol_mismatch": "warning",
         "footprint_type_mismatch": "ignore",
         "hole_clearance": "error",
@@ -88,7 +113,7 @@
         "items_not_allowed": "error",
         "length_out_of_range": "error",
         "lib_footprint_issues": "warning",
-        "lib_footprint_mismatch": "warning",
+        "lib_footprint_mismatch": "ignore",
         "malformed_courtyard": "error",
         "microvia_drill_out_of_range": "error",
         "mirrored_text_on_front_layer": "warning",
@@ -96,9 +121,9 @@
         "missing_footprint": "warning",
         "net_conflict": "warning",
         "nonmirrored_text_on_back_layer": "warning",
-        "npth_inside_courtyard": "ignore",
+        "npth_inside_courtyard": "warning",
         "padstack": "warning",
-        "pth_inside_courtyard": "ignore",
+        "pth_inside_courtyard": "warning",
         "shorting_items": "error",
         "silk_edge_clearance": "warning",
         "silk_over_copper": "warning",
@@ -481,7 +506,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 2147483647,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
+        "track_width": 0.5,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 6
@@ -505,7 +530,7 @@
         "pcb_color": "rgba(0, 0, 0, 0.000)",
         "priority": 0,
         "schematic_color": "rgba(0, 0, 0, 0.000)",
-        "track_width": 0.3,
+        "track_width": 0.5,
         "via_diameter": 0.6,
         "via_drill": 0.3,
         "wire_width": 12
@@ -526,7 +551,7 @@
       "plot": "",
       "pos_files": "",
       "specctra_dsn": "",
-      "step": "",
+      "step": "Tool_Control_PCB_Rev1.stl",
       "svg": "",
       "vrml": ""
     },
