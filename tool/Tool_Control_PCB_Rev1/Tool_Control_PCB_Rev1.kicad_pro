@@ -64,22 +64,6 @@
           ""
         ],
         [
-          "pth_inside_courtyard|66500000|67500000|72b17cef-4166-48af-b1c0-5058dc988d11|b13baaf7-8e83-471d-a45e-448e99542b53",
-          "This is a bolt hole"
-        ],
-        [
-          "pth_inside_courtyard|89000000|67500000|fd23ca49-dd60-4ee7-b536-ee8312058ba9|b13baaf7-8e83-471d-a45e-448e99542b53",
-          "This is a bolt hole"
-        ],
-        [
-          "silk_edge_clearance|125960000|95750000|2692f38d-1187-4c66-ac0a-4b03d5e9841e|cc8576ca-4755-4f30-a27d-dfaf8dd058c6",
-          ""
-        ],
-        [
-          "silk_edge_clearance|51657500|85250000|2692f38d-1187-4c66-ac0a-4b03d5e9841e|78c98925-ff88-452a-ac31-db3af6af91ab",
-          ""
-        ],
-        [
           "silk_over_copper|55000000|86402000|82f2b94e-9a65-4be1-a6a5-79f4e23c6944|00000000-0000-0000-0000-000000000000",
           ""
         ]

@@ -10277,14 +10277,15 @@
 			(justify left bottom)
 		)
 	)
-	(gr_text "BBJ was here"
-		(at 73.5 68 0)
+	(gr_text "WayWayWay"
+		(at 72 67 0)
 		(layer "F.SilkS")
-		(uuid "809d7c60-63f6-44b6-95b1-3b28cc83372b")
+		(uuid "37e1dda6-ba51-40e5-be7c-82f941568abc")
 		(effects
 			(font
-				(size 1 1)
-				(thickness 0.1)
+				(size 1.5 1.5)
+				(thickness 0.3)
+				(bold yes)
 			)
 			(justify left bottom)
 		)
