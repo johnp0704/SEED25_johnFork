@@ -1,0 +1,7 @@
+{
+  "package_name": "mocap4r2_marker_viz_srvs",
+  "non_idl_tuples": [
+    "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_marker_viz/mocap4r2_marker_viz_srvs:srv/SetMarkerColor.srv",
+    "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_marker_viz/mocap4r2_marker_viz_srvs:srv/ResetMarkerColor.srv"
+  ]
+}
