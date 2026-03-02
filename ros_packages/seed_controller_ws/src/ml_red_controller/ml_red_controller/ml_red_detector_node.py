@@ -29,7 +29,7 @@ class MLDetectionNode(Node):
             self.matrix = None
 
         # Initialize YOLO
-        model_path = r"C:\UVM\SEED\SEED25\Machine_Learning\YOLOred\runs\red_train_7\weights\best.pt"
+        model_path = r"/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.pt"
         self.model = YOLO(model_path)
         self.get_logger().info("YOLO Model loaded.")
 

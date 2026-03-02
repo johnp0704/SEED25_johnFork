@@ -4,8 +4,8 @@ from geometry_msgs.msg import Point
 import numpy as np
 import math
 import os
-import sabertooth as st
-from PID import PID 
+from ml_red_controller import sabertooth as st
+from ml_red_controller.PID import PID 
 
 class GTGControllerNode(Node):
     def __init__(self):
