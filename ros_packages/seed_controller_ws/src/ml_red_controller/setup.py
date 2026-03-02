@@ -1,4 +1,6 @@
 from setuptools import setup
+import os
+from glob import glob
 
 package_name = 'ml_red_controller'
 
@@ -10,6 +12,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
+        
+        (os.path.join('share', package_name, 'launch'), glob(os.path.join('launch', '*launch.py'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -20,6 +24,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+          'ml_red_detector_node = ml_red_controller.ml_red_detector_node:main',
+          'gtg_controller_node = ml_red_controller.gtg_controller_node:main',
+          'cam_display_node = ml_red_controller.cam_display_node:main',
         ],
     },
 )

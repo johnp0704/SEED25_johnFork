@@ -1,3 +1,6 @@
+from ultralytics import YOLO
+import torch 
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
@@ -8,29 +11,29 @@ import numpy as np
 import cv2
 import math
 import os
-from ultralytics import YOLO
 
 class MLDetectionNode(Node):
     def __init__(self):
-        super().__init__('ml_detector_node')
+        super().__init__('ml_red_detector_node')
         
-        # Publishers
         self.image_pub = self.create_publisher(Image, '/camera/annotated_image', 10)
         self.target_pub = self.create_publisher(Point, '/vision/target_point', 10)
         self.bridge = CvBridge()
 
-        # Load Calibration Data (for perspective transform)
+        # Load Calibration Data
         load_file = r"calibration_data.npz"
         if os.path.exists(load_file):
             data = np.load(load_file)
             self.matrix = data['matrix']
+            self.bev_width = int(data['bev_width'])
+            self.bev_height = int(data['bev_height'])
         else:
             self.get_logger().error(f"Calibration file not found at {load_file}")
             self.matrix = None
 
         # Initialize YOLO
-        model_path = r"/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.pt"
-        self.model = YOLO(model_path)
+        model_path = r"/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.engine" 
+        self.model = YOLO(model_path, task='detect')
         self.get_logger().info("YOLO Model loaded.")
 
         # Initialize RealSense
@@ -40,7 +43,6 @@ class MLDetectionNode(Node):
         self.pipeline.start(config)
         self.get_logger().info("RealSense started.")
 
-        # Main loop timer (runs at roughly 30Hz to match camera)
         self.timer = self.create_timer(1.0 / 30.0, self.process_frame)
 
     def process_frame(self):
@@ -50,7 +52,7 @@ class MLDetectionNode(Node):
             return
 
         color_image = np.asanyarray(color_frame.get_data())
-        results = self.model(color_image, stream=True, verbose=False)
+        results = self.model(color_image, stream=True, verbose=False, imgsz=1280)
 
         best_target = None
         highest_conf = 0.0
@@ -61,39 +63,60 @@ class MLDetectionNode(Node):
                 cls = int(box.cls[0])
                 current_class = self.model.names[cls]
 
-                if current_class == "Red" and conf > 0.8:
+                # Match the standalone script logic: just check confidence!
+                if conf > 0.5:
                     x1, y1, x2, y2 = map(int, box.xyxy[0])
                     
-                    # Draw bounding box on the image
+                    # Draw bounding box on the perspective image
                     cv2.rectangle(color_image, (x1, y1), (x2, y2), (0, 255, 0), 3)
                     cv2.putText(color_image, f'{current_class} {conf}', (x1, y1 - 10), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
-                    # Keep track of the highest confidence detection
                     if conf > highest_conf:
                         highest_conf = conf
                         best_target = (x1, y1, x2, y2)
 
-        # Calculate BEV target and publish
-        if best_target and self.matrix is not None:
-            x1, y1, x2, y2 = best_target
-            # Bottom center of the bounding box represents the footprint on the ground
-            u_center = (x1 + x2) / 2.0
-            v_bottom = float(y2) 
-            
-            # Transform perspective point to Bird's-Eye View
-            pts = np.array([[[u_center, v_bottom]]], dtype=np.float32)
-            bev_pt = cv2.perspectiveTransform(pts, self.matrix)
-            cX, cY = bev_pt[0][0]
+        # Image Transformation and Target Publishing
+        if self.matrix is not None:
+            # 1. Warp the currently annotated image to BEV
+            bev_image = cv2.warpPerspective(color_image, self.matrix, (self.bev_width, self.bev_height))
 
-            msg = Point()
-            msg.x = float(cX)
-            msg.y = float(cY)
-            msg.z = 0.0 # Z is unused here
-            self.target_pub.publish(msg)
+            if best_target:
+                x1, y1, x2, y2 = best_target
+                u_center = (x1 + x2) / 2.0
+                v_bottom = float(y2) 
+                
+                # Transform target point to Bird's-Eye View
+                pts = np.array([[[u_center, v_bottom]]], dtype=np.float32)
+                bev_pt = cv2.perspectiveTransform(pts, self.matrix)
+                cX, cY = bev_pt[0][0]
 
-        # Publish annotated image to ROS
-        img_msg = self.bridge.cv2_to_imgmsg(color_image, encoding="bgr8")
+                # Publish Target
+                msg = Point()
+                msg.x = float(cX)
+                msg.y = float(cY)
+                msg.z = 0.0
+                self.target_pub.publish(msg)
+
+                # Draw Target and Log to Terminal
+                cv2.circle(bev_image, (int(cX), int(cY)), 12, (255, 0, 0), -1) # Blue dot on target
+                self.get_logger().info(f"Red detected! Target at BEV X:{cX:.1f}, Y:{cY:.1f} | Conf: {highest_conf:.2f}")
+
+            # 2. Resize BEV image so its height matches the color_image height (720px) to stack them cleanly
+            h = color_image.shape[0]
+            aspect_ratio = self.bev_width / self.bev_height
+            new_w = int(h * aspect_ratio)
+            bev_resized = cv2.resize(bev_image, (new_w, h))
+
+            # 3. Stack horizontally: Left = Perspective, Right = BEV
+            combined_image = np.hstack((color_image, bev_resized))
+        else:
+            combined_image = color_image
+            if best_target:
+                self.get_logger().warning("Red detected, but missing calibration matrix for BEV!")
+
+        # Publish the combined image
+        img_msg = self.bridge.cv2_to_imgmsg(combined_image, encoding="bgr8")
         self.image_pub.publish(img_msg)
 
     def destroy_node(self):
