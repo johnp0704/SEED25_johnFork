@@ -1,0 +1,8 @@
+[01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_robot_gt/mocap4r2_robot_gt/src/mocap4r2_robot_gt/gt_component.cpp:20:10:[m[K [01;31m[Kfatal error: [m[Ktf2_geometry_msgs/tf2_geometry_msgs.hpp: No such file or directory
+   20 | #include [01;31m[K<tf2_geometry_msgs/tf2_geometry_msgs.hpp>[m[K
+      |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+compilation terminated.
+make[2]: *** [CMakeFiles/gt_component.dir/build.make:63: CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o] Error 1
+make[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/gt_component.dir/all] Error 2
+make[1]: *** Waiting for unfinished jobs....
+make: *** [Makefile:141: all] Error 2

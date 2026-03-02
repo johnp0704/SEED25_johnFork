@@ -1,0 +1,87 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "mocap4r2_marker_viz",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_marker_viz::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_marker_viz-8fb6d1156ece2d474ec8.json",
+					"name" : "mocap4r2_marker_viz",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_marker_viz_NODE::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_marker_viz_NODE-b9f0da86d34bcaeb9f4b.json",
+					"name" : "mocap4r2_marker_viz_NODE",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "mocap4r2_marker_viz_uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-mocap4r2_marker_viz_uninstall-b64691d57e943bcc4f4e.json",
+					"name" : "mocap4r2_marker_viz_uninstall",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "uninstall::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-uninstall-40c0ea6e59ff2605f1e7.json",
+					"name" : "uninstall",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/airlab/seed25/build/mocap4r2_marker_viz",
+		"source" : "/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_marker_viz/mocap4r2_marker_viz"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

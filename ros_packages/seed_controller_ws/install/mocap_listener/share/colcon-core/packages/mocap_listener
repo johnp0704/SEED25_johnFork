@@ -1,1 +1,1 @@
-mocap4r2_msgs:rclpy
+mocap4r2_msgs:python3-matplotlib:python3-numpy:python3-scipy:rclpy

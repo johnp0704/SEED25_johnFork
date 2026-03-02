@@ -1,0 +1,37 @@
+[3.176s] Invoking command in '/home/airlab/seed25/ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK': PYTHONPATH=/home/airlab/seed25/build/ros_tutorial_NK/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/ros_tutorial_NK build --build-base /home/airlab/seed25/build/ros_tutorial_NK/build install --record /home/airlab/seed25/build/ros_tutorial_NK/install.log --install-scripts $base/lib/ros_tutorial_NK --single-version-externally-managed install_data
+[3.734s] running egg_info
+[3.735s] creating ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info
+[3.735s] writing ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/PKG-INFO
+[3.736s] writing dependency_links to ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/dependency_links.txt
+[3.736s] writing entry points to ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/entry_points.txt
+[3.737s] writing requirements to ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/requires.txt
+[3.737s] writing top-level names to ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/top_level.txt
+[3.742s] writing manifest file '../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[3.811s] reading manifest file '../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[3.812s] writing manifest file '../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info/SOURCES.txt'
+[3.813s] running build
+[3.813s] running build_py
+[3.814s] creating /home/airlab/seed25/build/ros_tutorial_NK/build
+[3.814s] creating /home/airlab/seed25/build/ros_tutorial_NK/build/lib
+[3.814s] creating /home/airlab/seed25/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+[3.814s] copying ros_tutorial_NK/__init__.py -> /home/airlab/seed25/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+[3.815s] copying ros_tutorial_NK/first_node.py -> /home/airlab/seed25/build/ros_tutorial_NK/build/lib/ros_tutorial_NK
+[3.816s] running install
+[3.819s] running install_lib
+[3.821s] creating /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+[3.822s] copying /home/airlab/seed25/build/ros_tutorial_NK/build/lib/ros_tutorial_NK/__init__.py -> /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+[3.823s] copying /home/airlab/seed25/build/ros_tutorial_NK/build/lib/ros_tutorial_NK/first_node.py -> /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK
+[3.824s] byte-compiling /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK/__init__.py to __init__.cpython-38.pyc
+[3.827s] byte-compiling /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK/first_node.py to first_node.cpython-38.pyc
+[3.829s] running install_data
+[3.829s] creating /home/airlab/seed25/install/ros_tutorial_NK/share/ament_index
+[3.830s] creating /home/airlab/seed25/install/ros_tutorial_NK/share/ament_index/resource_index
+[3.830s] creating /home/airlab/seed25/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+[3.831s] copying resource/ros_tutorial_NK -> /home/airlab/seed25/install/ros_tutorial_NK/share/ament_index/resource_index/packages
+[3.831s] copying package.xml -> /home/airlab/seed25/install/ros_tutorial_NK/share/ros_tutorial_NK
+[3.832s] running install_egg_info
+[3.838s] Copying ../../../../build/ros_tutorial_NK/ros_tutorial_NK.egg-info to /home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages/ros_tutorial_NK-0.0.0-py3.8.egg-info
+[3.840s] running install_scripts
+[3.881s] Installing first_node_test script to /home/airlab/seed25/install/ros_tutorial_NK/lib/ros_tutorial_NK
+[3.882s] writing list of installed files to '/home/airlab/seed25/build/ros_tutorial_NK/install.log'
+[3.960s] Invoked command in '/home/airlab/seed25/ros2_testing/ros2_tutorial_ws/src/ros_tutorial_NK' returned '0': PYTHONPATH=/home/airlab/seed25/build/ros_tutorial_NK/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/install/ros_tutorial_NK/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../../../../build/ros_tutorial_NK build --build-base /home/airlab/seed25/build/ros_tutorial_NK/build install --record /home/airlab/seed25/build/ros_tutorial_NK/install.log --install-scripts $base/lib/ros_tutorial_NK --single-version-externally-managed install_data
