@@ -26,5 +26,11 @@ def generate_launch_description():
             executable='virtual_twin_node',
             name='virtual_twin_node',
             output='screen'
+        ),
+        Node(
+            package='opti_waypoint_nav',
+            executable='dual_camera_view.py',
+            name='dual_camera_view.py',
+            output='screen'
         )
     ])
