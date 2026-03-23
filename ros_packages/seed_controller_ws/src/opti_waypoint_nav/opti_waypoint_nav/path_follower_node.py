@@ -4,8 +4,9 @@ from geometry_msgs.msg import Point, Pose2D
 import numpy as np
 import atexit
 
-# Adjust import based on your package structure
-from opti_waypoint_nav import sabertooth as st 
+# Import your custom modules from the package
+from waypoint_controller import sabertooth as st 
+from waypoint_controller.PID import PID
 
 class PathFollowerNode(Node):
     def __init__(self):
@@ -19,6 +20,17 @@ class PathFollowerNode(Node):
         self.L = 0.178
         self.K_e = 30
         self.K_theta = -self.K_e * 10
+
+        # Initialize PID Controller for Heading
+        # Assuming roughly 10Hz update rate from OptiTrack (Ts=0.1)
+        self.pid_heading = PID(
+            Kp=self.K_theta, 
+            Ki=0.0, 
+            Kd=0.0, 
+            Ts=0.1, 
+            umax=self.MAX_ACTUATOR_INPUT, 
+            umin=-self.MAX_ACTUATOR_INPUT
+        )
 
         # State Variables
         self.robot_pose = None
@@ -37,7 +49,7 @@ class PathFollowerNode(Node):
         self.create_subscription(Pose2D, '/robot/pose2d', self.pose_callback, 10)
         self.create_subscription(Point, '/robot/current_target', self.target_callback, 10)
 
-        # Safety Timer (Stops motors if target is lost or path is finished)
+        # Safety Timer 
         self.create_timer(0.1, self.safety_check)
 
     def pose_callback(self, msg):
@@ -53,26 +65,29 @@ class PathFollowerNode(Node):
         x, y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
         x_des, y_des = msg.x, msg.y
 
-        # Compute control signals
+        # 1. Calculate Velocity/Translation Command (P-Control)
         Ux_des = self.K_e * (x_des - x)
         Uy_des = self.K_e * (y_des - y)
-
-        theta_des = np.arctan2(Uy_des, Ux_des)
-        error_theta = theta_des - yaw
-        error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
-
         S_des = np.sqrt(Ux_des**2 + Uy_des**2)
         S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
 
+        # 2. Calculate Angular Command (PID Control)
+        theta_des = np.arctan2(Uy_des, Ux_des)
+        error_theta = theta_des - yaw
+        
+        # Wrap angle to [-pi, pi]
+        error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
+
         w_des = 0
         if abs(error_theta_wrapped) > self.ANGLE_THRESH:
-            w_des = self.K_theta * error_theta_wrapped
+            # Trick: Pass the wrapped error as the setpoint, and 0 as the output
+            w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
 
-        # Kinematics
+        # 3. Kinematics (Convert to left/right wheel speeds)
         wr_des = (S_sat - self.L * w_des) / self.R_wheel
         wl_des = (S_sat + self.L * w_des) / self.R_wheel
 
-        # Saturation and Scaling
+        # 4. Saturation and Scaling
         maxInput = max(abs(wr_des), abs(wl_des))
         if maxInput > self.MAX_ACTUATOR_INPUT:
             speed_adjust_factor = self.MAX_ACTUATOR_INPUT / maxInput
@@ -86,7 +101,7 @@ class PathFollowerNode(Node):
         self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
 
     def safety_check(self):
-        # Stop motors if no target seen in 0.5 seconds
+        # Stop motors if no target seen in 0.5 seconds (e.g., path finished or tracking lost)
         if (self.get_clock().now() - self.last_target_time).nanoseconds > 5e8:
             self.motor.updateMotorSpeed(0, 0)
 

@@ -24,8 +24,10 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'waypoint_manager = opti_waypoint_nav.waypoint_manager:main'
-            'path_follower = opti_waypoint_nav.path_follower:main'
+            'waypoint_manager_node = opti_waypoint_nav.waypoint_manager_node:main',
+            'path_follower_node = opti_waypoint_nav.path_follower_node:main',
+            'virtual_twin_node = opti_waypoint_nav.virtual_twin_node:main',
+            'telemetry_node = opti_waypoint_nav.telemetry_node:main',
         ],
     },
 )
