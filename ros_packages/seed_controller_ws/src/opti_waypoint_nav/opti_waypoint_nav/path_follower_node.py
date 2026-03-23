@@ -5,8 +5,8 @@ import numpy as np
 import atexit
 
 # Import your custom modules from the package
-from waypoint_controller import sabertooth as st 
-from waypoint_controller.PID import PID
+from opti_waypoint_nav import sabertooth as st 
+from opti_waypoint_nav.PID import PID
 
 class PathFollowerNode(Node):
     def __init__(self):

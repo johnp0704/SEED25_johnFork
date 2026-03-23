@@ -29,8 +29,8 @@ def generate_launch_description():
         ),
         Node(
             package='opti_waypoint_nav',
-            executable='dual_camera_view.py',
-            name='dual_camera_view.py',
+            executable='dual_camera_node',
+            name='dual_camera_node',
             output='screen'
         )
     ])
