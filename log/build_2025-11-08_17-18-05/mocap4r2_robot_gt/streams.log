@@ -1,0 +1,70 @@
+[0.049s] Invoking command in '/home/airlab/seed25/build/mocap4r2_robot_gt': AMENT_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/install/mocap4r2_msgs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_robot_gt/mocap4r2_robot_gt -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/install/mocap4r2_robot_gt
+[0.179s] -- The C compiler identification is GNU 9.4.0
+[0.329s] -- The CXX compiler identification is GNU 9.4.0
+[0.344s] -- Check for working C compiler: /usr/bin/cc
+[0.721s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.723s] -- Detecting C compiler ABI info
+[1.123s] -- Detecting C compiler ABI info - done
+[1.152s] -- Detecting C compile features
+[1.152s] -- Detecting C compile features - done
+[1.158s] -- Check for working CXX compiler: /usr/bin/c++
+[1.615s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[1.618s] -- Detecting CXX compiler ABI info
+[1.951s] -- Detecting CXX compiler ABI info - done
+[2.001s] -- Detecting CXX compile features
+[2.002s] -- Detecting CXX compile features - done
+[2.019s] -- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)
+[2.178s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[2.179s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[3.196s] -- Found rclcpp: 2.4.3 (/opt/ros/foxy/share/rclcpp/cmake)
+[3.409s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[3.437s] -- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[3.905s] -- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[4.048s] -- Found FastRTPS: /opt/ros/foxy/include  
+[4.407s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[4.672s] -- Found rmw_implementation_cmake: 1.0.4 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[4.691s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[4.693s] -- Looking for pthread.h
+[5.118s] -- Looking for pthread.h - found
+[5.118s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[5.533s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[5.535s] -- Looking for pthread_create in pthreads
+[5.924s] -- Looking for pthread_create in pthreads - not found
+[5.925s] -- Looking for pthread_create in pthread
+[6.216s] -- Looking for pthread_create in pthread - found
+[6.218s] -- Found Threads: TRUE  
+[6.913s] -- Found rclcpp_components: 2.4.3 (/opt/ros/foxy/share/rclcpp_components/cmake)
+[7.077s] -- Found mocap4r2_msgs: 0.0.3 (/home/airlab/seed25/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake)
+[7.377s] -- Found mocap4r2_robot_gt_msgs: 0.0.7 (/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/share/mocap4r2_robot_gt_msgs/cmake)
+[7.616s] -- Found tf2_ros: 0.13.14 (/opt/ros/foxy/share/tf2_ros/cmake)
+[8.548s] -- Found tf2_geometry_msgs: 0.13.14 (/opt/ros/foxy/share/tf2_geometry_msgs/cmake)
+[8.594s] -- Found eigen3_cmake_module: 0.1.1 (/opt/ros/foxy/share/eigen3_cmake_module/cmake)
+[8.608s] -- Found Eigen3: TRUE (found version "3.3.7") 
+[8.722s] -- Found ament_lint_auto: 0.9.8 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+[9.095s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[9.095s] -- Configured cppcheck include dirs: /home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_robot_gt/mocap4r2_robot_gt/include
+[9.096s] -- Configured cppcheck exclude dirs and/or files: 
+[9.098s] -- Added test 'lint_cmake' to check CMake code style
+[9.101s] -- Added test 'uncrustify' to check C / C++ code style
+[9.101s] -- Configured uncrustify additional arguments: 
+[9.102s] -- Added test 'xmllint' to check XML markup files
+[9.131s] -- Configuring done
+[9.292s] -- Generating done
+[9.351s] -- Build files have been written to: /home/airlab/seed25/build/mocap4r2_robot_gt
+[9.425s] Invoked command in '/home/airlab/seed25/build/mocap4r2_robot_gt' returned '0': AMENT_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/install/mocap4r2_msgs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake /home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_robot_gt/mocap4r2_robot_gt -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/install/mocap4r2_robot_gt
+[9.427s] Invoking command in '/home/airlab/seed25/build/mocap4r2_robot_gt': AMENT_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/install/mocap4r2_msgs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/airlab/seed25/build/mocap4r2_robot_gt -- -j4 -l4
+[9.712s] [35m[1mScanning dependencies of target set_gt_component[0m
+[9.745s] [35m[1mScanning dependencies of target gt_component[0m
+[9.964s] [ 12%] [32mBuilding CXX object CMakeFiles/set_gt_component.dir/src/mocap4r2_robot_gt/set_gt_component.cpp.o[0m
+[9.983s] [ 25%] [32mBuilding CXX object CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o[0m
+[10.525s] [01m[K/home/airlab/seed25/ros_packages/mocap4r2_ws/src/mocap4r2/mocap4r2_robot_gt/mocap4r2_robot_gt/src/mocap4r2_robot_gt/gt_component.cpp:20:10:[m[K [01;31m[Kfatal error: [m[Ktf2_geometry_msgs/tf2_geometry_msgs.hpp: No such file or directory
+[10.526s]    20 | #include [01;31m[K<tf2_geometry_msgs/tf2_geometry_msgs.hpp>[m[K
+[10.526s]       |          [01;31m[K^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[m[K
+[10.526s] compilation terminated.
+[10.529s] make[2]: *** [CMakeFiles/gt_component.dir/build.make:63: CMakeFiles/gt_component.dir/src/mocap4r2_robot_gt/gt_component.cpp.o] Error 1
+[10.530s] make[1]: *** [CMakeFiles/Makefile2:165: CMakeFiles/gt_component.dir/all] Error 2
+[10.530s] make[1]: *** Waiting for unfinished jobs....
+[19.566s] [ 37%] [32m[1mLinking CXX shared library libset_gt_component.so[0m
+[19.992s] [ 37%] Built target set_gt_component
+[19.995s] make: *** [Makefile:141: all] Error 2
+[20.010s] Invoked command in '/home/airlab/seed25/build/mocap4r2_robot_gt' returned '2': AMENT_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_publisher:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2cli:/opt/ros/foxy LD_LIBRARY_PATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/install/mocap4r2_msgs/lib:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/usr/local/cuda-11.4/lib64:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_robot_gt_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_marker_viz_srvs/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control/lib:/home/airlab/seed25/ros_packages/mocap4r2_ws/install/mocap4r2_control_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/install/mocap4r2_robot_gt_msgs/lib/python3.8/site-packages:/home/airlab/seed25/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/cmake --build /home/airlab/seed25/build/mocap4r2_robot_gt -- -j4 -l4

@@ -2,6 +2,9 @@
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
+import sabertooth as st
+import time
+
 
 class RigidBodyListener(Node):
     def __init__(self):
@@ -40,9 +43,11 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
+        print("Exiting!")
         pass
     node.destroy_node()
     rclpy.shutdown()
+
 
 if __name__ == '__main__':
     main()
