@@ -1,0 +1,51 @@
+running egg_info
+creating ../build/ml_red_controller/ml_red_controller.egg-info
+writing ../build/ml_red_controller/ml_red_controller.egg-info/PKG-INFO
+writing dependency_links to ../build/ml_red_controller/ml_red_controller.egg-info/dependency_links.txt
+writing entry points to ../build/ml_red_controller/ml_red_controller.egg-info/entry_points.txt
+writing requirements to ../build/ml_red_controller/ml_red_controller.egg-info/requires.txt
+writing top-level names to ../build/ml_red_controller/ml_red_controller.egg-info/top_level.txt
+writing manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+reading manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+writing manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+copying ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller
+running install
+running install_lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/sabertooth.py to sabertooth.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/cam_display_node.py to cam_display_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/PID.py to PID.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/ml_red_detector_node.py to ml_red_detector_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/gtg_controller_node.py to gtg_controller_node.cpython-38.pyc
+running install_data
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index/packages
+copying resource/ml_red_controller -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index/packages
+copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/launch
+copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/launch
+running install_egg_info
+Copying ../build/ml_red_controller/ml_red_controller.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller-0.0.0-py3.8.egg-info
+running install_scripts
+Installing cam_display_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller
+Installing gtg_controller_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller
+Installing ml_red_detector_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller
+writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/install.log'

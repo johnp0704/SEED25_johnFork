@@ -1,0 +1,48 @@
+[2.707s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mv_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log --install-scripts $base/lib/mv_controller --single-version-externally-managed install_data
+[3.251s] running egg_info
+[3.255s] creating ../build/mv_controller/mv_controller.egg-info
+[3.255s] writing ../build/mv_controller/mv_controller.egg-info/PKG-INFO
+[3.257s] writing dependency_links to ../build/mv_controller/mv_controller.egg-info/dependency_links.txt
+[3.258s] writing entry points to ../build/mv_controller/mv_controller.egg-info/entry_points.txt
+[3.258s] writing requirements to ../build/mv_controller/mv_controller.egg-info/requires.txt
+[3.259s] writing top-level names to ../build/mv_controller/mv_controller.egg-info/top_level.txt
+[3.262s] writing manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'
+[3.336s] reading manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'
+[3.337s] writing manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'
+[3.338s] running build
+[3.338s] running build_py
+[3.339s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build
+[3.339s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib
+[3.340s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.341s] copying mv_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.345s] copying mv_controller/mv_gtg_ros.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.346s] copying mv_controller/RedLiveDetection.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.346s] copying mv_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.347s] copying mv_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.348s] copying mv_controller/calibration_data.npz -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller
+[3.348s] running install
+[3.348s] running install_lib
+[3.350s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.358s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.358s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/mv_gtg_ros.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.358s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/RedLiveDetection.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.358s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/calibration_data.npz -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.359s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.359s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller
+[3.359s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/sabertooth.py to sabertooth.cpython-38.pyc
+[3.361s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/mv_gtg_ros.py to mv_gtg_ros.cpython-38.pyc
+[3.361s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/RedLiveDetection.py to RedLiveDetection.cpython-38.pyc
+[3.361s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/PID.py to PID.cpython-38.pyc
+[3.362s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/__init__.py to __init__.cpython-38.pyc
+[3.363s] running install_data
+[3.363s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index
+[3.363s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index
+[3.364s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index/packages
+[3.364s] copying resource/mv_controller -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index/packages
+[3.364s] copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller
+[3.365s] running install_egg_info
+[3.370s] Copying ../build/mv_controller/mv_controller.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller-0.0.0-py3.8.egg-info
+[3.373s] running install_scripts
+[3.415s] Installing controller script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/mv_controller
+[3.416s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log'
+[3.520s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mv_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log --install-scripts $base/lib/mv_controller --single-version-externally-managed install_data

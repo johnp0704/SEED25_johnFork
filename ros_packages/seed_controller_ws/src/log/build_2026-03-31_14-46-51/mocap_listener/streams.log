@@ -1,0 +1,68 @@
+[2.029s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data
+[2.530s] running egg_info
+[2.531s] creating ../build/mocap_listener/mocap_listener.egg-info
+[2.532s] writing ../build/mocap_listener/mocap_listener.egg-info/PKG-INFO
+[2.532s] writing dependency_links to ../build/mocap_listener/mocap_listener.egg-info/dependency_links.txt
+[2.533s] writing entry points to ../build/mocap_listener/mocap_listener.egg-info/entry_points.txt
+[2.533s] writing requirements to ../build/mocap_listener/mocap_listener.egg-info/requires.txt
+[2.533s] writing top-level names to ../build/mocap_listener/mocap_listener.egg-info/top_level.txt
+[2.535s] writing manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'
+[2.601s] reading manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'
+[2.603s] writing manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'
+[2.603s] running build
+[2.604s] running build_py
+[2.604s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build
+[2.605s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib
+[2.605s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.605s] copying mocap_listener/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.605s] copying mocap_listener/gtg_node_mathAngle.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.606s] copying mocap_listener/gtg_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.606s] copying mocap_listener/plot_robot_and_goal.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.607s] copying mocap_listener/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.607s] copying mocap_listener/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.607s] copying mocap_listener/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.608s] copying mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.608s] copying mocap_listener/gtg_node_nk.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.608s] copying mocap_listener/nk_telem.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener
+[2.609s] running install
+[2.611s] running install_lib
+[2.613s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.614s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.614s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node_mathAngle.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.614s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.614s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/plot_robot_and_goal.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.615s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.615s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.615s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.615s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.616s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node_nk.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.616s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/nk_telem.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener
+[2.617s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/sabertooth.py to sabertooth.cpython-38.pyc
+[2.620s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node_mathAngle.py to gtg_node_mathAngle.cpython-38.pyc
+[2.624s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node.py to gtg_node.cpython-38.pyc
+[2.626s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/plot_robot_and_goal.py to plot_robot_and_goal.cpython-38.pyc
+[2.628s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/PID.py to PID.cpython-38.pyc
+[2.629s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/telemetry_node.py to telemetry_node.cpython-38.pyc
+[2.630s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/__init__.py to __init__.cpython-38.pyc
+[2.630s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/rigid_listener.py to rigid_listener.cpython-38.pyc
+[2.631s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node_nk.py to gtg_node_nk.cpython-38.pyc
+[2.633s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/nk_telem.py to nk_telem.cpython-38.pyc
+[2.635s] running install_data
+[2.636s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index
+[2.636s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index
+[2.636s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index/packages
+[2.636s] copying resource/mocap_listener -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index/packages
+[2.636s] copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener
+[2.637s] running install_egg_info
+[2.642s] Copying ../build/mocap_listener/mocap_listener.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener-0.0.0-py3.8.egg-info
+[2.644s] running install_scripts
+[2.681s] Installing gtg_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.681s] Installing gtg_node_mathAngle script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.682s] Installing gtg_node_nk script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.682s] Installing mv_controller script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.682s] Installing nk_telem script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.682s] Installing plot_robot_and_goal script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.683s] Installing rigid_listener script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.683s] Installing telemetry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener
+[2.684s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log'
+[2.765s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener' returned '0': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data
