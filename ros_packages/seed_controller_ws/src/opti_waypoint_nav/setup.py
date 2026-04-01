@@ -29,6 +29,7 @@ setup(
             'virtual_twin_node = opti_waypoint_nav.virtual_twin_node:main',
             'telemetry_node = opti_waypoint_nav.telemetry_node:main',
             'dual_camera_node = opti_waypoint_nav.dual_camera_node:main',
+            'optitrack_test_node = opti_waypoint_nav.optitrack_test_node:main',
         ],
     },
 )
