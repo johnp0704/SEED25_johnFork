@@ -1,9 +1,10 @@
 import rclpy
 from rclpy.node import Node
-from mocap4r2_msgs.msg import RigidBodies  # Removed Markers import
+from mocap4r2_msgs.msg import RigidBodies
 from geometry_msgs.msg import Point, Pose2D
 from scipy.spatial.transform import Rotation as R
 import numpy as np
+import threading  # <-- NEW: Imported threading
 
 class WaypointManagerNode(Node):
     def __init__(self):
@@ -11,9 +12,15 @@ class WaypointManagerNode(Node):
 
         self.GOAL_THRESH = 0.3  # meters
         self.current_waypoint_idx = 0 
+        
+        # --- NEW: Manual Startup Logic ---
+        self.mission_started = False
+        self.get_logger().info("Node initialized. OptiTrack listening...")
+        
+        # Start a background thread to wait for user input so we don't block ROS callbacks
+        threading.Thread(target=self.wait_for_start_command, daemon=True).start()
+        # ---------------------------------
 
-        # Hardcoded waypoints list as (x, y) tuples
-        # You can eventually replace this by subscribing to a GUI topic
         self.waypoints = [
             (0.7328, -0.7006),
             (-0.3972, 0.27242),
@@ -23,10 +30,16 @@ class WaypointManagerNode(Node):
         self.pose_pub = self.create_publisher(Pose2D, '/robot/pose2d', 10)
         self.target_pub = self.create_publisher(Point, '/robot/current_target', 10)
 
-        # Keep the rigid bodies subscription for robot localization
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rigid_bodies_callback, 10)
 
         self.robot_pose = None
+
+    def wait_for_start_command(self):
+        """Runs in a background thread. Waits for the user to press Enter."""
+        # This will print to the terminal where you ran the node
+        input("\n>>> PRESS ENTER TO START WAYPOINT NAVIGATION <<<\n\n")
+        self.mission_started = True
+        self.get_logger().info("Mission started! Now publishing targets to the robot.")
 
     def rigid_bodies_callback(self, msg):
         robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '2'), None)
@@ -45,20 +58,24 @@ class WaypointManagerNode(Node):
         self.robot_pose.x = pos.x
         self.robot_pose.y = pos.y
         self.robot_pose.theta = yaw
+        
+        # We ALWAYS publish the pose so the virtual twin can see the robot instantly
         self.pose_pub.publish(self.robot_pose)
 
         self.update_waypoint()
 
     def update_waypoint(self):
+        # Block target processing if the user hasn't pressed Enter yet
+        if not self.mission_started:
+            return
+            
         if self.robot_pose is None:
             return
 
-        # Check if we have exhausted our list of waypoints
         if self.current_waypoint_idx >= len(self.waypoints):
             self.get_logger().info("All waypoints reached! Path complete.", throttle_duration_sec=2.0)
             return
 
-        # Grab the target x and y from the hardcoded list
         target_x, target_y = self.waypoints[self.current_waypoint_idx]
 
         dx = target_x - self.robot_pose.x
