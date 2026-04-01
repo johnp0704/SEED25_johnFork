@@ -109,9 +109,18 @@ class PathFollowerNode(Node):
         self.cmd_pub.publish(cmd_msg)
 
     def safety_check(self):
-        # Stop motors if no target seen in 0.5 seconds (e.g., path finished or tracking lost)
+        # Stop motors if no target seen in 0.5 seconds
         if (self.get_clock().now() - self.last_target_time).nanoseconds > 5e8:
+            # 1. Stop the physical robot
             self.motor.updateMotorSpeed(0, 0)
+            
+            # 2. Tell the Odometry node to stop the virtual twin!
+            from geometry_msgs.msg import Vector3
+            stop_msg = Vector3()
+            stop_msg.x = 0.0
+            stop_msg.y = 0.0
+            stop_msg.z = 0.0
+            self.cmd_pub.publish(stop_msg)
 
     def destroy_node(self):
         self.motor.all_motors_off()

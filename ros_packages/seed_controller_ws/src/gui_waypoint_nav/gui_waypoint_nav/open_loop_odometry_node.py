@@ -44,6 +44,10 @@ class OpenLoopOdometryNode(Node):
         self.y = msg.y
         self.theta = msg.theta
 
+        # Kill any lingering math kinematics
+        self.v_left = 0.0
+        self.v_right = 0.0
+
     def integrate_position(self):
         current_time = time.time()
         dt = current_time - self.last_time
