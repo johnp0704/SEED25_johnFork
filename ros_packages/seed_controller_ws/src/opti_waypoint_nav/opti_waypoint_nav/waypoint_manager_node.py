@@ -29,7 +29,7 @@ class WaypointManagerNode(Node):
         self.robot_pose = None
 
     def rigid_bodies_callback(self, msg):
-        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '2'), None)
         if robot_body is None:
             return
 

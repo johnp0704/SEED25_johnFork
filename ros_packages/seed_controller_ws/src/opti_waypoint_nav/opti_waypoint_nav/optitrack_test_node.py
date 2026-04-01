@@ -34,7 +34,7 @@ class OptitrackTestNode(Node):
 
         # Log the parsed data to the terminal
         self.get_logger().info(
-            f"Robot '1' | X: {pos.x:+.3f}, Y: {pos.y:+.3f}, Z: {pos.z:+.3f} | Yaw: {yaw_deg:+.2f}°"
+            f"Robot '2' | X: {pos.x:+.3f}, Y: {pos.y:+.3f}, Z: {pos.z:+.3f} | Yaw: {yaw_deg:+.2f}°"
         )
 
 def main(args=None):
