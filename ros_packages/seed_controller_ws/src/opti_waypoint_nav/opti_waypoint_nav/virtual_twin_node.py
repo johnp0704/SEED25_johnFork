@@ -14,12 +14,11 @@ class VirtualTwinNode(Node):
         self.latest_rigidbodies_msg = None
         self.current_goal = None
 
-        # Hardcoded waypoints matching your waypoint manager
+        # Synchronized with waypoint_manager_node
         self.waypoints = [
-            (1.0, 0.0),
-            (2.0, 1.0),
-            (2.0, 2.0),
-            (0.0, 2.0)
+            (0.7328, -0.7006),
+            (-0.3972, 0.27242),
+            (-1.2768, -0.69690),
         ]
 
         # Subscriptions
@@ -51,13 +50,13 @@ class VirtualTwinNode(Node):
 
         # Plot robot using Rigid Body Position and Orientation
         if rb_msg:
-            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
+            # Fixed Rigid Body Name to '2'
+            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '2'), None)
             
             if robot_body:
                 pos = robot_body.pose.position
                 ori = robot_body.pose.orientation
 
-                # Calculate ROS yaw from OptiTrack quaternion
                 r_mocap = R.from_quat([ori.x, ori.y, ori.z, ori.w])
                 R_correction = R.from_euler('z', -90, degrees=True)
                 r_ros = R_correction * r_mocap
@@ -66,7 +65,7 @@ class VirtualTwinNode(Node):
                 # Plot Robot Center
                 self.ax.scatter(pos.x, pos.y, marker='o', s=100, color='green', label='Robot Center')
 
-                # Draw Heading arrow using the calculated Yaw
+                # Draw Heading arrow
                 arrow_length = 0.3
                 dx = arrow_length * np.cos(yaw)
                 dy = arrow_length * np.sin(yaw)

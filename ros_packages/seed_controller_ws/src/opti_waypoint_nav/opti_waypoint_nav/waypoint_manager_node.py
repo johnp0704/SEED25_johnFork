@@ -2,9 +2,9 @@ import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
 from geometry_msgs.msg import Point, Pose2D
+from std_msgs.msg import Empty  # <-- NEW: Used for the start trigger
 from scipy.spatial.transform import Rotation as R
 import numpy as np
-import threading  # <-- NEW: Imported threading
 
 class WaypointManagerNode(Node):
     def __init__(self):
@@ -13,13 +13,13 @@ class WaypointManagerNode(Node):
         self.GOAL_THRESH = 0.3  # meters
         self.current_waypoint_idx = 0 
         
-        # --- NEW: Manual Startup Logic ---
+        # --- NEW: Topic-based Startup Logic ---
         self.mission_started = False
-        self.get_logger().info("Node initialized. OptiTrack listening...")
+        self.get_logger().info("Waiting for start signal. Run: ros2 topic pub --once /start_mission std_msgs/msg/Empty {}")
         
-        # Start a background thread to wait for user input so we don't block ROS callbacks
-        threading.Thread(target=self.wait_for_start_command, daemon=True).start()
-        # ---------------------------------
+        # Listen for the start command
+        self.create_subscription(Empty, '/start_mission', self.start_callback, 10)
+        # --------------------------------------
 
         self.waypoints = [
             (0.7328, -0.7006),
@@ -34,14 +34,14 @@ class WaypointManagerNode(Node):
 
         self.robot_pose = None
 
-    def wait_for_start_command(self):
-        """Runs in a background thread. Waits for the user to press Enter."""
-        # This will print to the terminal where you ran the node
-        input("\n>>> PRESS ENTER TO START WAYPOINT NAVIGATION <<<\n\n")
-        self.mission_started = True
-        self.get_logger().info("Mission started! Now publishing targets to the robot.")
+    def start_callback(self, msg):
+        """Triggers when a message is published to /start_mission"""
+        if not self.mission_started:
+            self.mission_started = True
+            self.get_logger().info("Start command received! Beginning waypoint navigation.")
 
     def rigid_bodies_callback(self, msg):
+        # Tracking rigid body '2'
         robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '2'), None)
         if robot_body is None:
             return
@@ -59,13 +59,13 @@ class WaypointManagerNode(Node):
         self.robot_pose.y = pos.y
         self.robot_pose.theta = yaw
         
-        # We ALWAYS publish the pose so the virtual twin can see the robot instantly
+        # Always publish the pose so the virtual twin updates immediately
         self.pose_pub.publish(self.robot_pose)
 
         self.update_waypoint()
 
     def update_waypoint(self):
-        # Block target processing if the user hasn't pressed Enter yet
+        # Block target processing until the start topic is received
         if not self.mission_started:
             return
             
