@@ -1,12 +1,11 @@
 import rclpy
 from rclpy.node import Node
-from geometry_msgs.msg import Point, Pose2D
+from geometry_msgs.msg import Point, Pose2D, Vector3
 import numpy as np
 import atexit
 
 from gui_waypoint_nav import sabertooth as st 
 from gui_waypoint_nav.PID import PID
-from geometry_msgs.msg import Vector3
 
 class PathFollowerNode(Node):
     def __init__(self):
@@ -48,8 +47,9 @@ class PathFollowerNode(Node):
         self.create_subscription(Pose2D, '/robot/pose2d', self.pose_callback, 10)
         self.create_subscription(Point, '/robot/current_target', self.target_callback, 10)
 
-        # Publisher
+        # Publisher for Dead Reckoning Node
         self.cmd_pub = self.create_publisher(Vector3, '/motor_cmds', 10)
+        
         # Safety Timer 
         self.create_timer(0.1, self.safety_check)
 
@@ -66,29 +66,39 @@ class PathFollowerNode(Node):
         x, y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
         x_des, y_des = msg.x, msg.y
 
-        # 1. Calculate Velocity/Translation Command (P-Control)
-        Ux_des = self.K_e * (x_des - x)
-        Uy_des = self.K_e * (y_des - y)
-        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
+        # 1. Calculate Distance and Raw Forward Speed
+        dx = x_des - x
+        dy = y_des - y
+        distance = np.sqrt(dx**2 + dy**2)
+        
+        S_des = self.K_e * distance
+        S_sat = np.clip(S_des, 0.0, self.S_MAX) # Ensure it only tries to drive forward
 
-        # 2. Calculate Angular Command (PID Control)
-        theta_des = np.arctan2(Uy_des, Ux_des)
+        # 2. Calculate Heading Error and Angular Command
+        theta_des = np.arctan2(dy, dx)
         error_theta = theta_des - yaw
         
         # Wrap angle to [-pi, pi]
         error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
 
-        w_des = 0
+        w_des = 0.0
         if abs(error_theta_wrapped) > self.ANGLE_THRESH:
             # Trick: Pass the wrapped error as the setpoint, and 0 as the output
             w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
+
+        # --- THE FIX: Prioritize Turning ---
+        # If the target is way off to the side (e.g., > 45 degrees), kill forward momentum to pivot.
+        if abs(error_theta_wrapped) > np.deg2rad(45):
+            S_sat = 0.0
+        else:
+            # Smoothly decelerate forward speed as the heading error increases
+            S_sat = S_sat * np.cos(error_theta_wrapped)
 
         # 3. Kinematics (Convert to left/right wheel speeds)
         wr_des = (S_sat - self.L * w_des) / self.R_wheel
         wl_des = (S_sat + self.L * w_des) / self.R_wheel
 
-        # 4. Saturation and Scaling
+        # 4. Saturation and Scaling (Preserves the ratio between wheels if exceeding limits)
         maxInput = max(abs(wr_des), abs(wl_des))
         if maxInput > self.MAX_ACTUATOR_INPUT:
             speed_adjust_factor = self.MAX_ACTUATOR_INPUT / maxInput
@@ -98,10 +108,10 @@ class PathFollowerNode(Node):
         wr_des_sat = np.clip(wr_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
         wl_des_sat = np.clip(wl_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
 
-        # Send commands to motors
+        # Send commands to physical motors
         self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
 
-        # Broadcast the commanded speeds to the dead-reckoning node
+        # Broadcast the commanded speeds to the virtual twin/dead-reckoning node
         cmd_msg = Vector3()
         cmd_msg.x = float(wl_des_sat) # Left wheel speed
         cmd_msg.y = float(wr_des_sat) # Right wheel speed
@@ -114,8 +124,7 @@ class PathFollowerNode(Node):
             # 1. Stop the physical robot
             self.motor.updateMotorSpeed(0, 0)
             
-            # 2. Tell the Odometry node to stop the virtual twin!
-            from geometry_msgs.msg import Vector3
+            # 2. Tell the Odometry node to stop the virtual twin
             stop_msg = Vector3()
             stop_msg.x = 0.0
             stop_msg.y = 0.0
