@@ -15,8 +15,8 @@ class PathFollowerNode(Node):
         # Configuration Constants
         self.MAX_ACTUATOR_INPUT = 30
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.ANGLE_THRESH = np.deg2rad(1.5)   # Deadband: Stop turning if within 3 degrees
-        self.PIVOT_THRESH = np.deg2rad(8)  # NEW: Pivot threshold. Stop moving forward if error > 15 degrees
+        self.ANGLE_THRESH = np.deg2rad(0.5)   # Deadband: Stop turning if within 3 degrees
+        self.PIVOT_THRESH = np.deg2rad(4)  # NEW: Pivot threshold. Stop moving forward if error > 15 degrees
         
         self.R_wheel = 0.08
         self.L = 0.178
