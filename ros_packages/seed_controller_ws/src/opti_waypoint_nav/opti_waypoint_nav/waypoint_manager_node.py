@@ -1,6 +1,6 @@
 import rclpy
 from rclpy.node import Node
-from mocap4r2_msgs.msg import RigidBodies, Markers
+from mocap4r2_msgs.msg import RigidBodies  # Removed Markers import
 from geometry_msgs.msg import Point, Pose2D
 from scipy.spatial.transform import Rotation as R
 import numpy as np
@@ -12,17 +12,21 @@ class WaypointManagerNode(Node):
         self.GOAL_THRESH = 0.3  # meters
         self.current_waypoint_idx = 0 
 
+        # Hardcoded waypoints list as (x, y) tuples
+        # You can eventually replace this by subscribing to a GUI topic
+        self.waypoints = [
+            (0.7328, -0.7006),
+            (-0.3972, 0.27242),
+            (-1.2768, -0.69690),
+        ]
+
         self.pose_pub = self.create_publisher(Pose2D, '/robot/pose2d', 10)
         self.target_pub = self.create_publisher(Point, '/robot/current_target', 10)
 
+        # Keep the rigid bodies subscription for robot localization
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rigid_bodies_callback, 10)
-        self.create_subscription(Markers, '/markers', self.markers_callback, 10)
 
-        self.latest_markers = []
         self.robot_pose = None
-
-    def markers_callback(self, msg):
-        self.latest_markers = sorted(msg.markers, key=lambda m: m.marker_index)
 
     def rigid_bodies_callback(self, msg):
         robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
@@ -46,27 +50,29 @@ class WaypointManagerNode(Node):
         self.update_waypoint()
 
     def update_waypoint(self):
-        if not self.latest_markers or self.robot_pose is None:
+        if self.robot_pose is None:
             return
 
-        if self.current_waypoint_idx >= len(self.latest_markers):
+        # Check if we have exhausted our list of waypoints
+        if self.current_waypoint_idx >= len(self.waypoints):
             self.get_logger().info("All waypoints reached! Path complete.", throttle_duration_sec=2.0)
             return
 
-        target_marker = self.latest_markers[self.current_waypoint_idx]
+        # Grab the target x and y from the hardcoded list
+        target_x, target_y = self.waypoints[self.current_waypoint_idx]
 
-        dx = target_marker.translation.x - self.robot_pose.x
-        dy = target_marker.translation.y - self.robot_pose.y
+        dx = target_x - self.robot_pose.x
+        dy = target_y - self.robot_pose.y
         dist_to_goal = np.sqrt(dx**2 + dy**2)
 
         if dist_to_goal < self.GOAL_THRESH:
-            self.get_logger().info(f"Reached marker {target_marker.marker_index}! Advancing...")
+            self.get_logger().info(f"Reached waypoint {self.current_waypoint_idx}! Advancing...")
             self.current_waypoint_idx += 1
             return 
 
         target_msg = Point()
-        target_msg.x = target_marker.translation.x
-        target_msg.y = target_marker.translation.y
+        target_msg.x = float(target_x)
+        target_msg.y = float(target_y)
         target_msg.z = 0.0
         self.target_pub.publish(target_msg)
 
