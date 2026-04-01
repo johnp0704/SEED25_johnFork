@@ -15,7 +15,9 @@ class PathFollowerNode(Node):
         # Configuration Constants
         self.MAX_ACTUATOR_INPUT = 30
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.ANGLE_THRESH = np.deg2rad(3)
+        self.ANGLE_THRESH = np.deg2rad(3)   # Deadband: Stop turning if within 3 degrees
+        self.PIVOT_THRESH = np.deg2rad(15)  # NEW: Pivot threshold. Stop moving forward if error > 15 degrees
+        
         self.R_wheel = 0.08
         self.L = 0.178
         self.K_e = 30
@@ -65,29 +67,35 @@ class PathFollowerNode(Node):
         x, y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
         x_des, y_des = msg.x, msg.y
 
-        # 1. Calculate Velocity/Translation Command (P-Control)
-        Ux_des = self.K_e * (x_des - x)
-        Uy_des = self.K_e * (y_des - y)
-        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
-
-        # 2. Calculate Angular Command (PID Control)
-        theta_des = np.arctan2(Uy_des, Ux_des)
+        # 1. Calculate pure distances and desired angle
+        dx = x_des - x
+        dy = y_des - y
+        
+        theta_des = np.arctan2(dy, dx)
         error_theta = theta_des - yaw
         
         # Wrap angle to [-pi, pi]
         error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
 
+        # 2. Calculate Angular Command (PID Control)
         w_des = 0
         if abs(error_theta_wrapped) > self.ANGLE_THRESH:
-            # Trick: Pass the wrapped error as the setpoint, and 0 as the output
             w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
 
-        # 3. Kinematics (Convert to left/right wheel speeds)
+        # 3. Calculate Velocity/Translation Command (Pivot-Then-Go Logic)
+        if abs(error_theta_wrapped) > self.PIVOT_THRESH:
+            # If we are facing the wrong way, do not move forward. Just pivot.
+            S_sat = 0.0
+        else:
+            # If heading is good, calculate forward speed based on distance
+            S_des = self.K_e * np.sqrt(dx**2 + dy**2)
+            S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
+
+        # 4. Kinematics (Convert to left/right wheel speeds)
         wr_des = (S_sat - self.L * w_des) / self.R_wheel
         wl_des = (S_sat + self.L * w_des) / self.R_wheel
 
-        # 4. Saturation and Scaling
+        # 5. Saturation and Scaling
         maxInput = max(abs(wr_des), abs(wl_des))
         if maxInput > self.MAX_ACTUATOR_INPUT:
             speed_adjust_factor = self.MAX_ACTUATOR_INPUT / maxInput
