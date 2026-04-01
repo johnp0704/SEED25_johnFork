@@ -10,11 +10,11 @@ class OptitrackTestNode(Node):
         # Subscribe to the rigid bodies topic
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rigid_bodies_callback, 10)
         
-        self.get_logger().info("OptiTrack Test Node started. Listening for rigid body '1' on '/rigid_bodies'...")
+        self.get_logger().info("OptiTrack Test Node started. Listening for rigid body '0' on '/rigid_bodies'...")
 
     def rigid_bodies_callback(self, msg):
         # Find the specific rigid body named '1'
-        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
+        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '0'), None)
         
         if robot_body is None:
             # Uncomment the next line if you want to know when the body is missing from a frame
