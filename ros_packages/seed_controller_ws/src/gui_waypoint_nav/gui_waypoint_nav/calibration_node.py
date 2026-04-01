@@ -11,12 +11,9 @@ import numpy as np
 class CalibrationNode(Node):
     def __init__(self):
         super().__init__('calibration_node')
-        self.get_logger().info("Kinematic Calibrator Ready.")
+        self.get_logger().info("Kinematic Calibrator Ready. Waiting for GUI trigger...")
 
-        # Subscribes to the GUI button
         self.create_subscription(Empty, '/start_calibration', self.trigger_calib, 10)
-        
-        # Publishes overrides to the Path Follower, and updates to the network
         self.override_pub = self.create_publisher(Vector3, '/override_motor_cmds', 10)
         self.update_pub = self.create_publisher(Empty, '/calibration_updated', 10)
         
@@ -25,14 +22,24 @@ class CalibrationNode(Node):
 
     def trigger_calib(self, msg):
         if self.is_calibrating:
-            self.get_logger().warn("Calibration already in progress!")
+            self.get_logger().warn("Calibration already in progress! Check your terminal.")
             return
             
         self.is_calibrating = True
-        self.get_logger().warn("\n\n>>> CALIBRATION TRIGGERED. LOOK AT THIS TERMINAL TO INTERACT! <<<\n")
-        
-        # Run in a separate thread so it doesn't block the ROS spinner while waiting for input()
+        # Run in a separate thread so it doesn't block the ROS spinner
         threading.Thread(target=self.run_calibration, daemon=True).start()
+
+    def fire_burst(self, left_speed, right_speed, duration):
+        # Continuously publish so the path follower's safety timer doesn't interrupt it
+        start_time = time.time()
+        while time.time() - start_time < duration:
+            self.send_override(left_speed, right_speed)
+            time.sleep(0.1)
+        
+        # Send the stop command a few times to ensure it arrives
+        for _ in range(3):
+            self.send_override(0.0, 0.0)
+            time.sleep(0.1)
 
     def run_calibration(self):
         TEST_SPEED = 20.0
@@ -43,10 +50,15 @@ class CalibrationNode(Node):
         print("="*50)
 
         # --- TEST 1: TRANSLATION ---
-        input("\n[TEST 1] Place robot in clear area. Press ENTER to fire 3-second forward burst...")
-        self.send_override(TEST_SPEED, TEST_SPEED)
-        time.sleep(TEST_DURATION)
-        self.send_override(0.0, 0.0)
+        try:
+            input("\n[TEST 1] Place robot in clear area. Press ENTER to fire 3-second forward burst...")
+        except EOFError:
+            self.get_logger().error("CRITICAL ERROR: Cannot read keyboard input!")
+            self.get_logger().error("You must run this node using 'ros2 run' in a separate terminal, NOT in the launch file.")
+            self.is_calibrating = False
+            return
+
+        self.fire_burst(TEST_SPEED, TEST_SPEED, TEST_DURATION)
 
         dist_str = input("\nMeasure distance traveled. Enter distance in METERS: ")
         try:
@@ -61,9 +73,7 @@ class CalibrationNode(Node):
 
         # --- TEST 2: ROTATION ---
         input("\n[TEST 2] Mark orientation. Press ENTER to fire 3-second clockwise spin...")
-        self.send_override(TEST_SPEED, -TEST_SPEED) # Left fwd, Right rev
-        time.sleep(TEST_DURATION)
-        self.send_override(0.0, 0.0)
+        self.fire_burst(TEST_SPEED, -TEST_SPEED, TEST_DURATION)
 
         ang_str = input("\nMeasure angle rotated. Enter angle in DEGREES (e.g., 90, 180): ")
         try:
@@ -78,8 +88,6 @@ class CalibrationNode(Node):
 
         # --- SAVE & BROADCAST ---
         data = {"SPEED_TO_MPS_FACTOR": factor, "L": L_calc}
-        
-        # Ensure the .ros directory exists
         os.makedirs(os.path.dirname(self.calib_file), exist_ok=True)
         
         with open(self.calib_file, 'w') as f:
@@ -87,6 +95,7 @@ class CalibrationNode(Node):
 
         print("\nCalibration saved! Notifying other nodes to reload math...")
         self.update_pub.publish(Empty())
+        print("✅ Calibration Complete. You can now use the GUI.\n")
         self.is_calibrating = False
 
     def send_override(self, left, right):
