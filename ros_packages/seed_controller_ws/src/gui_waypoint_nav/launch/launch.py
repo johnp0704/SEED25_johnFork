@@ -33,4 +33,10 @@ def generate_launch_description():
             name='open_loop_odometry_node',
             output='screen'
         ),
+        Node(
+            package='gui_waypoint_nav',
+            executable='calibration_node',
+            name='calibration_node',
+            output='screen'
+        ),
     ])

@@ -29,6 +29,7 @@ setup(
             'path_follower_node = gui_waypoint_nav.path_follower_node:main',
             'dual_camera_node = gui_waypoint_nav.dual_camera_node:main',
             'open_loop_odometry_node = gui_waypoint_nav.open_loop_odometry_node:main',
+            'calibration_node = gui_waypoint_nav.calibration_node:main',
         ],
     },
 )
