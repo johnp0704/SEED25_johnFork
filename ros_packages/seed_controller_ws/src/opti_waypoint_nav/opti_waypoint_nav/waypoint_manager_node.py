@@ -22,9 +22,9 @@ class WaypointManagerNode(Node):
         # --------------------------------------
 
         self.waypoints = [
-            (0.7328, -0.7006),
-            (-0.3972, 0.27242),
-            (-1.2768, -0.69690),
+            (0.54899, -0.96740),
+            (-0.56269, 0.74570),
+            (-0.93254, -0.45896),
         ]
 
         self.pose_pub = self.create_publisher(Pose2D, '/robot/pose2d', 10)
