@@ -14,7 +14,7 @@ class OptitrackTestNode(Node):
 
     def rigid_bodies_callback(self, msg):
         # Find the specific rigid body named '1'
-        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '2'), None)
+        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
         
         if robot_body is None:
             # Uncomment the next line if you want to know when the body is missing from a frame
