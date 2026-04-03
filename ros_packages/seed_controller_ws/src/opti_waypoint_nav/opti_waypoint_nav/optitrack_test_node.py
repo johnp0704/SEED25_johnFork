@@ -10,7 +10,7 @@ class OptitrackTestNode(Node):
         # Subscribe to the rigid bodies topic
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rigid_bodies_callback, 10)
         
-        self.get_logger().info("OptiTrack Test Node started. Listening for rigid body '2' on '/rigid_bodies'...")
+        self.get_logger().info("OptiTrack Test Node started. Listening for rigid body '1' on '/rigid_bodies'...")
 
     def rigid_bodies_callback(self, msg):
         # Find the specific rigid body named '1'
@@ -34,7 +34,7 @@ class OptitrackTestNode(Node):
 
         # Log the parsed data to the terminal
         self.get_logger().info(
-            f"Robot '2' | X: {pos.x:+.3f}, Y: {pos.y:+.3f}, Z: {pos.z:+.3f} | Yaw: {yaw_deg:+.2f}°"
+            f"Robot '1' | X: {pos.x:+.3f}, Y: {pos.y:+.3f}, Z: {pos.z:+.3f} | Yaw: {yaw_deg:+.2f}°"
         )
 
 def main(args=None):

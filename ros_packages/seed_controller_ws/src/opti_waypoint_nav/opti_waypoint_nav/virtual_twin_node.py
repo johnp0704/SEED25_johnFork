@@ -50,8 +50,8 @@ class VirtualTwinNode(Node):
 
         # Plot robot using Rigid Body Position and Orientation
         if rb_msg:
-            # Fixed Rigid Body Name to '2'
-            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '2'), None)
+            # Fixed Rigid Body Name to '1'
+            robot_body = next((rb for rb in rb_msg.rigidbodies if rb.rigid_body_name == '1'), None)
             
             if robot_body:
                 pos = robot_body.pose.position
