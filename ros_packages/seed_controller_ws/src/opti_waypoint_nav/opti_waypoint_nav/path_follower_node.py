@@ -15,8 +15,8 @@ class PathFollowerNode(Node):
         # Configuration Constants
         self.MAX_ACTUATOR_INPUT = 30
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.ANGLE_THRESH = np.deg2rad(0.5)   
-        self.PIVOT_THRESH = np.deg2rad(1)  
+        self.ANGLE_THRESH = np.deg2rad(1)   
+        self.PIVOT_THRESH = np.deg2rad(3)  
         
         self.R_wheel = 0.08
         self.L = 0.178
