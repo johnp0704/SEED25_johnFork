@@ -1,0 +1,61 @@
+[2.710s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/gui_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log --install-scripts $base/lib/gui_waypoint_nav --single-version-externally-managed install_data
+[3.264s] running egg_info
+[3.266s] creating ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info
+[3.266s] writing ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/PKG-INFO
+[3.267s] writing dependency_links to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/dependency_links.txt
+[3.267s] writing entry points to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/entry_points.txt
+[3.268s] writing requirements to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/requires.txt
+[3.268s] writing top-level names to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/top_level.txt
+[3.272s] writing manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'
+[3.339s] reading manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'
+[3.341s] writing manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'
+[3.341s] running build
+[3.341s] running build_py
+[3.342s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build
+[3.342s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib
+[3.342s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.342s] copying gui_waypoint_nav/open_loop_odometry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.343s] copying gui_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.343s] copying gui_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.344s] copying gui_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.344s] copying gui_waypoint_nav/waypoint_gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.344s] copying gui_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.345s] copying gui_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.345s] copying gui_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav
+[3.346s] running install
+[3.348s] running install_lib
+[3.351s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.351s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/open_loop_odometry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.351s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.351s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.352s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.352s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/waypoint_gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.352s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.352s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.353s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav
+[3.354s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/open_loop_odometry_node.py to open_loop_odometry_node.cpython-38.pyc
+[3.357s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/sabertooth.py to sabertooth.cpython-38.pyc
+[3.358s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/waypoint_manager_node.py to waypoint_manager_node.cpython-38.pyc
+[3.360s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/dual_camera_node.py to dual_camera_node.cpython-38.pyc
+[3.362s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/waypoint_gui_node.py to waypoint_gui_node.cpython-38.pyc
+[3.364s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/PID.py to PID.cpython-38.pyc
+[3.366s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/__init__.py to __init__.cpython-38.pyc
+[3.366s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/path_follower_node.py to path_follower_node.cpython-38.pyc
+[3.368s] running install_data
+[3.369s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index
+[3.370s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index
+[3.370s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index/packages
+[3.370s] copying resource/gui_waypoint_nav -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index/packages
+[3.371s] copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav
+[3.371s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/launch
+[3.371s] copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/launch
+[3.375s] running install_egg_info
+[3.378s] Copying ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav-0.0.0-py3.8.egg-info
+[3.379s] running install_scripts
+[3.418s] Installing dual_camera_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav
+[3.419s] Installing open_loop_odometry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav
+[3.419s] Installing path_follower_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav
+[3.419s] Installing waypoint_gui_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav
+[3.420s] Installing waypoint_manager_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav
+[3.420s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log'
+[3.504s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/gui_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log --install-scripts $base/lib/gui_waypoint_nav --single-version-externally-managed install_data

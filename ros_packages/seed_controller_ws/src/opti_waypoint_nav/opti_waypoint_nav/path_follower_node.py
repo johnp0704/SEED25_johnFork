@@ -15,14 +15,27 @@ class PathFollowerNode(Node):
         # Configuration Constants
         self.MAX_ACTUATOR_INPUT = 30
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.ANGLE_THRESH = np.deg2rad(3)
+        self.ANGLE_THRESH = np.deg2rad(1)   
+        self.PIVOT_THRESH = np.deg2rad(3)  
+        
         self.R_wheel = 0.08
         self.L = 0.178
         self.K_e = 30
         self.K_theta = -self.K_e * 10
 
+        # --- NEW: Center Tuning Constants ---
+        # Offset from the OptiTrack rigid body origin to the true robot control center (in meters).
+        # OFFSET_X: Positive is forward, negative is backward.
+        # OFFSET_Y: Positive is left, negative is right.
+        self.OFFSET_X = 0.0  
+        self.OFFSET_Y = 0.0  
+        
+        # --- NEW: Pause State Variables ---
+        self.PAUSE_DURATION = 3.0  # seconds
+        self.current_target_coords = None
+        self.pause_end_time = None
+
         # Initialize PID Controller for Heading
-        # Assuming roughly 10Hz update rate from OptiTrack (Ts=0.1)
         self.pid_heading = PID(
             Kp=self.K_theta, 
             Ki=0.0, 
@@ -61,33 +74,57 @@ class PathFollowerNode(Node):
         if self.robot_pose is None:
             return
 
-        # Unpack state
-        x, y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
+        # 1. Unpack raw state and target
+        raw_x, raw_y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
         x_des, y_des = msg.x, msg.y
 
-        # 1. Calculate Velocity/Translation Command (P-Control)
-        Ux_des = self.K_e * (x_des - x)
-        Uy_des = self.K_e * (y_des - y)
-        S_des = np.sqrt(Ux_des**2 + Uy_des**2)
-        S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
+        # --- 2. Center Tuning ---
+        # Apply the rotation matrix to shift the control center
+        x = raw_x + (self.OFFSET_X * np.cos(yaw) - self.OFFSET_Y * np.sin(yaw))
+        y = raw_y + (self.OFFSET_X * np.sin(yaw) + self.OFFSET_Y * np.cos(yaw))
 
-        # 2. Calculate Angular Command (PID Control)
-        theta_des = np.arctan2(Uy_des, Ux_des)
+        # --- 3. Waypoint Pause Logic ---
+        # Detect if the target has changed to a new waypoint coordinate
+        if self.current_target_coords is None or (self.current_target_coords[0] != x_des or self.current_target_coords[1] != y_des):
+            self.current_target_coords = (x_des, y_des)
+            self.get_logger().info(f"New target acquired. Pausing for {self.PAUSE_DURATION} seconds.")
+            # Calculate the future time when the pause should end (converted to nanoseconds)
+            self.pause_end_time = self.get_clock().now().nanoseconds + (self.PAUSE_DURATION * 1e9)
+
+        # If we are currently inside the pause window, hold motors at 0 and skip control math
+        if self.pause_end_time and self.get_clock().now().nanoseconds < self.pause_end_time:
+            self.motor.updateMotorSpeed(0, 0)
+            return
+
+        # 4. Calculate pure distances and desired angle
+        dx = x_des - x
+        dy = y_des - y
+        
+        theta_des = np.arctan2(dy, dx)
         error_theta = theta_des - yaw
         
         # Wrap angle to [-pi, pi]
         error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
 
+        # 5. Calculate Angular Command (PID Control)
         w_des = 0
         if abs(error_theta_wrapped) > self.ANGLE_THRESH:
-            # Trick: Pass the wrapped error as the setpoint, and 0 as the output
             w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
 
-        # 3. Kinematics (Convert to left/right wheel speeds)
+        # 6. Calculate Velocity/Translation Command (Pivot-Then-Go Logic)
+        if abs(error_theta_wrapped) > self.PIVOT_THRESH:
+            # If we are facing the wrong way, do not move forward. Just pivot.
+            S_sat = 0.0
+        else:
+            # If heading is good, calculate forward speed based on distance
+            S_des = self.K_e * np.sqrt(dx**2 + dy**2)
+            S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
+
+        # 7. Kinematics (Convert to left/right wheel speeds)
         wr_des = (S_sat - self.L * w_des) / self.R_wheel
         wl_des = (S_sat + self.L * w_des) / self.R_wheel
 
-        # 4. Saturation and Scaling
+        # 8. Saturation and Scaling
         maxInput = max(abs(wr_des), abs(wl_des))
         if maxInput > self.MAX_ACTUATOR_INPUT:
             speed_adjust_factor = self.MAX_ACTUATOR_INPUT / maxInput

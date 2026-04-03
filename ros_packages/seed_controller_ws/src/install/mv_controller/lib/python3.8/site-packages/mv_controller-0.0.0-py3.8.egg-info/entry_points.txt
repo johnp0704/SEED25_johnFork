@@ -1,0 +1,3 @@
+[console_scripts]
+controller = mv_controller.mv_gtg_ros:main
+
