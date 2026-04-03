@@ -41,8 +41,8 @@ class WaypointManagerNode(Node):
             self.get_logger().info("Start command received! Beginning waypoint navigation.")
 
     def rigid_bodies_callback(self, msg):
-        # Tracking rigid body '2'
-        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '2'), None)
+        # Tracking rigid body '1'
+        robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
             return
 
