@@ -16,12 +16,12 @@ class VirtualTwinNode(Node):
 
         # Synchronized with waypoint_manager_node
         self.waypoints = [
-            (0.7328, -0.7006),
-            (-0.3972, 0.27242),
-            (-1.2768, -0.69690),
+            (0.54899, -0.96740),
+            (-0.56269, 0.74570),
+            (-0.93254, -0.45896),
         ]
 
-        # Subscriptions
+        # Subscriptionss
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rb_callback, 10)
         self.create_subscription(Point, '/robot/current_target', self.target_callback, 10)
 

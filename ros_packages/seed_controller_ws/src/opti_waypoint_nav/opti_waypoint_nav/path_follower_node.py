@@ -27,7 +27,7 @@ class PathFollowerNode(Node):
         # Offset from the OptiTrack rigid body origin to the true robot control center (in meters).
         # OFFSET_X: Positive is forward, negative is backward.
         # OFFSET_Y: Positive is left, negative is right.
-        self.OFFSET_X = 0.0  
+        self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0  
         
         # --- NEW: Pause State Variables ---
