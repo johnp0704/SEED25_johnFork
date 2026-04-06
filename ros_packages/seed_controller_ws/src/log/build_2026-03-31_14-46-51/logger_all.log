@@ -1,0 +1,396 @@
+[0.469s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.469s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff9e68b370>>, merge_install=False, metas=['./colcon.meta'], mixin=None, mixin_files=None, mixin_verb=('build',), packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff9e68b370>, verb_name='build', verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff9e68b880>)
+[0.825s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.825s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.826s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.826s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/airlab/seed25/ros_packages/seed_controller_ws/src'
+[0.826s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.827s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.828s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.828s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.851s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.851s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.851s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.852s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.852s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.852s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.852s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.852s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extensions ['ignore', 'ignore_ament_install']
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extension 'ignore'
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extension 'ignore_ament_install'
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extensions ['colcon_pkg']
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extension 'colcon_pkg'
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extensions ['colcon_meta']
+[0.853s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extension 'colcon_meta'
+[0.854s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extensions ['ros']
+[0.854s] Level 1:colcon.colcon_core.package_identification:_identify(gui_waypoint_nav) by extension 'ros'
+[0.859s] DEBUG:colcon.colcon_core.package_identification:Package 'gui_waypoint_nav' with type 'ros.ament_python' and name 'gui_waypoint_nav'
+[0.860s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.860s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.860s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.860s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.860s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extension 'ignore'
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extension 'ignore_ament_install'
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extensions ['colcon_pkg']
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extension 'colcon_pkg'
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extensions ['colcon_meta']
+[0.861s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extension 'colcon_meta'
+[0.862s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extensions ['ros']
+[0.862s] Level 1:colcon.colcon_core.package_identification:_identify(ml_red_controller) by extension 'ros'
+[0.863s] DEBUG:colcon.colcon_core.package_identification:Package 'ml_red_controller' with type 'ros.ament_python' and name 'ml_red_controller'
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extensions ['ignore', 'ignore_ament_install']
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extension 'ignore'
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extension 'ignore_ament_install'
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extensions ['colcon_pkg']
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extension 'colcon_pkg'
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extensions ['colcon_meta']
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extension 'colcon_meta'
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extensions ['ros']
+[0.864s] Level 1:colcon.colcon_core.package_identification:_identify(mocap4r2_msgs) by extension 'ros'
+[0.866s] DEBUG:colcon.colcon_core.package_identification:Package 'mocap4r2_msgs' with type 'ros.ament_cmake' and name 'mocap4r2_msgs'
+[0.866s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extensions ['ignore', 'ignore_ament_install']
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extension 'ignore'
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extension 'ignore_ament_install'
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extensions ['colcon_pkg']
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extension 'colcon_pkg'
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extensions ['colcon_meta']
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extension 'colcon_meta'
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extensions ['ros']
+[0.867s] Level 1:colcon.colcon_core.package_identification:_identify(mocap_listener) by extension 'ros'
+[0.869s] DEBUG:colcon.colcon_core.package_identification:Package 'mocap_listener' with type 'ros.ament_python' and name 'mocap_listener'
+[0.869s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.869s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extension 'ignore'
+[0.869s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extension 'ignore_ament_install'
+[0.869s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extensions ['colcon_pkg']
+[0.869s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extension 'colcon_pkg'
+[0.870s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extensions ['colcon_meta']
+[0.870s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extension 'colcon_meta'
+[0.870s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extensions ['ros']
+[0.870s] Level 1:colcon.colcon_core.package_identification:_identify(mv_controller) by extension 'ros'
+[0.871s] DEBUG:colcon.colcon_core.package_identification:Package 'mv_controller' with type 'ros.ament_python' and name 'mv_controller'
+[0.871s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extensions ['ignore', 'ignore_ament_install']
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extension 'ignore'
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extension 'ignore_ament_install'
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extensions ['colcon_pkg']
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extension 'colcon_pkg'
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extensions ['colcon_meta']
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extension 'colcon_meta'
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extensions ['ros']
+[0.872s] Level 1:colcon.colcon_core.package_identification:_identify(opti_waypoint_nav) by extension 'ros'
+[0.874s] DEBUG:colcon.colcon_core.package_identification:Package 'opti_waypoint_nav' with type 'ros.ament_python' and name 'opti_waypoint_nav'
+[0.874s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.874s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.874s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.874s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.874s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.940s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.940s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.944s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 5 installed packages in /home/airlab/seed25/ros_packages/seed_controller_ws/install
+[0.947s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 259 installed packages in /opt/ros/foxy
+[0.950s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_args' from command line to 'None'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_target' from command line to 'None'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_clean_cache' from command line to 'False'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_clean_first' from command line to 'False'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'cmake_force_configure' from command line to 'False'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'ament_cmake_args' from command line to 'None'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'catkin_cmake_args' from command line to 'None'
+[1.076s] Level 5:colcon.colcon_core.verb:set package 'gui_waypoint_nav' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.076s] DEBUG:colcon.colcon_core.verb:Building package 'gui_waypoint_nav' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav', 'symlink_install': False, 'test_result_base': None}
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_args' from command line to 'None'
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_target' from command line to 'None'
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_clean_first' from command line to 'False'
+[1.077s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'cmake_force_configure' from command line to 'False'
+[1.078s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'ament_cmake_args' from command line to 'None'
+[1.078s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[1.078s] Level 5:colcon.colcon_core.verb:set package 'ml_red_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.078s] DEBUG:colcon.colcon_core.verb:Building package 'ml_red_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller', 'symlink_install': False, 'test_result_base': None}
+[1.078s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_args' from command line to 'None'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_target' from command line to 'None'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_clean_cache' from command line to 'False'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_clean_first' from command line to 'False'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'cmake_force_configure' from command line to 'False'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'ament_cmake_args' from command line to 'None'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'catkin_cmake_args' from command line to 'None'
+[1.079s] Level 5:colcon.colcon_core.verb:set package 'mocap4r2_msgs' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.079s] DEBUG:colcon.colcon_core.verb:Building package 'mocap4r2_msgs' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs', 'symlink_install': False, 'test_result_base': None}
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_args' from command line to 'None'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_target' from command line to 'None'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_clean_first' from command line to 'False'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'cmake_force_configure' from command line to 'False'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'ament_cmake_args' from command line to 'None'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[1.080s] Level 5:colcon.colcon_core.verb:set package 'mv_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.080s] DEBUG:colcon.colcon_core.verb:Building package 'mv_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller', 'symlink_install': False, 'test_result_base': None}
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_args' from command line to 'None'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_target' from command line to 'None'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_clean_cache' from command line to 'False'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_clean_first' from command line to 'False'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'cmake_force_configure' from command line to 'False'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'ament_cmake_args' from command line to 'None'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'catkin_cmake_args' from command line to 'None'
+[1.081s] Level 5:colcon.colcon_core.verb:set package 'mocap_listener' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.081s] DEBUG:colcon.colcon_core.verb:Building package 'mocap_listener' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener', 'symlink_install': False, 'test_result_base': None}
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_args' from command line to 'None'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_target' from command line to 'None'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_clean_cache' from command line to 'False'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_clean_first' from command line to 'False'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'cmake_force_configure' from command line to 'False'
+[1.082s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'ament_cmake_args' from command line to 'None'
+[1.083s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'catkin_cmake_args' from command line to 'None'
+[1.083s] Level 5:colcon.colcon_core.verb:set package 'opti_waypoint_nav' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.083s] DEBUG:colcon.colcon_core.verb:Building package 'opti_waypoint_nav' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav', 'symlink_install': False, 'test_result_base': None}
+[1.083s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.085s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.086s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs' with build type 'ament_cmake'
+[1.086s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs'
+[1.091s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.091s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.091s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.102s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav' with build type 'ament_python'
+[1.103s] Level 1:colcon.colcon_core.shell:create_environment_hook('gui_waypoint_nav', 'ament_prefix_path')
+[1.104s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/ament_prefix_path.ps1'
+[1.106s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/ament_prefix_path.dsv'
+[1.107s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/ament_prefix_path.sh'
+[1.109s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.109s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.118s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller' with build type 'ament_python'
+[1.119s] Level 1:colcon.colcon_core.shell:create_environment_hook('ml_red_controller', 'ament_prefix_path')
+[1.120s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/ament_prefix_path.ps1'
+[1.121s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/ament_prefix_path.dsv'
+[1.122s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/ament_prefix_path.sh'
+[1.123s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.123s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.132s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller' with build type 'ament_python'
+[1.133s] Level 1:colcon.colcon_core.shell:create_environment_hook('mv_controller', 'ament_prefix_path')
+[1.134s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/ament_prefix_path.ps1'
+[1.135s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/ament_prefix_path.dsv'
+[1.136s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/ament_prefix_path.sh'
+[1.137s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.137s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.153s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake /home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs
+[1.699s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav'
+[1.700s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.701s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.249s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller'
+[2.251s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.251s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.791s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller'
+[2.792s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[2.792s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[3.813s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/gui_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log --install-scripts $base/lib/gui_waypoint_nav --single-version-externally-managed install_data
+[3.840s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mv_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log --install-scripts $base/lib/mv_controller --single-version-externally-managed install_data
+[3.849s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/ml_red_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/install.log --install-scripts $base/lib/ml_red_controller --single-version-externally-managed install_data
+[4.607s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/gui_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log --install-scripts $base/lib/gui_waypoint_nav --single-version-externally-managed install_data
+[4.615s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav' for CMake module files
+[4.616s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav' for CMake config files
+[4.618s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib'
+[4.618s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/bin'
+[4.619s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/pkgconfig/gui_waypoint_nav.pc'
+[4.619s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages'
+[4.619s] Level 1:colcon.colcon_core.shell:create_environment_hook('gui_waypoint_nav', 'pythonpath')
+[4.620s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/pythonpath.ps1'
+[4.622s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/pythonpath.dsv'
+[4.623s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/hook/pythonpath.sh'
+[4.624s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/bin'
+[4.624s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(gui_waypoint_nav)
+[4.625s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/package.ps1'
+[4.627s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/package.dsv'
+[4.629s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/package.sh'
+[4.630s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/package.bash'
+[4.632s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/package.zsh'
+[4.633s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/colcon-core/packages/gui_waypoint_nav)
+[4.637s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller' for CMake module files
+[4.638s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/ml_red_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/install.log --install-scripts $base/lib/ml_red_controller --single-version-externally-managed install_data
+[4.638s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller' for CMake config files
+[4.639s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib'
+[4.640s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/bin'
+[4.640s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/pkgconfig/ml_red_controller.pc'
+[4.640s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages'
+[4.640s] Level 1:colcon.colcon_core.shell:create_environment_hook('ml_red_controller', 'pythonpath')
+[4.641s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/pythonpath.ps1'
+[4.642s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/pythonpath.dsv'
+[4.643s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/hook/pythonpath.sh'
+[4.644s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/bin'
+[4.644s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(ml_red_controller)
+[4.645s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/package.ps1'
+[4.646s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/package.dsv'
+[4.647s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/package.sh'
+[4.648s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/package.bash'
+[4.648s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/package.zsh'
+[4.649s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/colcon-core/packages/ml_red_controller)
+[4.650s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller' for CMake module files
+[4.652s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller' for CMake config files
+[4.652s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mv_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log --install-scripts $base/lib/mv_controller --single-version-externally-managed install_data
+[4.654s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib'
+[4.654s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/bin'
+[4.654s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/pkgconfig/mv_controller.pc'
+[4.654s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages'
+[4.654s] Level 1:colcon.colcon_core.shell:create_environment_hook('mv_controller', 'pythonpath')
+[4.655s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/pythonpath.ps1'
+[4.656s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/pythonpath.dsv'
+[4.656s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/hook/pythonpath.sh'
+[4.657s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/bin'
+[4.658s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mv_controller)
+[4.658s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/package.ps1'
+[4.659s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/package.dsv'
+[4.660s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/package.sh'
+[4.661s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/package.bash'
+[4.662s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller/package.zsh'
+[4.662s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/colcon-core/packages/mv_controller)
+[5.417s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake /home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs -DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs
+[5.425s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs -- -j4 -l4
+[18.698s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake --build /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs -- -j4 -l4
+[18.728s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs
+[18.895s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mocap4r2_msgs)
+[18.896s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs' for CMake module files
+[18.898s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy /usr/bin/cmake --install /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs
+[18.899s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs' for CMake config files
+[18.900s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'cmake_prefix_path')
+[18.900s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.ps1'
+[18.902s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.dsv'
+[18.903s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.sh'
+[18.905s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib'
+[18.905s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'ld_library_path_lib')
+[18.906s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.ps1'
+[18.907s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.dsv'
+[18.908s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.sh'
+[18.910s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/bin'
+[18.910s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/pkgconfig/mocap4r2_msgs.pc'
+[18.911s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages'
+[18.911s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'pythonpath')
+[18.912s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.ps1'
+[18.913s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.dsv'
+[18.914s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.sh'
+[18.916s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/bin'
+[18.917s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.ps1'
+[18.919s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.dsv'
+[18.921s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.sh'
+[18.922s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.bash'
+[18.923s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.zsh'
+[18.924s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/colcon-core/packages/mocap4r2_msgs)
+[18.926s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mocap4r2_msgs)
+[18.926s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs' for CMake module files
+[18.928s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs' for CMake config files
+[18.929s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'cmake_prefix_path')
+[18.929s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.ps1'
+[18.930s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.dsv'
+[18.932s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/cmake_prefix_path.sh'
+[18.934s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib'
+[18.934s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'ld_library_path_lib')
+[18.934s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.ps1'
+[18.935s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.dsv'
+[18.936s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/ld_library_path_lib.sh'
+[18.937s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/bin'
+[18.937s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/pkgconfig/mocap4r2_msgs.pc'
+[18.937s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages'
+[18.937s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap4r2_msgs', 'pythonpath')
+[18.938s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.ps1'
+[18.939s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.dsv'
+[18.939s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/hook/pythonpath.sh'
+[18.940s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/bin'
+[18.941s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.ps1'
+[18.942s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.dsv'
+[18.944s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.sh'
+[18.945s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.bash'
+[18.946s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.zsh'
+[18.947s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/colcon-core/packages/mocap4r2_msgs)
+[18.948s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener' with build type 'ament_python'
+[18.948s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap_listener', 'ament_prefix_path')
+[18.948s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/ament_prefix_path.ps1'
+[18.950s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/ament_prefix_path.dsv'
+[18.951s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/ament_prefix_path.sh'
+[18.952s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[18.952s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[18.963s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav' with build type 'ament_python'
+[18.964s] Level 1:colcon.colcon_core.shell:create_environment_hook('opti_waypoint_nav', 'ament_prefix_path')
+[18.965s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/ament_prefix_path.ps1'
+[18.966s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/ament_prefix_path.dsv'
+[18.967s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/ament_prefix_path.sh'
+[18.969s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[18.969s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[19.494s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener'
+[19.495s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[19.495s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[20.023s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav'
+[20.025s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[20.025s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[20.972s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/opti_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/install.log --install-scripts $base/lib/opti_waypoint_nav --single-version-externally-managed install_data
+[20.979s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data
+[21.695s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav' for CMake module files
+[21.696s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav' returned '0': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/opti_waypoint_nav build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/install.log --install-scripts $base/lib/opti_waypoint_nav --single-version-externally-managed install_data
+[21.697s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav' for CMake config files
+[21.698s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib'
+[21.698s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/bin'
+[21.698s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/pkgconfig/opti_waypoint_nav.pc'
+[21.699s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages'
+[21.699s] Level 1:colcon.colcon_core.shell:create_environment_hook('opti_waypoint_nav', 'pythonpath')
+[21.700s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/pythonpath.ps1'
+[21.701s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/pythonpath.dsv'
+[21.702s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/hook/pythonpath.sh'
+[21.704s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/bin'
+[21.704s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(opti_waypoint_nav)
+[21.705s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/package.ps1'
+[21.706s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/package.dsv'
+[21.707s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/package.sh'
+[21.708s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/package.bash'
+[21.709s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/package.zsh'
+[21.709s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/colcon-core/packages/opti_waypoint_nav)
+[21.713s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener' for CMake module files
+[21.715s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener' returned '0': AMENT_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${AMENT_PREFIX_PATH} CMAKE_PREFIX_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:${CMAKE_PREFIX_PATH} LD_LIBRARY_PATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64 PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base ../build/mocap_listener build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log --install-scripts $base/lib/mocap_listener --single-version-externally-managed install_data
+[21.716s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener' for CMake config files
+[21.717s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib'
+[21.717s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/bin'
+[21.718s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/pkgconfig/mocap_listener.pc'
+[21.718s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages'
+[21.718s] Level 1:colcon.colcon_core.shell:create_environment_hook('mocap_listener', 'pythonpath')
+[21.719s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/pythonpath.ps1'
+[21.720s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/pythonpath.dsv'
+[21.721s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/hook/pythonpath.sh'
+[21.723s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/bin'
+[21.723s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mocap_listener)
+[21.724s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/package.ps1'
+[21.725s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/package.dsv'
+[21.726s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/package.sh'
+[21.727s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/package.bash'
+[21.727s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener/package.zsh'
+[21.728s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/colcon-core/packages/mocap_listener)
+[21.729s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[21.729s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[21.730s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[21.730s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[21.744s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[21.744s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[21.745s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[21.768s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[21.768s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[21.769s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/local_setup.ps1'
+[21.772s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/_local_setup_util_ps1.py'
+[21.775s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/setup.ps1'
+[21.777s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/local_setup.sh'
+[21.779s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/_local_setup_util_sh.py'
+[21.780s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/setup.sh'
+[21.783s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/local_setup.bash'
+[21.784s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/setup.bash'
+[21.787s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/local_setup.zsh'
+[21.788s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/setup.zsh'

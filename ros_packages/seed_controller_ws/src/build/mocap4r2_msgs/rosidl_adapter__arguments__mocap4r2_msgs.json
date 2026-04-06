@@ -1,0 +1,11 @@
+{
+  "package_name": "mocap4r2_msgs",
+  "non_idl_tuples": [
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:msg/Marker.msg",
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:msg/Markers.msg",
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:msg/ImusInfo.msg",
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:msg/RigidBody.msg",
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:msg/RigidBodies.msg",
+    "/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs:srv/CreateRigidBody.srv"
+  ]
+}

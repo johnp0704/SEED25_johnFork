@@ -1,0 +1,7 @@
+[console_scripts]
+dual_camera_node = gui_waypoint_nav.dual_camera_node:main
+open_loop_odometry_node = gui_waypoint_nav.open_loop_odometry_node:main
+path_follower_node = gui_waypoint_nav.path_follower_node:main
+waypoint_gui_node = gui_waypoint_nav.waypoint_gui_node:main
+waypoint_manager_node = gui_waypoint_nav.waypoint_manager_node:main
+

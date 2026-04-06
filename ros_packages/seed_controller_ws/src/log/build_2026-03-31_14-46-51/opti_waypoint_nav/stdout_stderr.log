@@ -1,0 +1,59 @@
+running egg_info
+creating ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info
+writing ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/PKG-INFO
+writing dependency_links to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/dependency_links.txt
+writing entry points to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/entry_points.txt
+writing requirements to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/requires.txt
+writing top-level names to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/top_level.txt
+writing manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'
+reading manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'
+writing manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/virtual_twin_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+copying opti_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav
+running install
+running install_lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/virtual_twin_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/sabertooth.py to sabertooth.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/virtual_twin_node.py to virtual_twin_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/waypoint_manager_node.py to waypoint_manager_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/dual_camera_node.py to dual_camera_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/PID.py to PID.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/telemetry_node.py to telemetry_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/__init__.py to __init__.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/path_follower_node.py to path_follower_node.cpython-38.pyc
+running install_data
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index/packages
+copying resource/opti_waypoint_nav -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index/packages
+copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/launch
+copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/launch
+running install_egg_info
+Copying ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav-0.0.0-py3.8.egg-info
+running install_scripts
+Installing dual_camera_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav
+Installing path_follower_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav
+Installing telemetry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav
+Installing virtual_twin_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav
+Installing waypoint_manager_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav
+writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/install.log'

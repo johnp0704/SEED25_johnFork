@@ -1,0 +1,891 @@
+[0.000000] (-) TimerEvent: {}
+[0.000396] (gui_waypoint_nav) JobQueued: {'identifier': 'gui_waypoint_nav', 'dependencies': OrderedDict()}
+[0.000685] (ml_red_controller) JobQueued: {'identifier': 'ml_red_controller', 'dependencies': OrderedDict()}
+[0.000862] (mocap4r2_msgs) JobQueued: {'identifier': 'mocap4r2_msgs', 'dependencies': OrderedDict()}
+[0.001324] (mv_controller) JobQueued: {'identifier': 'mv_controller', 'dependencies': OrderedDict()}
+[0.001624] (mocap_listener) JobQueued: {'identifier': 'mocap_listener', 'dependencies': OrderedDict([('mocap4r2_msgs', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs')])}
+[0.001895] (opti_waypoint_nav) JobQueued: {'identifier': 'opti_waypoint_nav', 'dependencies': OrderedDict([('mocap4r2_msgs', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs')])}
+[0.002000] (mocap4r2_msgs) JobStarted: {'identifier': 'mocap4r2_msgs'}
+[0.018003] (gui_waypoint_nav) JobStarted: {'identifier': 'gui_waypoint_nav'}
+[0.033617] (ml_red_controller) JobStarted: {'identifier': 'ml_red_controller'}
+[0.047596] (mv_controller) JobStarted: {'identifier': 'mv_controller'}
+[0.065184] (mocap4r2_msgs) JobProgress: {'identifier': 'mocap4r2_msgs', 'progress': 'cmake'}
+[0.066357] (mocap4r2_msgs) Command: {'cmd': ['/usr/bin/cmake', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap4r2_msgs', '-DCMAKE_INSTALL_PREFIX=/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'airlab'), ('SSH_CLIENT', '192.168.0.60 57569 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/airlab'), ('OLDPWD', '/home/airlab/seed25/ros_packages/seed_controller_ws'), ('SSH_TTY', '/dev/pts/0'), ('JETSON_L4T', '35.6.1'), ('ROS_PYTHON_VERSION', '3'), ('JETSON_MODEL', 'NVIDIA Orin NX Developer Kit'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLCON_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install'), ('ROS_DISTRO', 'foxy'), ('LOGNAME', 'airlab'), ('JETSON_MODULE', 'NVIDIA Jetson Orin NX (16GB ram)'), ('JETSON_SERIAL_NUMBER', '1425023203559'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('JETSON_CODENAME', 'P3768'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', 'localhost:10.0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('JETSON_SOC', 'tegra23x'), ('ROS_DOMAIN_ID', '3'), ('AMENT_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('JETSON_CUDA_ARCH_BIN', '8.7'), ('PWD', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs'), ('LC_ALL', 'en_US.UTF-8'), ('SSH_CONNECTION', '192.168.0.60 57569 192.168.0.136 22'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages'), ('COLCON', '1'), ('JETSON_JETPACK', '5.1.5'), ('CMAKE_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('JETSON_P_NUMBER', 'p3767-0000')]), 'shell': False}
+[0.099530] (-) TimerEvent: {}
+[0.200292] (-) TimerEvent: {}
+[0.300928] (-) TimerEvent: {}
+[0.401582] (-) TimerEvent: {}
+[0.502255] (-) TimerEvent: {}
+[0.602961] (-) TimerEvent: {}
+[0.703831] (-) TimerEvent: {}
+[0.804992] (-) TimerEvent: {}
+[0.906047] (-) TimerEvent: {}
+[1.006968] (-) TimerEvent: {}
+[1.107971] (-) TimerEvent: {}
+[1.208701] (-) TimerEvent: {}
+[1.309497] (-) TimerEvent: {}
+[1.410084] (-) TimerEvent: {}
+[1.510717] (-) TimerEvent: {}
+[1.611310] (-) TimerEvent: {}
+[1.711959] (-) TimerEvent: {}
+[1.722863] (mocap4r2_msgs) StdoutLine: {'line': b'-- The C compiler identification is GNU 9.4.0\n'}
+[1.723871] (mocap4r2_msgs) StdoutLine: {'line': b'-- The CXX compiler identification is GNU 9.4.0\n'}
+[1.724269] (mocap4r2_msgs) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc\n'}
+[1.724654] (mocap4r2_msgs) StdoutLine: {'line': b'-- Check for working C compiler: /usr/bin/cc -- works\n'}
+[1.725082] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info\n'}
+[1.725435] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting C compiler ABI info - done\n'}
+[1.726146] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting C compile features\n'}
+[1.727285] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting C compile features - done\n'}
+[1.727633] (mocap4r2_msgs) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++\n'}
+[1.728301] (mocap4r2_msgs) StdoutLine: {'line': b'-- Check for working CXX compiler: /usr/bin/c++ -- works\n'}
+[1.729151] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info\n'}
+[1.729482] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting CXX compiler ABI info - done\n'}
+[1.730203] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features\n'}
+[1.730405] (mocap4r2_msgs) StdoutLine: {'line': b'-- Detecting CXX compile features - done\n'}
+[1.733299] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found ament_cmake: 0.9.12 (/opt/ros/foxy/share/ament_cmake/cmake)\n'}
+[1.734002] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") \n'}
+[1.734194] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[1.734354] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)\n'}
+[1.734502] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[1.734647] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found rosidl_adapter: 1.3.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)\n'}
+[1.812195] (-) TimerEvent: {}
+[1.913022] (-) TimerEvent: {}
+[1.919985] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found OpenSSL: /usr/lib/aarch64-linux-gnu/libcrypto.so (found version "1.1.1f")  \n'}
+[1.985101] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found FastRTPS: /opt/ros/foxy/include  \n'}
+[2.013198] (-) TimerEvent: {}
+[2.114385] (-) TimerEvent: {}
+[2.180695] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[2.214551] (-) TimerEvent: {}
+[2.247728] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found builtin_interfaces: 1.0.0 (/opt/ros/foxy/share/builtin_interfaces/cmake)\n'}
+[2.283060] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found std_msgs: 2.0.5 (/opt/ros/foxy/share/std_msgs/cmake)\n'}
+[2.314711] (-) TimerEvent: {}
+[2.326897] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found geometry_msgs: 2.0.5 (/opt/ros/foxy/share/geometry_msgs/cmake)\n'}
+[2.414878] (-) TimerEvent: {}
+[2.459324] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") \n'}
+[2.515053] (-) TimerEvent: {}
+[2.616186] (-) TimerEvent: {}
+[2.717518] (-) TimerEvent: {}
+[2.727062] (gui_waypoint_nav) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/gui_waypoint_nav', 'build', '--build-base', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build', 'install', '--record', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log', '--install-scripts', '$base/lib/gui_waypoint_nav', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/gui_waypoint_nav', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'airlab', 'SSH_CLIENT': '192.168.0.60 57569 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:', 'MOTD_SHOWN': 'pam', 'HOME': '/home/airlab', 'OLDPWD': '/home/airlab/seed25/ros_packages/seed_controller_ws', 'SSH_TTY': '/dev/pts/0', 'JETSON_L4T': '35.6.1', 'ROS_PYTHON_VERSION': '3', 'JETSON_MODEL': 'NVIDIA Orin NX Developer Kit', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'airlab', 'JETSON_MODULE': 'NVIDIA Jetson Orin NX (16GB ram)', 'JETSON_SERIAL_NUMBER': '1425023203559', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'P3768', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm', 'XDG_SESSION_ID': '7', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra23x', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_CUDA_ARCH_BIN': '8.7', 'PWD': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.0.60 57569 192.168.0.136 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'JETSON_JETPACK': '5.1.5', 'CMAKE_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs', 'JETSON_P_NUMBER': 'p3767-0000'}, 'shell': False}
+[2.750430] (mv_controller) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/mv_controller', 'build', '--build-base', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build', 'install', '--record', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log', '--install-scripts', '$base/lib/mv_controller', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mv_controller', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'airlab', 'SSH_CLIENT': '192.168.0.60 57569 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:', 'MOTD_SHOWN': 'pam', 'HOME': '/home/airlab', 'OLDPWD': '/home/airlab/seed25/ros_packages/seed_controller_ws', 'SSH_TTY': '/dev/pts/0', 'JETSON_L4T': '35.6.1', 'ROS_PYTHON_VERSION': '3', 'JETSON_MODEL': 'NVIDIA Orin NX Developer Kit', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'airlab', 'JETSON_MODULE': 'NVIDIA Jetson Orin NX (16GB ram)', 'JETSON_SERIAL_NUMBER': '1425023203559', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'P3768', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm', 'XDG_SESSION_ID': '7', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra23x', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_CUDA_ARCH_BIN': '8.7', 'PWD': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.0.60 57569 192.168.0.136 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'JETSON_JETPACK': '5.1.5', 'CMAKE_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs', 'JETSON_P_NUMBER': 'p3767-0000'}, 'shell': False}
+[2.761666] (ml_red_controller) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/ml_red_controller', 'build', '--build-base', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build', 'install', '--record', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/install.log', '--install-scripts', '$base/lib/ml_red_controller', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'airlab', 'SSH_CLIENT': '192.168.0.60 57569 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:', 'MOTD_SHOWN': 'pam', 'HOME': '/home/airlab', 'OLDPWD': '/home/airlab/seed25/ros_packages/seed_controller_ws', 'SSH_TTY': '/dev/pts/0', 'JETSON_L4T': '35.6.1', 'ROS_PYTHON_VERSION': '3', 'JETSON_MODEL': 'NVIDIA Orin NX Developer Kit', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'airlab', 'JETSON_MODULE': 'NVIDIA Jetson Orin NX (16GB ram)', 'JETSON_SERIAL_NUMBER': '1425023203559', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'P3768', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm', 'XDG_SESSION_ID': '7', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra23x', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_CUDA_ARCH_BIN': '8.7', 'PWD': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.0.60 57569 192.168.0.136 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'JETSON_JETPACK': '5.1.5', 'CMAKE_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs', 'JETSON_P_NUMBER': 'p3767-0000'}, 'shell': False}
+[2.822793] (-) TimerEvent: {}
+[2.923504] (-) TimerEvent: {}
+[2.979612] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found ament_cmake_ros: 0.9.2 (/opt/ros/foxy/share/ament_cmake_ros/cmake)\n'}
+[3.023686] (-) TimerEvent: {}
+[3.124982] (-) TimerEvent: {}
+[3.226342] (-) TimerEvent: {}
+[3.282503] (gui_waypoint_nav) StdoutLine: {'line': b'running egg_info\n'}
+[3.283840] (gui_waypoint_nav) StdoutLine: {'line': b'creating ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info\n'}
+[3.284425] (gui_waypoint_nav) StdoutLine: {'line': b'writing ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/PKG-INFO\n'}
+[3.285210] (gui_waypoint_nav) StdoutLine: {'line': b'writing dependency_links to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/dependency_links.txt\n'}
+[3.285772] (gui_waypoint_nav) StdoutLine: {'line': b'writing entry points to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/entry_points.txt\n'}
+[3.286133] (gui_waypoint_nav) StdoutLine: {'line': b'writing requirements to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/requires.txt\n'}
+[3.286452] (gui_waypoint_nav) StdoutLine: {'line': b'writing top-level names to ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/top_level.txt\n'}
+[3.290141] (gui_waypoint_nav) StdoutLine: {'line': b"writing manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[3.297505] (ml_red_controller) StdoutLine: {'line': b'running egg_info\n'}
+[3.298733] (mv_controller) StdoutLine: {'line': b'running egg_info\n'}
+[3.299188] (ml_red_controller) StdoutLine: {'line': b'creating ../build/ml_red_controller/ml_red_controller.egg-info\n'}
+[3.299614] (ml_red_controller) StdoutLine: {'line': b'writing ../build/ml_red_controller/ml_red_controller.egg-info/PKG-INFO\n'}
+[3.300359] (ml_red_controller) StdoutLine: {'line': b'writing dependency_links to ../build/ml_red_controller/ml_red_controller.egg-info/dependency_links.txt\n'}
+[3.300824] (ml_red_controller) StdoutLine: {'line': b'writing entry points to ../build/ml_red_controller/ml_red_controller.egg-info/entry_points.txt\n'}
+[3.301168] (ml_red_controller) StdoutLine: {'line': b'writing requirements to ../build/ml_red_controller/ml_red_controller.egg-info/requires.txt\n'}
+[3.301494] (ml_red_controller) StdoutLine: {'line': b'writing top-level names to ../build/ml_red_controller/ml_red_controller.egg-info/top_level.txt\n'}
+[3.302454] (mv_controller) StdoutLine: {'line': b'creating ../build/mv_controller/mv_controller.egg-info\n'}
+[3.303298] (mv_controller) StdoutLine: {'line': b'writing ../build/mv_controller/mv_controller.egg-info/PKG-INFO\n'}
+[3.304368] (mv_controller) StdoutLine: {'line': b'writing dependency_links to ../build/mv_controller/mv_controller.egg-info/dependency_links.txt\n'}
+[3.304709] (ml_red_controller) StdoutLine: {'line': b"writing manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'\n"}
+[3.305438] (mv_controller) StdoutLine: {'line': b'writing entry points to ../build/mv_controller/mv_controller.egg-info/entry_points.txt\n'}
+[3.306001] (mv_controller) StdoutLine: {'line': b'writing requirements to ../build/mv_controller/mv_controller.egg-info/requires.txt\n'}
+[3.306529] (mv_controller) StdoutLine: {'line': b'writing top-level names to ../build/mv_controller/mv_controller.egg-info/top_level.txt\n'}
+[3.309973] (mv_controller) StdoutLine: {'line': b"writing manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'\n"}
+[3.326441] (-) TimerEvent: {}
+[3.356911] (gui_waypoint_nav) StdoutLine: {'line': b"reading manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[3.358868] (gui_waypoint_nav) StdoutLine: {'line': b"writing manifest file '../build/gui_waypoint_nav/gui_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[3.359332] (gui_waypoint_nav) StdoutLine: {'line': b'running build\n'}
+[3.359631] (gui_waypoint_nav) StdoutLine: {'line': b'running build_py\n'}
+[3.360050] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build\n'}
+[3.360325] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib\n'}
+[3.360559] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.360822] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/open_loop_odometry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.361259] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.361678] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.362071] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.362456] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/waypoint_gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.362837] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.363201] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.363558] (gui_waypoint_nav) StdoutLine: {'line': b'copying gui_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav\n'}
+[3.364195] (gui_waypoint_nav) StdoutLine: {'line': b'running install\n'}
+[3.366329] (gui_waypoint_nav) StdoutLine: {'line': b'running install_lib\n'}
+[3.368678] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.369199] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/open_loop_odometry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.369470] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.369775] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.369965] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.370219] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/waypoint_gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.370444] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.370683] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.370883] (gui_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/build/lib/gui_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav\n'}
+[3.372106] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/open_loop_odometry_node.py to open_loop_odometry_node.cpython-38.pyc\n'}
+[3.372493] (ml_red_controller) StdoutLine: {'line': b"reading manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'\n"}
+[3.374503] (ml_red_controller) StdoutLine: {'line': b"writing manifest file '../build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'\n"}
+[3.374915] (ml_red_controller) StdoutLine: {'line': b'running build\n'}
+[3.375243] (ml_red_controller) StdoutLine: {'line': b'running build_py\n'}
+[3.375604] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build\n'}
+[3.375840] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/sabertooth.py to sabertooth.cpython-38.pyc\n'}
+[3.376123] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib\n'}
+[3.376303] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.376459] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.376788] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/waypoint_manager_node.py to waypoint_manager_node.cpython-38.pyc\n'}
+[3.377869] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.378180] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/dual_camera_node.py to dual_camera_node.cpython-38.pyc\n'}
+[3.379087] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.380048] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.380334] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/waypoint_gui_node.py to waypoint_gui_node.cpython-38.pyc\n'}
+[3.380989] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.381882] (ml_red_controller) StdoutLine: {'line': b'copying ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller\n'}
+[3.382617] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/PID.py to PID.cpython-38.pyc\n'}
+[3.383443] (ml_red_controller) StdoutLine: {'line': b'running install\n'}
+[3.383710] (mv_controller) StdoutLine: {'line': b"reading manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'\n"}
+[3.384004] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/__init__.py to __init__.cpython-38.pyc\n'}
+[3.384271] (gui_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav/path_follower_node.py to path_follower_node.cpython-38.pyc\n'}
+[3.385227] (mv_controller) StdoutLine: {'line': b"writing manifest file '../build/mv_controller/mv_controller.egg-info/SOURCES.txt'\n"}
+[3.385612] (mv_controller) StdoutLine: {'line': b'running build\n'}
+[3.385891] (mv_controller) StdoutLine: {'line': b'running build_py\n'}
+[3.386231] (ml_red_controller) StdoutLine: {'line': b'running install_lib\n'}
+[3.386591] (gui_waypoint_nav) StdoutLine: {'line': b'running install_data\n'}
+[3.386804] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build\n'}
+[3.387032] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib\n'}
+[3.387208] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.387677] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index\n'}
+[3.387849] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index\n'}
+[3.388095] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index/packages\n'}
+[3.388331] (mv_controller) StdoutLine: {'line': b'copying mv_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.388655] (gui_waypoint_nav) StdoutLine: {'line': b'copying resource/gui_waypoint_nav -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/ament_index/resource_index/packages\n'}
+[3.388952] (gui_waypoint_nav) StdoutLine: {'line': b'copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav\n'}
+[3.389215] (gui_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/launch\n'}
+[3.389596] (gui_waypoint_nav) StdoutLine: {'line': b'copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/share/gui_waypoint_nav/launch\n'}
+[3.393246] (mv_controller) StdoutLine: {'line': b'copying mv_controller/mv_gtg_ros.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.393568] (gui_waypoint_nav) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.393759] (mv_controller) StdoutLine: {'line': b'copying mv_controller/RedLiveDetection.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.393925] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.394096] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.394254] (mv_controller) StdoutLine: {'line': b'copying mv_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.394401] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.394548] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.394713] (mv_controller) StdoutLine: {'line': b'copying mv_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.394863] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.395141] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.395300] (ml_red_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/build/lib/ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller\n'}
+[3.395548] (mv_controller) StdoutLine: {'line': b'copying mv_controller/calibration_data.npz -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller\n'}
+[3.395779] (mv_controller) StdoutLine: {'line': b'running install\n'}
+[3.396017] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/sabertooth.py to sabertooth.cpython-38.pyc\n'}
+[3.396281] (mv_controller) StdoutLine: {'line': b'running install_lib\n'}
+[3.396438] (gui_waypoint_nav) StdoutLine: {'line': b'Copying ../build/gui_waypoint_nav/gui_waypoint_nav.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/python3.8/site-packages/gui_waypoint_nav-0.0.0-py3.8.egg-info\n'}
+[3.396701] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/cam_display_node.py to cam_display_node.cpython-38.pyc\n'}
+[3.396902] (gui_waypoint_nav) StdoutLine: {'line': b'running install_scripts\n'}
+[3.397796] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.398091] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/PID.py to PID.cpython-38.pyc\n'}
+[3.405681] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.405967] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/mv_gtg_ros.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.406146] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/RedLiveDetection.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.406305] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/calibration_data.npz -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.406474] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/__init__.py to __init__.cpython-38.pyc\n'}
+[3.406761] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/ml_red_detector_node.py to ml_red_detector_node.cpython-38.pyc\n'}
+[3.406940] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.407097] (mv_controller) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/build/lib/mv_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller\n'}
+[3.407240] (ml_red_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/gtg_controller_node.py to gtg_controller_node.cpython-38.pyc\n'}
+[3.407400] (mv_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/sabertooth.py to sabertooth.cpython-38.pyc\n'}
+[3.407541] (ml_red_controller) StdoutLine: {'line': b'running install_data\n'}
+[3.407674] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index\n'}
+[3.407807] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index\n'}
+[3.407938] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index/packages\n'}
+[3.408071] (ml_red_controller) StdoutLine: {'line': b'copying resource/ml_red_controller -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ament_index/resource_index/packages\n'}
+[3.408202] (ml_red_controller) StdoutLine: {'line': b'copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller\n'}
+[3.408332] (ml_red_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/launch\n'}
+[3.408461] (ml_red_controller) StdoutLine: {'line': b'copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/share/ml_red_controller/launch\n'}
+[3.408715] (ml_red_controller) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.408876] (mv_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/mv_gtg_ros.py to mv_gtg_ros.cpython-38.pyc\n'}
+[3.409023] (mv_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/RedLiveDetection.py to RedLiveDetection.cpython-38.pyc\n'}
+[3.409158] (mv_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/PID.py to PID.cpython-38.pyc\n'}
+[3.409585] (ml_red_controller) StdoutLine: {'line': b'Copying ../build/ml_red_controller/ml_red_controller.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller-0.0.0-py3.8.egg-info\n'}
+[3.409892] (mv_controller) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller/__init__.py to __init__.cpython-38.pyc\n'}
+[3.410460] (mv_controller) StdoutLine: {'line': b'running install_data\n'}
+[3.410861] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index\n'}
+[3.411177] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index\n'}
+[3.411467] (mv_controller) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index/packages\n'}
+[3.411725] (mv_controller) StdoutLine: {'line': b'copying resource/mv_controller -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/ament_index/resource_index/packages\n'}
+[3.411977] (ml_red_controller) StdoutLine: {'line': b'running install_scripts\n'}
+[3.412216] (mv_controller) StdoutLine: {'line': b'copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/share/mv_controller\n'}
+[3.412489] (mv_controller) StdoutLine: {'line': b'running install_egg_info\n'}
+[3.418226] (mv_controller) StdoutLine: {'line': b'Copying ../build/mv_controller/mv_controller.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/python3.8/site-packages/mv_controller-0.0.0-py3.8.egg-info\n'}
+[3.420458] (mv_controller) StdoutLine: {'line': b'running install_scripts\n'}
+[3.426561] (-) TimerEvent: {}
+[3.436452] (gui_waypoint_nav) StdoutLine: {'line': b'Installing dual_camera_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav\n'}
+[3.436979] (gui_waypoint_nav) StdoutLine: {'line': b'Installing open_loop_odometry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav\n'}
+[3.437420] (gui_waypoint_nav) StdoutLine: {'line': b'Installing path_follower_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav\n'}
+[3.437729] (gui_waypoint_nav) StdoutLine: {'line': b'Installing waypoint_gui_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav\n'}
+[3.437914] (gui_waypoint_nav) StdoutLine: {'line': b'Installing waypoint_manager_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/gui_waypoint_nav/lib/gui_waypoint_nav\n'}
+[3.438557] (gui_waypoint_nav) StdoutLine: {'line': b"writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/gui_waypoint_nav/install.log'\n"}
+[3.454011] (ml_red_controller) StdoutLine: {'line': b'Installing cam_display_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller\n'}
+[3.454590] (ml_red_controller) StdoutLine: {'line': b'Installing gtg_controller_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller\n'}
+[3.454946] (ml_red_controller) StdoutLine: {'line': b'Installing ml_red_detector_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/ml_red_controller/lib/ml_red_controller\n'}
+[3.455762] (ml_red_controller) StdoutLine: {'line': b"writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/ml_red_controller/install.log'\n"}
+[3.462817] (mv_controller) StdoutLine: {'line': b'Installing controller script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mv_controller/lib/mv_controller\n'}
+[3.464270] (mv_controller) StdoutLine: {'line': b"writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mv_controller/install.log'\n"}
+[3.521513] (gui_waypoint_nav) CommandEnded: {'returncode': 0}
+[3.526738] (-) TimerEvent: {}
+[3.548936] (gui_waypoint_nav) JobEnded: {'identifier': 'gui_waypoint_nav', 'rc': 0}
+[3.551991] (ml_red_controller) CommandEnded: {'returncode': 0}
+[3.557232] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c\n'}
+[3.565588] (ml_red_controller) JobEnded: {'identifier': 'ml_red_controller', 'rc': 0}
+[3.567226] (mv_controller) CommandEnded: {'returncode': 0}
+[3.578091] (mv_controller) JobEnded: {'identifier': 'mv_controller', 'rc': 0}
+[3.626823] (-) TimerEvent: {}
+[3.727149] (-) TimerEvent: {}
+[3.771196] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp\n'}
+[3.827300] (-) TimerEvent: {}
+[3.827967] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3.5") \n'}
+[3.831656] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found python_cmake_module: 0.8.1 (/opt/ros/foxy/share/python_cmake_module/cmake)\n'}
+[3.897407] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found PythonLibs: /usr/lib/aarch64-linux-gnu/libpython3.8.so (found suitable version "3.8.10", minimum required is "3.5") \n'}
+[3.897897] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using PYTHON_EXECUTABLE: /usr/bin/python3\n'}
+[3.898119] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8\n'}
+[3.898317] (mocap4r2_msgs) StdoutLine: {'line': b'-- Using PYTHON_LIBRARIES: /usr/lib/aarch64-linux-gnu/libpython3.8.so\n'}
+[3.927393] (-) TimerEvent: {}
+[3.946361] (mocap4r2_msgs) StdoutLine: {'line': b'-- Found PythonExtra: .so  \n'}
+[4.027501] (-) TimerEvent: {}
+[4.127952] (-) TimerEvent: {}
+[4.146464] (mocap4r2_msgs) StdoutLine: {'line': b'-- Configuring done\n'}
+[4.228120] (-) TimerEvent: {}
+[4.271533] (mocap4r2_msgs) StdoutLine: {'line': b'-- Generating done\n'}
+[4.307995] (mocap4r2_msgs) StdoutLine: {'line': b'-- Build files have been written to: /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs\n'}
+[4.328233] (-) TimerEvent: {}
+[4.331441] (mocap4r2_msgs) CommandEnded: {'returncode': 0}
+[4.332853] (mocap4r2_msgs) JobProgress: {'identifier': 'mocap4r2_msgs', 'progress': 'build'}
+[4.334928] (mocap4r2_msgs) Command: {'cmd': ['/usr/bin/cmake', '--build', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs', '--', '-j4', '-l4'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'airlab'), ('SSH_CLIENT', '192.168.0.60 57569 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/airlab'), ('OLDPWD', '/home/airlab/seed25/ros_packages/seed_controller_ws'), ('SSH_TTY', '/dev/pts/0'), ('JETSON_L4T', '35.6.1'), ('ROS_PYTHON_VERSION', '3'), ('JETSON_MODEL', 'NVIDIA Orin NX Developer Kit'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLCON_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install'), ('ROS_DISTRO', 'foxy'), ('LOGNAME', 'airlab'), ('JETSON_MODULE', 'NVIDIA Jetson Orin NX (16GB ram)'), ('JETSON_SERIAL_NUMBER', '1425023203559'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('JETSON_CODENAME', 'P3768'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', 'localhost:10.0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('JETSON_SOC', 'tegra23x'), ('ROS_DOMAIN_ID', '3'), ('AMENT_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('JETSON_CUDA_ARCH_BIN', '8.7'), ('PWD', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs'), ('LC_ALL', 'en_US.UTF-8'), ('SSH_CONNECTION', '192.168.0.60 57569 192.168.0.136 22'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages'), ('COLCON', '1'), ('JETSON_JETPACK', '5.1.5'), ('CMAKE_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('JETSON_P_NUMBER', 'p3767-0000')]), 'shell': False}
+[4.428609] (mocap4r2_msgs) StdoutLine: {'line': b'[  1%] \x1b[34m\x1b[1mGenerating C code for ROS interfaces\x1b[0m\n'}
+[4.429231] (-) TimerEvent: {}
+[4.429614] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__cpp\x1b[0m\n'}
+[4.453700] (mocap4r2_msgs) StdoutLine: {'line': b'[  2%] \x1b[34m\x1b[1mGenerating C++ code for ROS interfaces\x1b[0m\n'}
+[4.529448] (-) TimerEvent: {}
+[4.630040] (-) TimerEvent: {}
+[4.730577] (-) TimerEvent: {}
+[4.831074] (-) TimerEvent: {}
+[4.931551] (-) TimerEvent: {}
+[5.031929] (-) TimerEvent: {}
+[5.132358] (-) TimerEvent: {}
+[5.233164] (-) TimerEvent: {}
+[5.333732] (-) TimerEvent: {}
+[5.434354] (-) TimerEvent: {}
+[5.535096] (-) TimerEvent: {}
+[5.625142] (mocap4r2_msgs) StdoutLine: {'line': b'[  2%] Built target mocap4r2_msgs__cpp\n'}
+[5.635294] (-) TimerEvent: {}
+[5.664075] (mocap4r2_msgs) StdoutLine: {'line': b'[  5%] \x1b[34m\x1b[1mGenerating C++ type support for eProsima Fast-RTPS\x1b[0m\n'}
+[5.664742] (mocap4r2_msgs) StdoutLine: {'line': b'[  5%] \x1b[34m\x1b[1mGenerating C++ introspection for ROS interfaces\x1b[0m\n'}
+[5.680084] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_generator_c\x1b[0m\n'}
+[5.682178] (mocap4r2_msgs) StdoutLine: {'line': b'[  7%] \x1b[34m\x1b[1mGenerating C++ type support dispatch for ROS interfaces\x1b[0m\n'}
+[5.723312] (mocap4r2_msgs) StdoutLine: {'line': b'[  8%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/msg/detail/marker__functions.c.o\x1b[0m\n'}
+[5.735460] (-) TimerEvent: {}
+[5.836084] (-) TimerEvent: {}
+[5.851355] (mocap4r2_msgs) StdoutLine: {'line': b'[  9%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/msg/detail/markers__functions.c.o\x1b[0m\n'}
+[5.936265] (-) TimerEvent: {}
+[5.961359] (mocap4r2_msgs) StdoutLine: {'line': b'[ 11%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/msg/detail/imus_info__functions.c.o\x1b[0m\n'}
+[6.036466] (-) TimerEvent: {}
+[6.063677] (mocap4r2_msgs) StdoutLine: {'line': b'[ 12%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/msg/detail/rigid_body__functions.c.o\x1b[0m\n'}
+[6.136626] (-) TimerEvent: {}
+[6.172554] (mocap4r2_msgs) StdoutLine: {'line': b'[ 14%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/msg/detail/rigid_bodies__functions.c.o\x1b[0m\n'}
+[6.236810] (-) TimerEvent: {}
+[6.291873] (mocap4r2_msgs) StdoutLine: {'line': b'[ 15%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_generator_c.dir/rosidl_generator_c/mocap4r2_msgs/srv/detail/create_rigid_body__functions.c.o\x1b[0m\n'}
+[6.337009] (-) TimerEvent: {}
+[6.438325] (-) TimerEvent: {}
+[6.442903] (mocap4r2_msgs) StdoutLine: {'line': b'[ 16%] \x1b[32m\x1b[1mLinking C shared library libmocap4r2_msgs__rosidl_generator_c.so\x1b[0m\n'}
+[6.466736] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_cpp\x1b[0m\n'}
+[6.501980] (mocap4r2_msgs) StdoutLine: {'line': b'[ 18%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/msg/marker__type_support.cpp.o\x1b[0m\n'}
+[6.538527] (-) TimerEvent: {}
+[6.544676] (mocap4r2_msgs) StdoutLine: {'line': b'[ 18%] Built target mocap4r2_msgs__rosidl_generator_c\n'}
+[6.565011] (mocap4r2_msgs) StdoutLine: {'line': b'[ 19%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/msg/markers__type_support.cpp.o\x1b[0m\n'}
+[6.638721] (-) TimerEvent: {}
+[6.700681] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_introspection_cpp\x1b[0m\n'}
+[6.738665] (mocap4r2_msgs) StdoutLine: {'line': b'[ 21%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/msg/detail/marker__type_support.cpp.o\x1b[0m\n'}
+[6.739220] (-) TimerEvent: {}
+[6.792528] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp\x1b[0m\n'}
+[6.839464] (-) TimerEvent: {}
+[6.844992] (mocap4r2_msgs) StdoutLine: {'line': b'[ 22%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/msg/detail/dds_fastrtps/marker__type_support.cpp.o\x1b[0m\n'}
+[6.939665] (-) TimerEvent: {}
+[7.040959] (-) TimerEvent: {}
+[7.142216] (-) TimerEvent: {}
+[7.225010] (mocap4r2_msgs) StdoutLine: {'line': b'[ 23%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/msg/detail/dds_fastrtps/markers__type_support.cpp.o\x1b[0m\n'}
+[7.242437] (-) TimerEvent: {}
+[7.243445] (mocap4r2_msgs) StdoutLine: {'line': b'[ 25%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/msg/imus_info__type_support.cpp.o\x1b[0m\n'}
+[7.342638] (-) TimerEvent: {}
+[7.443833] (-) TimerEvent: {}
+[7.460705] (mocap4r2_msgs) StdoutLine: {'line': b'[ 26%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/msg/detail/markers__type_support.cpp.o\x1b[0m\n'}
+[7.544044] (-) TimerEvent: {}
+[7.645281] (-) TimerEvent: {}
+[7.746563] (-) TimerEvent: {}
+[7.847850] (-) TimerEvent: {}
+[7.868154] (mocap4r2_msgs) StdoutLine: {'line': b'[ 28%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/msg/detail/imus_info__type_support.cpp.o\x1b[0m\n'}
+[7.926104] (mocap4r2_msgs) StdoutLine: {'line': b'[ 29%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/msg/rigid_body__type_support.cpp.o\x1b[0m\n'}
+[7.948072] (-) TimerEvent: {}
+[8.049321] (-) TimerEvent: {}
+[8.150578] (-) TimerEvent: {}
+[8.251878] (-) TimerEvent: {}
+[8.305751] (mocap4r2_msgs) StdoutLine: {'line': b'[ 30%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/msg/rigid_bodies__type_support.cpp.o\x1b[0m\n'}
+[8.343833] (mocap4r2_msgs) StdoutLine: {'line': b'[ 32%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/msg/detail/dds_fastrtps/imus_info__type_support.cpp.o\x1b[0m\n'}
+[8.352073] (-) TimerEvent: {}
+[8.452836] (-) TimerEvent: {}
+[8.553622] (-) TimerEvent: {}
+[8.612615] (mocap4r2_msgs) StdoutLine: {'line': b'[ 33%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/mocap4r2_msgs/srv/create_rigid_body__type_support.cpp.o\x1b[0m\n'}
+[8.653903] (-) TimerEvent: {}
+[8.674430] (mocap4r2_msgs) StdoutLine: {'line': b'[ 35%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/msg/detail/rigid_body__type_support.cpp.o\x1b[0m\n'}
+[8.754105] (-) TimerEvent: {}
+[8.855304] (-) TimerEvent: {}
+[8.956565] (-) TimerEvent: {}
+[9.021751] (mocap4r2_msgs) StdoutLine: {'line': b'[ 36%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.cpp.o\x1b[0m\n'}
+[9.056790] (-) TimerEvent: {}
+[9.157996] (-) TimerEvent: {}
+[9.259209] (-) TimerEvent: {}
+[9.296498] (mocap4r2_msgs) StdoutLine: {'line': b'[ 38%] \x1b[32m\x1b[1mLinking CXX shared library libmocap4r2_msgs__rosidl_typesupport_cpp.so\x1b[0m\n'}
+[9.359442] (-) TimerEvent: {}
+[9.387190] (mocap4r2_msgs) StdoutLine: {'line': b'[ 38%] Built target mocap4r2_msgs__rosidl_typesupport_cpp\n'}
+[9.414485] (mocap4r2_msgs) StdoutLine: {'line': b'[ 39%] \x1b[34m\x1b[1mGenerating C introspection for ROS interfaces\x1b[0m\n'}
+[9.459598] (-) TimerEvent: {}
+[9.476684] (mocap4r2_msgs) StdoutLine: {'line': b'[ 40%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/msg/detail/dds_fastrtps/rigid_body__type_support.cpp.o\x1b[0m\n'}
+[9.496979] (mocap4r2_msgs) StdoutLine: {'line': b'[ 42%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/msg/detail/dds_fastrtps/rigid_bodies__type_support.cpp.o\x1b[0m\n'}
+[9.559806] (-) TimerEvent: {}
+[9.660498] (-) TimerEvent: {}
+[9.761234] (-) TimerEvent: {}
+[9.861923] (-) TimerEvent: {}
+[9.921817] (mocap4r2_msgs) StdoutLine: {'line': b'[ 43%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.cpp.o\x1b[0m\n'}
+[9.962103] (-) TimerEvent: {}
+[10.063240] (-) TimerEvent: {}
+[10.164376] (-) TimerEvent: {}
+[10.265610] (-) TimerEvent: {}
+[10.366380] (-) TimerEvent: {}
+[10.467141] (-) TimerEvent: {}
+[10.524869] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_introspection_c\x1b[0m\n'}
+[10.567396] (-) TimerEvent: {}
+[10.568590] (mocap4r2_msgs) StdoutLine: {'line': b'[ 45%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/msg/detail/marker__type_support.c.o\x1b[0m\n'}
+[10.606066] (mocap4r2_msgs) StdoutLine: {'line': b'[ 46%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/mocap4r2_msgs/srv/detail/dds_fastrtps/create_rigid_body__type_support.cpp.o\x1b[0m\n'}
+[10.651585] (mocap4r2_msgs) StdoutLine: {'line': b'[ 47%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/msg/detail/markers__type_support.c.o\x1b[0m\n'}
+[10.654460] (mocap4r2_msgs) StdoutLine: {'line': b'[ 49%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/msg/detail/imus_info__type_support.c.o\x1b[0m\n'}
+[10.667614] (-) TimerEvent: {}
+[10.725171] (mocap4r2_msgs) StdoutLine: {'line': b'[ 50%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/msg/detail/rigid_body__type_support.c.o\x1b[0m\n'}
+[10.735083] (mocap4r2_msgs) StdoutLine: {'line': b'[ 52%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.c.o\x1b[0m\n'}
+[10.759413] (mocap4r2_msgs) StdoutLine: {'line': b'[ 53%] \x1b[32m\x1b[1mLinking CXX shared library libmocap4r2_msgs__rosidl_typesupport_introspection_cpp.so\x1b[0m\n'}
+[10.767807] (-) TimerEvent: {}
+[10.807526] (mocap4r2_msgs) StdoutLine: {'line': b'[ 54%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.c.o\x1b[0m\n'}
+[10.840351] (mocap4r2_msgs) StdoutLine: {'line': b'[ 56%] \x1b[34m\x1b[1mGenerating C type support dispatch for ROS interfaces\x1b[0m\n'}
+[10.867997] (-) TimerEvent: {}
+[10.891246] (mocap4r2_msgs) StdoutLine: {'line': b'[ 57%] \x1b[32m\x1b[1mLinking C shared library libmocap4r2_msgs__rosidl_typesupport_introspection_c.so\x1b[0m\n'}
+[10.954850] (mocap4r2_msgs) StdoutLine: {'line': b'[ 57%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_cpp\n'}
+[10.968169] (-) TimerEvent: {}
+[10.972960] (mocap4r2_msgs) StdoutLine: {'line': b'[ 57%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_c\n'}
+[11.068314] (-) TimerEvent: {}
+[11.168953] (-) TimerEvent: {}
+[11.269585] (-) TimerEvent: {}
+[11.370128] (-) TimerEvent: {}
+[11.470645] (-) TimerEvent: {}
+[11.558829] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_c\x1b[0m\n'}
+[11.570814] (-) TimerEvent: {}
+[11.591280] (mocap4r2_msgs) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/msg/markers__type_support.cpp.o\x1b[0m\n'}
+[11.591877] (mocap4r2_msgs) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/msg/imus_info__type_support.cpp.o\x1b[0m\n'}
+[11.592249] (mocap4r2_msgs) StdoutLine: {'line': b'[ 61%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/msg/marker__type_support.cpp.o\x1b[0m\n'}
+[11.659575] (mocap4r2_msgs) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/msg/rigid_body__type_support.cpp.o\x1b[0m\n'}
+[11.660197] (mocap4r2_msgs) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/srv/create_rigid_body__type_support.cpp.o\x1b[0m\n'}
+[11.660401] (mocap4r2_msgs) StdoutLine: {'line': b'[ 66%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/mocap4r2_msgs/msg/rigid_bodies__type_support.cpp.o\x1b[0m\n'}
+[11.671019] (-) TimerEvent: {}
+[11.713853] (mocap4r2_msgs) StdoutLine: {'line': b'[ 67%] \x1b[32m\x1b[1mLinking CXX shared library libmocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.so\x1b[0m\n'}
+[11.739761] (mocap4r2_msgs) StdoutLine: {'line': b'[ 69%] \x1b[32m\x1b[1mLinking CXX shared library libmocap4r2_msgs__rosidl_typesupport_c.so\x1b[0m\n'}
+[11.771205] (-) TimerEvent: {}
+[11.824941] (mocap4r2_msgs) StdoutLine: {'line': b'[ 69%] Built target mocap4r2_msgs__rosidl_typesupport_c\n'}
+[11.871363] (-) TimerEvent: {}
+[11.903271] (mocap4r2_msgs) StdoutLine: {'line': b'[ 69%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_cpp\n'}
+[11.926285] (mocap4r2_msgs) StdoutLine: {'line': b'[ 70%] \x1b[34m\x1b[1mGenerating C type support for eProsima Fast-RTPS\x1b[0m\n'}
+[11.971492] (-) TimerEvent: {}
+[12.072017] (-) TimerEvent: {}
+[12.172452] (-) TimerEvent: {}
+[12.273150] (-) TimerEvent: {}
+[12.373684] (-) TimerEvent: {}
+[12.474329] (-) TimerEvent: {}
+[12.574774] (-) TimerEvent: {}
+[12.675308] (-) TimerEvent: {}
+[12.775864] (-) TimerEvent: {}
+[12.796411] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_fastrtps_c\x1b[0m\n'}
+[12.846762] (mocap4r2_msgs) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/msg/detail/rigid_body__type_support_c.cpp.o\x1b[0m\n'}
+[12.847432] (mocap4r2_msgs) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/msg/detail/imus_info__type_support_c.cpp.o\x1b[0m\n'}
+[12.847647] (mocap4r2_msgs) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/msg/detail/marker__type_support_c.cpp.o\x1b[0m\n'}
+[12.848677] (mocap4r2_msgs) StdoutLine: {'line': b'[ 76%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/msg/detail/markers__type_support_c.cpp.o\x1b[0m\n'}
+[12.876045] (-) TimerEvent: {}
+[12.977213] (-) TimerEvent: {}
+[13.078442] (-) TimerEvent: {}
+[13.179726] (-) TimerEvent: {}
+[13.281006] (-) TimerEvent: {}
+[13.382276] (-) TimerEvent: {}
+[13.483537] (-) TimerEvent: {}
+[13.584835] (-) TimerEvent: {}
+[13.685998] (-) TimerEvent: {}
+[13.699557] (mocap4r2_msgs) StdoutLine: {'line': b'[ 77%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/msg/detail/rigid_bodies__type_support_c.cpp.o\x1b[0m\n'}
+[13.716249] (mocap4r2_msgs) StdoutLine: {'line': b'[ 78%] \x1b[32mBuilding CXX object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/mocap4r2_msgs/srv/detail/create_rigid_body__type_support_c.cpp.o\x1b[0m\n'}
+[13.786171] (-) TimerEvent: {}
+[13.886876] (-) TimerEvent: {}
+[13.987587] (-) TimerEvent: {}
+[14.088351] (-) TimerEvent: {}
+[14.189092] (-) TimerEvent: {}
+[14.289798] (-) TimerEvent: {}
+[14.390426] (-) TimerEvent: {}
+[14.491136] (-) TimerEvent: {}
+[14.558358] (mocap4r2_msgs) StdoutLine: {'line': b'[ 80%] \x1b[32m\x1b[1mLinking CXX shared library libmocap4r2_msgs__rosidl_typesupport_fastrtps_c.so\x1b[0m\n'}
+[14.591309] (-) TimerEvent: {}
+[14.691991] (-) TimerEvent: {}
+[14.724253] (mocap4r2_msgs) StdoutLine: {'line': b'[ 80%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_c\n'}
+[14.745231] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs\x1b[0m\n'}
+[14.768066] (mocap4r2_msgs) StdoutLine: {'line': b'[ 80%] Built target mocap4r2_msgs\n'}
+[14.789520] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__py\x1b[0m\n'}
+[14.792079] (-) TimerEvent: {}
+[14.812728] (mocap4r2_msgs) StdoutLine: {'line': b'[ 81%] \x1b[34m\x1b[1mGenerating Python code for ROS interfaces\x1b[0m\n'}
+[14.892236] (-) TimerEvent: {}
+[14.992798] (-) TimerEvent: {}
+[15.093226] (-) TimerEvent: {}
+[15.193680] (-) TimerEvent: {}
+[15.294226] (-) TimerEvent: {}
+[15.394746] (-) TimerEvent: {}
+[15.495168] (-) TimerEvent: {}
+[15.595531] (-) TimerEvent: {}
+[15.695958] (-) TimerEvent: {}
+[15.796458] (-) TimerEvent: {}
+[15.896831] (-) TimerEvent: {}
+[15.997218] (-) TimerEvent: {}
+[16.097771] (-) TimerEvent: {}
+[16.198394] (-) TimerEvent: {}
+[16.298909] (-) TimerEvent: {}
+[16.399276] (-) TimerEvent: {}
+[16.499772] (-) TimerEvent: {}
+[16.552919] (mocap4r2_msgs) StdoutLine: {'line': b'[ 81%] Built target mocap4r2_msgs__py\n'}
+[16.574256] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__python\x1b[0m\n'}
+[16.599856] (-) TimerEvent: {}
+[16.645451] (mocap4r2_msgs) StdoutLine: {'line': b'[ 87%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/msg/_imus_info_s.c.o\x1b[0m\n'}
+[16.645982] (mocap4r2_msgs) StdoutLine: {'line': b'[ 87%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/msg/_markers_s.c.o\x1b[0m\n'}
+[16.646178] (mocap4r2_msgs) StdoutLine: {'line': b'[ 87%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/msg/_rigid_body_s.c.o\x1b[0m\n'}
+[16.646515] (mocap4r2_msgs) StdoutLine: {'line': b'[ 87%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/msg/_marker_s.c.o\x1b[0m\n'}
+[16.700074] (-) TimerEvent: {}
+[16.800821] (-) TimerEvent: {}
+[16.857601] (mocap4r2_msgs) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/srv/_create_rigid_body_s.c.o\x1b[0m\n'}
+[16.858146] (mocap4r2_msgs) StdoutLine: {'line': b'[ 90%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__python.dir/rosidl_generator_py/mocap4r2_msgs/msg/_rigid_bodies_s.c.o\x1b[0m\n'}
+[16.900997] (-) TimerEvent: {}
+[17.001680] (-) TimerEvent: {}
+[17.073960] (mocap4r2_msgs) StdoutLine: {'line': b'[ 91%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/mocap4r2_msgs/libmocap4r2_msgs__python.so\x1b[0m\n'}
+[17.101872] (-) TimerEvent: {}
+[17.163279] (mocap4r2_msgs) StdoutLine: {'line': b'[ 91%] Built target mocap4r2_msgs__python\n'}
+[17.184784] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_introspection_c__pyext\x1b[0m\n'}
+[17.185287] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_fastrtps_c__pyext\x1b[0m\n'}
+[17.185661] (mocap4r2_msgs) StdoutLine: {'line': b'\x1b[35m\x1b[1mScanning dependencies of target mocap4r2_msgs__rosidl_typesupport_c__pyext\x1b[0m\n'}
+[17.201998] (-) TimerEvent: {}
+[17.224920] (mocap4r2_msgs) StdoutLine: {'line': b'[ 92%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/mocap4r2_msgs/_mocap4r2_msgs_s.ep.rosidl_typesupport_c.c.o\x1b[0m\n'}
+[17.231023] (mocap4r2_msgs) StdoutLine: {'line': b'[ 95%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/mocap4r2_msgs/_mocap4r2_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o\x1b[0m\n'}
+[17.231553] (mocap4r2_msgs) StdoutLine: {'line': b'[ 95%] \x1b[32mBuilding C object CMakeFiles/mocap4r2_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/mocap4r2_msgs/_mocap4r2_msgs_s.ep.rosidl_typesupport_introspection_c.c.o\x1b[0m\n'}
+[17.302215] (-) TimerEvent: {}
+[17.403401] (-) TimerEvent: {}
+[17.436024] (mocap4r2_msgs) StdoutLine: {'line': b'[ 98%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so\x1b[0m\n'}
+[17.436548] (mocap4r2_msgs) StdoutLine: {'line': b'[ 98%] \x1b[32m\x1b[1mLinking C shared library rosidl_generator_py/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so\x1b[0m\n'}
+[17.450171] (mocap4r2_msgs) StdoutLine: {'line': b'[100%] \x1b[32m\x1b[1mLinking CXX shared library rosidl_generator_py/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so\x1b[0m\n'}
+[17.503603] (-) TimerEvent: {}
+[17.518475] (mocap4r2_msgs) StdoutLine: {'line': b'[100%] Built target mocap4r2_msgs__rosidl_typesupport_c__pyext\n'}
+[17.519010] (mocap4r2_msgs) StdoutLine: {'line': b'[100%] Built target mocap4r2_msgs__rosidl_typesupport_introspection_c__pyext\n'}
+[17.585468] (mocap4r2_msgs) StdoutLine: {'line': b'[100%] Built target mocap4r2_msgs__rosidl_typesupport_fastrtps_c__pyext\n'}
+[17.603752] (-) TimerEvent: {}
+[17.612398] (mocap4r2_msgs) CommandEnded: {'returncode': 0}
+[17.614036] (mocap4r2_msgs) JobProgress: {'identifier': 'mocap4r2_msgs', 'progress': 'install'}
+[17.638273] (mocap4r2_msgs) Command: {'cmd': ['/usr/bin/cmake', '--install', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs', 'env': OrderedDict([('LESSOPEN', '| /usr/bin/lesspipe %s'), ('USER', 'airlab'), ('SSH_CLIENT', '192.168.0.60 57569 22'), ('XDG_SESSION_TYPE', 'tty'), ('SHLVL', '1'), ('LD_LIBRARY_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64:'), ('MOTD_SHOWN', 'pam'), ('HOME', '/home/airlab'), ('OLDPWD', '/home/airlab/seed25/ros_packages/seed_controller_ws'), ('SSH_TTY', '/dev/pts/0'), ('JETSON_L4T', '35.6.1'), ('ROS_PYTHON_VERSION', '3'), ('JETSON_MODEL', 'NVIDIA Orin NX Developer Kit'), ('DBUS_SESSION_BUS_ADDRESS', 'unix:path=/run/user/1000/bus'), ('COLCON_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install'), ('ROS_DISTRO', 'foxy'), ('LOGNAME', 'airlab'), ('JETSON_MODULE', 'NVIDIA Jetson Orin NX (16GB ram)'), ('JETSON_SERIAL_NUMBER', '1425023203559'), ('_', '/usr/bin/colcon'), ('ROS_VERSION', '2'), ('JETSON_CODENAME', 'P3768'), ('XDG_SESSION_CLASS', 'user'), ('TERM', 'xterm'), ('XDG_SESSION_ID', '7'), ('ROS_LOCALHOST_ONLY', '0'), ('PATH', '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'), ('XDG_RUNTIME_DIR', '/run/user/1000'), ('DISPLAY', 'localhost:10.0'), ('LANG', 'en_US.UTF-8'), ('LS_COLORS', 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:'), ('JETSON_SOC', 'tegra23x'), ('ROS_DOMAIN_ID', '3'), ('AMENT_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('SHELL', '/bin/bash'), ('LESSCLOSE', '/usr/bin/lesspipe %s %s'), ('JETSON_CUDA_ARCH_BIN', '8.7'), ('PWD', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap4r2_msgs'), ('LC_ALL', 'en_US.UTF-8'), ('SSH_CONNECTION', '192.168.0.60 57569 192.168.0.136 22'), ('XDG_DATA_DIRS', '/usr/local/share:/usr/share:/var/lib/snapd/desktop'), ('PYTHONPATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages'), ('COLCON', '1'), ('JETSON_JETPACK', '5.1.5'), ('CMAKE_PREFIX_PATH', '/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy'), ('JETSON_P_NUMBER', 'p3767-0000')]), 'shell': False}
+[17.663205] (mocap4r2_msgs) StdoutLine: {'line': b'-- Install configuration: ""\n'}
+[17.663757] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/ament_index/resource_index/rosidl_interfaces/mocap4r2_msgs\n'}
+[17.664022] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.664258] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.664449] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/markers.h\n'}
+[17.664656] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.664847] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__struct.h\n'}
+[17.665048] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__functions.c\n'}
+[17.665293] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__struct.h\n'}
+[17.665542] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__functions.h\n'}
+[17.665787] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.h\n'}
+[17.666016] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__functions.c\n'}
+[17.666256] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__functions.h\n'}
+[17.666497] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__struct.h\n'}
+[17.666721] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__functions.h\n'}
+[17.666964] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__functions.h\n'}
+[17.667205] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__struct.h\n'}
+[17.667426] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__functions.c\n'}
+[17.667661] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.h\n'}
+[17.667890] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__functions.c\n'}
+[17.668125] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__struct.h\n'}
+[17.668350] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.h\n'}
+[17.668641] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__functions.c\n'}
+[17.668933] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.h\n'}
+[17.669154] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__functions.h\n'}
+[17.669380] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.h\n'}
+[17.669608] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_generator_c__visibility_control.h\n'}
+[17.669813] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/marker.h\n'}
+[17.670069] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_body.h\n'}
+[17.670317] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_bodies.h\n'}
+[17.670735] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/imus_info.h\n'}
+[17.671009] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.671236] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/create_rigid_body.h\n'}
+[17.671431] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.671643] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.h\n'}
+[17.671822] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__functions.h\n'}
+[17.672056] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__struct.h\n'}
+[17.672279] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__functions.c\n'}
+[17.672663] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/library_path.sh\n'}
+[17.673002] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/library_path.dsv\n'}
+[17.673714] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_generator_c.so\n'}
+[17.674502] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_generator_c.so" to ""\n'}
+[17.674768] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.674989] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.675132] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.675315] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_c.h\n'}
+[17.675970] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_c.h\n'}
+[17.676172] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_c.h\n'}
+[17.676349] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_c.h\n'}
+[17.676551] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_c.h\n'}
+[17.676690] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h\n'}
+[17.676823] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.676955] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.677087] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__rosidl_typesupport_fastrtps_c.h\n'}
+[17.677301] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_c.so\n'}
+[17.677777] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_c.so" to ""\n'}
+[17.677999] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.678236] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.678409] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h\n'}
+[17.678576] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.678738] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.678889] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/dds_fastrtps\n'}
+[17.679062] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.679233] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.679421] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.679606] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.679817] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.680015] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.680154] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__rosidl_typesupport_fastrtps_cpp.hpp\n'}
+[17.680316] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/dds_fastrtps\n'}
+[17.680601] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.so\n'}
+[17.681671] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""\n'}
+[17.681851] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.682035] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.682208] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.682375] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.c\n'}
+[17.682529] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_introspection_c.h\n'}
+[17.682687] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_c.h\n'}
+[17.682845] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.c\n'}
+[17.683040] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.c\n'}
+[17.683283] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.c\n'}
+[17.683531] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.c\n'}
+[17.683790] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_c.h\n'}
+[17.684021] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_c.h\n'}
+[17.684254] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_introspection_c.h\n'}
+[17.684481] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h\n'}
+[17.684696] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.684888] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.685024] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__rosidl_typesupport_introspection_c.h\n'}
+[17.685188] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.c\n'}
+[17.685960] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_c.so\n'}
+[17.686684] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_c.so" to ""\n'}
+[17.686921] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_c.so\n'}
+[17.687550] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_c.so" to ""\n'}
+[17.687728] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.687923] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.688074] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_bodies.hpp\n'}
+[17.688238] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rosidl_generator_cpp__visibility_control.hpp\n'}
+[17.688403] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/markers.hpp\n'}
+[17.688573] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.688743] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.hpp\n'}
+[17.688912] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__builder.hpp\n'}
+[17.689138] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__traits.hpp\n'}
+[17.689359] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__struct.hpp\n'}
+[17.689620] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__traits.hpp\n'}
+[17.689869] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__builder.hpp\n'}
+[17.690093] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__builder.hpp\n'}
+[17.690319] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__struct.hpp\n'}
+[17.690561] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.hpp\n'}
+[17.690806] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__traits.hpp\n'}
+[17.691038] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__struct.hpp\n'}
+[17.691293] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.hpp\n'}
+[17.691520] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.hpp\n'}
+[17.691770] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__traits.hpp\n'}
+[17.691979] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__traits.hpp\n'}
+[17.692201] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__builder.hpp\n'}
+[17.692431] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__struct.hpp\n'}
+[17.692670] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__builder.hpp\n'}
+[17.692897] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.hpp\n'}
+[17.693139] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__struct.hpp\n'}
+[17.693433] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/rigid_body.hpp\n'}
+[17.694103] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/marker.hpp\n'}
+[17.694382] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/imus_info.hpp\n'}
+[17.694564] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.694728] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.694869] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.hpp\n'}
+[17.695040] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__traits.hpp\n'}
+[17.695173] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__struct.hpp\n'}
+[17.695337] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__builder.hpp\n'}
+[17.695466] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/create_rigid_body.hpp\n'}
+[17.695650] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs\n'}
+[17.695833] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg\n'}
+[17.695965] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail\n'}
+[17.696127] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.696259] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__type_support.cpp\n'}
+[17.696420] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__type_support.cpp\n'}
+[17.696577] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_bodies__type_support.cpp\n'}
+[17.696840] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.697111] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/imus_info__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.697338] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/markers__type_support.cpp\n'}
+[17.697712] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__type_support.cpp\n'}
+[17.697938] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/marker__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.698198] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/msg/detail/rigid_body__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.698424] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv\n'}
+[17.698646] (mocap4r2_msgs) StdoutLine: {'line': b'-- Up-to-date: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail\n'}
+[17.698829] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__rosidl_typesupport_introspection_cpp.hpp\n'}
+[17.698980] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/include/mocap4r2_msgs/srv/detail/create_rigid_body__type_support.cpp\n'}
+[17.699327] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_cpp.so\n'}
+[17.700418] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_introspection_cpp.so" to ""\n'}
+[17.700672] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_cpp.so\n'}
+[17.701350] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__rosidl_typesupport_cpp.so" to ""\n'}
+[17.701566] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/pythonpath.sh\n'}
+[17.701928] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/pythonpath.dsv\n'}
+[17.702435] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/__init__.py\n'}
+[17.703817] (-) TimerEvent: {}
+[17.769331] (mocap4r2_msgs) StdoutLine: {'line': b"Compiling '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/__init__.py'...\n"}
+[17.779062] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg\n'}
+[17.779476] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_bodies.py\n'}
+[17.779707] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_markers_s.c\n'}
+[17.779966] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_marker_s.c\n'}
+[17.780210] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_imus_info.py\n'}
+[17.780447] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/__init__.py\n'}
+[17.780679] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_bodies_s.c\n'}
+[17.780929] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_imus_info_s.c\n'}
+[17.781164] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_body_s.c\n'}
+[17.781428] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_rigid_body.py\n'}
+[17.781720] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_markers.py\n'}
+[17.781945] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/msg/_marker.py\n'}
+[17.782319] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/srv\n'}
+[17.782516] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/srv/_create_rigid_body.py\n'}
+[17.782805] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/srv/_create_rigid_body_s.c\n'}
+[17.783054] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/srv/__init__.py\n'}
+[17.783716] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so\n'}
+[17.784745] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_fastrtps_c.cpython-38-aarch64-linux-gnu.so" to ""\n'}
+[17.785229] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so\n'}
+[17.786287] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_introspection_c.cpython-38-aarch64-linux-gnu.so" to ""\n'}
+[17.786713] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so\n'}
+[17.787648] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages/mocap4r2_msgs/mocap4r2_msgs_s__rosidl_typesupport_c.cpython-38-aarch64-linux-gnu.so" to ""\n'}
+[17.787877] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__python.so\n'}
+[17.788672] (mocap4r2_msgs) StdoutLine: {'line': b'-- Set runtime path of "/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/libmocap4r2_msgs__python.so" to ""\n'}
+[17.788936] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Marker.idl\n'}
+[17.789260] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Markers.idl\n'}
+[17.789628] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/ImusInfo.idl\n'}
+[17.789942] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBody.idl\n'}
+[17.790255] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBodies.idl\n'}
+[17.790657] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/srv/CreateRigidBody.idl\n'}
+[17.790971] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Marker.msg\n'}
+[17.791281] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/Markers.msg\n'}
+[17.791585] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/ImusInfo.msg\n'}
+[17.791886] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBody.msg\n'}
+[17.792193] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/msg/RigidBodies.msg\n'}
+[17.792498] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/srv/CreateRigidBody.srv\n'}
+[17.792808] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/srv/CreateRigidBody_Request.msg\n'}
+[17.793128] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/srv/CreateRigidBody_Response.msg\n'}
+[17.793449] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/mocap4r2_bridge_mapping_rule.yaml\n'}
+[17.793887] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/ament_index/resource_index/package_run_dependencies/mocap4r2_msgs\n'}
+[17.794333] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/ament_index/resource_index/parent_prefix_path/mocap4r2_msgs\n'}
+[17.794676] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/ament_prefix_path.sh\n'}
+[17.795004] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/ament_prefix_path.dsv\n'}
+[17.795319] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/path.sh\n'}
+[17.795632] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/environment/path.dsv\n'}
+[17.795955] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.bash\n'}
+[17.796270] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.sh\n'}
+[17.796579] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.zsh\n'}
+[17.796886] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/local_setup.dsv\n'}
+[17.797190] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.dsv\n'}
+[17.797627] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/ament_index/resource_index/packages/mocap4r2_msgs\n'}
+[17.798127] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cExport.cmake\n'}
+[17.798466] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cExport-noconfig.cmake\n'}
+[17.798913] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cExport.cmake\n'}
+[17.799267] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake\n'}
+[17.799682] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cExport.cmake\n'}
+[17.800030] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cExport-noconfig.cmake\n'}
+[17.800470] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_generator_cppExport.cmake\n'}
+[17.800911] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cppExport.cmake\n'}
+[17.801262] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake\n'}
+[17.801796] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cppExport.cmake\n'}
+[17.802110] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgs__rosidl_typesupport_cppExport-noconfig.cmake\n'}
+[17.802435] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake-extras.cmake\n'}
+[17.802787] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_dependencies-extras.cmake\n'}
+[17.803121] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_libraries-extras.cmake\n'}
+[17.803415] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_targets-extras.cmake\n'}
+[17.803727] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/ament_cmake_export_include_directories-extras.cmake\n'}
+[17.803871] (-) TimerEvent: {}
+[17.804159] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake\n'}
+[17.804372] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake\n'}
+[17.804741] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgsConfig.cmake\n'}
+[17.805017] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/cmake/mocap4r2_msgsConfig-version.cmake\n'}
+[17.805248] (mocap4r2_msgs) StdoutLine: {'line': b'-- Installing: /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/share/mocap4r2_msgs/package.xml\n'}
+[17.810394] (mocap4r2_msgs) CommandEnded: {'returncode': 0}
+[17.862307] (mocap4r2_msgs) JobEnded: {'identifier': 'mocap4r2_msgs', 'rc': 0}
+[17.864919] (mocap_listener) JobStarted: {'identifier': 'mocap_listener'}
+[17.878781] (opti_waypoint_nav) JobStarted: {'identifier': 'opti_waypoint_nav'}
+[17.904095] (-) TimerEvent: {}
+[18.004717] (-) TimerEvent: {}
+[18.105207] (-) TimerEvent: {}
+[18.205640] (-) TimerEvent: {}
+[18.306028] (-) TimerEvent: {}
+[18.406414] (-) TimerEvent: {}
+[18.507101] (-) TimerEvent: {}
+[18.607834] (-) TimerEvent: {}
+[18.708416] (-) TimerEvent: {}
+[18.808963] (-) TimerEvent: {}
+[18.909498] (-) TimerEvent: {}
+[19.010259] (-) TimerEvent: {}
+[19.111012] (-) TimerEvent: {}
+[19.211608] (-) TimerEvent: {}
+[19.312163] (-) TimerEvent: {}
+[19.412759] (-) TimerEvent: {}
+[19.513358] (-) TimerEvent: {}
+[19.613944] (-) TimerEvent: {}
+[19.714600] (-) TimerEvent: {}
+[19.815248] (-) TimerEvent: {}
+[19.880981] (opti_waypoint_nav) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/opti_waypoint_nav', 'build', '--build-base', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build', 'install', '--record', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/install.log', '--install-scripts', '$base/lib/opti_waypoint_nav', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/opti_waypoint_nav', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'airlab', 'SSH_CLIENT': '192.168.0.60 57569 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64', 'MOTD_SHOWN': 'pam', 'HOME': '/home/airlab', 'OLDPWD': '/home/airlab/seed25/ros_packages/seed_controller_ws', 'SSH_TTY': '/dev/pts/0', 'JETSON_L4T': '35.6.1', 'ROS_PYTHON_VERSION': '3', 'JETSON_MODEL': 'NVIDIA Orin NX Developer Kit', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'airlab', 'JETSON_MODULE': 'NVIDIA Jetson Orin NX (16GB ram)', 'JETSON_SERIAL_NUMBER': '1425023203559', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'P3768', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm', 'XDG_SESSION_ID': '7', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra23x', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_CUDA_ARCH_BIN': '8.7', 'PWD': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.0.60 57569 192.168.0.136 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'JETSON_JETPACK': '5.1.5', 'CMAKE_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs', 'JETSON_P_NUMBER': 'p3767-0000'}, 'shell': False}
+[19.889865] (mocap_listener) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'egg_info', '--egg-base', '../build/mocap_listener', 'build', '--build-base', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build', 'install', '--record', '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log', '--install-scripts', '$base/lib/mocap_listener', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/mocap_listener', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'airlab', 'SSH_CLIENT': '192.168.0.60 57569 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib:/opt/ros/foxy/opt/yaml_cpp_vendor/lib:/opt/ros/foxy/opt/rviz_ogre_vendor/lib:/opt/ros/foxy/lib/aarch64-linux-gnu:/opt/ros/foxy/lib:/usr/local/cuda-11.4/lib64', 'MOTD_SHOWN': 'pam', 'HOME': '/home/airlab', 'OLDPWD': '/home/airlab/seed25/ros_packages/seed_controller_ws', 'SSH_TTY': '/dev/pts/0', 'JETSON_L4T': '35.6.1', 'ROS_PYTHON_VERSION': '3', 'JETSON_MODEL': 'NVIDIA Orin NX Developer Kit', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLCON_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/install', 'ROS_DISTRO': 'foxy', 'LOGNAME': 'airlab', 'JETSON_MODULE': 'NVIDIA Jetson Orin NX (16GB ram)', 'JETSON_SERIAL_NUMBER': '1425023203559', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'JETSON_CODENAME': 'P3768', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm', 'XDG_SESSION_ID': '7', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/home/airlab/.local/bin:/opt/ros/foxy/bin:/usr/local/cuda-11.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': 'localhost:10.0', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'JETSON_SOC': 'tegra23x', 'ROS_DOMAIN_ID': '3', 'AMENT_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller:/opt/ros/foxy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'JETSON_CUDA_ARCH_BIN': '8.7', 'PWD': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.0.60 57569 192.168.0.136 22', 'XDG_DATA_DIRS': '/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/opti_waypoint_nav/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mv_controller/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap_listener/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs/lib/python3.8/site-packages:/home/airlab/seed25/ros_packages/seed_controller_ws/install/ml_red_controller/lib/python3.8/site-packages:/opt/ros/foxy/lib/python3.8/site-packages', 'COLCON': '1', 'JETSON_JETPACK': '5.1.5', 'CMAKE_PREFIX_PATH': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap4r2_msgs:/home/airlab/seed25/ros_packages/seed_controller_ws/install/mocap4r2_msgs', 'JETSON_P_NUMBER': 'p3767-0000'}, 'shell': False}
+[19.915395] (-) TimerEvent: {}
+[20.016096] (-) TimerEvent: {}
+[20.116641] (-) TimerEvent: {}
+[20.217078] (-) TimerEvent: {}
+[20.317543] (-) TimerEvent: {}
+[20.393690] (opti_waypoint_nav) StdoutLine: {'line': b'running egg_info\n'}
+[20.394507] (mocap_listener) StdoutLine: {'line': b'running egg_info\n'}
+[20.395009] (opti_waypoint_nav) StdoutLine: {'line': b'creating ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info\n'}
+[20.395299] (opti_waypoint_nav) StdoutLine: {'line': b'writing ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/PKG-INFO\n'}
+[20.395729] (mocap_listener) StdoutLine: {'line': b'creating ../build/mocap_listener/mocap_listener.egg-info\n'}
+[20.396004] (opti_waypoint_nav) StdoutLine: {'line': b'writing dependency_links to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/dependency_links.txt\n'}
+[20.396303] (mocap_listener) StdoutLine: {'line': b'writing ../build/mocap_listener/mocap_listener.egg-info/PKG-INFO\n'}
+[20.396529] (opti_waypoint_nav) StdoutLine: {'line': b'writing entry points to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/entry_points.txt\n'}
+[20.396782] (opti_waypoint_nav) StdoutLine: {'line': b'writing requirements to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/requires.txt\n'}
+[20.396953] (opti_waypoint_nav) StdoutLine: {'line': b'writing top-level names to ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/top_level.txt\n'}
+[20.397139] (mocap_listener) StdoutLine: {'line': b'writing dependency_links to ../build/mocap_listener/mocap_listener.egg-info/dependency_links.txt\n'}
+[20.397316] (mocap_listener) StdoutLine: {'line': b'writing entry points to ../build/mocap_listener/mocap_listener.egg-info/entry_points.txt\n'}
+[20.397528] (mocap_listener) StdoutLine: {'line': b'writing requirements to ../build/mocap_listener/mocap_listener.egg-info/requires.txt\n'}
+[20.397670] (mocap_listener) StdoutLine: {'line': b'writing top-level names to ../build/mocap_listener/mocap_listener.egg-info/top_level.txt\n'}
+[20.399903] (opti_waypoint_nav) StdoutLine: {'line': b"writing manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[20.400261] (mocap_listener) StdoutLine: {'line': b"writing manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'\n"}
+[20.417617] (-) TimerEvent: {}
+[20.465620] (opti_waypoint_nav) StdoutLine: {'line': b"reading manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[20.466154] (mocap_listener) StdoutLine: {'line': b"reading manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'\n"}
+[20.467244] (opti_waypoint_nav) StdoutLine: {'line': b"writing manifest file '../build/opti_waypoint_nav/opti_waypoint_nav.egg-info/SOURCES.txt'\n"}
+[20.467524] (opti_waypoint_nav) StdoutLine: {'line': b'running build\n'}
+[20.467725] (opti_waypoint_nav) StdoutLine: {'line': b'running build_py\n'}
+[20.467895] (mocap_listener) StdoutLine: {'line': b"writing manifest file '../build/mocap_listener/mocap_listener.egg-info/SOURCES.txt'\n"}
+[20.468098] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build\n'}
+[20.468357] (mocap_listener) StdoutLine: {'line': b'running build\n'}
+[20.468534] (mocap_listener) StdoutLine: {'line': b'running build_py\n'}
+[20.468713] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib\n'}
+[20.468942] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.469132] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.469311] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build\n'}
+[20.469484] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib\n'}
+[20.469660] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.469858] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.469995] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/virtual_twin_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.470202] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/gtg_node_mathAngle.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.470339] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.470521] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.470723] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/gtg_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.470914] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.471048] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/plot_robot_and_goal.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.471260] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.471436] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.471577] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.471752] (opti_waypoint_nav) StdoutLine: {'line': b'copying opti_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav\n'}
+[20.471902] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.472106] (opti_waypoint_nav) StdoutLine: {'line': b'running install\n'}
+[20.472279] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.472454] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.472730] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/gtg_node_nk.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.473154] (mocap_listener) StdoutLine: {'line': b'copying mocap_listener/nk_telem.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener\n'}
+[20.473865] (mocap_listener) StdoutLine: {'line': b'running install\n'}
+[20.474055] (opti_waypoint_nav) StdoutLine: {'line': b'running install_lib\n'}
+[20.475773] (mocap_listener) StdoutLine: {'line': b'running install_lib\n'}
+[20.476087] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.476309] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.476597] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/virtual_twin_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.476856] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/waypoint_manager_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.477100] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/dual_camera_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.477381] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.477656] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.477992] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.478261] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.478482] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.478692] (opti_waypoint_nav) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/build/lib/opti_waypoint_nav/path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav\n'}
+[20.478863] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node_mathAngle.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.479046] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.479245] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/plot_robot_and_goal.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.479471] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.479646] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/sabertooth.py to sabertooth.cpython-38.pyc\n'}
+[20.479793] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/telemetry_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.480099] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.480267] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/rigid_listener.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.480447] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/gtg_node_nk.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.480583] (mocap_listener) StdoutLine: {'line': b'copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/build/lib/mocap_listener/nk_telem.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener\n'}
+[20.481636] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/sabertooth.py to sabertooth.cpython-38.pyc\n'}
+[20.482649] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/virtual_twin_node.py to virtual_twin_node.cpython-38.pyc\n'}
+[20.484487] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/waypoint_manager_node.py to waypoint_manager_node.cpython-38.pyc\n'}
+[20.484730] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node_mathAngle.py to gtg_node_mathAngle.cpython-38.pyc\n'}
+[20.486004] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/dual_camera_node.py to dual_camera_node.cpython-38.pyc\n'}
+[20.487745] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/PID.py to PID.cpython-38.pyc\n'}
+[20.488590] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/telemetry_node.py to telemetry_node.cpython-38.pyc\n'}
+[20.488992] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node.py to gtg_node.cpython-38.pyc\n'}
+[20.489935] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/__init__.py to __init__.cpython-38.pyc\n'}
+[20.490287] (opti_waypoint_nav) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav/path_follower_node.py to path_follower_node.cpython-38.pyc\n'}
+[20.490768] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/plot_robot_and_goal.py to plot_robot_and_goal.cpython-38.pyc\n'}
+[20.491799] (opti_waypoint_nav) StdoutLine: {'line': b'running install_data\n'}
+[20.492067] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index\n'}
+[20.492282] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index\n'}
+[20.492520] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index/packages\n'}
+[20.492663] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/PID.py to PID.cpython-38.pyc\n'}
+[20.492842] (opti_waypoint_nav) StdoutLine: {'line': b'copying resource/opti_waypoint_nav -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/ament_index/resource_index/packages\n'}
+[20.493058] (opti_waypoint_nav) StdoutLine: {'line': b'copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav\n'}
+[20.493261] (opti_waypoint_nav) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/launch\n'}
+[20.493423] (opti_waypoint_nav) StdoutLine: {'line': b'copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/share/opti_waypoint_nav/launch\n'}
+[20.493608] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/telemetry_node.py to telemetry_node.cpython-38.pyc\n'}
+[20.493770] (opti_waypoint_nav) StdoutLine: {'line': b'running install_egg_info\n'}
+[20.494851] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/__init__.py to __init__.cpython-38.pyc\n'}
+[20.495249] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/rigid_listener.py to rigid_listener.cpython-38.pyc\n'}
+[20.496177] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/gtg_node_nk.py to gtg_node_nk.cpython-38.pyc\n'}
+[20.498032] (mocap_listener) StdoutLine: {'line': b'byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener/nk_telem.py to nk_telem.cpython-38.pyc\n'}
+[20.498779] (opti_waypoint_nav) StdoutLine: {'line': b'Copying ../build/opti_waypoint_nav/opti_waypoint_nav.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/python3.8/site-packages/opti_waypoint_nav-0.0.0-py3.8.egg-info\n'}
+[20.500107] (mocap_listener) StdoutLine: {'line': b'running install_data\n'}
+[20.500368] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index\n'}
+[20.500555] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index\n'}
+[20.500732] (mocap_listener) StdoutLine: {'line': b'creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index/packages\n'}
+[20.500901] (mocap_listener) StdoutLine: {'line': b'copying resource/mocap_listener -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/ament_index/resource_index/packages\n'}
+[20.501106] (opti_waypoint_nav) StdoutLine: {'line': b'running install_scripts\n'}
+[20.501285] (mocap_listener) StdoutLine: {'line': b'copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/share/mocap_listener\n'}
+[20.501447] (mocap_listener) StdoutLine: {'line': b'running install_egg_info\n'}
+[20.506451] (mocap_listener) StdoutLine: {'line': b'Copying ../build/mocap_listener/mocap_listener.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/python3.8/site-packages/mocap_listener-0.0.0-py3.8.egg-info\n'}
+[20.508547] (mocap_listener) StdoutLine: {'line': b'running install_scripts\n'}
+[20.517718] (-) TimerEvent: {}
+[20.538928] (opti_waypoint_nav) StdoutLine: {'line': b'Installing dual_camera_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav\n'}
+[20.539412] (opti_waypoint_nav) StdoutLine: {'line': b'Installing path_follower_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav\n'}
+[20.539628] (opti_waypoint_nav) StdoutLine: {'line': b'Installing telemetry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav\n'}
+[20.539809] (opti_waypoint_nav) StdoutLine: {'line': b'Installing virtual_twin_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav\n'}
+[20.540000] (opti_waypoint_nav) StdoutLine: {'line': b'Installing waypoint_manager_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/opti_waypoint_nav/lib/opti_waypoint_nav\n'}
+[20.540927] (opti_waypoint_nav) StdoutLine: {'line': b"writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/opti_waypoint_nav/install.log'\n"}
+[20.545825] (mocap_listener) StdoutLine: {'line': b'Installing gtg_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.546293] (mocap_listener) StdoutLine: {'line': b'Installing gtg_node_mathAngle script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.546541] (mocap_listener) StdoutLine: {'line': b'Installing gtg_node_nk script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.546798] (mocap_listener) StdoutLine: {'line': b'Installing mv_controller script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.547066] (mocap_listener) StdoutLine: {'line': b'Installing nk_telem script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.547261] (mocap_listener) StdoutLine: {'line': b'Installing plot_robot_and_goal script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.547473] (mocap_listener) StdoutLine: {'line': b'Installing rigid_listener script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.547680] (mocap_listener) StdoutLine: {'line': b'Installing telemetry_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/install/mocap_listener/lib/mocap_listener\n'}
+[20.548700] (mocap_listener) StdoutLine: {'line': b"writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/build/mocap_listener/install.log'\n"}
+[20.610081] (opti_waypoint_nav) CommandEnded: {'returncode': 0}
+[20.618099] (-) TimerEvent: {}
+[20.625569] (opti_waypoint_nav) JobEnded: {'identifier': 'opti_waypoint_nav', 'rc': 0}
+[20.629692] (mocap_listener) CommandEnded: {'returncode': 0}
+[20.643835] (mocap_listener) JobEnded: {'identifier': 'mocap_listener', 'rc': 0}
+[20.645980] (-) EventReactorShutdown: {}

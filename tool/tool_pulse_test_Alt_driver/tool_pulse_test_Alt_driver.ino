@@ -119,10 +119,12 @@ void setup()
 
     rmtStepperInit();
 
-    delay(10);
+    // for(int i = 5; i==0; i--){
+    //     Serial.println(i);
+    //     delay(1000);
+    // }
+    
 
-    // Example move
-    stepperMove(STEP_COUNT, STEP_FREQ_HZ);
 }
 
 void loop()
