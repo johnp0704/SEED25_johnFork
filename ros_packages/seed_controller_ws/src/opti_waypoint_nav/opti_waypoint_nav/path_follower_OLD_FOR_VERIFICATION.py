@@ -12,13 +12,13 @@ class PathFollowerNode(Node):
     def __init__(self):
         super().__init__('path_follower_node')
 
-        self.MAX_ACTUATOR_INPUT = 30
+        self.MAX_ACTUATOR_INPUT = 60
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
         self.ANGLE_THRESH = np.deg2rad(1)   
         self.PIVOT_THRESH = np.deg2rad(3)  
         self.R_wheel = 0.08
         self.L = 0.178
-        self.K_e = 30
+        self.K_e = 50
         self.K_theta = -self.K_e * 10
 
         self.OFFSET_X = 0.0

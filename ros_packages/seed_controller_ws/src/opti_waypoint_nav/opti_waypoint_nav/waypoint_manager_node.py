@@ -10,7 +10,7 @@ class WaypointManagerNode(Node):
     def __init__(self):
         super().__init__('waypoint_manager_node')
 
-        self.GOAL_THRESH = 0.3  # meters
+        self.GOAL_THRESH = 0.05  # meters
         self.current_waypoint_idx = 0 
         
         # --- NEW: Topic-based Startup Logic ---
