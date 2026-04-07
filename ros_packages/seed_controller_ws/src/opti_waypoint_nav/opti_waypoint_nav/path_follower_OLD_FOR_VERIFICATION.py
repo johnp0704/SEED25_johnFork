@@ -15,10 +15,7 @@ class PathFollowerNode(Node):
         self.MAX_ACTUATOR_INPUT = 30
         self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
         self.ANGLE_THRESH = np.deg2rad(1)   
-        
-        # INCREASED: Only do a hard pivot if we are off by more than 45 degrees
-        self.PIVOT_THRESH = np.deg2rad(45)  
-        
+        self.PIVOT_THRESH = np.deg2rad(3)  
         self.R_wheel = 0.08
         self.L = 0.178
         self.K_e = 30
@@ -26,8 +23,12 @@ class PathFollowerNode(Node):
 
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0  
+        
+        self.PAUSE_DURATION = 3.0
+        self.current_target_coords = None
+        self.pause_end_time = None
 
-        # --- Priority State Tracking ---
+        # --- NEW: Priority State Tracking ---
         self.motor_disabled = False
         self.vision_active = False
         self.vision_wl = 0.0
@@ -50,7 +51,7 @@ class PathFollowerNode(Node):
         self.create_subscription(Pose2D, '/robot/pose2d', self.pose_callback, 10)
         self.create_subscription(Point, '/robot/current_target', self.target_callback, 10)
         
-        # Priority Subscribers
+        # --- NEW: Priority Subscribers ---
         self.create_subscription(Bool, '/motor_disable', self.disable_callback, 10)
         self.create_subscription(Float32MultiArray, '/vision/wheel_cmd', self.vision_cmd_callback, 10)
 
@@ -76,16 +77,23 @@ class PathFollowerNode(Node):
         if self.robot_pose is None:
             return
 
-        # Unpack raw state and target
+        # 1. Unpack raw state and target
         raw_x, raw_y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
-        
-        # Center Tuning
+        x_des, y_des = msg.x, msg.y
+
+        # 2. Center Tuning
         self.x = raw_x + (self.OFFSET_X * np.cos(yaw) - self.OFFSET_Y * np.sin(yaw))
         self.y = raw_y + (self.OFFSET_X * np.sin(yaw) + self.OFFSET_Y * np.cos(yaw))
         self.yaw = yaw
 
-        self.x_des = msg.x
-        self.y_des = msg.y
+        # 3. Waypoint Pause Logic
+        if self.current_target_coords is None or (self.current_target_coords[0] != x_des or self.current_target_coords[1] != y_des):
+            self.current_target_coords = (x_des, y_des)
+            self.get_logger().info(f"New target acquired. Pausing for {self.PAUSE_DURATION} seconds.")
+            self.pause_end_time = self.get_clock().now().nanoseconds + (self.PAUSE_DURATION * 1e9)
+            
+        self.x_des = x_des
+        self.y_des = y_des
 
     def control_loop(self):
         """Central loop handling priorities: 1. Disabled, 2. Vision, 3. Waypoint"""
@@ -106,6 +114,10 @@ class PathFollowerNode(Node):
             return
 
         # PRIORITY 3: Waypoint Navigation (Default)
+        if self.pause_end_time and self.get_clock().now().nanoseconds < self.pause_end_time:
+            self.motor.updateMotorSpeed(0, 0)
+            return
+
         if not hasattr(self, 'x_des'):
             return
 
@@ -116,31 +128,19 @@ class PathFollowerNode(Node):
         theta_des = np.arctan2(dy, dx)
         error_theta_wrapped = np.arctan2(np.sin(theta_des - self.yaw), np.cos(theta_des - self.yaw))
 
-        # PID Angular Turn Speed
         w_des = 0
         if abs(error_theta_wrapped) > self.ANGLE_THRESH:
             w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
 
-        # Smooth Arcing Logic vs Full Pivot
         if abs(error_theta_wrapped) > self.PIVOT_THRESH:
-            # If the error is massive (> 45 deg), stop forward motion and just pivot
             S_sat = 0.0
         else:
-            # Calculate base speed based on distance
-            S_des_base = self.K_e * np.sqrt(dx**2 + dy**2)
-            
-            # Create a multiplier from 1.0 (perfect heading) down to 0.0 (45 degrees off)
-            arc_scale = max(0.0, 1.0 - (abs(error_theta_wrapped) / self.PIVOT_THRESH))
-            
-            # Apply the scale to the forward speed
-            S_des = S_des_base * arc_scale
+            S_des = self.K_e * np.sqrt(dx**2 + dy**2)
             S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
 
-        # Apply Kinematics
         wr_des = (S_sat - self.L * w_des) / self.R_wheel
         wl_des = (S_sat + self.L * w_des) / self.R_wheel
 
-        # Scaling to prevent exceeding max actuator input while keeping the arc ratio intact
         maxInput = max(abs(wr_des), abs(wl_des))
         if maxInput > self.MAX_ACTUATOR_INPUT:
             scale = self.MAX_ACTUATOR_INPUT / maxInput
