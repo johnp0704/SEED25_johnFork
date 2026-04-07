@@ -27,7 +27,7 @@ class MotorTestNode(Node):
         time.sleep(3)
 
         # Helper function to keep the test code clean
-        def execute_test(test_name, left_speed, right_speed, duration=2.0):
+        def execute_test(test_name, left_speed, right_speed, duration=0.5):
             self.get_logger().info(f'Running: {test_name} | L: {left_speed}% | R: {right_speed}%')
             self.driver.updateMotorSpeed(left_speed, right_speed)
             time.sleep(duration)
@@ -36,20 +36,20 @@ class MotorTestNode(Node):
             time.sleep(1.5) # Pause between tests for safety
 
         # 1. Pivots (Wheels moving opposite directions)
-        execute_test("Pivot Left", -50, 50)
-        execute_test("Pivot Right", 50, -50)
+        execute_test("Pivot Right", -50, 50)
+        execute_test("Pivot Left", 50, -50)
 
         # 2. Straight lines
-        execute_test("Forward", 50, 50)
-        execute_test("Backward", -50, -50)
+        execute_test("Backward", 50, 50)
+        execute_test("Forward", -50, -50)
 
         # 3. Arcing turns Forward (One wheel faster than the other)
-        execute_test("Arc Turn Forward Left", 25, 75)
-        execute_test("Arc Turn Forward Right", 75, 25)
+        execute_test("Arc Turn Backward Left", 25, 75)
+        execute_test("Arc Turn Backward Right", 75, 25)
 
         # 4. Arcing turns Backward
-        execute_test("Arc Turn Backward Left", -25, -75)
-        execute_test("Arc Turn Backward Right", -75, -25)
+        execute_test("Arc Turn Forward Left", -25, -75)
+        execute_test("Arc Turn Forward Right", -75, -25)
 
         self.get_logger().info('All motor tests completed successfully. Shutting down.')
 
