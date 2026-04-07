@@ -22,11 +22,31 @@ class WaypointManagerNode(Node):
         self.get_logger().info("Waiting for start signal. Run: ros2 topic pub --once /start_mission std_msgs/msg/Empty {}")
         self.create_subscription(Empty, '/start_mission', self.start_callback, 10)
         
-        # --- NEW: Spline Generation Logic ---
+        # --- NEW: Spline Generation Logic --- 
+        # Original waypoints used from verification
+        # raw_waypoints = [
+        #     (0.54899, -0.96740),
+        #     (-0.56269, 0.74570),
+        #     (-0.93254, -0.45896),
+        # ]
+
+        #NEW waypoints used for testing in-field spacing
         raw_waypoints = [
-            (0.54899, -0.96740),
-            (-0.56269, 0.74570),
-            (-0.93254, -0.45896),
+            (0.9648,0.69976),
+            (0.09597,0.72418),
+            (-0.4974,0.67635),
+            (-1.1528,0.65479),
+            (-1.52718,0.50588),
+            (-1.5958,0.17548),
+            (-1.33124,-0.14362),
+            (-0.84188,-0.10136),
+            (-0.01673,-0.09453),
+            (0.83987,-0.10445),
+            (1.14145,-0.60751),
+            (0.48705,-0.936818),
+            (-0.957633,-0.95586),
+            (-1.58721,-0.987335),
+            (0.9648,0.69976),
         ]
 
         pts = np.array(raw_waypoints)
