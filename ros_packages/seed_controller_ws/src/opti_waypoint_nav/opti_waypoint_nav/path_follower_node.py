@@ -22,7 +22,7 @@ class PathFollowerNode(Node):
         self.R_wheel = 0.08
         self.L = 0.178
         self.K_e = 30
-        self.K_theta = -self.K_e * 10
+        self.K_theta = -self.K_e * 2
 
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0  
@@ -34,7 +34,7 @@ class PathFollowerNode(Node):
         self.vision_wr = 0.0
         self.last_vision_time = 0
 
-        self.pid_heading = PID(Kp=self.K_theta, Ki=0.0, Kd=0.0, Ts=0.1, umax=self.MAX_ACTUATOR_INPUT, umin=-self.MAX_ACTUATOR_INPUT)
+        self.pid_heading = PID(Kp=self.K_theta, Ki=0.0, Kd=2.0, N=20.0, Ts=0.1, umax=self.MAX_ACTUATOR_INPUT, umin=-self.MAX_ACTUATOR_INPUT)
         self.robot_pose = None
         self.last_target_time = self.get_clock().now()
 
@@ -75,6 +75,12 @@ class PathFollowerNode(Node):
         
         if self.robot_pose is None:
             return
+        
+        # Reset integrator if target changes
+        if hasattr(self, 'x_des'):
+            if abs(msg.x - self.x_des) > 0.05 or abs(msg.y - self.y_des) > 0.05:
+                self.pid_heading.istate = 0.0
+                self.pid_heading.dstate = 0.0
 
         # Unpack raw state and target
         raw_x, raw_y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
@@ -130,7 +136,7 @@ class PathFollowerNode(Node):
             S_des_base = self.K_e * np.sqrt(dx**2 + dy**2)
             
             # Create a multiplier from 1.0 (perfect heading) down to 0.0 (45 degrees off)
-            arc_scale = max(0.0, 1.0 - (abs(error_theta_wrapped) / self.PIVOT_THRESH))
+            arc_scale = max(0.0, np.cos(error_theta_wrapped))
             
             # Apply the scale to the forward speed
             S_des = S_des_base * arc_scale
