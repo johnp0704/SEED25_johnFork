@@ -1,0 +1,91 @@
+[0.468s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.468s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff85ae8760>>, merge_install=False, metas=['./colcon.meta'], mixin=None, mixin_files=None, mixin_verb=('build',), packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff85ae8760>, verb_name='build', verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff85ae8c70>)
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.829s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.830s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop'
+[0.830s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.830s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.831s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.859s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_python' and name 'simple_teleop'
+[0.860s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.860s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.860s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.860s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.860s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.896s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.896s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.900s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 7 installed packages in /home/airlab/seed25/ros_packages/seed_controller_ws/install
+[0.903s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 259 installed packages in /opt/ros/foxy
+[0.933s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.060s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_args' from command line to 'None'
+[1.060s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_target' from command line to 'None'
+[1.060s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_clean_cache' from command line to 'False'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_clean_first' from command line to 'False'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'cmake_force_configure' from command line to 'False'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'ament_cmake_args' from command line to 'None'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'catkin_cmake_args' from command line to 'None'
+[1.061s] Level 5:colcon.colcon_core.verb:set package 'simple_teleop' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.061s] DEBUG:colcon.colcon_core.verb:Building package 'simple_teleop' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop', 'symlink_install': False, 'test_result_base': None}
+[1.061s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.064s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.064s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop' with build type 'ament_python'
+[1.064s] Level 1:colcon.colcon_core.shell:create_environment_hook('simple_teleop', 'ament_prefix_path')
+[1.069s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.069s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/ament_prefix_path.ps1'
+[1.071s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/ament_prefix_path.dsv'
+[1.072s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/ament_prefix_path.sh'
+[1.074s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.074s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.613s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop'
+[1.614s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.614s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.491s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/simple_teleop build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/install.log --install-scripts $base/lib/simple_teleop --single-version-externally-managed install_data
+[3.172s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/simple_teleop build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/install.log --install-scripts $base/lib/simple_teleop --single-version-externally-managed install_data
+[3.179s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop' for CMake module files
+[3.181s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop' for CMake config files
+[3.183s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib'
+[3.184s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/bin'
+[3.184s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/pkgconfig/simple_teleop.pc'
+[3.184s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages'
+[3.184s] Level 1:colcon.colcon_core.shell:create_environment_hook('simple_teleop', 'pythonpath')
+[3.185s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/pythonpath.ps1'
+[3.186s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/pythonpath.dsv'
+[3.187s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/hook/pythonpath.sh'
+[3.188s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/bin'
+[3.189s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(simple_teleop)
+[3.190s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/package.ps1'
+[3.193s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/package.dsv'
+[3.195s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/package.sh'
+[3.197s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/package.bash'
+[3.199s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop/package.zsh'
+[3.202s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/colcon-core/packages/simple_teleop)
+[3.203s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[3.204s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[3.204s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[3.205s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[3.223s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[3.223s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[3.223s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[3.247s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[3.248s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[3.249s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/local_setup.ps1'
+[3.251s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/_local_setup_util_ps1.py'
+[3.254s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/setup.ps1'
+[3.258s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/local_setup.sh'
+[3.259s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/_local_setup_util_sh.py'
+[3.261s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/setup.sh'
+[3.264s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/local_setup.bash'
+[3.266s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/setup.bash'
+[3.269s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/local_setup.zsh'
+[3.270s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/setup.zsh'
