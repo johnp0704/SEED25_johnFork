@@ -24,8 +24,8 @@ class SimpleTeleopNode(Node):
         self.get_logger().info('Initializing Simple Teleop...')
         
         # Base speed for the teleop commands
-        self.DRIVE_SPEED = 30 
-        self.TURN_SPEED = 30
+        self.DRIVE_SPEED = 50 
+        self.TURN_SPEED = 50
 
         # Initialize Motors
         try:
@@ -38,7 +38,7 @@ class SimpleTeleopNode(Node):
         atexit.register(self.motor.all_motors_off)
 
         # Initialize PID (Included for future closed-loop scaling if desired)
-        self.pid = PID(Kp=1.0, Ki=0.0, Kd=0.0, Ts=0.1, umax=100, umin=-100)
+        self.pid = PID(Kp=1.0, Ki=5.0, Kd=5.0, Ts=0.1, umax=100, umin=-100)
 
     def destroy_node(self):
         self.motor.all_motors_off()

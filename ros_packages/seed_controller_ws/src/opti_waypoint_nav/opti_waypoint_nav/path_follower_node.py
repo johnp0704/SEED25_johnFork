@@ -34,7 +34,7 @@ class PathFollowerNode(Node):
         self.vision_wr = 0.0
         self.last_vision_time = 0
 
-        self.pid_heading = PID(Kp=self.K_theta, Ki=5.0, Kd=5.0, Ts=0.1, umax=self.MAX_ACTUATOR_INPUT, umin=-self.MAX_ACTUATOR_INPUT)
+        self.pid_heading = PID(Kp=self.K_theta, Ki=0.0, Kd=0.0, Ts=0.1, umax=self.MAX_ACTUATOR_INPUT, umin=-self.MAX_ACTUATOR_INPUT)
         self.robot_pose = None
         self.last_target_time = self.get_clock().now()
 

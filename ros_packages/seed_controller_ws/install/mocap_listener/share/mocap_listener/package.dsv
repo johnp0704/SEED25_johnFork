@@ -4,3 +4,6 @@ source;share/mocap_listener/hook/pythonpath.sh
 source;share/mocap_listener/hook/ament_prefix_path.ps1
 source;share/mocap_listener/hook/ament_prefix_path.dsv
 source;share/mocap_listener/hook/ament_prefix_path.sh
+source;../../build/mocap_listener/share/mocap_listener/hook/pythonpath_develop.ps1
+source;../../build/mocap_listener/share/mocap_listener/hook/pythonpath_develop.dsv
+source;../../build/mocap_listener/share/mocap_listener/hook/pythonpath_develop.sh
