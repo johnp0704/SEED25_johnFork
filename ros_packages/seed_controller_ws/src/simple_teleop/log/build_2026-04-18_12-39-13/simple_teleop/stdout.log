@@ -1,0 +1,41 @@
+running egg_info
+creating build/simple_teleop/simple_teleop.egg-info
+writing build/simple_teleop/simple_teleop.egg-info/PKG-INFO
+writing dependency_links to build/simple_teleop/simple_teleop.egg-info/dependency_links.txt
+writing entry points to build/simple_teleop/simple_teleop.egg-info/entry_points.txt
+writing requirements to build/simple_teleop/simple_teleop.egg-info/requires.txt
+writing top-level names to build/simple_teleop/simple_teleop.egg-info/top_level.txt
+writing manifest file 'build/simple_teleop/simple_teleop.egg-info/SOURCES.txt'
+reading manifest file 'build/simple_teleop/simple_teleop.egg-info/SOURCES.txt'
+writing manifest file 'build/simple_teleop/simple_teleop.egg-info/SOURCES.txt'
+running build
+running build_py
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop
+copying simple_teleop/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop
+copying simple_teleop/teleop_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop
+copying simple_teleop/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop
+copying simple_teleop/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop
+running install
+running install_lib
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop/teleop_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop
+copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/build/lib/simple_teleop/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop/sabertooth.py to sabertooth.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop/teleop_node.py to teleop_node.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop/PID.py to PID.cpython-38.pyc
+byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop/__init__.py to __init__.cpython-38.pyc
+running install_data
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/ament_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/ament_index/resource_index
+creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/ament_index/resource_index/packages
+copying resource/simple_teleop -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/ament_index/resource_index/packages
+copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/share/simple_teleop
+running install_egg_info
+Copying build/simple_teleop/simple_teleop.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/python3.8/site-packages/simple_teleop-0.0.0-py3.8.egg-info
+running install_scripts
+Installing teleop_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/install/simple_teleop/lib/simple_teleop
+writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/simple_teleop/build/simple_teleop/install.log'
