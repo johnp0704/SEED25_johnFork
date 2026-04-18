@@ -6,7 +6,7 @@ import serial.tools.list_ports
 #  CONFIG
 # ============================================================
 BAUD_RATE = 115200
-TIMEOUT   = 500      # seconds to wait for a response
+TIMEOUT   = 30      # seconds to wait for a response
 
 RETURN_CODES = {
     "0": "OK",
@@ -21,7 +21,7 @@ RETURN_CODES = {
     "9": "Error: reserved (9)",
 }
 
-VALID_COMMANDS = {"home", "drill"}
+VALID_COMMANDS = {"home", "drill", "stop"}
 
 # ============================================================
 #  PLATFORM DETECTION
@@ -63,13 +63,26 @@ def find_port():
 #  SERIAL COMMAND
 # ============================================================
 def send_command(ser, command):
+    if command == "stop":
+        # Kill outputs on device immediately via RTS pulse, then send command
+        ser.rts = True
+        ser.reset_input_buffer()
+        ser.write((command + "\n").encode())
+        ser.flush()
+        ser.rts = False
+        return "stop"
+
     ser.reset_input_buffer()
     ser.write((command + "\n").encode())
-    response = ser.readline().decode().strip()
-    return response
+    while True:
+        response = ser.readline().decode().strip()
+        if response:
+            return response
 
 
 def interpret(response):
+    if response == "stop":
+        return "Stop sent — device resetting"
     return RETURN_CODES.get(response, f"Unknown response: '{response}'")
 
 
@@ -83,7 +96,7 @@ def run_windows(ser):
     print(f"  Port : {ser.port}")
     print(f"  Baud : {BAUD_RATE}")
     print()
-    print("  Commands: home | drill | quit")
+    print("  Commands: home | drill | stop | quit")
     print()
 
     while True:

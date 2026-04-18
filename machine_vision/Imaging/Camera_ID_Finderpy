@@ -1,0 +1,27 @@
+import cv2
+
+def test_cameras():
+    print("Scanning camera ports 0 to 10...\n")
+    working_ports = []
+    
+    for i in range(11):
+        # We use CAP_DSHOW here as well for accuracy on Windows
+        cap = cv2.VideoCapture(i, cv2.CAP_DSHOW) 
+        
+        if cap.isOpened():
+            success, frame = cap.read()
+            if success:
+                w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                print(f"[SUCCESS] Port {i}: Camera found and streaming at {w}x{h}")
+                working_ports.append(i)
+            else:
+                print(f"[ERROR]   Port {i}: Camera opened, but failed to grab frame.")
+            cap.release()
+        else:
+            print(f"[EMPTY]   Port {i}: No device found.")
+            
+    print(f"\nSummary: Verified working ports are {working_ports}")
+
+if __name__ == "__main__":
+    test_cameras()

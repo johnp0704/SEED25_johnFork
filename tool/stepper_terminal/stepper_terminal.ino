@@ -35,7 +35,7 @@ SFEVL53L1X distanceSensor;
 #define HOMING_SPEED       1000    // Hz  (fast approach)
 #define BACKOFF_SPEED      500    // Hz  (slow back-off / creep)
 
-#define FB_TOL             10     // mm of +- tol on movement (for tool-stuck checks only)
+#define FB_TOL             15     // mm of +- tol on movement (for tool-stuck checks only)
 
 // ============================================================
 //  EEPROM CONFIG
@@ -57,6 +57,24 @@ SFEVL53L1X distanceSensor;
 #define EEPROM_ADDR_FB_B       20
 #define EEPROM_MAGIC           0xDEADBEEF
 #define EEPROM_FB_MAGIC        0xCAFEF00D
+
+
+// ============================================================
+//  RETURN CODES
+// ============================================================
+#define RC_OK              0
+#define RC_MOVE_UNSAFE     1
+// codes 2-9 reserved
+
+// ============================================================
+//  DRILL CONFIG
+// ============================================================
+#define DRILL_STARTUP_MS      200   // ms to spin up/down drill before/after move
+#define DRILL_DUTY_PCT        25     // PWM duty cycle for drill motor (0-100)
+#define DRILLING_START        30000 // position at which to start drilling
+#define DRILLING_MOVE_SPEED   2500  //speed at which to move drill
+
+
 
 // ============================================================
 //  CALIBRATION DATA
@@ -312,158 +330,6 @@ void sendStep(uint32_t freq_hz) {
 }
 
 // ============================================================
-//  TRAPEZOIDAL RELATIVE MOVE  (stepper only, no PWM)
-// ============================================================
-void moveRelative(long steps) {
-    if (steps == 0) return;
-
-    bool     cw = (steps > 0);
-    uint32_t n  = (uint32_t)abs(steps);
-
-    digitalWrite(DIR_GPIO, cw ? HIGH : LOW);
-
-    uint16_t f            = LOW_SPEED;
-    uint32_t curve_length = n / 2;
-    uint32_t acc_steps    = min((int)curve_length,
-                                (HIGH_SPEED - LOW_SPEED) / (ACC / ACC_DISC_INTERVAL));
-    uint32_t vel_steps    = acc_steps / ACC_DISC_INTERVAL;
-    uint32_t coast_steps  = n - 2 * (vel_steps * ACC_DISC_INTERVAL);
-
-    for (uint32_t i = 0; i < vel_steps; i++) {
-        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
-        f += ACC;
-    }
-    for (uint32_t i = 0; i < coast_steps; i++) sendStep(f);
-    for (uint32_t i = 0; i < vel_steps; i++) {
-        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
-        f -= ACC;
-    }
-
-    rmt_wait_tx_done(RMT_CHANNEL, portMAX_DELAY);
-    currentPos += cw ? -(long)n : (long)n;
-}
-
-// ============================================================
-//  ABSOLUTE MOVE
-// ============================================================
-
-
-bool moveAbsoluteCheck(long targetPos, bool verbose) {
-    if (!isHomed) {
-        Serial.println("ERROR: machine not homed. Run 'home' first.");
-        return false;
-    }
-    long delta = targetPos - currentPos;
-    if (delta == 0) {
-        if (verbose) Serial.printf("Already at position %ld\n", currentPos);
-        return false;
-    }
-    if ((unsigned long)targetPos > calData.range) {
-        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
-        return false;
-    }
-    if (verbose) {
-        Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
-                      currentPos, targetPos, delta);
-    }
-    moveRelative(-delta);
-    currentPos = targetPos;
-
-    delay(50);
-    bool stuck = !toolNotStuck(currentPos);
-
-    if(stuck && verbose){
-        Serial.println("TOOL STUCK");
-        
-
-        // abs(dist - idealMM) < FB_TOL
-
-    } else if(!stuck && verbose){
-        Serial.println("Move good!");
-    }
-
-    //return move status (stuck = bad move = false)
-    return !stuck;
-}
-
-
-
-
-void moveAbsolute(long targetPos, bool verbose) {
-    if (!isHomed) {
-        Serial.println("ERROR: machine not homed. Run 'home' first.");
-        return;
-    }
-    long delta = targetPos - currentPos;
-    if (delta == 0) {
-        if (verbose) Serial.printf("Already at position %ld\n", currentPos);
-        return;
-    }
-    if ((unsigned long)targetPos > calData.range) {
-        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
-        return;
-    }
-    if (verbose) {
-        Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
-                      currentPos, targetPos, delta);
-    }
-    moveRelative(-delta);
-    currentPos = targetPos;
-}
-
-// ============================================================
-//  HOMING  (stepper only, no PWM)
-// ============================================================
-void doHome() {
-    Serial.println("Homing: moving CW toward switch...");
-    digitalWrite(DIR_GPIO, HIGH);
-    while (!homeTriggered()) sendStep(HOMING_SPEED);
-    Serial.println("Switch triggered. Backing off...");
-
-    delay(50);
-
-    digitalWrite(DIR_GPIO, LOW);
-    while (homeTriggered()) sendStep(BACKOFF_SPEED);
-
-    delay(50);
-
-    digitalWrite(DIR_GPIO, HIGH);
-    while (!homeTriggered()) sendStep(BACKOFF_SPEED);
-
-    delay(50);
-
-    rmt_wait_tx_done(RMT_CHANNEL, portMAX_DELAY);
-
-    currentPos = 0;
-    isHomed    = true;
-    Serial.println("Home set. currentPos = 0  (raw switch point).");
-
-    if (calValid) {
-        moveAbsolute(calData.offset, true);
-    }
-}
-
-// ============================================================
-//  SWITCH MONITOR
-// ============================================================
-void monitorSwitch() {
-    Serial.println("Monitoring home switch  --  press any key to exit.");
-    bool last = homeTriggered();
-    Serial.printf("  [%s]\n", last ? "TRIGGERED" : "open     ");
-
-    while (!Serial.available()) {
-        bool state = homeTriggered();
-        if (state != last) {
-            Serial.printf("  [%s]\n", state ? "TRIGGERED" : "open     ");
-            last = state;
-        }
-        delay(10);
-    }
-    while (Serial.available()) Serial.read();
-    Serial.println("Exited switch monitor.");
-}
-
-// ============================================================
 //  MEDIAN HELPER
 // ============================================================
 double calculateMedian(float arr[], int n) {
@@ -623,6 +489,261 @@ void feedbackSensor() {
     Serial.println("Exited feedback sensor monitor.");
 }
 
+
+
+// ============================================================
+//  TRAPEZOIDAL RELATIVE MOVE  (stepper only, no PWM)
+// ============================================================
+void moveRelative(long steps) {
+    if (steps == 0) return;
+
+    bool     cw = (steps > 0);
+    uint32_t n  = (uint32_t)abs(steps);
+
+    digitalWrite(DIR_GPIO, cw ? HIGH : LOW);
+
+    uint16_t f            = LOW_SPEED;
+    uint32_t curve_length = n / 2;
+    uint32_t acc_steps    = min((int)curve_length,
+                                (HIGH_SPEED - LOW_SPEED) / (ACC / ACC_DISC_INTERVAL));
+    uint32_t vel_steps    = acc_steps / ACC_DISC_INTERVAL;
+    uint32_t coast_steps  = n - 2 * (vel_steps * ACC_DISC_INTERVAL);
+
+    for (uint32_t i = 0; i < vel_steps; i++) {
+        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
+        f += ACC;
+    }
+    for (uint32_t i = 0; i < coast_steps; i++) sendStep(f);
+    for (uint32_t i = 0; i < vel_steps; i++) {
+        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
+        f -= ACC;
+    }
+
+    rmt_wait_tx_done(RMT_CHANNEL, portMAX_DELAY);
+    currentPos += cw ? -(long)n : (long)n;
+}
+
+
+
+void moveRelativeSpeed(long steps, int speed) {
+    if (steps == 0) return;
+
+    bool     cw = (steps > 0);
+    uint32_t n  = (uint32_t)abs(steps);
+
+    digitalWrite(DIR_GPIO, cw ? HIGH : LOW);
+
+    uint16_t f            = LOW_SPEED;
+    uint32_t curve_length = n / 2;
+    uint32_t acc_steps    = min((int)curve_length,
+                                (speed - LOW_SPEED) / (ACC / ACC_DISC_INTERVAL));
+    uint32_t vel_steps    = acc_steps / ACC_DISC_INTERVAL;
+    uint32_t coast_steps  = n - 2 * (vel_steps * ACC_DISC_INTERVAL);
+
+    for (uint32_t i = 0; i < vel_steps; i++) {
+        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
+        f += ACC;
+    }
+    for (uint32_t i = 0; i < coast_steps; i++) sendStep(f);
+    for (uint32_t i = 0; i < vel_steps; i++) {
+        for (uint16_t j = 0; j < ACC_DISC_INTERVAL; j++) sendStep(f);
+        f -= ACC;
+    }
+
+    rmt_wait_tx_done(RMT_CHANNEL, portMAX_DELAY);
+    currentPos += cw ? -(long)n : (long)n;
+}
+
+// ============================================================
+//  ABSOLUTE MOVE
+// ============================================================
+
+
+bool moveAbsoluteCheck(long targetPos, bool verbose) {
+    if (!isHomed) {
+        Serial.println("ERROR: machine not homed. Run 'home' first.");
+        return false;
+    }
+    long delta = targetPos - currentPos;
+    if (delta == 0) {
+        if (verbose) Serial.printf("Already at position %ld\n", currentPos);
+        return false;
+    }
+    if ((unsigned long)targetPos > calData.range) {
+        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
+        return false;
+    }
+    if (verbose) {
+        Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
+                      currentPos, targetPos, delta);
+    }
+    moveRelative(-delta);
+    currentPos = targetPos;
+
+    delay(50);
+    bool stuck = !toolNotStuck(currentPos);
+
+    if(stuck && verbose){
+        Serial.println("TOOL STUCK");
+        
+
+        // abs(dist - idealMM) < FB_TOL
+
+    } else if(!stuck && verbose){
+        Serial.println("Move good!");
+    }
+
+    //return move status (stuck = bad move = false)
+    return !stuck;
+}
+
+
+
+
+
+bool moveAbsoluteCheckSpeed(long targetPos, int speed) {
+    bool verbose = false;
+    if (!isHomed) {
+        Serial.println("ERROR: machine not homed. Run 'home' first.");
+        return false;
+    }
+    long delta = targetPos - currentPos;
+    if (delta == 0) {
+        if (verbose) Serial.printf("Already at position %ld\n", currentPos);
+        return false;
+    }
+    if ((unsigned long)targetPos > calData.range) {
+        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
+        return false;
+    }
+    if (verbose) {
+        Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
+                      currentPos, targetPos, delta);
+    }
+    moveRelativeSpeed(-delta, speed);
+    currentPos = targetPos;
+
+    delay(50);
+    bool stuck = !toolNotStuck(currentPos);
+
+    if(stuck && verbose){
+        Serial.println("TOOL STUCK");
+        
+
+        // abs(dist - idealMM) < FB_TOL
+
+    } else if(!stuck && verbose){
+        Serial.println("Move good!");
+    }
+
+    //return move status (stuck = bad move = false)
+    return !stuck;
+}
+
+
+
+
+void moveAbsolute(long targetPos, bool verbose) {
+    if (!isHomed) {
+        Serial.println("ERROR: machine not homed. Run 'home' first.");
+        return;
+    }
+    long delta = targetPos - currentPos;
+    if (delta == 0) {
+        if (verbose) Serial.printf("Already at position %ld\n", currentPos);
+        return;
+    }
+    if ((unsigned long)targetPos > calData.range) {
+        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
+        return;
+    }
+    if (verbose) {
+        Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
+                      currentPos, targetPos, delta);
+    }
+    moveRelative(-delta);
+    currentPos = targetPos;
+}
+
+
+void moveAbsoluteSpeed(long targetPos, int speed) {
+    if (!isHomed) {
+        Serial.println("ERROR: machine not homed. Run 'home' first.");
+        return;
+    }
+    long delta = targetPos - currentPos;
+    if (delta == 0) {
+        // if (verbose) Serial.printf("Already at position %ld\n", currentPos);
+        return;
+    }
+    if ((unsigned long)targetPos > calData.range) {
+        Serial.printf("Value out of range! Max is: %lu\n", calData.range);
+        return;
+    }
+    // if (verbose) {
+    //     Serial.printf("Moving  %ld  ->  %ld  (%+ld steps)\n",
+    //                   currentPos, targetPos, delta);
+    // }
+    moveRelativeSpeed(-delta, speed);
+    currentPos = targetPos;
+}
+
+// ============================================================
+//  HOMING  (stepper only, no PWM)
+// ============================================================
+void doHome() {
+    Serial.println("Homing: moving CW toward switch...");
+    digitalWrite(DIR_GPIO, HIGH);
+    while (!homeTriggered()) sendStep(HOMING_SPEED);
+    Serial.println("Switch triggered. Backing off...");
+
+    delay(50);
+
+    digitalWrite(DIR_GPIO, LOW);
+    while (homeTriggered()) sendStep(BACKOFF_SPEED);
+
+    delay(50);
+
+    digitalWrite(DIR_GPIO, HIGH);
+    while (!homeTriggered()) sendStep(BACKOFF_SPEED);
+
+    delay(50);
+
+    rmt_wait_tx_done(RMT_CHANNEL, portMAX_DELAY);
+
+    currentPos = 0;
+    isHomed    = true;
+    Serial.println("Home set. currentPos = 0  (raw switch point).");
+
+    if (calValid) {
+        moveAbsolute(calData.offset, true);
+    }
+}
+
+// ============================================================
+//  SWITCH MONITOR
+// ============================================================
+void monitorSwitch() {
+    Serial.println("Monitoring home switch  --  press any key to exit.");
+    bool last = homeTriggered();
+    Serial.printf("  [%s]\n", last ? "TRIGGERED" : "open     ");
+
+    while (!Serial.available()) {
+        bool state = homeTriggered();
+        if (state != last) {
+            Serial.printf("  [%s]\n", state ? "TRIGGERED" : "open     ");
+            last = state;
+        }
+        delay(10);
+    }
+    while (Serial.available()) Serial.read();
+    Serial.println("Exited switch monitor.");
+}
+
+
+
+
+
 // ============================================================
 //  PWM TEST MODE
 // ============================================================
@@ -684,6 +805,73 @@ void pwmTest() {
     }
 }
 
+
+
+// ============================================================
+//  DRILL SEQUENCE
+// ============================================================
+// Returns RC_OK (0) on success, RC_MOVE_UNSAFE (1) if stuck at any point.
+//
+// Sequence:
+//   1. Spin up drill (CW) for DRILL_STARTUP_MS
+//   2. Feed to max range (checked move) -- abort on stuck
+//   3. Reverse drill (CCW) for DRILL_STARTUP_MS
+//   4. Return to home offset (checked move) -- abort on stuck
+//   5. Stop drill
+//
+
+
+
+
+
+int doDrill() {
+    if (!isHomed || !calValid) return RC_MOVE_UNSAFE;
+
+
+    // 0. Go to ready position
+    moveAbsolute(DRILLING_START, true);
+
+
+    // 1. Spin up drill CW
+    pwmSetChannel(PWM_CH_CCW, DRILL_DUTY_PCT);
+    delay(DRILL_STARTUP_MS);
+
+    // 2. Feed to max range
+    bool ok = moveAbsoluteCheckSpeed(calData.range, DRILLING_MOVE_SPEED);
+    if (!ok) {
+        bothOff();
+        return RC_MOVE_UNSAFE;
+    }
+
+    // 3. Reverse drill CCW
+    bothOff();
+    delay(DRILL_STARTUP_MS);
+    pwmSetChannel(PWM_CH_CW, DRILL_DUTY_PCT/3);
+    delay(DRILL_STARTUP_MS);
+
+    // 4. Return to home offset
+    ok = moveAbsoluteCheck(DRILLING_START, true);
+    if (!ok) {
+        bothOff();
+        return RC_MOVE_UNSAFE;
+    }
+
+    // 5. Stop drill
+    bothOff();
+
+    //6.  move home
+    ok = moveAbsoluteCheck(calData.offset, true);
+    if (!ok) {
+        bothOff();
+        return RC_MOVE_UNSAFE;
+    }
+
+    return RC_OK;
+}
+
+
+
+
 // ============================================================
 //  HELP MENU
 // ============================================================
@@ -720,6 +908,7 @@ void printHelp() {
     SEP();
     L("PWM TEST                                                              ");
     L("  pwm                  enter PWM test mode  (cw/ccw/off/exit)        ");
+    L("  doDrill              test full drill cycle                        ");
     SEP();
     L("  help                 show this menu                                 ");
     SEP();
@@ -844,6 +1033,9 @@ void handleCommand(const String &raw) {
 
     } else if (cmd.equalsIgnoreCase("help")) {
         printHelp();
+
+    }else if (cmd.equalsIgnoreCase("doDrill")) {
+        Serial.println(doDrill());
 
     } else {
         Serial.printf("Unknown command: '%s'  --  type 'help' for options.\n",

@@ -8,7 +8,7 @@ from ultralytics import YOLO
 model_path = r"C:\UVM\SEED\SEED25\Machine_Learning\YOLOred\runs\red_train_7\weights\best.pt"
 
 # Camera ID (0 is usually the default built-in webcam. Change to 1 or 2 if using an external USB camera alongside a built-in one)
-camera_id = 1
+camera_id = 3
 
 #==========Initialize Model=================
 print(f"Loading YOLO model from: {model_path}")
