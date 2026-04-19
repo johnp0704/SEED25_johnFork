@@ -63,14 +63,14 @@ def generate_launch_description():
         # ==========================================
         # 3. END EFFECTOR / TOOL CONTROLLER
         # ==========================================
-        Node(
-            package='ml_red_controller',
-            executable='front_controller_node', # The Auger ESP32 Controller
-            name='front_controller_node',
-            output='screen',
-            parameters=[
-                # Use this to hardcode the port if auto-select fails (e.g., '/dev/ttyUSB0')
-                # {'serial_port': ''} 
-            ]
-        )
+        # Node(
+        #     package='ml_red_controller',
+        #     executable='front_controller_node', # The Auger ESP32 Controller
+        #     name='front_controller_node',
+        #     output='screen',
+        #     parameters=[
+        #         # Use this to hardcode the port if auto-select fails (e.g., '/dev/ttyUSB0')
+        #         # {'serial_port': ''} 
+        #     ]
+        # )
     ])
