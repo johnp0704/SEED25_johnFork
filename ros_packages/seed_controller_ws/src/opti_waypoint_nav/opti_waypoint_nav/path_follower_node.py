@@ -1,4 +1,3 @@
-# path_follower_node.py
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point, Pose2D
@@ -13,26 +12,14 @@ class PathFollowerNode(Node):
         super().__init__('path_follower_node')
 
         self.MAX_ACTUATOR_INPUT = 50
-
-        # Bang-bang pivot threshold
         self.PIVOT_THRESH = np.deg2rad(15.0)
-
-        # Fixed speed during pivot — must overcome stiction
         self.PIVOT_SPEED = 35.0
-        # 0.0 = one wheel stopped, 0.4 = gentle counter-rotation
         self.PIVOT_BACK_FRACTION = 0.4
-
-        # Constant forward drive speed — no slowdown on approach
         self.DRIVE_SPEED = 35.0
-
-        # Proportional steering gain while driving.
-        # Scales the wheel differential during the drive state.
-        # At 15 deg (0.26 rad): correction = 25 * 0.26 = 6.5 units
         self.K_steer = 25.0
 
         self.R_wheel = 0.08
         self.L = 0.178
-
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0
 
@@ -50,8 +37,8 @@ class PathFollowerNode(Node):
         self.last_target_time = self.get_clock().now()
 
         try:
-            # True, True matches your robot's physical wiring
-            self.motor = st.SaberToothMotorDriver(True, True)
+            # False, False — matches verified motor test convention
+            self.motor = st.SaberToothMotorDriver(False, False)
             self.get_logger().info("Motors initialized. Waiting for commands...")
         except Exception as e:
             self.get_logger().error(f"Failed to initialize motors: {e}")
@@ -88,8 +75,6 @@ class PathFollowerNode(Node):
 
     def control_loop(self):
         # --- Safety: no recent target ---
-        # Temporary override — paste at top of control_loop after the guards
-        self.motor.updateMotorSpeed(35, -14)  # should turn LEFT with True,True
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
             self.motor.updateMotorSpeed(0, 0)
@@ -127,19 +112,20 @@ class PathFollowerNode(Node):
         )
 
         # ----------------------------------------------------------
-        # PIVOT state: heading error too large, spin in place
-        # With True,True wiring: to turn LEFT, send left=+, right=-
-        # (opposite of test script because motors are inverted)
+        # PIVOT: spin in place to align heading
+        # Verified against motor test (False, False):
+        #   Turn left  = updateMotorSpeed(+50, -50)
+        #   Turn right = updateMotorSpeed(-50, +50)
+        # error_theta > 0 means target is to the LEFT
+        # error_theta < 0 means target is to the RIGHT
         # ----------------------------------------------------------
         if abs(error_theta) > self.PIVOT_THRESH:
             if error_theta > 0:
-                # Target is to the LEFT — need to turn left
-                # With True,True: positive left, negative right = turn left
+                # Turn left
                 wl_des =  self.PIVOT_SPEED
                 wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
             else:
-                # Target is to the RIGHT — need to turn right
-                # With True,True: negative left, positive right = turn right
+                # Turn right
                 wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
                 wr_des =  self.PIVOT_SPEED
 
@@ -147,16 +133,20 @@ class PathFollowerNode(Node):
             return
 
         # ----------------------------------------------------------
-        # DRIVE state: heading aligned, go forward with P steering
-        # With True,True: forward = positive left AND positive right
-        # error_theta > 0 (target left): slow left wheel, speed right
-        # error_theta < 0 (target right): slow right wheel, speed left
+        # DRIVE: go forward with proportional steering correction
+        # Verified against motor test (False, False):
+        #   Forward = updateMotorSpeed(-X, -X)
+        # error_theta > 0 (target left): need to arc left
+        #   → left wheel slower (less negative), right wheel faster (more negative)
+        # error_theta < 0 (target right): need to arc right
+        #   → right wheel slower, left wheel faster
         # ----------------------------------------------------------
         correction = self.K_steer * error_theta
 
-        # With True,True wiring, correction sign is flipped vs intuition
-        wl_des = self.DRIVE_SPEED - correction
-        wr_des = self.DRIVE_SPEED + correction
+        # Both negative for forward; correction steers by making one
+        # wheel less negative (slower) and the other more negative (faster)
+        wl_des = -self.DRIVE_SPEED + correction
+        wr_des = -self.DRIVE_SPEED - correction
 
         max_input = max(abs(wl_des), abs(wr_des))
         if max_input > self.MAX_ACTUATOR_INPUT:
@@ -169,6 +159,7 @@ class PathFollowerNode(Node):
     def destroy_node(self):
         self.motor.all_motors_off()
         super().destroy_node()
+
 
 def main(args=None):
     rclpy.init(args=args)
