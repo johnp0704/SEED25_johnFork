@@ -7,20 +7,29 @@ import numpy as np
 import atexit
 
 from opti_waypoint_nav import sabertooth as st
+from opti_waypoint_nav.PID import PID
 
 class PathFollowerNode(Node):
     def __init__(self):
         super().__init__('path_follower_node')
 
         self.MAX_ACTUATOR_INPUT = 50
+
+        # Above this, bang-bang pivot before driving
         self.PIVOT_THRESH = np.deg2rad(15.0)
+
+        # Fixed speeds for bang-bang pivot
         self.PIVOT_SPEED = 35.0
         self.PIVOT_BACK_FRACTION = 0.4
-        self.DRIVE_SPEED = 35.0
-        self.K_steer = 25.0
 
-        self.R_wheel = 0.08
-        self.L = 0.178
+        # Forward drive speed — constant, no distance slowdown
+        self.DRIVE_SPEED = 35.0
+
+        # Verified convention (True, True):
+        #   Forward    = (+X, +X)
+        #   Turn left  = (-X, +X)  CCW top-down
+        #   Turn right = (+X, -X)  CW top-down
+
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0
 
@@ -28,6 +37,23 @@ class PathFollowerNode(Node):
         self.vision_wl = 0.0
         self.vision_wr = 0.0
         self.last_vision_time = 0
+
+        # PID for steering correction during DRIVE state.
+        # Output is a signed correction value added/subtracted to wheel speeds.
+        # Kp=15: at 15deg error (0.26 rad) -> correction = 15 * 0.26 = 3.9 units
+        # Start with P only, add Kd once P is tuned, Ki last.
+        # N is the derivative filter coefficient — 10-20 is a good range.
+        # Kaw is anti-windup gain — set to 1.0 to start.
+        self.pid_steer = PID(
+            Kp=15.0,
+            Ki=0.0,
+            Kd=0.0,
+            N=15.0,
+            Ts=0.1,
+            umax=self.MAX_ACTUATOR_INPUT,
+            umin=-self.MAX_ACTUATOR_INPUT,
+            Kaw=1.0
+        )
 
         self.robot_x = None
         self.robot_y = None
@@ -70,8 +96,17 @@ class PathFollowerNode(Node):
 
     def target_callback(self, msg):
         self.last_target_time = self.get_clock().now()
-        self.x_des = msg.x
-        self.y_des = msg.y
+        new_x, new_y = msg.x, msg.y
+
+        # Reset PID when waypoint changes to avoid stale integral/derivative
+        if self.x_des is not None:
+            if abs(new_x - self.x_des) > 0.05 or abs(new_y - self.y_des) > 0.05:
+                self.pid_steer.istate = 0.0
+                self.pid_steer.dstate = 0.0
+                self.pid_steer.error_prev = 0.0
+
+        self.x_des = new_x
+        self.y_des = new_y
 
     def control_loop(self):
         # --- Safety: no recent target ---
@@ -112,15 +147,15 @@ class PathFollowerNode(Node):
         )
 
         # ----------------------------------------------------------
-        # PIVOT: spin in place to align heading
-        # Verified convention with True, True:
-        #   Forward    = ( +X, +X )
-        #   Turn left  = ( -X, +X )   CCW top-down
-        #   Turn right = ( +X, -X )   CW top-down
-        # error_theta > 0 means target is to the LEFT
-        # error_theta < 0 means target is to the RIGHT
+        # PIVOT state: bang-bang spin for large heading errors.
+        # Bypass PID entirely — it can't overcome stiction at small outputs.
+        # Also reset PID state so it starts fresh when we enter DRIVE.
         # ----------------------------------------------------------
         if abs(error_theta) > self.PIVOT_THRESH:
+            self.pid_steer.istate = 0.0
+            self.pid_steer.dstate = 0.0
+            self.pid_steer.error_prev = 0.0
+
             if error_theta > 0:
                 # Target to the LEFT — turn left CCW = (-X, +X)
                 wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
@@ -134,18 +169,20 @@ class PathFollowerNode(Node):
             return
 
         # ----------------------------------------------------------
-        # DRIVE: forward = (+X, +X)
-        # error > 0 (target left):  arc left  = slow left wheel
-        # error < 0 (target right): arc right = slow right wheel
-        # correction is positive when error > 0, so:
-        #   wl_des = DRIVE - correction  (slows left wheel)
-        #   wr_des = DRIVE + correction  (speeds right wheel)
+        # DRIVE state: PID steering correction mixed into both wheels.
+        # correction > 0 means turn left: slow left, speed right
+        # correction < 0 means turn right: speed left, slow right
+        #
+        # By subtracting correction from left and adding to right,
+        # a large enough correction will push one wheel negative,
+        # giving a sharp counter-rotating arc without a full stop.
         # ----------------------------------------------------------
-        correction = self.K_steer * error_theta
+        correction = self.pid_steer.update(setpoint=error_theta, output=0.0)
 
         wl_des = self.DRIVE_SPEED - correction
         wr_des = self.DRIVE_SPEED + correction
 
+        # Scale to fit within actuator limits while preserving the ratio
         max_input = max(abs(wl_des), abs(wr_des))
         if max_input > self.MAX_ACTUATOR_INPUT:
             scale = self.MAX_ACTUATOR_INPUT / max_input
