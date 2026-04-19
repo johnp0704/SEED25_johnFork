@@ -46,7 +46,7 @@ class PathFollowerNode(Node):
         # Kaw is anti-windup gain — set to 1.0 to start.
         self.pid_steer = PID(
             Kp=15.0,
-            Ki=0.0,
+            Ki=0.5,
             Kd=2.0,
             N=15.0,
             Ts=0.1,
