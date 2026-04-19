@@ -33,7 +33,7 @@ class PathFollowerNode(Node):
 
         # Heading gain: keep this smaller so PID doesn't immediately saturate
         # Negative because a positive heading error needs a negative (right-turn) correction
-        self.K_theta = -15.0
+        self.K_theta = -self.K_e * 10
 
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0
@@ -48,7 +48,7 @@ class PathFollowerNode(Node):
         self.pid_heading = PID(
             Kp=self.K_theta,
             Ki=0.0,
-            Kd=3.0,
+            Kd=0.0,
             N=15.0,
             Ts=0.1,
             umax=self.MAX_ACTUATOR_INPUT,
