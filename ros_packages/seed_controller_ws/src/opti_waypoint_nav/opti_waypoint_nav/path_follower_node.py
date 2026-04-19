@@ -74,10 +74,6 @@ class PathFollowerNode(Node):
         self.y_des = msg.y
 
     def control_loop(self):
-
-        # Test 2 — confirm left turn:
-        self.motor.updateMotorSpeed(-35, 35); return
-
         # --- Safety: no recent target ---
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
@@ -118,34 +114,37 @@ class PathFollowerNode(Node):
         # ----------------------------------------------------------
         # PIVOT: spin in place to align heading
         # Verified convention with True, True:
-        #   Forward  = (-X, -X)
-        #   Turn left  = (+X, -X)
-        #   Turn right = (-X, +X)
+        #   Forward    = ( +X, +X )
+        #   Turn left  = ( -X, +X )   CCW top-down
+        #   Turn right = ( +X, -X )   CW top-down
         # error_theta > 0 means target is to the LEFT
         # error_theta < 0 means target is to the RIGHT
         # ----------------------------------------------------------
         if abs(error_theta) > self.PIVOT_THRESH:
             if error_theta > 0:
-                # Target to the LEFT — turn left = (+, -)
-                wl_des =  self.PIVOT_SPEED
-                wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
-            else:
-                # Target to the RIGHT — turn right = (-, +)
+                # Target to the LEFT — turn left CCW = (-X, +X)
                 wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
                 wr_des =  self.PIVOT_SPEED
+            else:
+                # Target to the RIGHT — turn right CW = (+X, -X)
+                wl_des =  self.PIVOT_SPEED
+                wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
 
             self.motor.updateMotorSpeed(wl_des, wr_des)
             return
 
         # ----------------------------------------------------------
-        # DRIVE: forward = (-X, -X), steer by differencing
-        # error > 0 (target left):  arc left  = right wheel more negative
-        # error < 0 (target right): arc right = left wheel more negative
+        # DRIVE: forward = (+X, +X)
+        # error > 0 (target left):  arc left  = slow left wheel
+        # error < 0 (target right): arc right = slow right wheel
+        # correction is positive when error > 0, so:
+        #   wl_des = DRIVE - correction  (slows left wheel)
+        #   wr_des = DRIVE + correction  (speeds right wheel)
         # ----------------------------------------------------------
         correction = self.K_steer * error_theta
 
-        wl_des = -self.DRIVE_SPEED + correction
-        wr_des = -self.DRIVE_SPEED - correction
+        wl_des = self.DRIVE_SPEED - correction
+        wr_des = self.DRIVE_SPEED + correction
 
         max_input = max(abs(wl_des), abs(wr_des))
         if max_input > self.MAX_ACTUATOR_INPUT:
