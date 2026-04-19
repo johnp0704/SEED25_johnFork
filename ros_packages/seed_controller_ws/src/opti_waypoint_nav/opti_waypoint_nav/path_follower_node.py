@@ -47,7 +47,7 @@ class PathFollowerNode(Node):
         self.pid_steer = PID(
             Kp=15.0,
             Ki=0.0,
-            Kd=0.0,
+            Kd=2.0,
             N=15.0,
             Ts=0.1,
             umax=self.MAX_ACTUATOR_INPUT,
