@@ -46,13 +46,13 @@ class PathFollowerNode(Node):
         # Kaw is anti-windup gain — set to 1.0 to start.
         self.pid_steer = PID(
             Kp=15.0,
-            Ki=0.5,
+            Ki=0.8,
             Kd=2.0,
             N=15.0,
             Ts=0.1,
             umax=self.MAX_ACTUATOR_INPUT,
             umin=-self.MAX_ACTUATOR_INPUT,
-            Kaw=1.0
+            Kaw=2.0
         )
 
         self.robot_x = None
