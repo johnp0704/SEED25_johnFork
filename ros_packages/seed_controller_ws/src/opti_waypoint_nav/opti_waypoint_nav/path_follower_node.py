@@ -19,11 +19,11 @@ class PathFollowerNode(Node):
         self.PIVOT_THRESH = np.deg2rad(15.0)
 
         # Fixed speeds for bang-bang pivot
-        self.PIVOT_SPEED = 35.0
-        self.PIVOT_BACK_FRACTION = 1
+        self.PIVOT_SPEED = 50.0
+        self.PIVOT_BACK_FRACTION = 0.7
 
         # Forward drive speed — constant, no distance slowdown
-        self.DRIVE_SPEED = 35.0
+        self.DRIVE_SPEED = 50.0
 
         # Verified convention (True, True):
         #   Forward    = (+X, +X)
