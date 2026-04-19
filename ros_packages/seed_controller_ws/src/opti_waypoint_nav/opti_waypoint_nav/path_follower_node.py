@@ -75,9 +75,6 @@ class PathFollowerNode(Node):
 
     def control_loop(self):
 
-        # Test 1 — confirm forward:
-        self.motor.updateMotorSpeed(35, 35); return
-
         # Test 2 — confirm left turn:
         self.motor.updateMotorSpeed(35, -35); return
 
