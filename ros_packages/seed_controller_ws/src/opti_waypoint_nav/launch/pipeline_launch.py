@@ -31,12 +31,6 @@ def generate_launch_description():
             name='virtual_twin_node',
             output='screen'
         ),
-        Node(
-            package='opti_waypoint_nav',
-            executable='dual_camera_node',
-            name='dual_camera_node',
-            output='screen'
-        ),
 
         # ==========================================
         # 2. MACHINE VISION & GO-TO-GOAL NODES
