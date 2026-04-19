@@ -74,6 +74,9 @@ class PathFollowerNode(Node):
         self.y_des = msg.y
 
     def control_loop(self):
+
+        self.motor.updateMotorSpeed(35, 35); return
+        self.motor.updateMotorSpeed(-35, 35); return
         # --- Safety: no recent target ---
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
