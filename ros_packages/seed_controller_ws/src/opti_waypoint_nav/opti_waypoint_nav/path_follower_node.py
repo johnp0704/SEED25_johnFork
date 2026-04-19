@@ -20,7 +20,7 @@ class PathFollowerNode(Node):
 
         # Fixed speeds for bang-bang pivot
         self.PIVOT_SPEED = 35.0
-        self.PIVOT_BACK_FRACTION = 0.4
+        self.PIVOT_BACK_FRACTION = 1
 
         # Forward drive speed — constant, no distance slowdown
         self.DRIVE_SPEED = 35.0
