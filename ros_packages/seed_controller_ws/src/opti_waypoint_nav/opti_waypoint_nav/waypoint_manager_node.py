@@ -81,22 +81,28 @@ class WaypointManagerNode(Node):
             return
 
         if self.current_waypoint_idx >= len(self.waypoints):
-            self.get_logger().info("All waypoints reached! Path complete.", throttle_duration_sec=2.0)
+            self.get_logger().info("All waypoints reached!", throttle_duration_sec=2.0)
             return
 
         target_x, target_y = self.waypoints[self.current_waypoint_idx]
-
         dx = target_x - self.robot_pose.x
         dy = target_y - self.robot_pose.y
         dist_to_goal = np.sqrt(dx**2 + dy**2)
 
+        # ADD THIS — will print at most once per second so it doesn't spam
+        self.get_logger().info(
+            f"Waypoint idx={self.current_waypoint_idx}, "
+            f"robot=({self.robot_pose.x:.3f},{self.robot_pose.y:.3f}), "
+            f"target=({target_x:.3f},{target_y:.3f}), "
+            f"dist={dist_to_goal:.3f}",
+            throttle_duration_sec=1.0
+        )
+
         if dist_to_goal < self.GOAL_THRESH:
             self.current_waypoint_idx += 1
-            self.get_logger().info(f"Waypoint reached. Advancing to index {self.current_waypoint_idx}.")
             if self.current_waypoint_idx >= len(self.waypoints):
-                self.get_logger().info("All waypoints reached! Path complete.")
+                self.get_logger().info("All waypoints reached!")
                 return
-            # FIXED: fall through and publish the next target immediately
             target_x, target_y = self.waypoints[self.current_waypoint_idx]
 
         target_msg = Point()
