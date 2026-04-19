@@ -1,3 +1,4 @@
+# path_follower_node.py
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point, Pose2D
@@ -37,8 +38,7 @@ class PathFollowerNode(Node):
         self.last_target_time = self.get_clock().now()
 
         try:
-            # False, False — matches verified motor test convention
-            self.motor = st.SaberToothMotorDriver(False, False)
+            self.motor = st.SaberToothMotorDriver(True, True)
             self.get_logger().info("Motors initialized. Waiting for commands...")
         except Exception as e:
             self.get_logger().error(f"Failed to initialize motors: {e}")
@@ -75,8 +75,12 @@ class PathFollowerNode(Node):
 
     def control_loop(self):
 
-        #self.motor.updateMotorSpeed(35, 35); return
-        self.motor.updateMotorSpeed(-35, 35); return
+        # Test 1 — confirm forward:
+        self.motor.updateMotorSpeed(-35, -35); return
+
+        # Test 2 — confirm left turn:
+        self.motor.updateMotorSpeed(35, -35); return
+
         # --- Safety: no recent target ---
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
@@ -116,19 +120,20 @@ class PathFollowerNode(Node):
 
         # ----------------------------------------------------------
         # PIVOT: spin in place to align heading
-        # Verified against motor test (False, False):
-        #   Turn left  = updateMotorSpeed(+50, -50)
-        #   Turn right = updateMotorSpeed(-50, +50)
+        # Verified convention with True, True:
+        #   Forward  = (-X, -X)
+        #   Turn left  = (+X, -X)
+        #   Turn right = (-X, +X)
         # error_theta > 0 means target is to the LEFT
         # error_theta < 0 means target is to the RIGHT
         # ----------------------------------------------------------
         if abs(error_theta) > self.PIVOT_THRESH:
             if error_theta > 0:
-                # Turn left
+                # Target to the LEFT — turn left = (+, -)
                 wl_des =  self.PIVOT_SPEED
                 wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
             else:
-                # Turn right
+                # Target to the RIGHT — turn right = (-, +)
                 wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
                 wr_des =  self.PIVOT_SPEED
 
@@ -136,18 +141,12 @@ class PathFollowerNode(Node):
             return
 
         # ----------------------------------------------------------
-        # DRIVE: go forward with proportional steering correction
-        # Verified against motor test (False, False):
-        #   Forward = updateMotorSpeed(-X, -X)
-        # error_theta > 0 (target left): need to arc left
-        #   → left wheel slower (less negative), right wheel faster (more negative)
-        # error_theta < 0 (target right): need to arc right
-        #   → right wheel slower, left wheel faster
+        # DRIVE: forward = (-X, -X), steer by differencing
+        # error > 0 (target left):  arc left  = right wheel more negative
+        # error < 0 (target right): arc right = left wheel more negative
         # ----------------------------------------------------------
         correction = self.K_steer * error_theta
 
-        # Both negative for forward; correction steers by making one
-        # wheel less negative (slower) and the other more negative (faster)
         wl_des = -self.DRIVE_SPEED + correction
         wr_des = -self.DRIVE_SPEED - correction
 
