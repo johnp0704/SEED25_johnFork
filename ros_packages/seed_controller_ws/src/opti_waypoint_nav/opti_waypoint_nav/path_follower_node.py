@@ -88,6 +88,8 @@ class PathFollowerNode(Node):
 
     def control_loop(self):
         # --- Safety: no recent target ---
+        # Temporary override — paste at top of control_loop after the guards
+        self.motor.updateMotorSpeed(35, -14)  # should turn LEFT with True,True
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
             self.motor.updateMotorSpeed(0, 0)
