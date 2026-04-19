@@ -7,28 +7,23 @@ import numpy as np
 import atexit
 
 from opti_waypoint_nav import sabertooth as st
+from opti_waypoint_nav.PID import PID
 
 class PathFollowerNode(Node):
     def __init__(self):
         super().__init__('path_follower_node')
 
         self.MAX_ACTUATOR_INPUT = 50
+        self.S_MAX = 24.0
 
-        # If heading error exceeds this, stop and pivot before driving
-        self.HEADING_THRESH = np.deg2rad(15.0)
-
-        # Fixed speed used during pivot (must be high enough to overcome stiction)
-        self.PIVOT_SPEED = 30.0
-
-        # During pivot, retreating wheel goes backward at this fraction
-        # 0.0 = one wheel stopped, 0.5 = proper counter-rotation
-        self.PIVOT_BACK_FRACTION = 0.4
-
-        # Full forward speed — robot always drives at this, no slowdown
-        self.DRIVE_SPEED = 35.0
+        self.ANGLE_THRESH = np.deg2rad(2.0)
+        self.PIVOT_THRESH = np.deg2rad(40.0)
+        self.PIVOT_BACK_FRACTION = 0.3
 
         self.R_wheel = 0.08
         self.L = 0.178
+        self.K_e = 20.0
+        self.K_theta = -15.0   # FIXED: flat value, not a multiple of K_e
 
         self.OFFSET_X = 0.0
         self.OFFSET_Y = 0.0
@@ -37,6 +32,16 @@ class PathFollowerNode(Node):
         self.vision_wl = 0.0
         self.vision_wr = 0.0
         self.last_vision_time = 0
+
+        self.pid_heading = PID(
+            Kp=self.K_theta,
+            Ki=0.0,
+            Kd=0.0,
+            N=15.0,
+            Ts=0.1,
+            umax=self.MAX_ACTUATOR_INPUT,
+            umin=-self.MAX_ACTUATOR_INPUT
+        )
 
         self.robot_x = None
         self.robot_y = None
@@ -64,7 +69,7 @@ class PathFollowerNode(Node):
     def disable_callback(self, msg):
         self.motor_disabled = msg.data
         if self.motor_disabled:
-            self.get_logger().info("MOTORS DISABLED.", throttle_duration_sec=2.0)
+            self.get_logger().info("MOTORS DISABLED by End Effector.", throttle_duration_sec=2.0)
 
     def vision_cmd_callback(self, msg):
         self.vision_wl = msg.data[0]
@@ -79,33 +84,38 @@ class PathFollowerNode(Node):
 
     def target_callback(self, msg):
         self.last_target_time = self.get_clock().now()
-        self.x_des = msg.x
-        self.y_des = msg.y
+        new_x, new_y = msg.x, msg.y
+
+        if self.x_des is not None:
+            if abs(new_x - self.x_des) > 0.05 or abs(new_y - self.y_des) > 0.05:
+                self.pid_heading.istate = 0.0
+                self.pid_heading.dstate = 0.0
+                self.pid_heading.error_prev = 0.0
+
+        self.x_des = new_x
+        self.y_des = new_y
 
     def control_loop(self):
-        # --- Safety: no recent target ---
         elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
         if elapsed_ns > 5e8:
             self.motor.updateMotorSpeed(0, 0)
             return
 
-        # --- Priority 1: Auger active ---
         if self.motor_disabled:
             self.motor.updateMotorSpeed(0, 0)
             return
 
-        # --- Priority 2: Vision override ---
         if (self.get_clock().now().nanoseconds - self.last_vision_time) < 5e8:
             self.get_logger().info("Vision GTG Override Active", throttle_duration_sec=1.0)
             self.motor.updateMotorSpeed(self.vision_wl, self.vision_wr)
             return
 
-        # --- Priority 3: Waypoint nav ---
         if self.robot_x is None or self.x_des is None:
             return
 
         dx = self.x_des - self.robot_x
         dy = self.y_des - self.robot_y
+        dist = np.sqrt(dx**2 + dy**2)
 
         theta_des = np.arctan2(dy, dx)
         error_theta = np.arctan2(
@@ -113,31 +123,40 @@ class PathFollowerNode(Node):
             np.cos(theta_des - self.robot_yaw)
         )
 
-        self.get_logger().info(
-            f"error={np.degrees(error_theta):.1f}deg",
-            throttle_duration_sec=0.5
-        )
+        w_des = 0.0
+        if abs(error_theta) > self.ANGLE_THRESH:
+            w_des = self.pid_heading.update(setpoint=error_theta, output=0.0)
 
-        # ----------------------------------------------------------
-        # PIVOT: heading error too large — spin in place at fixed speed
-        # ----------------------------------------------------------
-        if abs(error_theta) > self.HEADING_THRESH:
-            if error_theta > 0:
-                # Need to turn left: left wheel back, right wheel forward
-                wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
-                wr_des =  self.PIVOT_SPEED
+        if abs(error_theta) > self.PIVOT_THRESH:
+            S_sat = 0.0
+        else:
+            arc_scale = np.cos(error_theta)
+            S_des = self.K_e * dist * arc_scale
+            S_sat = np.clip(S_des, 0.0, self.S_MAX)
+
+        wl_des = S_sat + self.L / self.R_wheel * w_des
+        wr_des = S_sat - self.L / self.R_wheel * w_des
+
+        if abs(error_theta) > self.PIVOT_THRESH:
+            if w_des >= 0:
+                pivot_speed = np.clip(abs(w_des), 5.0, self.MAX_ACTUATOR_INPUT)
+                wl_des =  pivot_speed
+                wr_des = -pivot_speed * self.PIVOT_BACK_FRACTION
             else:
-                # Need to turn right: right wheel back, left wheel forward
-                wl_des =  self.PIVOT_SPEED
-                wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
+                pivot_speed = np.clip(abs(w_des), 5.0, self.MAX_ACTUATOR_INPUT)
+                wl_des = -pivot_speed * self.PIVOT_BACK_FRACTION
+                wr_des =  pivot_speed
 
-            self.motor.updateMotorSpeed(wl_des, wr_des)
-            return
+        max_input = max(abs(wl_des), abs(wr_des))
+        if max_input > self.MAX_ACTUATOR_INPUT:
+            scale = self.MAX_ACTUATOR_INPUT / max_input
+            wl_des *= scale
+            wr_des *= scale
 
-        # ----------------------------------------------------------
-        # DRIVE: heading is good — go straight at full speed, no slowdown
-        # ----------------------------------------------------------
-        self.motor.updateMotorSpeed(self.DRIVE_SPEED, self.DRIVE_SPEED)
+        self.motor.updateMotorSpeed(
+            np.clip(wl_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT),
+            np.clip(wr_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
+        )
 
     def destroy_node(self):
         self.motor.all_motors_off()

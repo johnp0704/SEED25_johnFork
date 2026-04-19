@@ -27,7 +27,7 @@ class MotorTestNode(Node):
         time.sleep(3)
 
         # Helper function to keep the test code clean
-        def execute_test(test_name, left_speed, right_speed, duration=0.5):
+        def execute_test(test_name, left_speed, right_speed, duration=1.5):
             self.get_logger().info(f'Running: {test_name} | L: {left_speed}% | R: {right_speed}%')
             self.driver.updateMotorSpeed(left_speed, right_speed)
             time.sleep(duration)
