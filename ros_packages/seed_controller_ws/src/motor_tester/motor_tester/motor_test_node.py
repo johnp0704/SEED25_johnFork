@@ -36,20 +36,20 @@ class MotorTestNode(Node):
             time.sleep(1.5) # Pause between tests for safety
 
         # 1. Pivots (Wheels moving opposite directions)
-        execute_test("Pivot Right", -50, 50)
-        execute_test("Pivot Left", 50, -50)
+        execute_test("Pivot Right", -100, 100)
+        execute_test("Pivot Left", 100, -100)
 
         # 2. Straight lines
-        execute_test("Backward", 50, 50)
-        execute_test("Forward", -50, -50)
+        execute_test("Backward", 100, 100)
+        execute_test("Forward", -100, -100)
 
         # 3. Arcing turns Forward (One wheel faster than the other)
-        execute_test("Arc Turn Backward Left", 25, 75)
-        execute_test("Arc Turn Backward Right", 75, 25)
+        execute_test("Arc Turn Backward Left", 50, 100)
+        execute_test("Arc Turn Backward Right", 100, 50)
 
         # 4. Arcing turns Backward
-        execute_test("Arc Turn Forward Left", -25, -75)
-        execute_test("Arc Turn Forward Right", -75, -25)
+        execute_test("Arc Turn Forward Left", -50, -100)
+        execute_test("Arc Turn Forward Right", -100, -50)
 
         self.get_logger().info('All motor tests completed successfully. Shutting down.')
 
