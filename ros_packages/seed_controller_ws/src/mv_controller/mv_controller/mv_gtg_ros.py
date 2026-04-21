@@ -106,7 +106,7 @@ class ControllerNode(Node):
             dx_px = cX - self.robot_x
             dy_px = self.robot_y - cY 
             
-            rel_x = (dx_px / self.px_per_m) - 0.1  # Tuning offsets
+            rel_x = (dx_px / self.px_per_m) - 1  # Tuning offsets
             rel_y = (dy_px / self.px_per_m) + 0.16
 
             x_robot = rel_y
