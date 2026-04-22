@@ -24,9 +24,11 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-          'ml_red_detector_node = ml_red_controller.ml_red_detector_node:main',
-          'gtg_controller_node = ml_red_controller.gtg_controller_node:main',
-          'cam_display_node = ml_red_controller.cam_display_node:main',
+        'ml_red_detector_node  = ml_red_controller.ml_red_detector_node:main',
+        'arducam_detector_node = ml_red_controller.arducam_detector_node:main',
+        'gtg_controller_node   = ml_red_controller.gtg_controller_node:main',
+        'gtg_motor_node        = ml_red_controller.gtg_motor_node:main',
+        'cam_display_node      = ml_red_controller.cam_display_node:main',
         ],
     },
 )
