@@ -15,7 +15,7 @@ ROBOT_POS_X = BEV_WIDTH // 2   # adjust + / - to shift robot position left/right
 ROBOT_POS_Y = BEV_HEIGHT        # adjust + / - to shift robot position up/down
 
 # USB device index for the Arducam — check with: v4l2-ctl --list-devices
-ARDUCAM_DEVICE_INDEX = 2
+ARDUCAM_DEVICE_INDEX = 0
 
 # Output file
 SAVE_FILE = "arducam_calibration_data.npz"
