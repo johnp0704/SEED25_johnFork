@@ -20,5 +20,11 @@ def generate_launch_description():
             executable='cam_display_node',
             name='cam_display_node',
             output='screen'
-        )
+        ),
+        Node(
+            package='opti_waypoint_nav',
+            executable='path_follower_node',
+            name='path_follower_node',
+            output='screen'
+        ),
     ])

@@ -109,11 +109,6 @@ class PathFollowerNode(Node):
         self.y_des = new_y
 
     def control_loop(self):
-        # --- Safety: no recent target ---
-        elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
-        if elapsed_ns > 5e8:
-            self.motor.updateMotorSpeed(0, 0)
-            return
 
         # --- Priority 1: Auger active ---
         if self.motor_disabled:
@@ -124,6 +119,12 @@ class PathFollowerNode(Node):
         if (self.get_clock().now().nanoseconds - self.last_vision_time) < 5e8:
             self.get_logger().info("Vision GTG Override Active", throttle_duration_sec=1.0)
             self.motor.updateMotorSpeed(self.vision_wl, self.vision_wr)
+            return
+        
+        # --- Safety: no recent target ---
+        elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
+        if elapsed_ns > 5e8:
+            self.motor.updateMotorSpeed(0, 0)
             return
 
         # --- Priority 3: Waypoint nav ---
