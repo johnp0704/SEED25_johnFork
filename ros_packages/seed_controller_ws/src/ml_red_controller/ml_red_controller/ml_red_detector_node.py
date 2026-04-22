@@ -17,7 +17,7 @@ class MLDetectionNode(Node):
         super().__init__('ml_red_detector_node')
         
         self.image_pub = self.create_publisher(Image, '/camera/annotated_image', 10)
-        self.target_pub = self.create_publisher(Point, '/vision/target_point', 10)
+        self.target_pub = self.create_publisher(Point, '/vision/realsense_target', 10)
         self.bridge = CvBridge()
 
         # Load Calibration Data

@@ -5,48 +5,73 @@ from std_msgs.msg import Float32MultiArray, String
 import numpy as np
 import math
 import os
-from ml_red_controller.PID import PID 
+from ml_red_controller.PID import PID
+
+
+# ==============================================================================
+# TUNING CONSTANTS
+# ==============================================================================
+
+# --- RealSense offset corrections (meters) ---
+# Positive OFFSET_X moves the effective goal further forward (robot stops further away)
+# Positive OFFSET_Y moves the effective goal to the left
+REALSENSE_OFFSET_X = -0.1
+REALSENSE_OFFSET_Y =  0.16
+
+# --- Arducam offset corrections (meters) ---
+ARDUCAM_OFFSET_X = 0.0
+ARDUCAM_OFFSET_Y = 0.0
+
+# --- Camera handoff ---
+# RealSense hands off to Arducam when it loses detection for this long
+REALSENSE_TIMEOUT_SEC = 0.5
+
+# --- Goal threshold: stop and trigger auger within this distance (meters) ---
+GOAL_THRESH_REALSENSE = 0.30
+GOAL_THRESH_ARDUCAM   = 0.15
+
+# --- Motion parameters ---
+MAX_ACTUATOR_INPUT = 50.0
+PIVOT_THRESH       = np.deg2rad(15.0)  # beyond this, full counter-rotation pivot
+PIVOT_SPEED        = 40.0              # each wheel runs at this speed during pivot
+DRIVE_SPEED        = 40.0             # constant forward speed during drive state
+COOLDOWN_DUR       = 15.0             # seconds locked out after auger trigger
+
+# --- PID steering (only active during DRIVE state) ---
+PID_KP  = 15.0
+PID_KI  = 0.5
+PID_KD  = 2.0
+PID_N   = 15.0
+PID_KAW = 1.0
+
+# ==============================================================================
+
 
 class GTGControllerNode(Node):
     def __init__(self):
         super().__init__('gtg_controller_node')
-        
+
         self.load_calibration()
-        
-        # --- NEW: Matched Path Follower Constants ---
-        self.MAX_ACTUATOR_INPUT = 50.0
-        self.PIVOT_THRESH = np.deg2rad(15.0)
-        self.PIVOT_SPEED = 50.0
-        self.PIVOT_BACK_FRACTION = 0.6
-        self.DRIVE_SPEED = 50.0
-        self.GOAL_THRESH = 0.3 
 
-        # Cooldown Logic
-        self.COOLDOWN_DUR = 15.0 
         self.cooldown_end_time = 0
+        self.active_camera = 'realsense'
+        self.last_realsense_time = 0  # nanoseconds
 
-        # PID for steering correction during DRIVE state
-        # Ts is kept at 1/30 to match the ~30 FPS of the camera
         self.pid_steer = PID(
-            Kp=15.0,
-            Ki=0.8,
-            Kd=2.0,
-            N=15.0,
-            Ts=1/30.0,
-            umax=self.MAX_ACTUATOR_INPUT,
-            umin=-self.MAX_ACTUATOR_INPUT,
-            Kaw=2.0
+            Kp=PID_KP, Ki=PID_KI, Kd=PID_KD,
+            N=PID_N, Ts=1/30.0,
+            umax=MAX_ACTUATOR_INPUT, umin=-MAX_ACTUATOR_INPUT,
+            Kaw=PID_KAW
         )
 
-        # Publishers
-        self.wheel_cmd_pub = self.create_publisher(Float32MultiArray, '/vision/wheel_cmd', 10)
+        self.wheel_cmd_pub     = self.create_publisher(Float32MultiArray, '/vision/wheel_cmd', 10)
         self.auger_trigger_pub = self.create_publisher(String, '/auger/activate', 10)
 
-        # Subscriber
-        self.subscription = self.create_subscription(Point, '/vision/target_point', self.control_callback, 10)
+        self.create_subscription(Point, '/vision/realsense_target', self.realsense_callback, 10)
+        self.create_subscription(Point, '/vision/arducam_target',   self.arducam_callback,   10)
 
     def load_calibration(self):
-        load_file = "calibration_data.npz" 
+        load_file = "calibration_data.npz"
         if os.path.exists(load_file):
             data = np.load(load_file)
             self.pixels_per_meter = float(data['pixels_per_meter'])
@@ -54,86 +79,126 @@ class GTGControllerNode(Node):
             self.robot_y = int(data['robot_y'])
         else:
             self.get_logger().error("Calibration file not found!")
+            self.pixels_per_meter = 1.0
+            self.robot_x = 0
+            self.robot_y = 0
 
-    def control_callback(self, msg):
-        # 0. Check Cooldown
-        if self.get_clock().now().nanoseconds < self.cooldown_end_time:
-            return  
+    def _reset_pid(self):
+        self.pid_steer.istate     = 0.0
+        self.pid_steer.dstate     = 0.0
+        self.pid_steer.error_prev = 0.0
 
-        cX, cY = msg.x, msg.y
-
-        # 1. Calculate Error Vector (Camera frame to Robot frame)
+    def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y):
+        """Convert BEV pixel coords to robot-frame metric coordinates."""
         dx_px = cX - self.robot_x
-        dy_px = self.robot_y - cY 
-        
-        rel_x = (dx_px / self.pixels_per_meter) - 0.1
-        rel_y = (dy_px / self.pixels_per_meter) + 0.16
-
-        # x_robot is forward distance, y_robot is lateral (left/right) distance
+        dy_px = self.robot_y - cY
+        rel_x = (dx_px / self.pixels_per_meter) + offset_x
+        rel_y = (dy_px / self.pixels_per_meter) + offset_y
+        # x_robot = forward, y_robot = lateral (left positive)
         x_robot = rel_y
         y_robot = -rel_x
-        dist_to_goal = math.sqrt(x_robot**2 + y_robot**2)
+        return x_robot, y_robot
 
-        # 2. Reached the object! Trigger Auger and Enter Cooldown
-        if dist_to_goal <= self.GOAL_THRESH:
-            self.get_logger().info("Target Reached! Triggering Auger and entering cooldown.")
-            
-            # Send stop command so wheels don't keep spinning while auger starts
-            cmd_msg = Float32MultiArray()
-            cmd_msg.data = [0.0, 0.0]
-            self.wheel_cmd_pub.publish(cmd_msg)
+    def realsense_callback(self, msg):
+        self.last_realsense_time = self.get_clock().now().nanoseconds
 
-            # Send trigger to Auger
+        # RealSense has a detection — it takes control
+        if self.active_camera != 'realsense':
+            self.get_logger().info("RealSense regained detection — taking control.")
+            self._reset_pid()
+            self.active_camera = 'realsense'
+
+        x_robot, y_robot = self._pixel_to_robot_frame(
+            msg.x, msg.y, REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y
+        )
+        dist = math.sqrt(x_robot**2 + y_robot**2)
+        self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
+
+    def arducam_callback(self, msg):
+        now_ns = self.get_clock().now().nanoseconds
+
+        # Only act if RealSense has timed out (lost detection)
+        realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
+        if realsense_age_sec < REALSENSE_TIMEOUT_SEC:
+            return  # RealSense still active, ignore Arducam
+
+        if self.active_camera != 'arducam':
+            self.get_logger().info(
+                f"RealSense lost for {realsense_age_sec:.1f}s — Arducam taking control."
+            )
+            self._reset_pid()
+            self.active_camera = 'arducam'
+
+        x_robot, y_robot = self._pixel_to_robot_frame(
+            msg.x, msg.y, ARDUCAM_OFFSET_X, ARDUCAM_OFFSET_Y
+        )
+        dist = math.sqrt(x_robot**2 + y_robot**2)
+        self._run_control(x_robot, y_robot, dist, GOAL_THRESH_ARDUCAM)
+
+    def _run_control(self, x_robot, y_robot, dist, goal_thresh):
+        # Cooldown check
+        if self.get_clock().now().nanoseconds < self.cooldown_end_time:
+            return
+
+        # Goal reached — stop and trigger auger
+        if dist <= goal_thresh:
+            self.get_logger().info(f"Target reached (dist={dist:.2f}m)! Triggering auger.")
+            self._publish_wheels(0.0, 0.0)
             trigger_msg = String()
             trigger_msg.data = "drill"
             self.auger_trigger_pub.publish(trigger_msg)
-            
-            # Start Cooldown
-            self.cooldown_end_time = self.get_clock().now().nanoseconds + (self.COOLDOWN_DUR * 1e9)
+            self.cooldown_end_time = now_ns = (
+                self.get_clock().now().nanoseconds + int(COOLDOWN_DUR * 1e9)
+            )
             return
 
-        # 3. Calculate Desired Heading
-        # Since the robot's local frame is always facing 0 radians, 
-        # the desired angle relative to the robot is just atan2(y, x).
         error_theta = math.atan2(y_robot, x_robot)
 
         # ----------------------------------------------------------
-        # PIVOT state: bang-bang spin for large heading errors.
+        # PIVOT: full counter-rotation until heading is aligned
+        # Verified convention (True, True wiring):
+        #   Turn left  CCW = (-X, +X)
+        #   Turn right CW  = (+X, -X)
         # ----------------------------------------------------------
-        if abs(error_theta) > self.PIVOT_THRESH:
-            self.pid_steer.istate = 0.0
-            self.pid_steer.dstate = 0.0
-            self.pid_steer.error_prev = 0.0
-
+        if abs(error_theta) > PIVOT_THRESH:
+            self._reset_pid()
             if error_theta > 0:
-                # Target to the LEFT — turn left CCW = (-X, +X)
-                wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
-                wr_des =  self.PIVOT_SPEED
+                wl_des = -PIVOT_SPEED
+                wr_des =  PIVOT_SPEED
             else:
-                # Target to the RIGHT — turn right CW = (+X, -X)
-                wl_des =  self.PIVOT_SPEED
-                wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
+                wl_des =  PIVOT_SPEED
+                wr_des = -PIVOT_SPEED
 
         # ----------------------------------------------------------
-        # DRIVE state: PID steering correction mixed into both wheels.
+        # DRIVE: heading aligned, PID correction mixed into wheels
+        # Large enough correction pushes one wheel negative for sharp arc
         # ----------------------------------------------------------
         else:
             correction = self.pid_steer.update(setpoint=error_theta, output=0.0)
+            wl_des = DRIVE_SPEED - correction
+            wr_des = DRIVE_SPEED + correction
 
-            wl_des = self.DRIVE_SPEED - correction
-            wr_des = self.DRIVE_SPEED + correction
+            # Scale to actuator limits while preserving wheel ratio
+            max_input = max(abs(wl_des), abs(wr_des))
+            if max_input > MAX_ACTUATOR_INPUT:
+                scale = MAX_ACTUATOR_INPUT / max_input
+                wl_des *= scale
+                wr_des *= scale
 
-        # 4. Scale to fit within actuator limits while preserving the ratio
-        max_input = max(abs(wl_des), abs(wr_des))
-        if max_input > self.MAX_ACTUATOR_INPUT:
-            scale = self.MAX_ACTUATOR_INPUT / max_input
-            wl_des *= scale
-            wr_des *= scale
+        self.get_logger().info(
+            f"[{self.active_camera}] dist={dist:.2f}m  "
+            f"err={np.degrees(error_theta):.1f}deg  "
+            f"wl={wl_des:.1f} wr={wr_des:.1f}",
+            throttle_duration_sec=0.5
+        )
 
-        # 5. Publish to the Master Controller
-        cmd_msg = Float32MultiArray()
-        cmd_msg.data = [float(wl_des), float(wr_des)]
-        self.wheel_cmd_pub.publish(cmd_msg)
+        self._publish_wheels(wl_des, wr_des)
+
+    def _publish_wheels(self, left, right):
+        msg = Float32MultiArray()
+        msg.data = [float(left), float(right)]
+        self.wheel_cmd_pub.publish(msg)
+
 
 def main(args=None):
     rclpy.init(args=args)

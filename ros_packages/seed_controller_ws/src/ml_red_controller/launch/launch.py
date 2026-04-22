@@ -17,14 +17,14 @@ def generate_launch_description():
         ),
         Node(
             package='ml_red_controller',
-            executable='cam_display_node',
-            name='cam_display_node',
+            executable='gtg_motor_node',
+            name='gtg_motor_node',
             output='screen'
         ),
         Node(
-            package='opti_waypoint_nav',
-            executable='path_follower_node',
-            name='path_follower_node',
+            package='ml_red_controller',
+            executable='cam_display_node',
+            name='cam_display_node',
             output='screen'
         ),
     ])
