@@ -32,7 +32,7 @@ GOAL_THRESH_ARDUCAM   = 0.15
 
 # --- Motion parameters ---
 MAX_ACTUATOR_INPUT = 50.0
-PIVOT_THRESH       = np.deg2rad(15.0)
+PIVOT_THRESH       = np.deg2rad(30.0)
 PIVOT_SPEED        = 40.0
 DRIVE_SPEED        = 40.0
 COOLDOWN_DUR       = 15.0
@@ -71,63 +71,76 @@ class GTGControllerNode(Node):
         self.create_subscription(Point, '/vision/arducam_target',   self.arducam_callback,   10)
 
     def load_calibration(self):
-        load_file = "calibration_data.npz"
-        if os.path.exists(load_file):
-            data = np.load(load_file)
-            self.pixels_per_meter = float(data['pixels_per_meter'])
-            self.robot_x          = int(data['robot_x'])
-            self.robot_y          = int(data['robot_y'])
+        rs_file  = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/calibration_data.npz"
+        arc_file = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/arducam_calibration_data.npz"
+
+        if os.path.exists(rs_file):
+            data = np.load(rs_file)
+            self.rs_pixels_per_meter = float(data['pixels_per_meter'])
+            self.rs_robot_x          = int(data['robot_x'])
+            self.rs_robot_y          = int(data['robot_y'])
+            self.get_logger().info("RealSense calibration loaded.")
         else:
-            self.get_logger().error("Calibration file not found!")
-            self.pixels_per_meter = 1.0
-            self.robot_x          = 0
-            self.robot_y          = 0
+            self.get_logger().error(f"RealSense calibration not found: {rs_file}")
+            self.rs_pixels_per_meter = 1.0
+            self.rs_robot_x = 0
+            self.rs_robot_y = 0
+
+        if os.path.exists(arc_file):
+            data = np.load(arc_file)
+            self.arc_pixels_per_meter = float(data['pixels_per_meter'])
+            self.arc_robot_x          = int(data['robot_x'])
+            self.arc_robot_y          = int(data['robot_y'])
+            self.get_logger().info("Arducam calibration loaded.")
+        else:
+            self.get_logger().warn(f"Arducam calibration not found: {arc_file}")
+            self.arc_pixels_per_meter = 1.0
+            self.arc_robot_x = 0
+            self.arc_robot_y = 0
 
     def _reset_pid(self):
         self.pid_steer.istate     = 0.0
         self.pid_steer.dstate     = 0.0
         self.pid_steer.error_prev = 0.0
 
-    def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y):
-        """Convert BEV pixel coords to robot-frame metric coordinates."""
-        dx_px   = cX - self.robot_x
-        dy_px   = self.robot_y - cY
-        rel_x   = (dx_px / self.pixels_per_meter) + offset_x
-        rel_y   = (dy_px / self.pixels_per_meter) + offset_y
-        x_robot =  rel_y   # forward
-        y_robot =  rel_x   # lateral (flipped to match physical camera orientation)
+    def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y, pixels_per_meter, robot_x, robot_y):
+        dx_px   = cX - robot_x
+        dy_px   = robot_y - cY
+        rel_x   = (dx_px / pixels_per_meter) + offset_x
+        rel_y   = (dy_px / pixels_per_meter) + offset_y
+        x_robot =  rel_y
+        y_robot = -rel_x
         return x_robot, y_robot
 
     def realsense_callback(self, msg):
         self.last_realsense_time = self.get_clock().now().nanoseconds
-
         if self.active_camera != 'realsense':
             self.get_logger().info("RealSense regained detection — taking control.")
             self._reset_pid()
             self.active_camera = 'realsense'
-
         x_robot, y_robot = self._pixel_to_robot_frame(
-            msg.x, msg.y, REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y
+            msg.x, msg.y,
+            REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y,
+            self.rs_pixels_per_meter, self.rs_robot_x, self.rs_robot_y
         )
         dist = math.sqrt(x_robot**2 + y_robot**2)
         self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
 
     def arducam_callback(self, msg):
         now_ns = self.get_clock().now().nanoseconds
-
         realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
         if realsense_age_sec < REALSENSE_TIMEOUT_SEC:
             return
-
         if self.active_camera != 'arducam':
             self.get_logger().info(
                 f"RealSense lost for {realsense_age_sec:.1f}s — Arducam taking control."
             )
             self._reset_pid()
             self.active_camera = 'arducam'
-
         x_robot, y_robot = self._pixel_to_robot_frame(
-            msg.x, msg.y, ARDUCAM_OFFSET_X, ARDUCAM_OFFSET_Y
+            msg.x, msg.y,
+            ARDUCAM_OFFSET_X, ARDUCAM_OFFSET_Y,
+            self.arc_pixels_per_meter, self.arc_robot_x, self.arc_robot_y
         )
         dist = math.sqrt(x_robot**2 + y_robot**2)
         self._run_control(x_robot, y_robot, dist, GOAL_THRESH_ARDUCAM)

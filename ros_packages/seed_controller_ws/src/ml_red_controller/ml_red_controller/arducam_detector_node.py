@@ -14,7 +14,7 @@ import os
 # It uses its own calibration file and publishes to /vision/arducam_target.
 
 # Path to the Arducam-specific calibration file
-ARDUCAM_CALIBRATION_FILE = "arducam_calibration_data.npz"
+ARDUCAM_CALIBRATION_FILE = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/arducam_calibration_data.npz"
 
 # USB camera device index — change if /dev/video0 is wrong on your system
 ARDUCAM_DEVICE_INDEX = 0
