@@ -16,7 +16,7 @@ ROBOT_POS_X = BEV_WIDTH // 2  #+ is tuning parameter
 ROBOT_POS_Y = BEV_HEIGHT  #- is tuning parameter
 
 #output directory
-SAVE_FILE = r"C:\UVM\SEED\SEED25\machine_vision\Video_Detection\calibration_data.npz"
+SAVE_FILE = "calibration_data.npz"
 
 # =========Mouse Input===========
 calibration_points = []
