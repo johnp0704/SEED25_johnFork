@@ -27,4 +27,10 @@ def generate_launch_description():
             name='cam_display_node',
             output='screen'
         ),
+        Node(
+            package='ml_red_controller',
+            executable='arducam_detector_node',
+            name='arducam_detector_node',
+            output='screen'
+        ),
     ])

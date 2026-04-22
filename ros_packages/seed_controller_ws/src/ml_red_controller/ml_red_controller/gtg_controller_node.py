@@ -15,11 +15,11 @@ from ml_red_controller.PID import PID
 # --- RealSense offset corrections (meters) ---
 # Positive OFFSET_X moves the effective goal further forward (robot stops further away)
 # Positive OFFSET_Y moves the effective goal to the left
-REALSENSE_OFFSET_X = -0.1
+REALSENSE_OFFSET_X = -0.3
 REALSENSE_OFFSET_Y =  0.16
 
 # --- Arducam offset corrections (meters) ---
-ARDUCAM_OFFSET_X = 0.0
+ARDUCAM_OFFSET_X = 0.1
 ARDUCAM_OFFSET_Y = 0.0
 
 # --- Camera handoff ---

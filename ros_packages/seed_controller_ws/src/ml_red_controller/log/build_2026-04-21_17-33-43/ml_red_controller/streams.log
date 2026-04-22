@@ -1,0 +1,62 @@
+[1.489s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/ml_red_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/install.log --install-scripts $base/lib/ml_red_controller --single-version-externally-managed install_data
+[1.996s] running egg_info
+[1.997s] creating build/ml_red_controller/ml_red_controller.egg-info
+[1.997s] writing build/ml_red_controller/ml_red_controller.egg-info/PKG-INFO
+[1.998s] writing dependency_links to build/ml_red_controller/ml_red_controller.egg-info/dependency_links.txt
+[1.998s] writing entry points to build/ml_red_controller/ml_red_controller.egg-info/entry_points.txt
+[1.998s] writing requirements to build/ml_red_controller/ml_red_controller.egg-info/requires.txt
+[1.999s] writing top-level names to build/ml_red_controller/ml_red_controller.egg-info/top_level.txt
+[2.001s] writing manifest file 'build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+[2.065s] reading manifest file 'build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+[2.066s] writing manifest file 'build/ml_red_controller/ml_red_controller.egg-info/SOURCES.txt'
+[2.066s] running build
+[2.067s] running build_py
+[2.067s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build
+[2.067s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib
+[2.067s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.068s] copying ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.068s] copying ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.069s] copying ml_red_controller/gtg_motor_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.069s] copying ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.069s] copying ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.070s] copying ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.070s] copying ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.070s] copying ml_red_controller/arducam_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.070s] copying ml_red_controller/front_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller
+[2.071s] running install
+[2.073s] running install_lib
+[2.075s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.075s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.075s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/cam_display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.076s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/gtg_motor_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.076s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.076s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.076s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/ml_red_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.077s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.077s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/arducam_detector_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.077s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build/lib/ml_red_controller/front_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller
+[2.078s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/sabertooth.py to sabertooth.cpython-38.pyc
+[2.082s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/cam_display_node.py to cam_display_node.cpython-38.pyc
+[2.083s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/gtg_motor_node.py to gtg_motor_node.cpython-38.pyc
+[2.084s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/PID.py to PID.cpython-38.pyc
+[2.085s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/__init__.py to __init__.cpython-38.pyc
+[2.085s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/ml_red_detector_node.py to ml_red_detector_node.cpython-38.pyc
+[2.087s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/gtg_controller_node.py to gtg_controller_node.cpython-38.pyc
+[2.089s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/arducam_detector_node.py to arducam_detector_node.cpython-38.pyc
+[2.091s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller/front_controller_node.py to front_controller_node.cpython-38.pyc
+[2.093s] running install_data
+[2.093s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ament_index
+[2.094s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ament_index/resource_index
+[2.094s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ament_index/resource_index/packages
+[2.094s] copying resource/ml_red_controller -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ament_index/resource_index/packages
+[2.094s] copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ml_red_controller
+[2.094s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ml_red_controller/launch
+[2.094s] copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/share/ml_red_controller/launch
+[2.095s] running install_egg_info
+[2.099s] Copying build/ml_red_controller/ml_red_controller.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages/ml_red_controller-0.0.0-py3.8.egg-info
+[2.101s] running install_scripts
+[2.137s] Installing cam_display_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/ml_red_controller
+[2.137s] Installing gtg_controller_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/ml_red_controller
+[2.137s] Installing ml_red_detector_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/ml_red_controller
+[2.138s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/install.log'
+[2.197s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/install/ml_red_controller/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/ml_red_controller build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/build/ml_red_controller/install.log --install-scripts $base/lib/ml_red_controller --single-version-externally-managed install_data

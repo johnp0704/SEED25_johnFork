@@ -17,7 +17,7 @@ import os
 ARDUCAM_CALIBRATION_FILE = "arducam_calibration_data.npz"
 
 # USB camera device index — change if /dev/video0 is wrong on your system
-ARDUCAM_DEVICE_INDEX = 2
+ARDUCAM_DEVICE_INDEX = 0
 
 # YOLO model — same engine file as RealSense detector
 YOLO_MODEL_PATH = "/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.engine"
