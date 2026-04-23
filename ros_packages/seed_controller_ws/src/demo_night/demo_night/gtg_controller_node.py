@@ -61,10 +61,10 @@ PID_N   = 15.0
 PID_KAW = 1.0
 
 # --- HSV masking for red ---
-LOWER_RED_1 = np.array([0,   120,  70])
+LOWER_RED_1 = np.array([0,   190,  200])
 UPPER_RED_1 = np.array([10,  255, 255])
-LOWER_RED_2 = np.array([170, 120,  70])
-UPPER_RED_2 = np.array([179, 236, 245])
+LOWER_RED_2 = np.array([170, 190,  200])
+UPPER_RED_2 = np.array([180, 255, 255])
 
 MIN_CONTOUR_AREA = 500
 

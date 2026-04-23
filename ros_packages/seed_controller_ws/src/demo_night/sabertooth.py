@@ -1,152 +1,106 @@
-# Niels Keller
-# Sabertooth class
-#
-# Relevant Documentation:
-# https://www.dimensionengineering.com/datasheets/Sabertooth2x12.pdf
+"""
+sabertooth_cal.py
 
-import numpy as np
+A stripped-down Sabertooth driver for use ONLY during dead-reckoning
+calibration.  Unlike the main sabertooth.py, this class sends commands
+directly to the hardware with NO trapezoidal velocity ramping.  The robot
+will start and stop abruptly, which is exactly what calibration needs so
+that the timed run precisely reflects a square-wave speed profile.
+
+DO NOT use this class in normal operation — use sabertooth.py instead.
+
+Relevant documentation:
+https://www.dimensionengineering.com/datasheets/Sabertooth2x12.pdf
+"""
+
 import serial
 import time
 
 
-def linear_map_constrain_int(value, from_low, from_high, to_low, to_high):
-    factor = (value - from_low) / (from_high - from_low)
-    mapped_val = (to_high - to_low) * factor + to_low
-    return round(min(to_high, max(to_low, mapped_val)))
+def _linear_map_constrain_int(value, from_low, from_high, to_low, to_high):
+    factor    = (value - from_low) / (from_high - from_low)
+    mapped    = (to_high - to_low) * factor + to_low
+    return round(min(to_high, max(to_low, mapped)))
 
 
-class SaberToothMotorDriver:
+class SaberToothCalDriver:
+    """
+    Minimal Sabertooth driver with no velocity ramping.
 
-    def __init__(self, motor1_reversed, motor2_reversed,
-                 accel_rate=80.0, decel_rate=120.0, call_rate_hz=10.0):
-        """
-        Motor class constructor.
+    Sends the raw simplified-serial byte immediately for both channels.
+    Motor 1 (right wheel) uses the 1–127 byte range.
+    Motor 2 (left  wheel) uses the 128–255 byte range.
+    """
 
-        Parameters
-        ----------
-        motor1_reversed : bool
-        motor2_reversed : bool
-        accel_rate : float
-            Max speed increase per second (actuator units/s).
-            e.g. 80 means 0->100% in ~1.25 seconds.
-        decel_rate : float
-            Max speed decrease per second. Faster than accel so the robot
-            can stop promptly when commanded. 120 = 100->0 in ~0.83 seconds.
-        call_rate_hz : float
-            Expected rate at which updateMotorSpeed is called.
-            Must match your control loop timer (default 10 Hz).
-        """
-        self.sabertooth_UART_serial = serial.Serial(
-            port="/dev/ttyTHS0",
+    def __init__(self, motor1_reversed: bool, motor2_reversed: bool,
+                 port: str = "/dev/ttyTHS0"):
+        self.motor1_reversed = motor1_reversed
+        self.motor2_reversed = motor2_reversed
+
+        self._ser = serial.Serial(
+            port=port,
             baudrate=9600,
             bytesize=serial.EIGHTBITS,
             parity=serial.PARITY_NONE,
             stopbits=serial.STOPBITS_ONE,
         )
+        # Give the Sabertooth time to come up after serial open
         time.sleep(1)
 
-        self.motor1_reversed = motor1_reversed
-        self.motor2_reversed = motor2_reversed
-
-        # Trapezoidal profile parameters
-        self._dt = 1.0 / call_rate_hz
-        self._accel_step = accel_rate * self._dt   # max delta per call when speeding up
-        self._decel_step = decel_rate * self._dt   # max delta per call when slowing down
-
-        # Current ramped speeds (float, -100 to 100)
-        self._current_left = 0.0
-        self._current_right = 0.0
-
     # ------------------------------------------------------------------
-    # Internal ramp helper
+    # Low-level channel writes
     # ------------------------------------------------------------------
 
-    def _ramp(self, current, target):
-        """
-        Step `current` toward `target` by at most one accel/decel step.
-
-        Deceleration is used when the magnitude is shrinking OR when the
-        sign is flipping (we treat a sign flip as decel-through-zero first).
-        """
-        error = target - current
-
-        # Determine whether this is an acceleration or deceleration move.
-        # It's deceleration if we're reducing magnitude or crossing zero.
-        speeding_up = (abs(target) > abs(current)) and (np.sign(target) == np.sign(current) or current == 0.0)
-
-        max_step = self._accel_step if speeding_up else self._decel_step
-
-        if abs(error) <= max_step:
-            return target                          # close enough, snap to target
-        else:
-            return current + np.sign(error) * max_step
-
-    # ------------------------------------------------------------------
-    # Low-level motor writes (unchanged from original)
-    # ------------------------------------------------------------------
-
-    def _write_motor1(self, speed):
-        """Send speed (-100 to 100) directly to motor 1 (right)."""
+    def _write_motor1(self, speed: float) -> None:
+        """Motor 1 (right). speed in [-100, 100]. Byte range 1–127, 64=stop."""
         if self.motor1_reversed:
             speed = -speed
-        send_val = 64  # stop
         if speed < 0:
-            send_val = linear_map_constrain_int(100 + speed, 0, 100, 1, 64)
+            val = _linear_map_constrain_int(100 + speed, 0, 100, 1, 64)
         elif speed > 0:
-            send_val = linear_map_constrain_int(speed, 0, 100, 64, 127)
-        self.sabertooth_UART_serial.write([send_val])
+            val = _linear_map_constrain_int(speed, 0, 100, 64, 127)
+        else:
+            val = 64  # stop
+        self._ser.write([val])
 
-    def _write_motor2(self, speed):
-        """Send speed (-100 to 100) directly to motor 2 (left)."""
+    def _write_motor2(self, speed: float) -> None:
+        """Motor 2 (left). speed in [-100, 100]. Byte range 128–255, 192=stop."""
         if self.motor2_reversed:
             speed = -speed
-        send_val = 192  # stop
         if speed < 0:
-            send_val = linear_map_constrain_int(100 + speed, 0, 100, 128, 192)
+            val = _linear_map_constrain_int(100 + speed, 0, 100, 128, 192)
         elif speed > 0:
-            send_val = linear_map_constrain_int(speed, 0, 100, 192, 255)
-        self.sabertooth_UART_serial.write([send_val])
+            val = _linear_map_constrain_int(speed, 0, 100, 192, 255)
+        else:
+            val = 192  # stop
+        self._ser.write([val])
 
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
 
-    def set_motor1_speed(self, speed):
-        """Direct set — bypasses ramp. Use updateMotorSpeed for normal operation."""
-        self.__motor1_speed = speed
-        self._write_motor1(speed)
-
-    def set_motor2_speed(self, speed):
-        """Direct set — bypasses ramp. Use updateMotorSpeed for normal operation."""
-        self.__motor2_speed = speed
-        self._write_motor2(speed)
-
-    def get_motor1_speed(self):
-        return self._current_right
-
-    def get_motor2_speed(self):
-        return self._current_left
-
-    def updateMotorSpeed(self, left_speed, right_speed):
+    def set_speed(self, left: float, right: float) -> None:
         """
-        Command both wheel speeds (-100 to 100).
-
-        Internally applies a trapezoidal velocity profile so the hardware
-        receives smooth, rate-limited commands rather than step changes.
-        Call this at a fixed rate (matching call_rate_hz) for best results.
+        Immediately command both wheels. No ramping.
+        left / right are in Sabertooth command units [-100, 100].
+        Positive = forward.
         """
-        self._current_left  = self._ramp(self._current_left,  left_speed)
-        self._current_right = self._ramp(self._current_right, right_speed)
+        self._write_motor2(left)
+        self._write_motor1(right)
 
-        self._write_motor2(self._current_left)
-        self._write_motor1(self._current_right)
+    def stop(self) -> None:
+        """
+        Immediately halt both motors by sending the explicit stop byte
+        for each channel independently.
+        Byte 64  = Motor-1 stop (centre of the 1–127 range).
+        Byte 192 = Motor-2 stop (centre of the 128–255 range).
+        Sending a single 0x00 only addresses Motor-1 reverse — NOT a broadcast stop.
+        """
+        self._write_motor1(0.0)   # → byte 64
+        self._write_motor2(0.0)   # → byte 192
 
-    def all_motors_off(self):
-        """Emergency stop — bypasses ramp and immediately halts both motors."""
-        self._current_left = 0.0
-        self._current_right = 0.0
-        self.sabertooth_UART_serial.write([0])
-        print("ALL MOTORS OFF SENT")
-
-    def __del__(self):
-        self.sabertooth_UART_serial.write([0])
+    def __del__(self) -> None:
+        try:
+            self.stop()
+        except Exception:
+            pass

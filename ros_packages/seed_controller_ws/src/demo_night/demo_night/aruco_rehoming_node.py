@@ -76,7 +76,7 @@ WALL_BEARING_FROM_CENTER = {
 }
 
 # Physical size of the printed marker side (metres).  Must match print.
-MARKER_LENGTH_M = 0.15
+MARKER_LENGTH_M = 0.0854
 
 # ===========================================================================
 # Control parameters
