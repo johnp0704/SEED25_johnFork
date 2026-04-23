@@ -70,7 +70,7 @@ SFEVL53L1X distanceSensor;
 //  DRILL CONFIG
 // ============================================================
 #define DRILL_STARTUP_MS      200   // ms to spin up/down drill before/after move
-#define DRILL_DUTY_PCT        25     // PWM duty cycle for drill motor (0-100)
+#define DRILL_DUTY_PCT        12//25     // PWM duty cycle for drill motor (0-100)
 #define DRILLING_START        30000 // position at which to start drilling
 #define DRILLING_MOVE_SPEED   2500  //speed at which to move drill
 
