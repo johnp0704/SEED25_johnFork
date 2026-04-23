@@ -186,10 +186,17 @@ def main(args=None):
     window   = DisplayWindow(signals)
     window.show()
 
-    # Spin ROS2 in a daemon thread so Qt owns the main thread
     ros_thread = threading.Thread(
         target=rclpy.spin, args=(ros_node,), daemon=True)
     ros_thread.start()
+
+    # Install a signal handler so Ctrl-C on the terminal kills Qt cleanly
+    import signal
+    signal.signal(signal.SIGINT, lambda *_: app.quit())
+    # A short QTimer lets Python's signal handler actually fire inside Qt's loop
+    _watchdog = QTimer()
+    _watchdog.timeout.connect(lambda: None)
+    _watchdog.start(200)
 
     exit_code = app.exec()
 

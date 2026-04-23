@@ -39,7 +39,7 @@ Subscribes : /vision/realsense_color   (sensor_msgs/Image)  — from realsense_n
 Publishes  : /vision/rehome_cmd        (std_msgs/Float32MultiArray)
              /rehome/status            (std_msgs/String)
 """
-
+from __future__ import annotations
 import math
 import rclpy
 from rclpy.node import Node

@@ -18,7 +18,7 @@ Subscribes : /vision/realsense_color  (sensor_msgs/Image)
 Publishes  : /vision/optical_cmd      (std_msgs/Float32MultiArray)
              /vision/arducam_display  (sensor_msgs/Image)  ← optional debug feed
 """
-
+from __future__ import annotations
 import math
 import rclpy
 from rclpy.node import Node

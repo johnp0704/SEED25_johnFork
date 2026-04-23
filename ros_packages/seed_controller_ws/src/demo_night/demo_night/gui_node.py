@@ -22,7 +22,7 @@ Subscribes : /commander/wheel_cmd     (std_msgs/Float32MultiArray)
              /commander/ack           (std_msgs/String)    confirmed mode
              /rehome/status           (std_msgs/String)    rehome state machine
 """
-
+from __future__ import annotations
 import sys
 import math
 import os
@@ -341,7 +341,7 @@ class MainWindow(QMainWindow):
 # Entry point
 # ===========================================================================
 
-def _load_dead_reckoning(filepath: str) -> tuple[float, float]:
+def _load_dead_reckoning(filepath: str):
     """Load cmd_to_mps ratio from calibration file.  Returns (ratio, wheel_base)."""
     if os.path.exists(filepath):
         try:

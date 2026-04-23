@@ -11,7 +11,7 @@ Changes from the original
 * The Arducam (V4L2) is still owned by this node — it is a separate USB device.
 * All other logic (PID, pixel→robot-frame, PIVOT/DRIVE state) is unchanged.
 """
-
+from __future__ import annotations
 import math
 import os
 
