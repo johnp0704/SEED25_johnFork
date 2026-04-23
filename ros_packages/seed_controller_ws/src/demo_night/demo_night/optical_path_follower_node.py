@@ -39,8 +39,8 @@ from ml_red_controller.PID import PID
 
 # HSV range for the blue painter's tape.
 # Use realsense_color_sampler.py to refine these for your specific tape/light.
-LOWER_BLUE = np.array([100, 150,  50])
-UPPER_BLUE = np.array([140, 255, 255])
+LOWER_BLUE = np.array([97, 142, 188])
+UPPER_BLUE = np.array([100, 255, 226])
 
 # Minimum contour area (pixels²) to be considered a valid tape detection.
 MIN_TAPE_AREA = 800
