@@ -164,7 +164,7 @@ class TwinCanvas(QWidget):
 
         self.update()
 
-    def _world_to_canvas(self, x_m: float, y_m: float) -> tuple[float, float]:
+    def _world_to_canvas(self, x_m: float, y_m: float):
         """World (metres) → canvas (pixels).  Y-axis is flipped (screen down = world south)."""
         cx = self.width()  / 2.0 + x_m * self.PIXELS_PER_METRE
         cy = self.height() / 2.0 - y_m * self.PIXELS_PER_METRE

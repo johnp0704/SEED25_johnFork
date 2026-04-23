@@ -30,7 +30,7 @@ setup(
             'optical_path_follower_node = demo_night.optical_path_follower_node:main',
             'gtg_controller_node = demo_night.gtg_controller_node:main',
             'realsense_node = demo_night.realsense_node:main',
-            'display_node = demo_night:display_node:main',
+            'display_node = demo_night.display_node:main',
         ],
     },
 )

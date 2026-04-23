@@ -20,14 +20,6 @@ def generate_launch_description():
             output='screen'
         ),
         
-        # Hardware Motor Driver Interface
-        Node(
-            package='demo_night',
-            executable='gtg_motor_node',
-            name='gtg_motor_node',
-            output='screen'
-        ),
-        
         # ArUco Fiducial Rehoming Sequence
         Node(
             package='demo_night',
