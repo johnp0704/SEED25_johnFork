@@ -25,7 +25,7 @@ class PID:
         self.istate += self.Ts*integratorInput
         
         # Calculate filtered derivative
-        self.dstate = 1/self.N*(error - self.error_prev - (self.Ts-self.N)*self.dstate)
+        self.dstate = self.dstate + self.Ts * self.N * (error - self.error_prev - self.dstate)
         self.error_prev = error
  
         # Calculate command using PID equation

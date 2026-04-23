@@ -10,6 +10,9 @@ frame_copy = None
 
 def draw_rectangle(event, x, y, flags, param):
     global ix, iy, fx, fy, drawing, frame_copy
+    if frame_copy is None:
+        return
+    ...
     
     if event == cv2.EVENT_LBUTTONDOWN:
         drawing = True
