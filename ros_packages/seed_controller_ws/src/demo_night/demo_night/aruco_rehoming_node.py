@@ -59,10 +59,10 @@ import numpy as np
 # Distance from each wall marker to the geometric centre of the enclosure (m).
 # Key = ArUco marker ID, Value = distance in metres.
 WALL_DISTANCE_TO_CENTER = {
-    0: 1.50,   # NORTH wall marker → centre
-    1: 1.20,   # EAST  wall marker → centre
-    2: 1.50,   # SOUTH wall marker → centre
-    3: 1.20,   # WEST  wall marker → centre
+    0: 2.1336,   # NORTH wall marker → centre
+    1: 1.3208,   # EAST  wall marker → centre
+    2: 1.81769,   # SOUTH wall marker → centre
+    3: 0.9017,   # WEST  wall marker → centre
 }
 
 # Compass bearing (radians, robot-frame) of each wall marker relative to the
