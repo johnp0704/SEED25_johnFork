@@ -1,9 +1,15 @@
 """
 gtg_controller_node.py
 
-Go-To-Goal vision controller.  Both cameras are now consumed via topics:
-  /vision/realsense_color  — from realsense_node
-  /vision/arducam_raw      — from arducam_node
+Go-To-Goal vision controller.
+
+Key addition: publishes a /vision/gtg_debug_mask topic (sensor_msgs/Image)
+showing the combined red HSV mask.  Subscribe to this with:
+    ros2 run rqt_image_view rqt_image_view /vision/gtg_debug_mask
+to confirm whether the red target is being detected at all.
+
+If the mask shows nothing when pointing at the red target, the HSV ranges
+need updating with the realsense_color_sampler script.
 """
 from __future__ import annotations
 import math
@@ -47,11 +53,21 @@ PID_KD  =  2.0
 PID_N   = 15.0
 PID_KAW =  1.0
 
+# HSV red mask — two ranges because red wraps around hue=0/180.
+# These values were derived from the realsense_color_sampler reading of
+# avg HSV (1, 219, 229), min (0, 201, 212), max (179, 236, 245).
+# The hue max of 179 in the sampler output is noise from a single pixel;
+# the actual target sits firmly at hue ~1.
 LOWER_RED_1 = np.array([0,   190, 200])
 UPPER_RED_1 = np.array([10,  255, 255])
 LOWER_RED_2 = np.array([170, 190, 200])
 UPPER_RED_2 = np.array([180, 255, 255])
-MIN_CONTOUR_AREA  = 500
+
+# Minimum mask area in pixels to count as a valid detection.
+# If you are getting false negatives, lower this.
+# If you are getting false positives (noise), raise this.
+MIN_CONTOUR_AREA  = 300
+
 FRAME_TIMEOUT_SEC = 0.5
 
 # ==============================================================================
@@ -87,7 +103,11 @@ class GTGControllerNode(Node):
         self.auger_trigger_pub = self.create_publisher(
             String, '/auger/activate', 10)
 
-        # Subscriptions — both cameras via topics now
+        # Debug mask publisher — subscribe with rqt_image_view to verify detection
+        self.debug_mask_pub = self.create_publisher(
+            Image, '/vision/gtg_debug_mask', SENSOR_QOS)
+
+        # Frame subscriptions
         self.create_subscription(
             Image, '/vision/realsense_color', self._rs_frame_cb, SENSOR_QOS)
         self.create_subscription(
@@ -130,11 +150,13 @@ class GTGControllerNode(Node):
             self.arc_robot_x = self.arc_robot_y = 0
 
     def _rs_frame_cb(self, msg: Image) -> None:
-        self._latest_rs_frame  = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        self._latest_rs_frame  = self.bridge.imgmsg_to_cv2(
+            msg, desired_encoding='bgr8')
         self._last_rs_frame_ns = self.get_clock().now().nanoseconds
 
     def _arc_frame_cb(self, msg: Image) -> None:
-        self._latest_arc_frame  = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        self._latest_arc_frame  = self.bridge.imgmsg_to_cv2(
+            msg, desired_encoding='bgr8')
         self._last_arc_frame_ns = self.get_clock().now().nanoseconds
 
     def _reset_pid(self) -> None:
@@ -142,21 +164,35 @@ class GTGControllerNode(Node):
 
     def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y,
                                pixels_per_meter, robot_x, robot_y):
-        dx_px   = cX - robot_x
-        dy_px   = robot_y - cY
-        rel_x   = (dx_px / pixels_per_meter) + offset_x
-        rel_y   = (dy_px / pixels_per_meter) + offset_y
+        dx_px = cX - robot_x
+        dy_px = robot_y - cY
+        rel_x = (dx_px / pixels_per_meter) + offset_x
+        rel_y = (dy_px / pixels_per_meter) + offset_y
         return rel_y, -rel_x   # x_robot, y_robot
 
-    def get_red_centroid(self, frame: np.ndarray):
-        hsv   = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
-        mask  = cv2.bitwise_or(
+    def get_red_centroid(self, frame: np.ndarray, publish_debug: bool = False):
+        """
+        Returns (cX, cY) of the largest red blob, or (None, None).
+
+        When publish_debug=True, publishes the combined mask image to
+        /vision/gtg_debug_mask so you can verify detection in rqt_image_view.
+        """
+        hsv  = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask = cv2.bitwise_or(
             cv2.inRange(hsv, LOWER_RED_1, UPPER_RED_1),
             cv2.inRange(hsv, LOWER_RED_2, UPPER_RED_2),
         )
-        mask  = cv2.erode(mask,  None, iterations=2)
-        mask  = cv2.dilate(mask, None, iterations=2)
-        M     = cv2.moments(mask)
+        mask = cv2.erode(mask,  None, iterations=2)
+        mask = cv2.dilate(mask, None, iterations=2)
+
+        if publish_debug:
+            try:
+                debug_msg = self.bridge.cv2_to_imgmsg(mask, encoding='mono8')
+                self.debug_mask_pub.publish(debug_msg)
+            except Exception:
+                pass
+
+        M = cv2.moments(mask)
         if M['m00'] > MIN_CONTOUR_AREA:
             return int(M['m10'] / M['m00']), int(M['m01'] / M['m00'])
         return None, None
@@ -167,43 +203,71 @@ class GTGControllerNode(Node):
         now_ns          = self.get_clock().now().nanoseconds
         rs_target_found = False
 
-        # 1. RealSense (highest priority)
-        if (self._latest_rs_frame is not None and
-                (now_ns - self._last_rs_frame_ns) / 1e9 < FRAME_TIMEOUT_SEC):
+        # 1. RealSense — highest priority
+        rs_frame_age = (now_ns - self._last_rs_frame_ns) / 1e9
+        if self._latest_rs_frame is not None and rs_frame_age < FRAME_TIMEOUT_SEC:
 
-            cX, cY = self.get_red_centroid(self._latest_rs_frame)
+            # Always publish debug mask from RealSense so you can monitor it
+            cX, cY = self.get_red_centroid(
+                self._latest_rs_frame, publish_debug=True)
+
             if cX is not None:
                 rs_target_found          = True
                 self.last_realsense_time = now_ns
+
                 if self.active_camera != 'realsense':
                     self.get_logger().info("RealSense regained detection.")
                     self._reset_pid()
                     self.active_camera = 'realsense'
+
                 x_robot, y_robot = self._pixel_to_robot_frame(
                     cX, cY, REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y,
                     self.rs_pixels_per_meter, self.rs_robot_x, self.rs_robot_y)
                 dist = math.sqrt(x_robot**2 + y_robot**2)
+
+                self.get_logger().info(
+                    f"[GTG RS] DETECTED centroid=({cX},{cY}) "
+                    f"dist={dist:.2f}m",
+                    throttle_duration_sec=0.5)
+
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
+
+            else:
+                # Log that we have a frame but no detection — visible every 2s
+                self.get_logger().info(
+                    f"[GTG RS] Frame OK, no red detected "
+                    f"(mask area < {MIN_CONTOUR_AREA}px). "
+                    "Check /vision/gtg_debug_mask in rqt_image_view.",
+                    throttle_duration_sec=2.0)
 
         # 2. Arducam fallback
         realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
-        if (not rs_target_found and
-                realsense_age_sec >= REALSENSE_TIMEOUT_SEC and
-                self._latest_arc_frame is not None and
-                (now_ns - self._last_arc_frame_ns) / 1e9 < FRAME_TIMEOUT_SEC):
+        arc_frame_age     = (now_ns - self._last_arc_frame_ns) / 1e9
+
+        if (not rs_target_found
+                and realsense_age_sec >= REALSENSE_TIMEOUT_SEC
+                and self._latest_arc_frame is not None
+                and arc_frame_age < FRAME_TIMEOUT_SEC):
 
             cX, cY = self.get_red_centroid(self._latest_arc_frame)
+
             if cX is not None:
                 if self.active_camera != 'arducam':
                     self.get_logger().info(
-                        f"RealSense lost for {realsense_age_sec:.1f}s "
+                        f"RealSense lost {realsense_age_sec:.1f}s "
                         "— Arducam taking control.")
                     self._reset_pid()
                     self.active_camera = 'arducam'
+
                 x_robot, y_robot = self._pixel_to_robot_frame(
                     cX, cY, ARDUCAM_OFFSET_X, ARDUCAM_OFFSET_Y,
                     self.arc_pixels_per_meter, self.arc_robot_x, self.arc_robot_y)
                 dist = math.sqrt(x_robot**2 + y_robot**2)
+
+                self.get_logger().info(
+                    f"[GTG ARC] DETECTED centroid=({cX},{cY}) dist={dist:.2f}m",
+                    throttle_duration_sec=0.5)
+
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_ARDUCAM)
 
     # -----------------------------------------------------------------------
@@ -211,7 +275,7 @@ class GTGControllerNode(Node):
     def _run_control(self, x_robot, y_robot, dist, goal_thresh) -> None:
         if dist <= goal_thresh:
             self.get_logger().info(
-                f"Target reached (dist={dist:.2f} m). Triggering auger.")
+                f"Target reached (dist={dist:.2f}m). Triggering auger.")
             self._publish_wheels(0.0, 0.0)
             msg = String(); msg.data = "drill"
             self.auger_trigger_pub.publish(msg)
