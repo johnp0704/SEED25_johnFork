@@ -165,9 +165,16 @@ class CommanderNode(Node):
         """
         GTG controller signals it has reached the weed target.
 
-        Only acts if:
-          • The robot is in OPTICAL or TRAJECTORY mode (GTG override active),
-          • and a drill cycle is not already running.
+        Accepts the trigger if:
+          • A drill cycle is not already running, AND
+          • The robot is in OPTICAL or TRAJECTORY mode, OR the GTG override
+            is currently active (gtg_active=True means a fresh GTG wheel cmd
+            arrived within GTG_TIMEOUT_SEC — i.e. GTG is actually driving).
+
+        The second condition catches the common case where the operator
+        hasn't manually selected OPTICAL/TRAJECTORY yet but the GTG node
+        was already running and overriding (e.g. testing on the bench with
+        the system left in IDLE).
         """
         if self._drilling:
             self.get_logger().warn(
@@ -175,10 +182,14 @@ class CommanderNode(Node):
                 "ignoring duplicate.")
             return
 
-        if self.current_mode not in ("OPTICAL", "TRAJECTORY"):
+        gtg_is_in_control = (
+            self.current_mode in ("OPTICAL", "TRAJECTORY") and self.gtg_active
+        )
+        if not gtg_is_in_control:
             self.get_logger().warn(
-                f"[TOOL] /auger/activate received in mode '{self.current_mode}' "
-                "— ignoring (only valid during OPTICAL / TRAJECTORY).")
+                f"[TOOL] /auger/activate received but GTG is not in control "
+                f"(mode='{self.current_mode}', gtg_active={self.gtg_active}) "
+                "— ignoring.")
             return
 
         self.get_logger().info(

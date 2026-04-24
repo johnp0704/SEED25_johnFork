@@ -109,6 +109,12 @@ class GTGControllerNode(Node):
         # is before this value, all detection is suppressed.
         self._cooldown_until: float = 0.0
 
+        # One-shot trigger guard.  Set to True the moment we fire /auger/activate
+        # so the 30 Hz vision loop cannot spam the signal on subsequent frames.
+        # Cleared when the cooldown message arrives back from the commander,
+        # which means the drill cycle is fully complete.
+        self._auger_triggered: bool = False
+
         self.pid_steer = PID(
             Kp=PID_KP, Ki=PID_KI, Kd=PID_KD,
             N=PID_N, Ts=1.0 / 30.0,
@@ -188,7 +194,8 @@ class GTGControllerNode(Node):
                 f"[GTG] Invalid cooldown value '{msg.data}' — ignored.")
             return
 
-        self._cooldown_until = time.monotonic() + duration
+        self._cooldown_until   = time.monotonic() + duration
+        self._auger_triggered  = False   # ready to detect again after cooldown
         self.get_logger().info(
             f"[GTG] Cooldown active for {duration:.1f}s — "
             "suppressing red detection.")
@@ -334,11 +341,15 @@ class GTGControllerNode(Node):
 
     def _run_control(self, x_robot, y_robot, dist, goal_thresh) -> None:
         if dist <= goal_thresh:
-            self.get_logger().info(
-                f"Target reached (dist={dist:.2f}m). Triggering auger.")
-            self._publish_wheels(0.0, 0.0)
-            msg = String(); msg.data = "drill"
-            self.auger_trigger_pub.publish(msg)
+            if not self._auger_triggered:
+                self._auger_triggered = True
+                self.get_logger().info(
+                    f"Target reached (dist={dist:.2f}m). Triggering auger (one-shot).")
+                self._publish_wheels(0.0, 0.0)
+                msg = String(); msg.data = "drill"
+                self.auger_trigger_pub.publish(msg)
+            # Already triggered — stay silent and keep wheels at zero until
+            # the commander's cooldown message resets _auger_triggered.
             return
 
         error_theta = math.atan2(y_robot, x_robot)
