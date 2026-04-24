@@ -54,13 +54,18 @@ PID_N   = 15.0
 PID_KAW =  1.0
 
 # HSV red mask — two ranges because red wraps around hue=0/180.
-# These values were derived from the realsense_color_sampler reading of
-# avg HSV (1, 219, 229), min (0, 201, 212), max (179, 236, 245).
-# The hue max of 179 in the sampler output is noise from a single pixel;
-# the actual target sits firmly at hue ~1.
-LOWER_RED_1 = np.array([0,   190, 200])
-UPPER_RED_1 = np.array([10,  255, 255])
-LOWER_RED_2 = np.array([170, 190, 200])
+#
+# Widened from the original sampler-derived values to be more robust to
+# lighting variation:
+#   • Hue ranges extended by ±2 ticks on both sides
+#   • Saturation minimum lowered from 190 → 140  (catches less-saturated reds)
+#   • Value minimum lowered from 200 → 140        (catches darker reds / shadows)
+#
+# If you still get false positives (noise), raise the minimums back up
+# in small steps.  If you get false negatives, lower them further.
+LOWER_RED_1 = np.array([0,   140, 140])
+UPPER_RED_1 = np.array([12,  255, 255])
+LOWER_RED_2 = np.array([168, 140, 140])
 UPPER_RED_2 = np.array([180, 255, 255])
 
 # Minimum mask area in pixels to count as a valid detection.

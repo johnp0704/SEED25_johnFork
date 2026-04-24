@@ -14,13 +14,43 @@ ArUco detector unreliable), the robot rotates in discrete steps:
 This gives the camera a stable, blur-free image during each detection
 window regardless of how fast or slow the motors run.
 
+Centering calculation (frame correction)
+-----------------------------------------
+Each marker is detected while the robot is at a different heading (because
+the robot has rotated CW between steps).  Naïvely averaging tvecs from
+different camera frames produces a skewed centre estimate.
+
+To fix this, each stored tvec is tagged with the robot's estimated cumulative
+CW rotation at the moment of detection.  Before computing the centre offset
+all tvecs are rotated into the FINAL frame (the frame the robot is in when
+all markers have been found).
+
+The per-step angular increment is estimated via dead-reckoning:
+    ω = (2 × SCAN_PIVOT_SPEED × mps_per_cmd) / WHEEL_BASE_M
+    Δθ = ω × STEP_DURATION_SEC  (radians CW per step)
+
+This is an open-loop estimate and will accumulate error, but it is
+substantially more accurate than ignoring the heading change entirely.
+
+ORIENT state — step-and-pause
+-------------------------------
+The ORIENT state now uses the same step-and-pause pattern as SCANNING so
+that the camera has a stable, motion-blur-free image during each detection
+window.
+
+  • If marker 0 is NOT visible in a PAUSE → take another CCW search step.
+  • If marker 0 IS visible in a PAUSE:
+      – Within ORIENT_TOL_RAD  → DONE.
+      – Outside tolerance      → take an alignment step in the correct direction,
+                                  then pause and re-check.
+
 States
 ------
 IDLE      → publish nothing, wait for /rehome/reset
 SCANNING  → step-and-pause pivot (sub-states: STEP / PAUSE)
 ROTATING  → timed pivot to face the computed centre direction
 CENTRE    → dead-reckoned straight drive to centre
-ORIENT    → vision-servo pivot until marker 0 is centred
+ORIENT    → step-and-pause alignment onto marker 0
 DONE      → hold [0, 0]
 """
 from __future__ import annotations
@@ -61,17 +91,21 @@ MARKER_LENGTH_M = 0.0854
 # ===========================================================================
 
 # How long to pivot CW on each step.
-# Keep short so the robot doesn't overshoot a marker.
 STEP_DURATION_SEC  = 0.8    # seconds of active pivoting per step
 
 # How long to hold still after each step for detection.
-# Must be long enough for at least 2-3 camera frames to be processed.
-# At 30 fps that's ~100 ms per frame, so 0.5 s gives ~15 frames.
 PAUSE_DURATION_SEC = 0.6    # seconds of stillness per pause
 
 # CW pivot speed during each step.
-# Use a value you know overcomes motor stall from your optical follower tests.
-SCAN_PIVOT_SPEED   = 35.0   # cmd units — matches optical follower magnitude
+SCAN_PIVOT_SPEED   = 35.0   # cmd units
+
+# ===========================================================================
+# Step-and-pause ORIENT parameters
+# ===========================================================================
+
+# Short steps so we don't overshoot the alignment target.
+ORIENT_STEP_DURATION_SEC  = 0.4   # seconds of pivoting per orient step
+ORIENT_PAUSE_DURATION_SEC = 0.6   # seconds of stillness per orient pause
 
 # ===========================================================================
 # Other control parameters
@@ -113,6 +147,10 @@ class RehomeNode(Node):
     # Scan sub-states
     _SCAN_STEP  = "STEP"
     _SCAN_PAUSE = "PAUSE"
+
+    # Orient sub-states
+    _ORIENT_STEP  = "OSTEP"
+    _ORIENT_PAUSE = "OPAUSE"
 
     def __init__(self):
         super().__init__('aruco_rehoming_node')
@@ -160,19 +198,32 @@ class RehomeNode(Node):
     # -----------------------------------------------------------------------
 
     def _clear_scan_data(self) -> None:
-        self._seen_markers:          dict[int, np.ndarray] = {}
+        # Markers: {id: (tvec, cumulative_cw_angle_rad_at_detection)}
+        # The angle tag lets _compute_centre_offset rotate all tvecs into a
+        # common reference frame before averaging.
+        self._seen_markers: dict[int, tuple[np.ndarray, float]] = {}
+
+        # Running estimate of how far the robot has rotated CW from scan start.
+        self._scan_cumulative_angle_rad: float = 0.0
 
         # Step-and-pause scan sub-state
         self._scan_sub_state:        str   = self._SCAN_STEP
-        self._scan_phase_start_ns:   int   = 0   # when current sub-state began
+        self._scan_phase_start_ns:   int   = 0
         self._step_count:            int   = 0
 
-        # Remaining phases
+        # ROTATING / CENTRE phases
         self._centre_angle_rad:      float = 0.0
         self._centre_dist_m:         float = 0.0
         self._rotate_duration_s:     float = 0.0
         self._rotate_start_ns:       int   = 0
         self._centre_drive_start_ns: int   = 0
+
+        # Step-and-pause ORIENT sub-state
+        self._orient_sub_state:       str   = self._ORIENT_STEP
+        self._orient_phase_start_ns:  int   = 0
+        self._orient_step_count:      int   = 0
+        # Pivot direction for current orient step: +1 = CW, -1 = CCW
+        self._orient_step_dir:        float = -1.0   # start CCW (searching)
 
     def _publish_wheels(self, left: float, right: float) -> None:
         msg = Float32MultiArray()
@@ -240,28 +291,71 @@ class RehomeNode(Node):
         return results
 
     # -----------------------------------------------------------------------
-    # Centre offset computation
+    # Centre offset computation (frame-corrected)
     # -----------------------------------------------------------------------
 
+    def _rotate_tvec_cw(self, mx: float, mz: float, cw_angle_rad: float):
+        """
+        Rotate a tvec (x, z) by cw_angle_rad clockwise in the xz-plane.
+
+        This represents the robot rotating CW by cw_angle_rad, which makes
+        a static world point appear to rotate CW in the camera frame.
+
+        Rotation matrix for CW rotation by θ in xz-plane:
+            x' =  x·cos(θ) + z·sin(θ)
+            z' = -x·sin(θ) + z·cos(θ)
+        """
+        cos_a = math.cos(cw_angle_rad)
+        sin_a = math.sin(cw_angle_rad)
+        return (mx * cos_a + mz * sin_a,
+                -mx * sin_a + mz * cos_a)
+
     def _compute_centre_offset(self) -> tuple[float, float]:
+        """
+        Average per-marker centre estimates, rotating each tvec into the
+        current (final-step) camera frame before computing geometry.
+
+        Each marker was detected when the robot had accumulated
+        detect_angle radians of CW rotation from the scan start.
+        The robot is now at self._scan_cumulative_angle_rad.
+        The additional CW rotation since detection is:
+            delta = current_angle - detect_angle
+        Rotating the stored tvec by delta brings it into the current frame.
+        """
+        current_angle = self._scan_cumulative_angle_rad
         dx_list: list[float] = []
         dz_list: list[float] = []
-        for mid, tvec in self._seen_markers.items():
-            mx   = float(tvec[0])
-            mz   = float(tvec[2])
+
+        for mid, (tvec, detect_angle) in self._seen_markers.items():
+            mx_raw = float(tvec[0])
+            mz_raw = float(tvec[2])
+
+            # Rotate into current frame
+            delta      = current_angle - detect_angle
+            mx, mz     = self._rotate_tvec_cw(mx_raw, mz_raw, delta)
+
             dist = math.sqrt(mx**2 + mz**2)
             if dist < 0.01:
                 continue
+
+            # Unit vector from robot toward marker
             ux = mx / dist
             uz = mz / dist
+
+            # Room centre is d metres from the marker's wall, i.e. d metres
+            # back along the robot→marker direction from the marker.
             d  = WALL_DISTANCE_TO_CENTER[mid]
             cx = mx - d * ux
             cz = mz - d * uz
+
             dx_list.append(cx)
             dz_list.append(cz)
             self.get_logger().info(
-                f"  Marker {mid}: ({mx:.3f}, {mz:.3f})m "
-                f"→ centre ({cx:.3f}, {cz:.3f})m")
+                f"  Marker {mid} (raw ({mx_raw:.3f},{mz_raw:.3f})m, "
+                f"Δθ={math.degrees(delta):.1f}°) "
+                f"→ frame-corrected ({mx:.3f},{mz:.3f})m "
+                f"→ centre ({cx:.3f},{cz:.3f})m")
+
         if not dx_list:
             return 0.0, 0.0
         return float(np.mean(dx_list)), float(np.mean(dz_list))
@@ -299,7 +393,7 @@ class RehomeNode(Node):
         if self._state == self.STATE_SCANNING:
             self._do_scanning()
         elif self._state == self.STATE_ORIENT:
-            self._do_orient(self._detect_markers(self.latest_frame))
+            self._do_orient()
 
     # -----------------------------------------------------------------------
     # SCANNING — step-and-pause
@@ -320,12 +414,19 @@ class RehomeNode(Node):
                     f"pivoting {elapsed_s:.2f}/{STEP_DURATION_SEC:.2f}s",
                     throttle_duration_sec=0.5)
             else:
-                # Step complete — transition to PAUSE
+                # Step complete — accumulate estimated CW rotation and go to PAUSE.
+                # ω = (2 × speed × mps_per_cmd) / wheel_base
+                step_omega = (2.0 * SCAN_PIVOT_SPEED * self._mps_per_cmd) / WHEEL_BASE_M
+                step_angle = step_omega * STEP_DURATION_SEC
+                self._scan_cumulative_angle_rad += step_angle
+
                 self._publish_wheels(0.0, 0.0)
                 self._scan_sub_state      = self._SCAN_PAUSE
                 self._scan_phase_start_ns = now_ns
                 self.get_logger().info(
-                    f"[SCAN STEP {self._step_count}] done — pausing for detection.")
+                    f"[SCAN STEP {self._step_count}] done "
+                    f"(cumulative CW {math.degrees(self._scan_cumulative_angle_rad):.1f}°) "
+                    "— pausing for detection.")
 
         # ---- PAUSE sub-state: hold still and detect ----
         elif self._scan_sub_state == self._SCAN_PAUSE:
@@ -336,11 +437,13 @@ class RehomeNode(Node):
             visible = self._detect_markers(self.latest_frame)
             for mid, tvec in visible.items():
                 if mid not in self._seen_markers:
-                    self._seen_markers[mid] = tvec
+                    # Tag tvec with current cumulative angle for frame correction
+                    self._seen_markers[mid] = (tvec, self._scan_cumulative_angle_rad)
                     self.get_logger().info(
                         f"[SCAN PAUSE {self._step_count}] "
                         f"Marker {mid} recorded: "
                         f"x={tvec[0]:.3f}m  z={tvec[2]:.3f}m  "
+                        f"angle={math.degrees(self._scan_cumulative_angle_rad):.1f}°  "
                         f"({len(self._seen_markers)}/4 total)")
                     self._publish_status(f"FOUND:{mid}")
 
@@ -372,8 +475,7 @@ class RehomeNode(Node):
 
         if dist < CENTRE_ARRIVAL_M:
             self.get_logger().info("[ROTATING] Already at centre → ORIENT")
-            self._state = self.STATE_ORIENT
-            self._publish_status("ORIENT")
+            self._begin_orient()
             return
 
         angle = math.atan2(dx, dz)   # + = centre to the right → CW
@@ -424,46 +526,114 @@ class RehomeNode(Node):
         if distance_driven >= self._centre_dist_m:
             self.get_logger().info("[CENTRE] Arrived → ORIENT")
             self._publish_wheels(0.0, 0.0)
-            self._state = self.STATE_ORIENT
-            self._publish_status("ORIENT")
+            self._begin_orient()
         else:
             self._publish_wheels(CENTRE_SPEED, CENTRE_SPEED)
 
     # -----------------------------------------------------------------------
-    # ORIENT
+    # ORIENT — step-and-pause
     # -----------------------------------------------------------------------
 
-    def _do_orient(self, visible: dict[int, np.ndarray]) -> None:
-        if 0 not in visible:
-            self.get_logger().info(
-                "[ORIENT] NORTH not visible — CCW search.",
-                throttle_duration_sec=1.0)
-            # CCW: left back, right fwd
-            self._publish_wheels(-ORIENT_SPEED, ORIENT_SPEED)
-            return
-
-        tvec        = visible[0]
-        x_offset    = float(tvec[0])
-        z_dist      = max(float(tvec[2]), 0.1)
-        angle_error = math.atan2(x_offset, z_dist)
-
+    def _begin_orient(self) -> None:
+        """Initialise the ORIENT step-and-pause state machine."""
+        self._orient_sub_state      = self._ORIENT_STEP
+        self._orient_phase_start_ns = self.get_clock().now().nanoseconds
+        self._orient_step_count     = 0
+        self._orient_step_dir       = -1.0   # start by searching CCW
+        self._state                 = self.STATE_ORIENT
+        self._publish_status("ORIENT")
         self.get_logger().info(
-            f"[ORIENT] x={x_offset:.4f}m  "
-            f"angle={math.degrees(angle_error):.1f}°",
-            throttle_duration_sec=0.5)
+            "[ORIENT] Beginning step-and-pause alignment on marker 0.")
 
-        if abs(angle_error) <= ORIENT_TOL_RAD:
-            self.get_logger().info("[ORIENT] Aligned — DONE.")
+    def _do_orient(self) -> None:
+        """
+        Step-and-pause alignment toward marker 0 (NORTH).
+
+        ORIENT_STEP  — pivot in _orient_step_dir for ORIENT_STEP_DURATION_SEC.
+        ORIENT_PAUSE — hold still, run detection:
+            • Marker 0 found & within tolerance → DONE.
+            • Marker 0 found & outside tolerance → set direction toward it,
+              start alignment step immediately.
+            • Marker 0 not found → wait for pause to expire, then CCW search step.
+        """
+        now_ns    = self.get_clock().now().nanoseconds
+        elapsed_s = (now_ns - self._orient_phase_start_ns) / 1e9
+
+        # ---- ORIENT_STEP sub-state ----
+        if self._orient_sub_state == self._ORIENT_STEP:
+            if elapsed_s < ORIENT_STEP_DURATION_SEC:
+                # CW: left fwd, right back.  CCW: left back, right fwd.
+                if self._orient_step_dir > 0:
+                    self._publish_wheels( ORIENT_SPEED, -ORIENT_SPEED)
+                else:
+                    self._publish_wheels(-ORIENT_SPEED,  ORIENT_SPEED)
+                direction_label = "CW" if self._orient_step_dir > 0 else "CCW"
+                self.get_logger().info(
+                    f"[ORIENT STEP {self._orient_step_count}] "
+                    f"pivoting {direction_label}  "
+                    f"{elapsed_s:.2f}/{ORIENT_STEP_DURATION_SEC:.2f}s",
+                    throttle_duration_sec=0.5)
+            else:
+                # Step complete → pause for detection
+                self._publish_wheels(0.0, 0.0)
+                self._orient_sub_state      = self._ORIENT_PAUSE
+                self._orient_phase_start_ns = now_ns
+                self.get_logger().info(
+                    f"[ORIENT STEP {self._orient_step_count}] "
+                    "done — pausing for detection.")
+
+        # ---- ORIENT_PAUSE sub-state ----
+        elif self._orient_sub_state == self._ORIENT_PAUSE:
             self._publish_wheels(0.0, 0.0)
-            self._state = self.STATE_DONE
-            self._publish_status("DONE")
-            return
 
-        # CW: left fwd, right back.  CCW: left back, right fwd.
-        if angle_error > 0:
-            self._publish_wheels( ORIENT_SPEED, -ORIENT_SPEED)
-        else:
-            self._publish_wheels(-ORIENT_SPEED,  ORIENT_SPEED)
+            visible     = self._detect_markers(self.latest_frame)
+
+            if 0 in visible:
+                tvec        = visible[0]
+                x_offset    = float(tvec[0])
+                z_dist      = max(float(tvec[2]), 0.1)
+                angle_error = math.atan2(x_offset, z_dist)
+
+                self.get_logger().info(
+                    f"[ORIENT PAUSE {self._orient_step_count}] "
+                    f"Marker 0 visible: x={x_offset:.4f}m  "
+                    f"angle={math.degrees(angle_error):.1f}°")
+
+                if abs(angle_error) <= ORIENT_TOL_RAD:
+                    # ✓ Aligned — we're done.
+                    self.get_logger().info("[ORIENT] Aligned — DONE.")
+                    self._publish_wheels(0.0, 0.0)
+                    self._state = self.STATE_DONE
+                    self._publish_status("DONE")
+                    return
+
+                # Not yet aligned — step toward marker 0.
+                # angle_error > 0 means marker is to the right → CW pivot.
+                self._orient_step_dir       = 1.0 if angle_error > 0 else -1.0
+                self._orient_step_count    += 1
+                self._orient_sub_state      = self._ORIENT_STEP
+                self._orient_phase_start_ns = now_ns
+                direction_label = "CW" if self._orient_step_dir > 0 else "CCW"
+                self.get_logger().info(
+                    f"[ORIENT] Marker 0 found but off by "
+                    f"{math.degrees(angle_error):.1f}° → "
+                    f"{direction_label} alignment step.")
+                return
+
+            # Marker 0 not visible — wait out the full pause, then search CCW.
+            self.get_logger().info(
+                f"[ORIENT PAUSE {self._orient_step_count}] "
+                "Marker 0 not visible — waiting for pause window.",
+                throttle_duration_sec=1.0)
+
+            if elapsed_s >= ORIENT_PAUSE_DURATION_SEC:
+                self._orient_step_dir       = -1.0   # CCW search
+                self._orient_step_count    += 1
+                self._orient_sub_state      = self._ORIENT_STEP
+                self._orient_phase_start_ns = now_ns
+                self.get_logger().info(
+                    f"[ORIENT] Pause expired — CCW search step "
+                    f"{self._orient_step_count}.")
 
 
 # ===========================================================================
