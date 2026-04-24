@@ -77,9 +77,9 @@ SCAN_PIVOT_SPEED   = 35.0   # cmd units — matches optical follower magnitude
 # Other control parameters
 # ===========================================================================
 
-ROTATE_SPEED     = 35.0
-CENTRE_SPEED     = 35.0
-ORIENT_SPEED     = 35.0
+ROTATE_SPEED     = 50.0
+CENTRE_SPEED     = 50.0
+ORIENT_SPEED     = 50.0
 
 ORIENT_TOL_RAD   = math.radians(5.0)
 CENTRE_ARRIVAL_M = 0.08
