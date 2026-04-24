@@ -51,6 +51,12 @@ def generate_launch_description():
             name='realsense_node',
             output='screen'
         ),
+        Node(
+            package='demo_night',
+            executable='arducam_node',
+            name='arducam_node',
+            output='screen'
+        ),
         # Cam display node
         Node(
             package='demo_night',
