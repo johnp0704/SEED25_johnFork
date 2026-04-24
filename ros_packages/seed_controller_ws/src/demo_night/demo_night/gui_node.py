@@ -361,7 +361,17 @@ def _load_dead_reckoning(filepath: str):
 
 
 def main(args=None):
-    # ... existing cal loading code ...
+    # Dead-reckoning calibration — look next to this script first, then CWD
+    cal_candidates = [
+        os.path.join(os.path.dirname(__file__), "dead_reckoning_cal.npz"),
+        "dead_reckoning_cal.npz",
+    ]
+    cmd_to_mps = DEFAULT_CMD_TO_MPS
+    wheel_base  = DEFAULT_WHEEL_BASE
+    for path in cal_candidates:
+        if os.path.exists(path):
+            cmd_to_mps, wheel_base = _load_dead_reckoning(path)
+            break
 
     rclpy.init(args=args)
     app = QApplication.instance() or QApplication(sys.argv)
@@ -375,7 +385,6 @@ def main(args=None):
         target=rclpy.spin, args=(ros_node,), daemon=True)
     ros_thread.start()
 
-    # Clean Ctrl-C handling inside Qt's event loop
     import signal
     signal.signal(signal.SIGINT, lambda *_: app.quit())
     _watchdog = QTimer()
