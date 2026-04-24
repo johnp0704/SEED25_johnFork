@@ -15,6 +15,14 @@ Key fixes vs. original
 * ROS2 spins in a background daemon thread; Qt owns the main thread.
 * No cv2.imshow anywhere in this process.
 
+Modes
+-----
+  IDLE        — all wheels stopped.
+  REHOME      — aruco-based re-homing sequence.
+  OPTICAL     — optical path follower; GTG controller overrides when red detected.
+  GTG         — pure go-to-goal; robot only moves when red weed is detected.
+                No optical fallback — wheels stay at zero otherwise.
+
 Topics
 ------
 Publishes  : /gui/system_state        (std_msgs/String)   mode requests
@@ -182,7 +190,6 @@ class TwinCanvas(QWidget):
         # Grid lines every metre
         p.setPen(QPen(QColor(50, 50, 50), 1))
         cx0, cy0 = self._world_to_canvas(0, 0)
-        span = max(self.width(), self.height())
         for dm in range(-10, 11):
             offset = dm * self.PIXELS_PER_METRE
             p.drawLine(int(cx0 + offset), 0, int(cx0 + offset), self.height())
@@ -239,19 +246,19 @@ class MainWindow(QMainWindow):
         self.canvas = TwinCanvas(cmd_to_mps, wheel_base)
 
         # --- Mode buttons ---
-        self.btn_idle     = QPushButton("⏹  IDLE / STOP")
-        self.btn_rehome   = QPushButton("🏠  REHOME SEQUENCE")
-        self.btn_optical  = QPushButton("👁  OPTICAL PATH FOLLOWING")
-        self.btn_traj     = QPushButton("✏️  TRAJECTORY FOLLOWING")
+        self.btn_idle    = QPushButton("⏹  IDLE / STOP")
+        self.btn_rehome  = QPushButton("🏠  REHOME SEQUENCE")
+        self.btn_optical = QPushButton("👁  OPTICAL PATH FOLLOWING")
+        self.btn_gtg     = QPushButton("🎯  GO-TO-GOAL (red only)")
 
         for btn in (self.btn_idle, self.btn_rehome,
-                    self.btn_optical, self.btn_traj):
+                    self.btn_optical, self.btn_gtg):
             btn.setMinimumHeight(40)
 
         self.btn_idle.clicked.connect(    lambda: self._request("IDLE"))
         self.btn_rehome.clicked.connect(  lambda: self._request("REHOME"))
         self.btn_optical.clicked.connect( lambda: self._request("OPTICAL"))
-        self.btn_traj.clicked.connect(    lambda: self._request("TRAJECTORY"))
+        self.btn_gtg.clicked.connect(     lambda: self._request("GTG"))
 
         # --- Status labels ---
         self.lbl_requested  = QLabel("Requested:  IDLE")
@@ -259,6 +266,12 @@ class MainWindow(QMainWindow):
         self.lbl_rehome_st  = QLabel("Rehome:     —")
         self.lbl_dr_info    = QLabel(
             f"DR ratio: {cmd_to_mps:.5f} m/s per cmd unit")
+
+        # GTG mode description
+        self.lbl_gtg_hint = QLabel(
+            "GTG: wheels ONLY move\nwhen red weed is detected.")
+        self.lbl_gtg_hint.setFont(QFont("Monospace", 8))
+        self.lbl_gtg_hint.setStyleSheet("color: #aaaaaa;")
 
         for lbl in (self.lbl_requested, self.lbl_confirmed,
                     self.lbl_rehome_st, self.lbl_dr_info):
@@ -270,7 +283,8 @@ class MainWindow(QMainWindow):
         ctrl.addWidget(self.btn_idle)
         ctrl.addWidget(self.btn_rehome)
         ctrl.addWidget(self.btn_optical)
-        ctrl.addWidget(self.btn_traj)
+        ctrl.addWidget(self.btn_gtg)
+        ctrl.addWidget(self.lbl_gtg_hint)
         ctrl.addSpacing(12)
         ctrl.addWidget(self.lbl_requested)
         ctrl.addWidget(self.lbl_confirmed)
@@ -292,8 +306,6 @@ class MainWindow(QMainWindow):
         signals.rehome_status.connect(self._on_rehome_status)
 
         # --- Kinematics update timer (10 Hz) ---
-        # The canvas integrates using wall-clock time internally, so the
-        # timer period only controls how often we ask for an update tick.
         self._last_wl = 0.0
         self._last_wr = 0.0
         self._kin_timer = QTimer()
@@ -316,10 +328,10 @@ class MainWindow(QMainWindow):
         self.lbl_confirmed.setText(f"Confirmed:  {mode}")
         # Highlight active button
         styles = {
-            "IDLE":       self.btn_idle,
-            "REHOME":     self.btn_rehome,
-            "OPTICAL":    self.btn_optical,
-            "TRAJECTORY": self.btn_traj,
+            "IDLE":    self.btn_idle,
+            "REHOME":  self.btn_rehome,
+            "OPTICAL": self.btn_optical,
+            "GTG":     self.btn_gtg,
         }
         for m, btn in styles.items():
             btn.setStyleSheet(
@@ -330,7 +342,6 @@ class MainWindow(QMainWindow):
     def _on_rehome_status(self, status: str) -> None:
         self.lbl_rehome_st.setText(f"Rehome:     {status}")
         if status == "DONE":
-            # Rehoming complete — anchor the virtual twin to the home pose
             self.canvas.reset_to_home()
 
     def _tick_kinematics(self) -> None:
@@ -345,9 +356,9 @@ def _load_dead_reckoning(filepath: str):
     """Load cmd_to_mps ratio from calibration file.  Returns (ratio, wheel_base)."""
     if os.path.exists(filepath):
         try:
-            data        = np.load(filepath)
-            ratio       = float(data['ratio'])
-            wheel_base  = DEFAULT_WHEEL_BASE   # wheel_base is not calibrated here
+            data       = np.load(filepath)
+            ratio      = float(data['ratio'])
+            wheel_base = DEFAULT_WHEEL_BASE
             print(f"[GUI] Dead-reckoning calibration loaded: "
                   f"ratio={ratio:.6f} m/s per cmd unit")
             return ratio, wheel_base
@@ -361,7 +372,6 @@ def _load_dead_reckoning(filepath: str):
 
 
 def main(args=None):
-    # Dead-reckoning calibration — look next to this script first, then CWD
     cal_candidates = [
         os.path.join(os.path.dirname(__file__), "dead_reckoning_cal.npz"),
         "dead_reckoning_cal.npz",

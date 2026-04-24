@@ -9,14 +9,23 @@ The commander intercepts this, enters DRILLING mode, and:
   1. Immediately zeroes all wheel outputs (wheels stay at 0 for entire cycle).
   2. Forwards the activate signal to /tool/activate (tool_controller_node).
   3. Subscribes to /tool/status and waits for DONE or ERROR.
-     • DONE  → resumes OPTICAL mode, publishes a 10-second cooldown to
-               /gtg/cooldown so the GTG controller won't re-detect the same
-               weed immediately.
+     • DONE  → resumes the mode that was active before drilling started, and
+               publishes a 10-second cooldown to /gtg/cooldown so the GTG
+               controller won't re-detect the same weed immediately.
      • ERROR → transitions to IDLE and waits for user input from the GUI.
                The GUI's /commander/ack subscription will show "IDLE".
 
 Publishes /rehome/reset whenever the GUI switches INTO REHOME mode so the
 aruco_rehoming_node restarts its scan from scratch.
+
+Modes
+-----
+  IDLE        — all wheels stopped.
+  REHOME      — aruco-based re-homing; uses rehome_cmd topic.
+  OPTICAL     — optical path follower with GTG override when red detected.
+  GTG         — pure go-to-goal; robot ONLY moves when the GTG controller is
+                actively publishing commands (red weed detected).  No optical
+                fallback — wheels stay at zero otherwise.
 """
 from __future__ import annotations
 
@@ -37,9 +46,10 @@ GTG_COOLDOWN_SEC = 10.0
 class CommanderNode(Node):
 
     # All valid modes the commander can be in.
-    # DRILLING is an internal sub-mode — externally it looks like OPTICAL is
-    # paused, so the GUI still shows the last confirmed mode while drilling.
-    _VALID_GUI_MODES = {"IDLE", "REHOME", "OPTICAL", "TRAJECTORY"}
+    # DRILLING is an internal sub-mode — externally it looks like the prior
+    # mode is paused, so the GUI still shows the last confirmed mode while
+    # drilling.
+    _VALID_GUI_MODES = {"IDLE", "REHOME", "OPTICAL", "GTG"}
 
     def __init__(self):
         super().__init__('commander_node')
@@ -64,15 +74,16 @@ class CommanderNode(Node):
         # regardless of current_mode.
         self._drilling: bool = False
 
-        self.cmd_gtg        = [0.0, 0.0]
-        self.cmd_rehome     = [0.0, 0.0]
-        self.cmd_optical    = [0.0, 0.0]
-        self.cmd_trajectory = [0.0, 0.0]
+        # Mode to restore after a successful drill cycle.
+        self._pre_drill_mode: str = "IDLE"
 
-        self.t_gtg        = 0
-        self.t_rehome     = 0
-        self.t_optical    = 0
-        self.t_trajectory = 0
+        self.cmd_gtg     = [0.0, 0.0]
+        self.cmd_rehome  = [0.0, 0.0]
+        self.cmd_optical = [0.0, 0.0]
+
+        self.t_gtg     = 0
+        self.t_rehome  = 0
+        self.t_optical = 0
 
         self.gtg_active: bool = False
 
@@ -93,8 +104,6 @@ class CommanderNode(Node):
             Float32MultiArray, '/vision/rehome_cmd', self._rehome_cb, 10)
         self.create_subscription(
             Float32MultiArray, '/vision/optical_cmd', self._optical_cb, 10)
-        self.create_subscription(
-            Float32MultiArray, '/nav/trajectory_cmd', self._trajectory_cb, 10)
 
         # Auger trigger from GTG controller
         self.create_subscription(
@@ -153,10 +162,6 @@ class CommanderNode(Node):
         self.cmd_optical = [msg.data[0], msg.data[1]]
         self.t_optical   = self.get_clock().now().nanoseconds
 
-    def _trajectory_cb(self, msg: Float32MultiArray) -> None:
-        self.cmd_trajectory = [msg.data[0], msg.data[1]]
-        self.t_trajectory   = self.get_clock().now().nanoseconds
-
     # ===================================================================
     # Callbacks — tool pipeline
     # ===================================================================
@@ -167,14 +172,8 @@ class CommanderNode(Node):
 
         Accepts the trigger if:
           • A drill cycle is not already running, AND
-          • The robot is in OPTICAL or TRAJECTORY mode, OR the GTG override
-            is currently active (gtg_active=True means a fresh GTG wheel cmd
-            arrived within GTG_TIMEOUT_SEC — i.e. GTG is actually driving).
-
-        The second condition catches the common case where the operator
-        hasn't manually selected OPTICAL/TRAJECTORY yet but the GTG node
-        was already running and overriding (e.g. testing on the bench with
-        the system left in IDLE).
+          • The robot is in OPTICAL or GTG mode with GTG actively in control
+            (a fresh GTG wheel command arrived within GTG_TIMEOUT_SEC).
         """
         if self._drilling:
             self.get_logger().warn(
@@ -183,7 +182,7 @@ class CommanderNode(Node):
             return
 
         gtg_is_in_control = (
-            self.current_mode in ("OPTICAL", "TRAJECTORY") and self.gtg_active
+            self.current_mode in ("OPTICAL", "GTG") and self.gtg_active
         )
         if not gtg_is_in_control:
             self.get_logger().warn(
@@ -196,9 +195,9 @@ class CommanderNode(Node):
             "[TOOL] Weed reached — entering DRILLING mode.  "
             "Wheels zeroed, forwarding activate to tool_controller_node.")
 
+        self._pre_drill_mode = self.current_mode
         self._drilling = True
 
-        # Forward the activate signal to the tool controller
         activate_msg = String()
         activate_msg.data = "activate"
         self.tool_pub.publish(activate_msg)
@@ -217,23 +216,20 @@ class CommanderNode(Node):
             return
 
         if not self._drilling:
-            # Ignore status messages that arrive when we didn't trigger a drill
-            # (e.g. stale messages on startup).
             return
 
         if status == "DONE":
+            resume_mode = self._pre_drill_mode if self._pre_drill_mode else "OPTICAL"
             self.get_logger().info(
-                "[TOOL] Drill cycle DONE.  "
-                f"Resuming OPTICAL mode with {GTG_COOLDOWN_SEC}s GTG cooldown.")
+                f"[TOOL] Drill cycle DONE.  "
+                f"Resuming {resume_mode} mode with {GTG_COOLDOWN_SEC}s GTG cooldown.")
             self._drilling = False
 
-            # Resume optical tracking
-            self.current_mode   = "OPTICAL"
-            self.confirmed_mode = "OPTICAL"
-            ack = String(); ack.data = "OPTICAL"
+            self.current_mode   = resume_mode
+            self.confirmed_mode = resume_mode
+            ack = String(); ack.data = resume_mode
             self.ack_pub.publish(ack)
 
-            # Publish cooldown so GTG ignores red for GTG_COOLDOWN_SEC seconds
             cooldown_msg = String()
             cooldown_msg.data = str(GTG_COOLDOWN_SEC)
             self.cooldown_pub.publish(cooldown_msg)
@@ -252,7 +248,6 @@ class CommanderNode(Node):
             self.ack_pub.publish(ack)
 
         else:
-            # Unexpected status string — log and stay put
             self.get_logger().warn(f"[TOOL] Unrecognised tool status: '{status}'")
 
     # ===================================================================
@@ -267,7 +262,6 @@ class CommanderNode(Node):
 
         # ---------------------------------------------------------------
         # DRILLING overrides everything — wheels stay at zero.
-        # The tool controller owns the machine until it signals DONE/ERROR.
         # ---------------------------------------------------------------
         if self._drilling:
             self._apply_wheels(0.0, 0.0)
@@ -286,6 +280,7 @@ class CommanderNode(Node):
                 self.cmd_rehome, self.t_rehome, now_ns, "REHOME")
 
         elif self.current_mode == "OPTICAL":
+            # GTG overrides optical when red is actively detected.
             if self.gtg_active:
                 final_cmd = self.cmd_gtg
                 self.get_logger().info(
@@ -295,15 +290,17 @@ class CommanderNode(Node):
                 final_cmd = self._safe_cmd(
                     self.cmd_optical, self.t_optical, now_ns, "OPTICAL")
 
-        elif self.current_mode == "TRAJECTORY":
+        elif self.current_mode == "GTG":
+            # Pure go-to-goal: ONLY move when GTG is actively publishing.
+            # No optical fallback — wheels stay at zero if no red detected.
             if self.gtg_active:
                 final_cmd = self.cmd_gtg
                 self.get_logger().info(
-                    "GTG override active (TRAJECTORY mode).",
+                    "GTG active — driving toward weed.",
                     throttle_duration_sec=1.0)
             else:
-                final_cmd = self._safe_cmd(
-                    self.cmd_trajectory, self.t_trajectory, now_ns, "TRAJECTORY")
+                # No red detected — hold position silently.
+                final_cmd = [0.0, 0.0]
 
         self._apply_wheels(float(final_cmd[0]), float(final_cmd[1]))
 

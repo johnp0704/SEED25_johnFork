@@ -4,10 +4,15 @@ display_node.py
 Displays RealSense and Arducam video feeds inside a PyQt6 window using
 QLabel widgets — no cv2.imshow, no OpenCV HighGUI event loop.
 
-Running this alongside the PyQt6 GUI node (gui_node.py) is safe because
-both use the same Qt event loop.  Launch them from the SAME process by
-importing and composing them, or run as separate processes (recommended
-for ROS2 component isolation).
+Bounding boxes
+--------------
+Both feeds draw bounding boxes on detected objects before display:
+  RED  boxes — weed targets (same HSV ranges as the GTG controller).
+  BLUE boxes — blue tape / path markers.
+
+Detection is done at half resolution for speed, then bounding rects are
+scaled back to full resolution.  Only the largest contour per colour is
+boxed to keep it cheap.
 
 Topics subscribed
 -----------------
@@ -42,20 +47,106 @@ from PyQt6.QtCore import Qt, QTimer, pyqtSignal, QObject
 
 
 # ===========================================================================
-# Target display width per feed (pixels).  Height is scaled to preserve AR.
+# Display settings
 # ===========================================================================
 DISPLAY_WIDTH = 640
 LABEL_HEIGHT  = 20   # pixels for the coloured title bar
 
+# ===========================================================================
+# Colour detection — HSV ranges
+# (must match gtg_controller_node.py for red)
+# ===========================================================================
+
+# Red wraps around hue=0/180 so we need two ranges.
+LOWER_RED_1 = np.array([0,   120, 120])
+UPPER_RED_1 = np.array([15,  255, 255])
+LOWER_RED_2 = np.array([165, 120, 120])
+UPPER_RED_2 = np.array([180, 255, 255])
+
+# Blue tape — adjust S/V minimums if there are false positives under demo lighting.
+LOWER_BLUE = np.array([100, 80, 50])
+UPPER_BLUE = np.array([130, 255, 255])
+
+# Minimum pixel area (at HALF resolution) before a detection is boxed.
+MIN_RED_AREA  = 150   # ~600 px at full res
+MIN_BLUE_AREA = 200   # ~800 px at full res
+
+# Box colours in BGR
+COLOR_RED_BOX  = (0,   0,   255)
+COLOR_BLUE_BOX = (255, 100,   0)
+BOX_THICKNESS  = 2
+
 
 # ===========================================================================
-# Qt signal bridge — lets the ROS2 callback (any thread) hand a numpy array
-# to the Qt main thread without a direct call.
+# Qt signal bridge
 # ===========================================================================
 
 class _FrameSignals(QObject):
     realsense_frame = pyqtSignal(np.ndarray)
     arducam_frame   = pyqtSignal(np.ndarray)
+
+
+# ===========================================================================
+# Detection helper — runs on raw frames, returns annotated copy
+# ===========================================================================
+
+def _annotate_frame(frame: np.ndarray) -> np.ndarray:
+    """
+    Draw bounding boxes for red and blue regions.
+
+    Strategy (cheap):
+      1. Downsample to half resolution before HSV conversion.
+      2. Find the single largest contour per colour (avoids iterating all).
+      3. Scale the bounding rect back to full resolution.
+      4. Draw on a copy of the original full-resolution frame.
+    """
+    out = frame.copy()
+
+    # Downsample — INTER_NEAREST is the fastest interpolation.
+    h, w = frame.shape[:2]
+    small = cv2.resize(frame, (w // 2, h // 2), interpolation=cv2.INTER_NEAREST)
+    hsv   = cv2.cvtColor(small, cv2.COLOR_BGR2HSV)
+
+    # ---- Red detection ----
+    red_mask = cv2.bitwise_or(
+        cv2.inRange(hsv, LOWER_RED_1, UPPER_RED_1),
+        cv2.inRange(hsv, LOWER_RED_2, UPPER_RED_2),
+    )
+    # Light morphology to kill noise (3×3 is cheap)
+    red_mask = cv2.erode( red_mask, None, iterations=1)
+    red_mask = cv2.dilate(red_mask, None, iterations=1)
+
+    red_cnts, _ = cv2.findContours(
+        red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if red_cnts:
+        largest = max(red_cnts, key=cv2.contourArea)
+        if cv2.contourArea(largest) >= MIN_RED_AREA:
+            x, y, bw, bh = cv2.boundingRect(largest)
+            # Scale back to full resolution (×2)
+            x, y, bw, bh = x*2, y*2, bw*2, bh*2
+            cv2.rectangle(out, (x, y), (x+bw, y+bh), COLOR_RED_BOX, BOX_THICKNESS)
+            cv2.putText(out, "weed", (x, max(y-6, 10)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_RED_BOX, 1,
+                        cv2.LINE_AA)
+
+    # ---- Blue tape detection ----
+    blue_mask = cv2.inRange(hsv, LOWER_BLUE, UPPER_BLUE)
+    blue_mask = cv2.erode( blue_mask, None, iterations=1)
+    blue_mask = cv2.dilate(blue_mask, None, iterations=2)
+
+    blue_cnts, _ = cv2.findContours(
+        blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    if blue_cnts:
+        largest = max(blue_cnts, key=cv2.contourArea)
+        if cv2.contourArea(largest) >= MIN_BLUE_AREA:
+            x, y, bw, bh = cv2.boundingRect(largest)
+            x, y, bw, bh = x*2, y*2, bw*2, bh*2
+            cv2.rectangle(out, (x, y), (x+bw, y+bh), COLOR_BLUE_BOX, BOX_THICKNESS)
+            cv2.putText(out, "tape", (x, max(y-6, 10)),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE_BOX, 1,
+                        cv2.LINE_AA)
+
+    return out
 
 
 # ===========================================================================
@@ -76,15 +167,15 @@ class DisplayROSNode(Node):
 
     def _rs_cb(self, msg: Image) -> None:
         frame = self._bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        self._signals.realsense_frame.emit(frame)
+        self._signals.realsense_frame.emit(_annotate_frame(frame))
 
     def _arc_cb(self, msg: Image) -> None:
         frame = self._bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        self._signals.arducam_frame.emit(frame)
+        self._signals.arducam_frame.emit(_annotate_frame(frame))
 
 
 # ===========================================================================
-# Qt window
+# Qt window helpers
 # ===========================================================================
 
 def _bgr_to_pixmap(frame: np.ndarray, target_width: int) -> QPixmap:
@@ -157,9 +248,9 @@ class DisplayWindow(QMainWindow):
         self.setWindowTitle("Weeding Robot Vision Feed")
 
         self._rs_feed  = _FeedLabel(
-            "REALSENSE", "#282850", "RealSense — No Feed")
+            "REALSENSE  |  🔴 weed  🔵 tape", "#282850", "RealSense — No Feed")
         self._arc_feed = _FeedLabel(
-            "ARDUCAM",   "#285028", "Arducam — No Feed")
+            "ARDUCAM    |  🔴 weed  🔵 tape", "#285028", "Arducam — No Feed")
 
         container = QWidget()
         layout    = QVBoxLayout(container)
@@ -170,7 +261,6 @@ class DisplayWindow(QMainWindow):
         self.setCentralWidget(container)
         self.adjustSize()
 
-        # Connect signals from the ROS2 thread to Qt slots (thread-safe)
         signals.realsense_frame.connect(self._rs_feed.update_frame)
         signals.arducam_frame.connect(self._arc_feed.update_frame)
 
@@ -184,7 +274,7 @@ def main(args=None):
 
     app = QApplication.instance() or QApplication(sys.argv)
 
-    signals = _FrameSignals()
+    signals  = _FrameSignals()
     ros_node = DisplayROSNode(signals)
     window   = DisplayWindow(signals)
     window.show()
@@ -193,10 +283,8 @@ def main(args=None):
         target=rclpy.spin, args=(ros_node,), daemon=True)
     ros_thread.start()
 
-    # Install a signal handler so Ctrl-C on the terminal kills Qt cleanly
     import signal
     signal.signal(signal.SIGINT, lambda *_: app.quit())
-    # A short QTimer lets Python's signal handler actually fire inside Qt's loop
     _watchdog = QTimer()
     _watchdog.timeout.connect(lambda: None)
     _watchdog.start(200)

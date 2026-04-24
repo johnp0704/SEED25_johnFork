@@ -8,16 +8,7 @@ Cooldown integration
 After a successful drill cycle the commander publishes a float string on
 /gtg/cooldown (e.g. "10.0").  During that window this node will NOT
 publish wheel commands or auger triggers — it simply sits quiet and lets
-the optical path follower take back control via the commander's normal
-mode arbitration.
-
-Key addition: publishes a /vision/gtg_debug_mask topic (sensor_msgs/Image)
-showing the combined red HSV mask.  Subscribe to this with:
-    ros2 run rqt_image_view rqt_image_view /vision/gtg_debug_mask
-to confirm whether the red target is being detected at all.
-
-If the mask shows nothing when pointing at the red target, the HSV ranges
-need updating with the realsense_color_sampler script.
+the optical path follower or pure-GTG mode take back control.
 """
 from __future__ import annotations
 import math
@@ -50,12 +41,17 @@ REALSENSE_OFFSET_Y    =  0.16
 ARDUCAM_OFFSET_X      =  0.1
 ARDUCAM_OFFSET_Y      =  0.0
 REALSENSE_TIMEOUT_SEC =  0.5
-GOAL_THRESH_REALSENSE =  0.05
-GOAL_THRESH_ARDUCAM   =  0.05
+
+# Stopping distance from the detected centroid in metres.
+# Tune physically: if the tool overshoots, increase; if too short, decrease.
+# Start at 0.20m and adjust in 0.05m increments.
+GOAL_THRESH_REALSENSE =  0.20
+GOAL_THRESH_ARDUCAM   =  0.15
+
 MAX_ACTUATOR_INPUT    = 50.0
 PIVOT_THRESH          = np.deg2rad(30.0)
 PIVOT_SPEED           = 40.0
-DRIVE_SPEED           = 40.0
+DRIVE_SPEED           = 30.0
 PID_KP  = 15.0
 PID_KI  =  0.5
 PID_KD  =  2.0
@@ -63,25 +59,14 @@ PID_N   = 15.0
 PID_KAW =  1.0
 
 # HSV red mask — two ranges because red wraps around hue=0/180.
-#
-# Widened from the original sampler-derived values to be more robust to
-# lighting variation:
-#   • Hue ranges extended by ±2 ticks on both sides
-#   • Saturation minimum lowered from 190 → 140  (catches less-saturated reds)
-#   • Value minimum lowered from 200 → 140        (catches darker reds / shadows)
-#
-# If you still get false positives (noise), raise the minimums back up
-# in small steps.  If you get false negatives, lower them further.
-LOWER_RED_1 = np.array([0,   140, 140])
-UPPER_RED_1 = np.array([12,  255, 255])
-LOWER_RED_2 = np.array([168, 140, 140])
+# Widened for robustness under varied demo lighting.
+# If you see false positives, raise S/V minimums in steps of 10.
+LOWER_RED_1 = np.array([0,   120, 120])
+UPPER_RED_1 = np.array([15,  255, 255])
+LOWER_RED_2 = np.array([165, 120, 120])
 UPPER_RED_2 = np.array([180, 255, 255])
 
-# Minimum mask area in pixels to count as a valid detection.
-# If you are getting false negatives, lower this.
-# If you are getting false positives (noise), raise this.
 MIN_CONTOUR_AREA  = 300
-
 FRAME_TIMEOUT_SEC = 0.5
 
 # ==============================================================================
@@ -104,15 +89,7 @@ class GTGControllerNode(Node):
         self._latest_arc_frame:  np.ndarray | None = None
         self._last_arc_frame_ns: int = 0
 
-        # Cooldown state — set by /gtg/cooldown, cleared automatically.
-        # _cooldown_until is a monotonic timestamp; while time.monotonic()
-        # is before this value, all detection is suppressed.
         self._cooldown_until: float = 0.0
-
-        # One-shot trigger guard.  Set to True the moment we fire /auger/activate
-        # so the 30 Hz vision loop cannot spam the signal on subsequent frames.
-        # Cleared when the cooldown message arrives back from the commander,
-        # which means the drill cycle is fully complete.
         self._auger_triggered: bool = False
 
         self.pid_steer = PID(
@@ -122,23 +99,17 @@ class GTGControllerNode(Node):
             Kaw=PID_KAW,
         )
 
-        # Publishers
         self.wheel_cmd_pub     = self.create_publisher(
             Float32MultiArray, '/vision/gtg_cmd', 10)
         self.auger_trigger_pub = self.create_publisher(
             String, '/auger/activate', 10)
-
-        # Debug mask publisher — subscribe with rqt_image_view to verify detection
-        self.debug_mask_pub = self.create_publisher(
+        self.debug_mask_pub    = self.create_publisher(
             Image, '/vision/gtg_debug_mask', SENSOR_QOS)
 
-        # Frame subscriptions
         self.create_subscription(
             Image, '/vision/realsense_color', self._rs_frame_cb, SENSOR_QOS)
         self.create_subscription(
             Image, '/vision/arducam_raw', self._arc_frame_cb, SENSOR_QOS)
-
-        # Cooldown subscription from commander
         self.create_subscription(
             String, '/gtg/cooldown', self._cooldown_cb, 10)
 
@@ -179,31 +150,21 @@ class GTGControllerNode(Node):
             self.arc_robot_x = self.arc_robot_y = 0
 
     # -----------------------------------------------------------------------
-    # Cooldown callback
-    # -----------------------------------------------------------------------
 
     def _cooldown_cb(self, msg: String) -> None:
-        """
-        Receives a cooldown duration string from the commander (e.g. "10.0").
-        Suppresses all GTG detection for that many seconds from now.
-        """
         try:
             duration = float(msg.data)
         except ValueError:
             self.get_logger().warn(
                 f"[GTG] Invalid cooldown value '{msg.data}' — ignored.")
             return
-
-        self._cooldown_until   = time.monotonic() + duration
-        self._auger_triggered  = False   # ready to detect again after cooldown
+        self._cooldown_until  = time.monotonic() + duration
+        self._auger_triggered = False
         self.get_logger().info(
-            f"[GTG] Cooldown active for {duration:.1f}s — "
-            "suppressing red detection.")
+            f"[GTG] Cooldown active for {duration:.1f}s.")
 
     def _in_cooldown(self) -> bool:
         return time.monotonic() < self._cooldown_until
-
-    # -----------------------------------------------------------------------
 
     def _rs_frame_cb(self, msg: Image) -> None:
         self._latest_rs_frame  = self.bridge.imgmsg_to_cv2(
@@ -224,15 +185,9 @@ class GTGControllerNode(Node):
         dy_px = robot_y - cY
         rel_x = (dx_px / pixels_per_meter) + offset_x
         rel_y = (dy_px / pixels_per_meter) + offset_y
-        return rel_y, -rel_x   # x_robot, y_robot
+        return rel_y, -rel_x
 
     def get_red_centroid(self, frame: np.ndarray, publish_debug: bool = False):
-        """
-        Returns (cX, cY) of the largest red blob, or (None, None).
-
-        When publish_debug=True, publishes the combined mask image to
-        /vision/gtg_debug_mask so you can verify detection in rqt_image_view.
-        """
         hsv  = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.bitwise_or(
             cv2.inRange(hsv, LOWER_RED_1, UPPER_RED_1),
@@ -256,26 +211,19 @@ class GTGControllerNode(Node):
     # -----------------------------------------------------------------------
 
     def _process_vision(self) -> None:
-        # ---------------------------------------------------------------
-        # Cooldown guard — publish nothing during the post-drill window.
-        # The optical path follower will hold the robot on track.
-        # ---------------------------------------------------------------
         if self._in_cooldown():
             remaining = self._cooldown_until - time.monotonic()
             self.get_logger().info(
-                f"[GTG] In cooldown — {remaining:.1f}s remaining, "
-                "skipping detection.",
+                f"[GTG] In cooldown — {remaining:.1f}s remaining.",
                 throttle_duration_sec=2.0)
             return
 
         now_ns          = self.get_clock().now().nanoseconds
         rs_target_found = False
 
-        # 1. RealSense — highest priority
         rs_frame_age = (now_ns - self._last_rs_frame_ns) / 1e9
         if self._latest_rs_frame is not None and rs_frame_age < FRAME_TIMEOUT_SEC:
 
-            # Always publish debug mask from RealSense so you can monitor it
             cX, cY = self.get_red_centroid(
                 self._latest_rs_frame, publish_debug=True)
 
@@ -294,20 +242,16 @@ class GTGControllerNode(Node):
                 dist = math.sqrt(x_robot**2 + y_robot**2)
 
                 self.get_logger().info(
-                    f"[GTG RS] DETECTED centroid=({cX},{cY}) "
-                    f"dist={dist:.2f}m",
+                    f"[GTG RS] DETECTED centroid=({cX},{cY}) dist={dist:.2f}m",
                     throttle_duration_sec=0.5)
 
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
 
             else:
                 self.get_logger().info(
-                    f"[GTG RS] Frame OK, no red detected "
-                    f"(mask area < {MIN_CONTOUR_AREA}px). "
-                    "Check /vision/gtg_debug_mask in rqt_image_view.",
+                    f"[GTG RS] No red detected (mask area < {MIN_CONTOUR_AREA}px).",
                     throttle_duration_sec=2.0)
 
-        # 2. Arducam fallback
         realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
         arc_frame_age     = (now_ns - self._last_arc_frame_ns) / 1e9
 
@@ -348,8 +292,6 @@ class GTGControllerNode(Node):
                 self._publish_wheels(0.0, 0.0)
                 msg = String(); msg.data = "drill"
                 self.auger_trigger_pub.publish(msg)
-            # Already triggered — stay silent and keep wheels at zero until
-            # the commander's cooldown message resets _auger_triggered.
             return
 
         error_theta = math.atan2(y_robot, x_robot)
