@@ -4,23 +4,27 @@ tool_controller_node.py
 Bridges the ROS2 tool pipeline to the ESP32 auger/drill controller over
 a USB serial link.
 
+Startup homing
+--------------
+As soon as the serial port opens successfully the node fires a background
+thread that sends "home\n" and waits for "0".  This guarantees the stepper
+is always at its calibrated offset before any drill cycle runs, regardless
+of whether the ESP32 was power-cycled.  The node publishes:
+  HOMING  → during startup home
+  IDLE    → once startup home completes (or ERROR if it fails)
+
 ESP32 serial protocol (115 200 baud, newline-terminated):
-  Send  "home\\n"  → ESP32 homes + moves to calibrated offset
-                    → responds "0\\n"  (RC_OK) when done
-  Send  "drill\\n" → ESP32 runs full drill cycle (feed + retract)
-                    → responds "0\\n"  (RC_OK) or "1\\n"  (RC_MOVE_UNSAFE)
-  Either side can receive "ESTOP\\n" if the ESP32 triggers an emergency stop.
+  Send  "home\n"  → ESP32 homes + moves to calibrated offset
+                    → responds "0\n"  (RC_OK) when done
+  Send  "drill\n" → ESP32 runs full drill cycle (feed + retract)
+                    → responds "0\n"  (RC_OK) or "1\n"  (RC_MOVE_UNSAFE)
+  Either side can receive "ESTOP\n" if the ESP32 triggers an emergency stop.
 
 Drill sequence on every /tool/activate message:
   1. Flush stale serial data
-  2. Send "home\\n", wait for "0"      → publish HOMING, then DRILLING
-  3. Send "drill\\n", wait for "0"/"1" → publish DONE or ERROR
+  2. Send "home\n", wait for "0"      → publish HOMING, then DRILLING
+  3. Send "drill\n", wait for "0"/"1" → publish DONE or ERROR
   4. Return to IDLE
-
-If the serial port cannot be opened the node starts in a degraded mode:
-it still publishes "ERROR" for every activate request so the rest of the
-pipeline (particularly the GTG cooldown) can proceed normally rather than
-hanging forever in DRILLING_WAIT.
 
 Topics
 ------
@@ -92,15 +96,63 @@ class ToolControllerNode(Node):
                 "pyserial not installed — cannot control tool.  "
                 "Install with: pip install pyserial --break-system-packages")
 
-        self._state      = self._STATE_IDLE
+        self._state      = self._STATE_BUSY   # busy until startup home finishes
         self._state_lock = threading.Lock()
 
         self._status_pub = self.create_publisher(String, '/tool/status',    10)
         self.create_subscription(String, '/tool/activate', self._activate_cb, 10)
 
-        # Publish initial IDLE so subscribers know we're alive
-        self._publish_status("IDLE")
-        self.get_logger().info("Tool Controller Node ready.")
+        # Publish initial HOMING so downstream nodes know we're starting up
+        self._publish_status("HOMING")
+        self.get_logger().info("Tool Controller Node ready — running startup home.")
+
+        # Fire startup homing in a background thread so we don't block spin()
+        t = threading.Thread(target=self._run_startup_home, daemon=True)
+        t.start()
+
+    # -----------------------------------------------------------------------
+    # Startup homing
+    # -----------------------------------------------------------------------
+
+    def _run_startup_home(self) -> None:
+        """
+        Runs once at node startup.  Sends 'home' and waits for '0'.
+        Sets state to IDLE on success, ERROR on failure.
+        """
+        try:
+            if not self._serial_ok or self._ser is None:
+                self.get_logger().error(
+                    "[TOOL] No serial connection — cannot run startup home.")
+                self._publish_status("ERROR")
+                return
+
+            # Give the ESP32 a moment to finish its own boot sequence
+            time.sleep(2.0)
+
+            self._ser.reset_input_buffer()
+            self._ser.reset_output_buffer()
+
+            self.get_logger().info("[TOOL] Startup: sending HOME command.")
+            self._ser.write(b"home\n")
+            resp = self._read_response(HOME_TIMEOUT_SEC)
+            self.get_logger().info(f"[TOOL] Startup home response: '{resp}'")
+
+            if resp == "0":
+                self.get_logger().info(
+                    "[TOOL] Startup homing complete — IDLE, ready for drill cycles.")
+                self._publish_status("IDLE")
+            else:
+                self.get_logger().error(
+                    f"[TOOL] Startup homing failed (response='{resp}') — ERROR.")
+                self._publish_status("ERROR")
+
+        except Exception as exc:
+            self.get_logger().error(f"[TOOL] Startup home exception: {exc}")
+            self._publish_status("ERROR")
+
+        finally:
+            with self._state_lock:
+                self._state = self._STATE_IDLE
 
     # -----------------------------------------------------------------------
     # Callbacks
@@ -199,7 +251,6 @@ class ToolControllerNode(Node):
             if remaining <= 0:
                 break
 
-            # Keep individual read timeouts short so we don't miss the deadline
             self._ser.timeout = min(remaining, 1.0)
 
             try:
@@ -210,7 +261,7 @@ class ToolControllerNode(Node):
                 return "SERIAL_ERROR"
 
             if not line:
-                continue   # empty line / timeout on this 1-second slice — keep waiting
+                continue
 
             self.get_logger().info(f"[TOOL] Serial ← '{line}'")
 
@@ -218,7 +269,7 @@ class ToolControllerNode(Node):
                 self.get_logger().error("[TOOL] ESTOP received from ESP32!")
                 return "ESTOP"
 
-            return line   # "0", "1", or any other response
+            return line
 
         return "TIMEOUT"
 
