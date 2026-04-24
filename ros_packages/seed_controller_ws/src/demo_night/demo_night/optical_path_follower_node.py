@@ -1,5 +1,6 @@
 """
 optical_path_following_node.py  —  Blue tape follower using Arducam feed.
+Update LOWER_BLUE / UPPER_BLUE with values from arducam_color_sampler.py.
 """
 from __future__ import annotations
 import rclpy
@@ -20,17 +21,17 @@ SENSOR_QOS = QoSProfile(
 )
 
 # ===========================================================================
-# Tuning constants
+# Tuning constants — UPDATE LOWER_BLUE / UPPER_BLUE from arducam_color_sampler
 # ===========================================================================
 
-LOWER_BLUE = np.array([97, 142, 188])
-UPPER_BLUE = np.array([100, 255, 226])
+LOWER_BLUE = np.array([97, 142, 188])   # ← replace with Arducam-sampled values
+UPPER_BLUE = np.array([100, 255, 226])  # ← replace with Arducam-sampled values
 
 MIN_TAPE_AREA       = 800
 LOOK_AHEAD_FRACTION = 0.55
 
-BASE_SPEED          = 35.0
-MAX_ACTUATOR_INPUT  = 50.0
+BASE_SPEED         = 35.0
+MAX_ACTUATOR_INPUT = 50.0
 
 PID_KP  = 0.25
 PID_KI  = 0.01
@@ -38,9 +39,12 @@ PID_KD  = 0.06
 PID_N   = 10.0
 PID_KAW = 0.5
 
-RECOVERY_PIVOT_SPEED = 20.0
-RECOVERY_FLIP_FRAMES = 45
-FRAME_TIMEOUT_SEC    = 1.0   # Arducam tolerance
+# Recovery: continuous full rotation at this speed until tape is re-acquired.
+# One full rotation takes approximately (360 / angular_velocity) seconds.
+# At speed 30, a typical differential drive robot completes a rotation in ~6s.
+RECOVERY_SPIN_SPEED = 30.0
+
+FRAME_TIMEOUT_SEC = 1.0
 
 
 class OpticalPathNode(Node):
@@ -55,7 +59,6 @@ class OpticalPathNode(Node):
         self.latest_frame: np.ndarray | None = None
         self.last_frame_ns: int = 0
 
-        # Subscribe to Arducam feed
         self.create_subscription(
             Image, '/vision/arducam_raw', self._frame_cb, SENSOR_QOS)
 
@@ -66,8 +69,7 @@ class OpticalPathNode(Node):
             Kaw=PID_KAW,
         )
 
-        self._lost_frames  = 0
-        self._recovery_dir = 1
+        self._lost_frames = 0
 
         self.create_timer(1.0 / 30.0, self._control_loop)
         self.get_logger().info("Optical Path Tracking initialised (Arducam).")
@@ -102,11 +104,14 @@ class OpticalPathNode(Node):
         area = M['m00']
 
         if area >= MIN_TAPE_AREA:
-            self._lost_frames  = 0
-            self._recovery_dir = 1
+            # Tape found — reset recovery counter and drive normally
+            if self._lost_frames > 0:
+                self.get_logger().info(
+                    f"[OPTICAL] Tape re-acquired after {self._lost_frames} frames.")
+            self._lost_frames = 0
 
-            cx      = int(M['m10'] / area)
-            error_x = (w / 2.0) - cx
+            cx         = int(M['m10'] / area)
+            error_x    = (w / 2.0) - cx
             correction = self.pid_steer.update(setpoint=error_x, output=0.0)
 
             wl = BASE_SPEED - correction
@@ -119,20 +124,17 @@ class OpticalPathNode(Node):
             self._publish_wheels(wl, wr)
 
         else:
+            # Tape lost — spin CW continuously until re-acquired.
+            # A single consistent direction ensures a full sweep rather than
+            # oscillating back and forth over the same small arc.
             self._lost_frames += 1
             self.get_logger().warn(
-                f"Tape lost for {self._lost_frames} frames — "
-                f"recovery pivot {'CW' if self._recovery_dir > 0 else 'CCW'}.",
-                throttle_duration_sec=1.0)
+                f"[OPTICAL] Tape lost for {self._lost_frames} frames — "
+                "spinning CW for full recovery rotation.",
+                throttle_duration_sec=2.0)
 
-            if self._lost_frames % RECOVERY_FLIP_FRAMES == 0:
-                self._recovery_dir *= -1
-                self.get_logger().info(
-                    f"Recovery flipped → "
-                    f"{'CW' if self._recovery_dir > 0 else 'CCW'}")
-
-            pivot = RECOVERY_PIVOT_SPEED * self._recovery_dir
-            self._publish_wheels(pivot, -pivot)
+            # CW: left wheel forward, right wheel backward
+            self._publish_wheels(RECOVERY_SPIN_SPEED, -RECOVERY_SPIN_SPEED)
 
     def _publish_wheels(self, left: float, right: float) -> None:
         msg = Float32MultiArray()
