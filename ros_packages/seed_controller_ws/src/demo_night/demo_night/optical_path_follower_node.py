@@ -24,8 +24,8 @@ SENSOR_QOS = QoSProfile(
 # Tuning constants — UPDATE LOWER_BLUE / UPPER_BLUE from arducam_color_sampler
 # ===========================================================================
 
-LOWER_BLUE = np.array([97, 142, 188])   # ← replace with Arducam-sampled values
-UPPER_BLUE = np.array([100, 255, 226])  # ← replace with Arducam-sampled values
+LOWER_BLUE = np.array([102, 108, 200])   # ← replace with Arducam-sampled values
+UPPER_BLUE = np.array([107, 136, 225])  # ← replace with Arducam-sampled values
 
 MIN_TAPE_AREA       = 800
 LOOK_AHEAD_FRACTION = 0.55
