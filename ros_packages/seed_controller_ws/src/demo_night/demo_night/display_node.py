@@ -22,6 +22,13 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+
+SENSOR_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.BEST_EFFORT,
+    history=HistoryPolicy.KEEP_LAST,
+    depth=2,
+)
 
 import cv2
 import numpy as np
@@ -61,14 +68,10 @@ class DisplayROSNode(Node):
         self._bridge  = CvBridge()
         self._signals = signals
 
-        self.create_subscription(
-            Image, '/vision/realsense_display',
-            self._rs_cb, 2,
-        )
-        self.create_subscription(
-            Image, '/vision/arducam_display',
-            self._arc_cb, 2,
-        )
+        self.create_subscription(Image, '/vision/realsense_display',
+            self._rs_cb, SENSOR_QOS)
+        self.create_subscription(Image, '/vision/arducam_display',
+            self._arc_cb, SENSOR_QOS)
         self.get_logger().info("Display ROS node initialised.")
 
     def _rs_cb(self, msg: Image) -> None:

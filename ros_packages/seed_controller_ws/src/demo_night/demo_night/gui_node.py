@@ -361,17 +361,7 @@ def _load_dead_reckoning(filepath: str):
 
 
 def main(args=None):
-    # Dead-reckoning calibration — look next to this script first, then CWD
-    cal_candidates = [
-        os.path.join(os.path.dirname(__file__), "dead_reckoning_cal.npz"),
-        "dead_reckoning_cal.npz",
-    ]
-    cmd_to_mps = DEFAULT_CMD_TO_MPS
-    wheel_base  = DEFAULT_WHEEL_BASE
-    for path in cal_candidates:
-        if os.path.exists(path):
-            cmd_to_mps, wheel_base = _load_dead_reckoning(path)
-            break
+    # ... existing cal loading code ...
 
     rclpy.init(args=args)
     app = QApplication.instance() or QApplication(sys.argv)
@@ -381,13 +371,18 @@ def main(args=None):
     window   = MainWindow(ros_node, signals, cmd_to_mps, wheel_base)
     window.show()
 
-    # ROS2 spins in a daemon background thread; Qt owns the main thread
     ros_thread = threading.Thread(
         target=rclpy.spin, args=(ros_node,), daemon=True)
     ros_thread.start()
 
-    exit_code = app.exec()
+    # Clean Ctrl-C handling inside Qt's event loop
+    import signal
+    signal.signal(signal.SIGINT, lambda *_: app.quit())
+    _watchdog = QTimer()
+    _watchdog.timeout.connect(lambda: None)
+    _watchdog.start(200)
 
+    exit_code = app.exec()
     ros_node.destroy_node()
     rclpy.shutdown()
     sys.exit(exit_code)

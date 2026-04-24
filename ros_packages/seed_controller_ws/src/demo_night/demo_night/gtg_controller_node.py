@@ -20,6 +20,13 @@ from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, String
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+
+SENSOR_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.BEST_EFFORT,
+    history=HistoryPolicy.KEEP_LAST,
+    depth=2,
+)
 
 import cv2
 import numpy as np
@@ -102,12 +109,11 @@ class GTGControllerNode(Node):
             Float32MultiArray, '/vision/gtg_cmd', 10)
         self.auger_trigger_pub = self.create_publisher(
             String, '/auger/activate', 10)
-        self.arc_display_pub   = self.create_publisher(
-            Image, '/vision/arducam_display', 2)
+        self.arc_display_pub   = self.create_publisher(Image, '/vision/arducam_display', SENSOR_QOS)
 
         # Subscribe to RealSense frames from the central pipeline node
         self.create_subscription(
-            Image, '/vision/realsense_color', self._rs_frame_cb, 2)
+            Image, '/vision/realsense_color', self._rs_frame_cb, SENSOR_QOS)
 
         # Arducam — this node still owns the V4L2 device (separate USB device)
         self.cap_arducam = cv2.VideoCapture(0)

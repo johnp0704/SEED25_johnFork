@@ -28,6 +28,13 @@ import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image, CameraInfo
 from cv_bridge import CvBridge
+from rclpy.qos import QosProfile, ReliabilityPolicy, HistoryPolicy
+
+SENSOR_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.BEST_EFFORT,
+    history=HistoryPolicy.KEEP_LAST,
+    depth=2,
+)
 
 import numpy as np
 import pyrealsense2 as rs
@@ -49,8 +56,8 @@ class RealSenseNode(Node):
         # Publishers
         self._bridge = CvBridge()
 
-        self._color_pub   = self.create_publisher(Image,      '/vision/realsense_color',       2)
-        self._display_pub = self.create_publisher(Image,      '/vision/realsense_display',      2)
+        self._color_pub   = self.create_publisher(Image, '/vision/realsense_color',      SENSOR_QOS)
+        self._display_pub = self.create_publisher(Image, '/vision/realsense_display',     SENSOR_QOS)
         self._info_pub    = self.create_publisher(CameraInfo, '/vision/realsense_camera_info', 1)
 
         # Start RealSense pipeline

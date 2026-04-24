@@ -25,6 +25,13 @@ from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
+
+SENSOR_QOS = QoSProfile(
+    reliability=ReliabilityPolicy.BEST_EFFORT,
+    history=HistoryPolicy.KEEP_LAST,
+    depth=2,
+)
 
 import cv2
 import numpy as np
@@ -86,7 +93,7 @@ class OpticalPathNode(Node):
         self.latest_frame: np.ndarray | None = None
         self.last_frame_ns: int = 0
         self.create_subscription(
-            Image, '/vision/realsense_color', self._frame_cb, 2)
+            Image, '/vision/realsense_color', self._frame_cb, SENSOR_QOS)
 
         # Steering PID
         # Convention:
