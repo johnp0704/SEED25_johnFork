@@ -3,38 +3,47 @@ aruco_rehoming_node.py  —  ArUco rehoming via single pivot scan.
 
 Strategy
 --------
-IDLE       The node does nothing and publishes no commands.  This is the
-           startup state.  The node waits here until the commander sends a
-           /rehome/reset pulse (which happens automatically whenever the GUI
-           switches to REHOME mode).
+IDLE       Publish nothing.  Wait for /rehome/reset from the commander.
 
-SCANNING   Pivot slowly CW in place.  Each time a new marker comes into view,
-           record its tvec.  Continue until all 4 markers have been seen.
-           No driving during the scan.
+SCANNING   Pivot CW in place.  A mandatory PIVOT_DWELL_SEC window at the
+           start of the scan lets the Sabertooth ramp up and the robot
+           physically move before any marker is accepted as "seen".  After
+           the dwell, each newly visible marker is recorded once.  The pivot
+           continues until all 4 markers have been logged.
 
-ROTATING   Turn in place to face the computed direction of the enclosure centre.
+ROTATING   Turn in place to face the computed enclosure centre direction.
 
-CENTRE     Drive straight toward the centre for the calculated distance.
+CENTRE     Drive straight toward the centre for the dead-reckoned distance.
 
 ORIENT     Spin until marker 0 (NORTH) is centred in the frame.
 
-DONE       Stop and publish completion status.
+DONE       Hold motors stopped, publish "DONE" status.
 
-Root cause of the previous "robot does not move" bug
------------------------------------------------------
-The node previously started in SCANNING on startup and immediately began
-publishing pivot commands to /vision/rehome_cmd.  The commander only routes
-that topic to the motors while current_mode == "REHOME".  Because the node
-was already mid-scan before the user clicked REHOME in the GUI, all early
-commands were silently discarded.  By the time the commander entered REHOME
-mode, the scan had already recorded some markers but the robot had never
-actually pivoted — so the scan data was meaningless (the tvec values were
-captured from whatever pose the robot happened to be in, not from a
-controlled pivot).
+Why the motors were only briefly actuating
+------------------------------------------
+Two compounding issues:
 
-The fix: start in IDLE, publish nothing, and only begin the pivot scan
-after receiving the /rehome/reset signal that the commander emits the
-moment the GUI switches to REHOME mode.
+1. Loop rate mismatch.
+   The rehoming node ran at 10 Hz; the commander runs at 20 Hz.  The
+   commander's _safe_cmd timeout is 1.0 s, so that alone was not the
+   problem.  However, the Sabertooth trapezoidal ramp with accel_rate=80
+   and call_rate_hz=20 gives an accel step of 4 units/call.  Reaching
+   SCAN_PIVOT_SPEED=15 requires ~4 commander calls = 200 ms of sustained
+   commands.
+
+2. Immediate marker detection aborting the scan.
+   If marker 0 was visible from the robot's startup pose, the SCANNING
+   handler recorded it on its very first tick (before the robot had moved
+   at all) and then — if all 4 happened to be in view — immediately
+   transitioned to ROTATING and published [0,0].  The motors heard
+   "spin up" for 100 ms then "stop", producing exactly the brief
+   actuation sound observed.
+
+Fix: run the control loop at 20 Hz (matching the commander and Sabertooth
+call rate) and enforce a PIVOT_DWELL_SEC mandatory spin window at the
+start of SCANNING during which no markers are recorded.  This guarantees
+the robot is physically moving and the Sabertooth has fully ramped up
+before any detection can trigger a state transition.
 """
 from __future__ import annotations
 import math
@@ -61,40 +70,45 @@ SENSOR_QOS = QoSProfile(
 # Physical constants — measure these for your enclosure
 # ===========================================================================
 
-# Distance from each wall marker face to the enclosure geometric centre (m).
-WALL_DISTANCE_TO_CENTER = {
-    0: 2.1336,    # NORTH
-    1: 1.3208,    # EAST
-    2: 1.81769,   # SOUTH
-    3: 0.9017,    # WEST
+WALL_DISTANCE_TO_CENTER: dict[int, float] = {
+    0: 2.1336,     # NORTH
+    1: 1.3208,     # EAST
+    2: 1.81769,    # SOUTH
+    3: 0.9017,     # WEST
 }
 
-# Printed marker side length (m).  Must match the physical printout exactly.
-MARKER_LENGTH_M = 0.0854
+MARKER_LENGTH_M = 0.0854   # printed marker side length (m)
 
 # ===========================================================================
-# Control parameters
+# Control / timing parameters
 # ===========================================================================
 
-SCAN_PIVOT_SPEED = 15.0   # slow CW spin during SCANNING (cmd units)
-CENTRE_SPEED     = 38.0   # forward speed during CENTRE leg (cmd units)
-ORIENT_SPEED     = 18.0   # pivot speed during final ORIENT (cmd units)
-ROTATE_SPEED     = 20.0   # pivot speed during ROTATING leg (cmd units)
+LOOP_HZ          = 20.0   # must match commander SABERTOOTH_CALL_RATE_HZ
 
-ORIENT_TOL_RAD   = math.radians(4.0)   # heading alignment done threshold
-CENTRE_ARRIVAL_M = 0.08                # stop driving when within this of centre (m)
+# Mandatory spin window at the start of SCANNING before any marker is
+# accepted.  Gives the Sabertooth time to ramp up and the robot time to
+# physically move away from its startup pose.
+# At accel_rate=80, call_rate=20 Hz: step = 4 units/call.
+# Reaching speed 15: ceil(15/4) = 4 calls = 0.2 s.
+# 0.75 s is generous and ensures the robot has rotated a visible amount.
+PIVOT_DWELL_SEC  = 0.75
 
-FRAME_TIMEOUT_SEC = 1.0   # declare frame stale after this long (s)
+SCAN_PIVOT_SPEED = 15.0   # CW spin speed during SCANNING (cmd units)
+ROTATE_SPEED     = 20.0   # pivot speed during ROTATING  (cmd units)
+CENTRE_SPEED     = 38.0   # forward speed during CENTRE  (cmd units)
+ORIENT_SPEED     = 18.0   # pivot speed during ORIENT    (cmd units)
 
-WHEEL_BASE_M = 0.40       # robot wheel-base estimate for rotation timing (m)
+ORIENT_TOL_RAD   = math.radians(4.0)
+CENTRE_ARRIVAL_M = 0.08    # metres — skip drive if already this close to centre
 
-# Path to the dead-reckoning calibration file.
+FRAME_TIMEOUT_SEC = 1.0    # declare frame stale after this long (s)
+WHEEL_BASE_M      = 0.40   # wheel-base for rotation time estimate (m)
+
 DR_CAL_PATH = (
     "/home/airlab/seed25/ros_packages/seed_controller_ws/src/"
     "demo_night/demo_night/dead_reckoning_cal.npz"
 )
 
-# Arducam intrinsics — replace with checkerboard-calibrated values if available.
 ARDUCAM_CAMERA_MATRIX = np.array([
     [600.0,   0.0, 320.0],
     [  0.0, 600.0, 240.0],
@@ -117,27 +131,22 @@ class RehomeNode(Node):
     def __init__(self):
         super().__init__('aruco_rehoming_node')
 
-        # --- Publishers ---
         self.cmd_pub    = self.create_publisher(
             Float32MultiArray, '/vision/rehome_cmd', 10)
         self.status_pub = self.create_publisher(String, '/rehome/status', 10)
 
-        # --- Arducam subscription ---
-        self.bridge                       = CvBridge()
+        self.bridge                          = CvBridge()
         self.latest_frame: np.ndarray | None = None
         self.last_frame_stamp_ns: int        = 0
         self.create_subscription(
             Image, '/vision/arducam_raw', self._frame_cb, SENSOR_QOS)
 
-        # --- Reset / start signal (emitted by commander on REHOME entry) ---
         self.create_subscription(
             String, '/rehome/reset', self._reset_cb, 10)
 
-        # --- Camera model ---
         self.camera_matrix = ARDUCAM_CAMERA_MATRIX.copy()
         self.dist_coeffs   = ARDUCAM_DIST_COEFFS.copy()
 
-        # --- Dead-reckoning speed ratio ---
         if os.path.exists(DR_CAL_PATH):
             _dr = np.load(DR_CAL_PATH)
             self._mps_per_cmd = float(_dr['ratio'])
@@ -149,26 +158,26 @@ class RehomeNode(Node):
             self.get_logger().warn(
                 "Dead-reckoning cal not found — using default 0.005 m/s per cmd.")
 
-        # --- ArUco detector ---
         self.detector = aruco.ArucoDetector(
             aruco.getPredefinedDictionary(aruco.DICT_4X4_50),
             aruco.DetectorParameters(),
         )
 
-        # --- State machine — start IDLE, wait for reset signal ---
         self._state = self.STATE_IDLE
         self._clear_scan_data()
 
-        self.create_timer(0.1, self._control_loop)
+        # 20 Hz loop — matches commander and Sabertooth call rate
+        self.create_timer(1.0 / LOOP_HZ, self._control_loop)
         self.get_logger().info(
             "Rehoming Node ready.  Waiting for /rehome/reset to begin scan.")
 
-    # =======================================================================
+    # -----------------------------------------------------------------------
     # Helpers
-    # =======================================================================
+    # -----------------------------------------------------------------------
 
     def _clear_scan_data(self) -> None:
-        self._seen_markers: dict[int, np.ndarray] = {}
+        self._seen_markers:          dict[int, np.ndarray] = {}
+        self._scan_start_ns:         int   = 0    # when SCANNING began
         self._centre_angle_rad:      float = 0.0
         self._centre_dist_m:         float = 0.0
         self._rotate_duration_s:     float = 0.0
@@ -176,12 +185,12 @@ class RehomeNode(Node):
         self._centre_drive_start_ns: int   = 0
 
     def _publish_wheels(self, left: float, right: float) -> None:
-        msg      = Float32MultiArray()
+        msg = Float32MultiArray()
         msg.data = [float(left), float(right)]
         self.cmd_pub.publish(msg)
 
     def _publish_status(self, text: str) -> None:
-        msg      = String()
+        msg = String()
         msg.data = text
         self.status_pub.publish(msg)
 
@@ -189,36 +198,34 @@ class RehomeNode(Node):
         age_ns = self.get_clock().now().nanoseconds - self.last_frame_stamp_ns
         return age_ns < FRAME_TIMEOUT_SEC * 1e9
 
-    # =======================================================================
+    # -----------------------------------------------------------------------
     # Callbacks
-    # =======================================================================
+    # -----------------------------------------------------------------------
 
     def _frame_cb(self, msg: Image) -> None:
         self.latest_frame        = self.bridge.imgmsg_to_cv2(
             msg, desired_encoding='bgr8')
         self.last_frame_stamp_ns = self.get_clock().now().nanoseconds
 
-    def _reset_cb(self, msg: String) -> None:
+    def _reset_cb(self, _msg: String) -> None:
         """
-        Called by the commander the moment the GUI switches to REHOME mode.
-        Wipes any previous scan data and kicks off a fresh pivot scan.
-        The commander has already set current_mode = "REHOME" before publishing
-        this signal, so our wheel commands will be routed to the motors
-        immediately.
+        Emitted by the commander the instant current_mode becomes "REHOME".
+        The commander has already switched routing before publishing this,
+        so our very next wheel command will reach the motors.
         """
-        self.get_logger().info("[REHOME] Reset received — starting pivot scan.")
+        self.get_logger().info("[REHOME] Reset — starting pivot scan.")
         self._clear_scan_data()
-        self._state = self.STATE_SCANNING
+        self._state        = self.STATE_SCANNING
+        self._scan_start_ns = self.get_clock().now().nanoseconds
         self._publish_status("SCANNING")
 
-    # =======================================================================
+    # -----------------------------------------------------------------------
     # ArUco detection
-    # =======================================================================
+    # -----------------------------------------------------------------------
 
     def _detect_markers(self, frame: np.ndarray) -> dict[int, np.ndarray]:
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, _ = self.detector.detectMarkers(gray)
-
         results: dict[int, np.ndarray] = {}
         if ids is None:
             return results
@@ -231,8 +238,8 @@ class RehomeNode(Node):
             [-half, -half, 0],
         ], dtype=np.float64)
 
-        for i, marker_id in enumerate(ids.flatten()):
-            mid = int(marker_id)
+        for i, mid_raw in enumerate(ids.flatten()):
+            mid = int(mid_raw)
             if mid not in WALL_DISTANCE_TO_CENTER:
                 continue
             img_pts = corners[i].reshape(4, 2).astype(np.float64)
@@ -246,21 +253,11 @@ class RehomeNode(Node):
 
         return results
 
-    # =======================================================================
-    # Centre offset computation
-    # =======================================================================
+    # -----------------------------------------------------------------------
+    # Centre offset
+    # -----------------------------------------------------------------------
 
     def _compute_centre_offset(self) -> tuple[float, float]:
-        """
-        For each recorded wall marker, project the enclosure centre into the
-        robot's camera frame, then average across all markers.
-
-        Camera frame: x = right (+), z = forward (+).
-        For a marker at tvec = (mx, *, mz):
-            unit vector toward marker: u = (mx, mz) / |(mx, mz)|
-            centre lies at:           centre_vec = (mx, mz) - d * u
-        where d = WALL_DISTANCE_TO_CENTER[marker_id].
-        """
         dx_list: list[float] = []
         dz_list: list[float] = []
 
@@ -270,40 +267,34 @@ class RehomeNode(Node):
             dist = math.sqrt(mx**2 + mz**2)
             if dist < 0.01:
                 continue
-
-            ux  = mx / dist
-            uz  = mz / dist
-            d   = WALL_DISTANCE_TO_CENTER[mid]
-            cx  = mx - d * ux
-            cz  = mz - d * uz
-
+            ux = mx / dist
+            uz = mz / dist
+            d  = WALL_DISTANCE_TO_CENTER[mid]
+            cx = mx - d * ux
+            cz = mz - d * uz
             dx_list.append(cx)
             dz_list.append(cz)
-
             self.get_logger().info(
                 f"  Marker {mid}: tvec=({mx:.3f}, {mz:.3f})m  "
-                f"→ centre_vec=({cx:.3f}, {cz:.3f})m")
+                f"→ centre=({cx:.3f}, {cz:.3f})m")
 
         if not dx_list:
             return 0.0, 0.0
         return float(np.mean(dx_list)), float(np.mean(dz_list))
 
-    # =======================================================================
-    # State machine
-    # =======================================================================
+    # -----------------------------------------------------------------------
+    # Main control loop — 20 Hz
+    # -----------------------------------------------------------------------
 
     def _control_loop(self) -> None:
 
-        # IDLE — publish nothing, wait for reset signal.
         if self._state == self.STATE_IDLE:
-            return
+            return   # publish nothing
 
-        # DONE — hold motors stopped.
         if self._state == self.STATE_DONE:
             self._publish_wheels(0.0, 0.0)
             return
 
-        # All active states need a fresh camera frame.
         if not self._frame_is_fresh() or self.latest_frame is None:
             self.get_logger().warn(
                 "No fresh Arducam frame — stopping for safety.",
@@ -323,10 +314,29 @@ class RehomeNode(Node):
             self._do_orient(visible)
 
     # -----------------------------------------------------------------------
-    # SCANNING — slow CW pivot, record each new marker once
+    # SCANNING
     # -----------------------------------------------------------------------
 
     def _do_scanning(self, visible: dict[int, np.ndarray]) -> None:
+        now_ns    = self.get_clock().now().nanoseconds
+        dwell_sec = (now_ns - self._scan_start_ns) / 1e9
+
+        # Always publish the pivot command first — this keeps the Sabertooth
+        # ramp fed every loop tick regardless of detection state.
+        # CW: left forward, right backward.
+        self._publish_wheels(SCAN_PIVOT_SPEED, -SCAN_PIVOT_SPEED)
+
+        # Do not accept any detections until the dwell window has elapsed.
+        # This guarantees the robot has physically moved before we record
+        # the angular position of each marker.
+        if dwell_sec < PIVOT_DWELL_SEC:
+            self.get_logger().info(
+                f"[SCANNING] Dwell: {dwell_sec:.2f}s / {PIVOT_DWELL_SEC:.2f}s "
+                "— not recording yet.",
+                throttle_duration_sec=0.5)
+            return
+
+        # Record newly visible markers
         for mid, tvec in visible.items():
             if mid not in self._seen_markers:
                 self._seen_markers[mid] = tvec
@@ -336,21 +346,19 @@ class RehomeNode(Node):
                     f"({len(self._seen_markers)}/4 total)")
                 self._publish_status(f"FOUND:{mid}")
 
+        # All four seen — transition (stop is published by _begin_rotating)
         if len(self._seen_markers) == len(WALL_DISTANCE_TO_CENTER):
             self.get_logger().info(
                 "[SCANNING] All 4 markers recorded — computing centre.")
-            self._publish_wheels(0.0, 0.0)
             self._begin_rotating()
-            return
-
-        # CW pivot: left forward, right backward
-        self._publish_wheels(SCAN_PIVOT_SPEED, -SCAN_PIVOT_SPEED)
 
     # -----------------------------------------------------------------------
-    # ROTATING — turn to face the computed centre direction
+    # ROTATING
     # -----------------------------------------------------------------------
 
     def _begin_rotating(self) -> None:
+        self._publish_wheels(0.0, 0.0)   # stop the scan pivot first
+
         dx, dz = self._compute_centre_offset()
         dist   = math.sqrt(dx**2 + dz**2)
 
@@ -361,8 +369,7 @@ class RehomeNode(Node):
             self._publish_status("ORIENT")
             return
 
-        # atan2(lateral, forward): positive = centre is to the RIGHT
-        angle = math.atan2(dx, dz)
+        angle = math.atan2(dx, dz)   # positive = centre is to the RIGHT
 
         self.get_logger().info(
             f"[ROTATING] Centre: dx={dx:.3f}m  dz={dz:.3f}m  "
@@ -371,7 +378,6 @@ class RehomeNode(Node):
         self._centre_angle_rad = angle
         self._centre_dist_m    = dist
 
-        # Time to rotate: t = |angle| / ω,  ω = (2 × v_wheel) / wheelbase
         omega = (2.0 * ROTATE_SPEED * self._mps_per_cmd) / WHEEL_BASE_M
         self._rotate_duration_s = abs(angle) / omega if omega > 0 else 0.0
 
@@ -396,7 +402,7 @@ class RehomeNode(Node):
             self._publish_status("CENTERING")
             return
 
-        # CW (angle > 0): left fwd, right back
+        # CW (angle >= 0): left fwd, right back
         # CCW (angle < 0): left back, right fwd
         if self._centre_angle_rad >= 0:
             self._publish_wheels( ROTATE_SPEED, -ROTATE_SPEED)
@@ -404,7 +410,7 @@ class RehomeNode(Node):
             self._publish_wheels(-ROTATE_SPEED,  ROTATE_SPEED)
 
     # -----------------------------------------------------------------------
-    # CENTRE — drive straight toward the centre
+    # CENTRE
     # -----------------------------------------------------------------------
 
     def _do_centre(self) -> None:
@@ -425,15 +431,15 @@ class RehomeNode(Node):
             self._publish_wheels(CENTRE_SPEED, CENTRE_SPEED)
 
     # -----------------------------------------------------------------------
-    # ORIENT — align heading to face NORTH (marker ID 0)
+    # ORIENT
     # -----------------------------------------------------------------------
 
     def _do_orient(self, visible: dict[int, np.ndarray]) -> None:
         if 0 not in visible:
-            # Spin CCW to search: left back, right forward
             self.get_logger().info(
                 "[ORIENT] NORTH marker not visible — spinning CCW.",
                 throttle_duration_sec=1.0)
+            # CCW: left back, right forward
             self._publish_wheels(-ORIENT_SPEED, ORIENT_SPEED)
             return
 
@@ -454,9 +460,8 @@ class RehomeNode(Node):
             self._publish_status("DONE")
             return
 
-        # Positive angle → marker to the right → CW to face it
-        # CW:  left fwd (+), right back (-)
-        # CCW: left back (-), right fwd (+)
+        # CW (marker right): left fwd, right back
+        # CCW (marker left): left back, right fwd
         if angle_error > 0:
             self._publish_wheels( ORIENT_SPEED, -ORIENT_SPEED)
         else:
