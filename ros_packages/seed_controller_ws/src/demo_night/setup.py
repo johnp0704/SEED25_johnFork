@@ -29,6 +29,7 @@ setup(
             'aruco_rehoming_node = demo_night.aruco_rehoming_node:main',
             'optical_path_follower_node = demo_night.optical_path_follower_node:main',
             'gtg_controller_node = demo_night.gtg_controller_node:main',
+            'tool_controller_node = demo_night.tool_controller_node:main',
             'realsense_node = demo_night.realsense_node:main',
             'arducam_node = demo_night.arducam_node:main',
             'display_node = demo_night.display_node:main',

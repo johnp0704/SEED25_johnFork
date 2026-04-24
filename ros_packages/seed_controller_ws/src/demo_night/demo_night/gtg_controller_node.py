@@ -3,6 +3,14 @@ gtg_controller_node.py
 
 Go-To-Goal vision controller.
 
+Cooldown integration
+--------------------
+After a successful drill cycle the commander publishes a float string on
+/gtg/cooldown (e.g. "10.0").  During that window this node will NOT
+publish wheel commands or auger triggers — it simply sits quiet and lets
+the optical path follower take back control via the commander's normal
+mode arbitration.
+
 Key addition: publishes a /vision/gtg_debug_mask topic (sensor_msgs/Image)
 showing the combined red HSV mask.  Subscribe to this with:
     ros2 run rqt_image_view rqt_image_view /vision/gtg_debug_mask
@@ -14,6 +22,7 @@ need updating with the realsense_color_sampler script.
 from __future__ import annotations
 import math
 import os
+import time
 
 import rclpy
 from rclpy.node import Node
@@ -95,6 +104,11 @@ class GTGControllerNode(Node):
         self._latest_arc_frame:  np.ndarray | None = None
         self._last_arc_frame_ns: int = 0
 
+        # Cooldown state — set by /gtg/cooldown, cleared automatically.
+        # _cooldown_until is a monotonic timestamp; while time.monotonic()
+        # is before this value, all detection is suppressed.
+        self._cooldown_until: float = 0.0
+
         self.pid_steer = PID(
             Kp=PID_KP, Ki=PID_KI, Kd=PID_KD,
             N=PID_N, Ts=1.0 / 30.0,
@@ -117,6 +131,10 @@ class GTGControllerNode(Node):
             Image, '/vision/realsense_color', self._rs_frame_cb, SENSOR_QOS)
         self.create_subscription(
             Image, '/vision/arducam_raw', self._arc_frame_cb, SENSOR_QOS)
+
+        # Cooldown subscription from commander
+        self.create_subscription(
+            String, '/gtg/cooldown', self._cooldown_cb, 10)
 
         self.create_timer(1.0 / 30.0, self._process_vision)
         self.get_logger().info("GTG controller initialised.")
@@ -153,6 +171,32 @@ class GTGControllerNode(Node):
             self.get_logger().warn(f"Arducam calibration not found: {arc_file}")
             self.arc_pixels_per_meter = 1.0
             self.arc_robot_x = self.arc_robot_y = 0
+
+    # -----------------------------------------------------------------------
+    # Cooldown callback
+    # -----------------------------------------------------------------------
+
+    def _cooldown_cb(self, msg: String) -> None:
+        """
+        Receives a cooldown duration string from the commander (e.g. "10.0").
+        Suppresses all GTG detection for that many seconds from now.
+        """
+        try:
+            duration = float(msg.data)
+        except ValueError:
+            self.get_logger().warn(
+                f"[GTG] Invalid cooldown value '{msg.data}' — ignored.")
+            return
+
+        self._cooldown_until = time.monotonic() + duration
+        self.get_logger().info(
+            f"[GTG] Cooldown active for {duration:.1f}s — "
+            "suppressing red detection.")
+
+    def _in_cooldown(self) -> bool:
+        return time.monotonic() < self._cooldown_until
+
+    # -----------------------------------------------------------------------
 
     def _rs_frame_cb(self, msg: Image) -> None:
         self._latest_rs_frame  = self.bridge.imgmsg_to_cv2(
@@ -205,6 +249,18 @@ class GTGControllerNode(Node):
     # -----------------------------------------------------------------------
 
     def _process_vision(self) -> None:
+        # ---------------------------------------------------------------
+        # Cooldown guard — publish nothing during the post-drill window.
+        # The optical path follower will hold the robot on track.
+        # ---------------------------------------------------------------
+        if self._in_cooldown():
+            remaining = self._cooldown_until - time.monotonic()
+            self.get_logger().info(
+                f"[GTG] In cooldown — {remaining:.1f}s remaining, "
+                "skipping detection.",
+                throttle_duration_sec=2.0)
+            return
+
         now_ns          = self.get_clock().now().nanoseconds
         rs_target_found = False
 
@@ -238,7 +294,6 @@ class GTGControllerNode(Node):
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
 
             else:
-                # Log that we have a frame but no detection — visible every 2s
                 self.get_logger().info(
                     f"[GTG RS] Frame OK, no red detected "
                     f"(mask area < {MIN_CONTOUR_AREA}px). "
