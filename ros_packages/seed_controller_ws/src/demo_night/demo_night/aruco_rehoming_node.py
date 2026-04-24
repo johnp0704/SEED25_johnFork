@@ -62,7 +62,7 @@ MARKER_LENGTH_M = 0.0854
 
 # How long to pivot CW on each step.
 # Keep short so the robot doesn't overshoot a marker.
-STEP_DURATION_SEC  = 0.4    # seconds of active pivoting per step
+STEP_DURATION_SEC  = 0.8    # seconds of active pivoting per step
 
 # How long to hold still after each step for detection.
 # Must be long enough for at least 2-3 camera frames to be processed.
@@ -77,9 +77,9 @@ SCAN_PIVOT_SPEED   = 35.0   # cmd units — matches optical follower magnitude
 # Other control parameters
 # ===========================================================================
 
-ROTATE_SPEED     = 50.0
-CENTRE_SPEED     = 50.0
-ORIENT_SPEED     = 50.0
+ROTATE_SPEED     = 35.0
+CENTRE_SPEED     = 35.0
+ORIENT_SPEED     = 35.0
 
 ORIENT_TOL_RAD   = math.radians(5.0)
 CENTRE_ARRIVAL_M = 0.08
