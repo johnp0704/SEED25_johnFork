@@ -1,5 +1,23 @@
 """
-aruco_rehoming_node.py  —  ArUco rehoming state machine using Arducam feed.
+aruco_rehoming_node.py  —  ArUco rehoming via single pivot scan.
+
+Strategy
+--------
+SCANNING   Pivot slowly in place.  Each time a new marker comes into view,
+           record its bearing (angle from robot centre) and the solvePnP tvec.
+           Continue until all 4 markers have been seen.  No driving during scan.
+
+CENTRE     Using the recorded tvecs, compute the 2-D offset from the robot's
+           current position to the enclosure centre.  Drive that displacement
+           in two legs: rotate to face the centre, then drive straight.
+
+ORIENT     Spin until marker 0 (NORTH) is centred in the frame.
+
+DONE       Stop and publish completion.
+
+Reset      Any time the node receives a /rehome/reset pulse (published by the
+           commander when the GUI switches TO rehome mode), the full state
+           resets so a fresh run begins.
 """
 from __future__ import annotations
 import math
@@ -39,26 +57,23 @@ MARKER_LENGTH_M = 0.0854
 # Control parameters
 # ===========================================================================
 
-STANDOFF_M             = 0.80
-STANDOFF_TOL_M         = 0.05
-CENTRE_ARRIVAL_M       = 0.10
-ORIENT_TOL_RAD         = math.radians(5.0)
+SCAN_PIVOT_SPEED  = 15.0   # slow CW spin — minimises motion blur
+CENTRE_SPEED      = 38.0   # forward/backward speed during drive-to-centre
+ORIENT_SPEED      = 18.0   # pivot speed during final orientation
+ROTATE_SPEED      = 20.0   # pivot speed during rotate-to-face-centre leg
 
-# Reduced scan speed to avoid motion blur on ArUco detection
-SCAN_PIVOT_SPEED       = 15.0   # was 25 — slower = more reliable detection
-APPROACH_SPEED         = 35.0
-CENTRE_SPEED           = 38.0
-ORIENT_SPEED           = 20.0   # also slightly slower for precision
-KP_LATERAL             = 40.0
+ORIENT_TOL_RAD    = math.radians(4.0)   # alignment done threshold
+HEADING_TOL_RAD   = math.radians(6.0)   # good-enough heading before driving
+CENTRE_ARRIVAL_M  = 0.08                # arrival threshold at centre
 
-MIN_MARKERS_FOR_CENTRE = 4
-FRAME_TIMEOUT_SEC      = 1.0
+FRAME_TIMEOUT_SEC = 1.0
 
 DR_CAL_PATH = (
     "/home/airlab/seed25/ros_packages/seed_controller_ws/src/"
     "demo_night/demo_night/dead_reckoning_cal.npz"
 )
 
+# Arducam intrinsics — replace with checkerboard-calibrated values if available
 ARDUCAM_CAMERA_MATRIX = np.array([
     [600.0,   0.0, 320.0],
     [  0.0, 600.0, 240.0],
@@ -70,28 +85,34 @@ ARDUCAM_DIST_COEFFS = np.zeros(5, dtype=np.float64)
 class RehomeNode(Node):
 
     STATE_SCANNING = "SCANNING"
-    STATE_APPROACH = "APPROACH"
-    STATE_RECORD   = "RECORD"
-    STATE_CENTRE   = "CENTRE"
-    STATE_ORIENT   = "ORIENT"
+    STATE_ROTATING = "ROTATING"   # turning to face computed centre direction
+    STATE_CENTRE   = "CENTRE"     # driving straight to centre
+    STATE_ORIENT   = "ORIENT"     # final heading alignment to NORTH
     STATE_DONE     = "DONE"
 
     def __init__(self):
         super().__init__('aruco_rehoming_node')
 
+        # Publishers
         self.cmd_pub    = self.create_publisher(
             Float32MultiArray, '/vision/rehome_cmd', 10)
         self.status_pub = self.create_publisher(String, '/rehome/status', 10)
 
+        # Arducam subscription
         self.bridge = CvBridge()
         self.latest_frame: np.ndarray | None = None
         self.last_frame_stamp_ns: int = 0
         self.create_subscription(
             Image, '/vision/arducam_raw', self._frame_cb, SENSOR_QOS)
 
+        # Reset subscription — commander publishes here when REHOME is activated
+        self.create_subscription(
+            String, '/rehome/reset', self._reset_cb, 10)
+
         self.camera_matrix = ARDUCAM_CAMERA_MATRIX.copy()
         self.dist_coeffs   = ARDUCAM_DIST_COEFFS.copy()
 
+        # Dead-reckoning speed ratio
         if os.path.exists(DR_CAL_PATH):
             _dr = np.load(DR_CAL_PATH)
             self._mps_per_cmd = float(_dr['ratio'])
@@ -102,29 +123,52 @@ class RehomeNode(Node):
             self.get_logger().warn(
                 "Dead-reckoning cal not found — using default 0.005 m/s per cmd.")
 
+        # ArUco detector
         self.detector = aruco.ArucoDetector(
             aruco.getPredefinedDictionary(aruco.DICT_4X4_50),
             aruco.DetectorParameters(),
         )
 
-        self._state       = self.STATE_SCANNING
-        self._target_id: int | None  = None
-        self._seen_markers: dict[int, float] = {}
-
-        self._centre_ref_id:         int   = 0
-        self._centre_drive_start_ns: int   = 0
-        self._centre_drive_dist_m:   float = 0.0
-        self._centre_drive_reverse:  bool  = False  # True = back up to centre
+        self._init_state()
 
         self.create_timer(0.1, self._control_loop)
         self.get_logger().info(f"Rehoming Node ready.  State: {self._state}")
 
+    # -----------------------------------------------------------------------
+    # State initialisation / reset
+    # -----------------------------------------------------------------------
+
+    def _init_state(self) -> None:
+        """Fully reset the state machine.  Called on startup and on reset signal."""
+        self._state = self.STATE_SCANNING
+
+        # marker_id → tvec (x, y, z) recorded during the pivot scan
+        self._seen_markers: dict[int, np.ndarray] = {}
+
+        # Centre drive parameters computed after scan
+        self._centre_angle_rad:      float = 0.0   # robot must rotate to face this
+        self._centre_dist_m:         float = 0.0   # then drive this far
+        self._centre_drive_start_ns: int   = 0
+        self._rotate_start_ns:       int   = 0
+        self._rotate_duration_s:     float = 0.0
+
+    # -----------------------------------------------------------------------
+    # Callbacks
     # -----------------------------------------------------------------------
 
     def _frame_cb(self, msg: Image) -> None:
         self.latest_frame        = self.bridge.imgmsg_to_cv2(
             msg, desired_encoding='bgr8')
         self.last_frame_stamp_ns = self.get_clock().now().nanoseconds
+
+    def _reset_cb(self, msg: String) -> None:
+        self.get_logger().info("[REHOME] Reset received — restarting scan.")
+        self._init_state()
+        self._publish_status("RESET")
+
+    # -----------------------------------------------------------------------
+    # Helpers
+    # -----------------------------------------------------------------------
 
     def _publish_wheels(self, left: float, right: float) -> None:
         msg = Float32MultiArray()
@@ -139,10 +183,11 @@ class RehomeNode(Node):
         age_ns = self.get_clock().now().nanoseconds - self.last_frame_stamp_ns
         return age_ns < FRAME_TIMEOUT_SEC * 1e9
 
-    def _detect_markers(self, frame: np.ndarray):
+    def _detect_markers(self, frame: np.ndarray) -> dict[int, np.ndarray]:
+        """Returns dict of marker_id → tvec for all detected markers."""
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, _ = self.detector.detectMarkers(gray)
-        results = []
+        results: dict[int, np.ndarray] = {}
         if ids is None:
             return results
 
@@ -155,6 +200,8 @@ class RehomeNode(Node):
         ], dtype=np.float64)
 
         for i, marker_id in enumerate(ids.flatten()):
+            if int(marker_id) not in WALL_DISTANCE_TO_CENTER:
+                continue   # ignore unknown marker IDs
             img_pts = corners[i].reshape(4, 2).astype(np.float64)
             ok, rvec, tvec = cv2.solvePnP(
                 obj_pts, img_pts,
@@ -162,8 +209,69 @@ class RehomeNode(Node):
                 flags=cv2.SOLVEPNP_IPPE_SQUARE,
             )
             if ok:
-                results.append((int(marker_id), rvec, tvec.flatten()))
+                results[int(marker_id)] = tvec.flatten()
         return results
+
+    # -----------------------------------------------------------------------
+    # Centre computation
+    # -----------------------------------------------------------------------
+
+    def _compute_centre_offset(self) -> tuple[float, float]:
+        """
+        Given the tvecs recorded for each wall marker, compute the 2-D vector
+        (dx, dy) from the robot's current position to the enclosure centre,
+        in the robot's camera frame (x = right, z = forward).
+
+        For each marker we know:
+          - tvec[0] = lateral offset of marker from camera (+ = right)
+          - tvec[2] = depth of marker from camera (always +)
+          - WALL_DISTANCE_TO_CENTER[id] = distance from that marker to centre
+
+        The marker sits on the wall directly ahead (in 3-D).  The unit vector
+        FROM robot TO marker in robot frame is:
+            u = (tvec[0], tvec[2]) / |tvec|_xy  (2-D, ignoring height)
+
+        The centre lies on the opposite side of that wall at distance
+        WALL_DISTANCE_TO_CENTER from the marker, i.e.:
+            pos_centre = pos_marker - wall_to_centre * u_wall_normal
+
+        In robot frame the wall normal pointing INTO the enclosure is -u
+        (pointing back toward the robot from the wall).  So:
+            centre_vec = tvec_xy - WALL_DISTANCE_TO_CENTER * u_xy_normalised
+
+        We average across all recorded markers for the best estimate.
+        """
+        dx_list: list[float] = []
+        dz_list: list[float] = []
+
+        for mid, tvec in self._seen_markers.items():
+            mx = float(tvec[0])   # lateral
+            mz = float(tvec[2])   # depth
+            dist_marker = math.sqrt(mx**2 + mz**2)
+            if dist_marker < 0.01:
+                continue
+
+            # Unit vector from robot toward marker
+            ux = mx / dist_marker
+            uz = mz / dist_marker
+
+            wall_to_centre = WALL_DISTANCE_TO_CENTER[mid]
+
+            # Vector from robot to centre via this marker
+            cx = mx - wall_to_centre * ux
+            cz = mz - wall_to_centre * uz
+
+            dx_list.append(cx)
+            dz_list.append(cz)
+
+            self.get_logger().info(
+                f"  Marker {mid}: tvec=({mx:.3f}, {mz:.3f})  "
+                f"centre_vec=({cx:.3f}, {cz:.3f})")
+
+        if not dx_list:
+            return 0.0, 0.0
+
+        return float(np.mean(dx_list)), float(np.mean(dz_list))
 
     # -----------------------------------------------------------------------
     # State machine
@@ -181,15 +289,12 @@ class RehomeNode(Node):
             self._publish_wheels(0.0, 0.0)
             return
 
-        detections = self._detect_markers(self.latest_frame)
-        visible: dict[int, tuple] = {d[0]: d for d in detections}
+        visible = self._detect_markers(self.latest_frame)
 
         if self._state == self.STATE_SCANNING:
             self._do_scanning(visible)
-        elif self._state == self.STATE_APPROACH:
-            self._do_approach(visible)
-        elif self._state == self.STATE_RECORD:
-            self._do_record(visible)
+        elif self._state == self.STATE_ROTATING:
+            self._do_rotating(visible)
         elif self._state == self.STATE_CENTRE:
             self._do_centre()
         elif self._state == self.STATE_ORIENT:
@@ -197,183 +302,115 @@ class RehomeNode(Node):
 
     # -- SCANNING ------------------------------------------------------------
 
-    def _do_scanning(self, visible: dict) -> None:
-        unseen = [mid for mid in WALL_DISTANCE_TO_CENTER
-                  if mid not in self._seen_markers]
-
-        for mid in unseen:
-            if mid in visible:
-                self._target_id = mid
+    def _do_scanning(self, visible: dict[int, np.ndarray]) -> None:
+        # Record any newly visible markers
+        for mid, tvec in visible.items():
+            if mid not in self._seen_markers:
+                self._seen_markers[mid] = tvec
                 self.get_logger().info(
-                    f"[SCANNING] Marker {mid} found → APPROACH")
-                self._publish_status(f"APPROACH:{mid}")
-                self._state = self.STATE_APPROACH
-                self._publish_wheels(0.0, 0.0)
-                return
+                    f"[SCANNING] Marker {mid} recorded: "
+                    f"x={tvec[0]:.3f}m  z={tvec[2]:.3f}m  "
+                    f"({len(self._seen_markers)}/4 total)")
+                self._publish_status(f"FOUND:{mid}")
 
-        if len(self._seen_markers) >= MIN_MARKERS_FOR_CENTRE:
+        # Once all 4 are seen, compute centre and transition
+        if len(self._seen_markers) == len(WALL_DISTANCE_TO_CENTER):
             self.get_logger().info(
-                f"[SCANNING] All {MIN_MARKERS_FOR_CENTRE} markers recorded → CENTRE")
+                "[SCANNING] All 4 markers recorded — computing centre.")
+            self._publish_wheels(0.0, 0.0)
             self._begin_centre_phase()
             return
 
-        # Slow CW pivot — low speed prevents motion blur on ArUco detection
+        # Keep pivoting CW slowly
         self._publish_wheels(SCAN_PIVOT_SPEED, -SCAN_PIVOT_SPEED)
 
-    # -- APPROACH ------------------------------------------------------------
-
-    def _do_approach(self, visible: dict) -> None:
-        if self._target_id not in visible:
-            self.get_logger().warn(
-                f"[APPROACH] Marker {self._target_id} lost — searching.",
-                throttle_duration_sec=1.0)
-            self._publish_wheels(SCAN_PIVOT_SPEED * 0.5, -SCAN_PIVOT_SPEED * 0.5)
-            return
-
-        _, rvec, tvec = visible[self._target_id]
-        x_offset = float(tvec[0])
-        z_dist   = float(tvec[2])
-        error_z  = z_dist - STANDOFF_M
-
-        self.get_logger().info(
-            f"[APPROACH] marker={self._target_id}  z={z_dist:.3f}m  "
-            f"x={x_offset:.3f}m  err_z={error_z:.3f}m",
-            throttle_duration_sec=0.5)
-
-        if abs(error_z) <= STANDOFF_TOL_M:
-            self._state = self.STATE_RECORD
-            self._publish_wheels(0.0, 0.0)
-            return
-
-        if error_z > 0:
-            base = APPROACH_SPEED
-        else:
-            base     = -APPROACH_SPEED
-            x_offset = 0.0
-
-        steer   = KP_LATERAL * x_offset
-        wl, wr  = base + steer, base - steer
-        max_mag = max(abs(wl), abs(wr))
-        if max_mag > 100.0:
-            wl *= 100.0 / max_mag
-            wr *= 100.0 / max_mag
-
-        self._publish_wheels(wl, wr)
-
-    # -- RECORD --------------------------------------------------------------
-
-    def _do_record(self, visible: dict) -> None:
-        if self._target_id not in visible:
-            self.get_logger().warn(
-                f"[RECORD] Marker {self._target_id} not visible — re-approach.")
-            self._state = self.STATE_APPROACH
-            return
-
-        _, rvec, tvec = visible[self._target_id]
-        z_dist = float(tvec[2])
-
-        self._seen_markers[self._target_id] = z_dist
-        self.get_logger().info(
-            f"[RECORD] Marker {self._target_id} recorded at z={z_dist:.3f}m. "
-            f"Total seen: {list(self._seen_markers.keys())}")
-        self._publish_status(f"RECORDED:{self._target_id}")
-
-        if len(self._seen_markers) == len(WALL_DISTANCE_TO_CENTER):
-            self.get_logger().info("[RECORD] All 4 markers recorded → CENTRE")
-            self._begin_centre_phase()
-        else:
-            remaining = [k for k in WALL_DISTANCE_TO_CENTER
-                         if k not in self._seen_markers]
-            self.get_logger().info(
-                f"[RECORD] {len(self._seen_markers)}/4 done. "
-                f"Still need: {remaining} → SCANNING")
-            self._state = self.STATE_SCANNING
-            self._publish_wheels(0.0, 0.0)
-
-    # -- CENTRE --------------------------------------------------------------
+    # -- CENTRE (two-leg: rotate then drive) ---------------------------------
 
     def _begin_centre_phase(self) -> None:
-        if not self._seen_markers:
-            self.get_logger().error("[CENTRE] No markers — cannot centre.")
-            return
+        dx, dz = self._compute_centre_offset()
+        dist   = math.sqrt(dx**2 + dz**2)
 
-        self.get_logger().info("[CENTRE] Per-marker drive estimates:")
-        estimates: dict[int, float] = {}
-        for mid, z in self._seen_markers.items():
-            # Positive drive_dist → robot is farther from wall than centre,
-            #   must drive FORWARD (toward that wall) to reach centre.
-            # Negative drive_dist → robot is closer to wall than centre,
-            #   must drive BACKWARD (away from that wall) to reach centre.
-            drive_dist = z - WALL_DISTANCE_TO_CENTER[mid]
-            estimates[mid] = drive_dist
-            direction = "forward" if drive_dist > 0 else "backward"
+        if dist < CENTRE_ARRIVAL_M:
             self.get_logger().info(
-                f"  Marker {mid}: z={z:.3f}m  "
-                f"wall_to_centre={WALL_DISTANCE_TO_CENTER[mid]:.3f}m  "
-                f"drive={drive_dist:+.3f}m ({direction})")
-
-        # Prefer NORTH (0) as reference; it gives the cleanest forward drive
-        # toward the home marker which also sets up the ORIENT phase well.
-        if 0 in estimates:
-            ref_id = 0
-        else:
-            # Pick the marker with the largest absolute distance — most room
-            # for the dead-reckoning to be accurate.
-            ref_id = max(estimates, key=lambda k: abs(estimates[k]))
-
-        drive_dist = estimates[ref_id]
-        self._centre_ref_id      = ref_id
-        self._centre_drive_dist_m = abs(drive_dist)
-        self._centre_drive_reverse = drive_dist < 0   # need to back up
-
-        direction_str = "BACKWARD" if self._centre_drive_reverse else "FORWARD"
-        self.get_logger().info(
-            f"[CENTRE] Reference marker {ref_id}. "
-            f"Drive {self._centre_drive_dist_m:.3f} m {direction_str}.")
-
-        self._state = self.STATE_CENTRE
-        self._centre_drive_start_ns = self.get_clock().now().nanoseconds
-        self._publish_status("CENTERING")
-
-    def _do_centre(self) -> None:
-        if self._centre_drive_dist_m <= CENTRE_ARRIVAL_M:
-            self.get_logger().info("[CENTRE] Already at centre — skipping to ORIENT.")
-            self._publish_wheels(0.0, 0.0)
+                "[CENTRE] Already at centre — skipping to ORIENT.")
             self._state = self.STATE_ORIENT
             self._publish_status("ORIENT")
             return
 
+        # Angle to centre in robot frame: atan2(lateral, forward)
+        # Positive angle = centre is to the RIGHT → must turn CW
+        angle_to_centre = math.atan2(dx, dz)
+
+        self.get_logger().info(
+            f"[CENTRE] Centre offset: dx={dx:.3f}m  dz={dz:.3f}m  "
+            f"dist={dist:.3f}m  angle={math.degrees(angle_to_centre):.1f}°")
+
+        self._centre_angle_rad = angle_to_centre
+        self._centre_dist_m    = dist
+
+        # Estimate rotation duration from angle and pivot speed
+        # angular_velocity ≈ 2 * wheel_speed * mps_per_cmd / wheel_base
+        # Use a fixed wheel_base estimate of 0.40 m
+        WHEEL_BASE = 0.40
+        angular_vel_rps = (2.0 * ROTATE_SPEED * self._mps_per_cmd) / WHEEL_BASE
+        self._rotate_duration_s = abs(angle_to_centre) / angular_vel_rps
+
+        self.get_logger().info(
+            f"[CENTRE] Rotating {math.degrees(angle_to_centre):.1f}° "
+            f"({self._rotate_duration_s:.2f}s), then driving {dist:.3f}m.")
+
+        self._state = self.STATE_ROTATING
+        self._rotate_start_ns = self.get_clock().now().nanoseconds
+        self._publish_status("CENTERING")
+
+    def _do_rotating(self, visible: dict[int, np.ndarray]) -> None:
+        """Rotate in place to face the computed centre direction."""
+        elapsed_s = (self.get_clock().now().nanoseconds
+                     - self._rotate_start_ns) / 1e9
+
+        if elapsed_s >= self._rotate_duration_s:
+            self.get_logger().info(
+                "[CENTRE] Rotation complete — driving to centre.")
+            self._publish_wheels(0.0, 0.0)
+            self._centre_drive_start_ns = self.get_clock().now().nanoseconds
+            self._state = self.STATE_CENTRE
+            return
+
+        # CW if angle positive (centre to right), CCW if negative (centre to left)
+        if self._centre_angle_rad >= 0:
+            self._publish_wheels(ROTATE_SPEED, -ROTATE_SPEED)   # CW
+        else:
+            self._publish_wheels(-ROTATE_SPEED, ROTATE_SPEED)   # CCW
+
+    def _do_centre(self) -> None:
+        """Drive straight toward the centre for the calculated distance."""
         elapsed_s       = (self.get_clock().now().nanoseconds
                            - self._centre_drive_start_ns) / 1e9
         distance_driven = elapsed_s * CENTRE_SPEED * self._mps_per_cmd
 
         self.get_logger().info(
-            f"[CENTRE] {'BWD' if self._centre_drive_reverse else 'FWD'} "
-            f"{distance_driven:.3f} m / {self._centre_drive_dist_m:.3f} m",
+            f"[CENTRE] Driven {distance_driven:.3f}m / {self._centre_dist_m:.3f}m",
             throttle_duration_sec=0.5)
 
-        if distance_driven >= self._centre_drive_dist_m:
+        if distance_driven >= self._centre_dist_m:
             self.get_logger().info("[CENTRE] Centre reached → ORIENT")
             self._publish_wheels(0.0, 0.0)
             self._state = self.STATE_ORIENT
             self._publish_status("ORIENT")
         else:
-            # Drive forward or backward depending on which side of centre we are
-            speed = -CENTRE_SPEED if self._centre_drive_reverse else CENTRE_SPEED
-            self._publish_wheels(speed, speed)
+            self._publish_wheels(CENTRE_SPEED, CENTRE_SPEED)
 
     # -- ORIENT --------------------------------------------------------------
 
-    def _do_orient(self, visible: dict) -> None:
+    def _do_orient(self, visible: dict[int, np.ndarray]) -> None:
         if 0 not in visible:
             self.get_logger().info(
-                "[ORIENT] NORTH marker not visible — spinning.",
+                "[ORIENT] NORTH marker not visible — spinning CCW.",
                 throttle_duration_sec=1.0)
-            # Slow CCW spin to find marker 0
             self._publish_wheels(-ORIENT_SPEED, ORIENT_SPEED)
             return
 
-        _, rvec, tvec = visible[0]
+        tvec        = visible[0]
         x_offset    = float(tvec[0])
         z_dist      = max(float(tvec[2]), 0.1)
         angle_error = math.atan2(x_offset, z_dist)
@@ -391,10 +428,9 @@ class RehomeNode(Node):
             return
 
         if angle_error > 0:
-            wl, wr =  ORIENT_SPEED, -ORIENT_SPEED   # CW
+            self._publish_wheels( ORIENT_SPEED, -ORIENT_SPEED)   # CW
         else:
-            wl, wr = -ORIENT_SPEED,  ORIENT_SPEED   # CCW
-        self._publish_wheels(wl, wr)
+            self._publish_wheels(-ORIENT_SPEED,  ORIENT_SPEED)   # CCW
 
 
 def main(args=None):

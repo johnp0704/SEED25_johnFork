@@ -1,5 +1,7 @@
 """
 commander_node.py  —  arbitrates wheel commands and drives Sabertooth hardware.
+Publishes /rehome/reset whenever the GUI switches INTO REHOME mode so the
+aruco_rehoming_node restarts its scan from scratch.
 """
 from __future__ import annotations
 
@@ -7,19 +9,10 @@ import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32MultiArray, String
 
-# Sabertooth lives in the demo_night package alongside this file
 from demo_night.sabertooth import SaberToothMotorDriver
 
-
-# ===========================================================================
-# Tuning constants
-# ===========================================================================
-
-GTG_TIMEOUT_SEC  = 0.5
-MODE_TIMEOUT_SEC = 1.0
-GTG_OVERRIDABLE_MODES = frozenset({"OPTICAL", "TRAJECTORY"})
-
-# Call rate must match the commander's 20 Hz timer
+GTG_TIMEOUT_SEC         = 0.5
+MODE_TIMEOUT_SEC        = 1.0
 SABERTOOTH_CALL_RATE_HZ = 20.0
 
 
@@ -28,9 +21,6 @@ class CommanderNode(Node):
     def __init__(self):
         super().__init__('commander_node')
 
-        # --- Sabertooth motor driver ---------------------------------------
-        # motor1_reversed=True, motor2_reversed=True matches the teleop node
-        # and the physical wiring confirmed by motor_test_node.
         try:
             self._motors = SaberToothMotorDriver(
                 motor1_reversed=True,
@@ -44,7 +34,6 @@ class CommanderNode(Node):
             self.get_logger().error(f"Sabertooth FAILED to initialise: {exc}")
             self._motors = None
 
-        # --- State --------------------------------------------------------
         self.current_mode:   str = "IDLE"
         self.confirmed_mode: str = "IDLE"
 
@@ -60,13 +49,13 @@ class CommanderNode(Node):
 
         self.gtg_active: bool = False
 
-        # --- Publishers ---------------------------------------------------
-        # Still publish wheel_cmd so the GUI virtual twin keeps working
-        self.motor_pub = self.create_publisher(
+        # Publishers
+        self.motor_pub  = self.create_publisher(
             Float32MultiArray, '/commander/wheel_cmd', 10)
-        self.ack_pub = self.create_publisher(String, '/commander/ack', 10)
+        self.ack_pub    = self.create_publisher(String, '/commander/ack', 10)
+        self.reset_pub  = self.create_publisher(String, '/rehome/reset', 10)
 
-        # --- Subscriptions ------------------------------------------------
+        # Subscriptions
         self.create_subscription(
             String, '/gui/system_state', self._gui_state_cb, 10)
         self.create_subscription(
@@ -78,9 +67,7 @@ class CommanderNode(Node):
         self.create_subscription(
             Float32MultiArray, '/nav/trajectory_cmd', self._trajectory_cb, 10)
 
-        # --- Control loop at 20 Hz ----------------------------------------
         self.create_timer(1.0 / SABERTOOTH_CALL_RATE_HZ, self._control_loop)
-
         self.get_logger().info(
             "Commander Node initialised.  Standing by in IDLE mode.")
 
@@ -95,10 +82,18 @@ class CommanderNode(Node):
             self.get_logger().warn(
                 f"GUI requested unknown mode '{new_mode}' — ignored.")
             return
+
+        previous_mode  = self.current_mode
         self.current_mode = new_mode
         self.get_logger().info(f"Mode change requested: {new_mode}")
-        ack = String()
-        ack.data = new_mode
+
+        # Publish reset to rehome node whenever entering REHOME mode
+        if new_mode == "REHOME" and previous_mode != "REHOME":
+            reset_msg = String(); reset_msg.data = "reset"
+            self.reset_pub.publish(reset_msg)
+            self.get_logger().info("Published /rehome/reset — rehome scan restarting.")
+
+        ack = String(); ack.data = new_mode
         self.ack_pub.publish(ack)
         self.confirmed_mode = new_mode
 
@@ -157,14 +152,12 @@ class CommanderNode(Node):
                 final_cmd = self._safe_cmd(
                     self.cmd_trajectory, self.t_trajectory, now_ns, "TRAJECTORY")
 
-        # --- Drive hardware -----------------------------------------------
         wl = float(final_cmd[0])
         wr = float(final_cmd[1])
 
         if self._motors is not None:
             self._motors.updateMotorSpeed(wl, wr)
 
-        # --- Publish for virtual twin -------------------------------------
         out = Float32MultiArray()
         out.data = [wl, wr]
         self.motor_pub.publish(out)
@@ -186,7 +179,6 @@ class CommanderNode(Node):
         return cmd
 
     def destroy_node(self) -> None:
-        """Emergency stop on shutdown."""
         if self._motors is not None:
             try:
                 self._motors.all_motors_off()
@@ -194,8 +186,6 @@ class CommanderNode(Node):
                 pass
         super().destroy_node()
 
-
-# ---------------------------------------------------------------------------
 
 def main(args=None):
     rclpy.init(args=args)
