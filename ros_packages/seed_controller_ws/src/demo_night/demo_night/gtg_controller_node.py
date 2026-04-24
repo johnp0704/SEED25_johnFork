@@ -3,6 +3,19 @@ gtg_controller_node.py
 
 Go-To-Goal vision controller.
 
+Camera handoff logic
+--------------------
+The RealSense is preferred when it has an active red detection.
+The moment the RealSense LOSES the centroid (mask area too small), the
+Arducam takes over immediately — there is NO timeout gate between them.
+If neither camera detects red, the GTG node publishes nothing and the
+commander holds the robot still (in GTG mode) or falls back to optical
+(in OPTICAL mode).
+
+This prevents the previous failure mode where the RealSense was still
+publishing frames (so rs_frame_age stayed fresh) but had lost the
+centroid, silently blocking the Arducam handoff.
+
 Cooldown integration
 --------------------
 After a successful drill cycle the commander publishes a float string on
@@ -40,18 +53,20 @@ REALSENSE_OFFSET_X    = -0.3
 REALSENSE_OFFSET_Y    =  0.16
 ARDUCAM_OFFSET_X      =  0.1
 ARDUCAM_OFFSET_Y      =  0.0
-REALSENSE_TIMEOUT_SEC =  0.5
+
+# How long a camera can go without publishing ANY frame before we consider
+# it stale.  This is purely a "is the camera alive?" check — it does NOT
+# gate the detection handoff between cameras.
+FRAME_TIMEOUT_SEC = 0.5
 
 # Stopping distance from the detected centroid in metres.
-# Tune physically: if the tool overshoots, increase; if too short, decrease.
-# Start at 0.20m and adjust in 0.05m increments.
 GOAL_THRESH_REALSENSE =  0.20
 GOAL_THRESH_ARDUCAM   =  0.15
 
 MAX_ACTUATOR_INPUT    = 50.0
 PIVOT_THRESH          = np.deg2rad(30.0)
 PIVOT_SPEED           = 40.0
-DRIVE_SPEED           = 30.0
+DRIVE_SPEED           = 40.0
 PID_KP  = 15.0
 PID_KI  =  0.5
 PID_KD  =  2.0
@@ -59,15 +74,12 @@ PID_N   = 15.0
 PID_KAW =  1.0
 
 # HSV red mask — two ranges because red wraps around hue=0/180.
-# Widened for robustness under varied demo lighting.
-# If you see false positives, raise S/V minimums in steps of 10.
 LOWER_RED_1 = np.array([0,   120, 120])
 UPPER_RED_1 = np.array([15,  255, 255])
 LOWER_RED_2 = np.array([165, 120, 120])
 UPPER_RED_2 = np.array([180, 255, 255])
 
 MIN_CONTOUR_AREA  = 300
-FRAME_TIMEOUT_SEC = 0.5
 
 # ==============================================================================
 
@@ -79,18 +91,18 @@ class GTGControllerNode(Node):
 
         self._load_calibration()
 
-        self.active_camera       = 'realsense'
-        self.last_realsense_time = 0
-
         self.bridge = CvBridge()
 
-        self._latest_rs_frame:  np.ndarray | None = None
-        self._last_rs_frame_ns: int = 0
+        self._latest_rs_frame:   np.ndarray | None = None
+        self._last_rs_frame_ns:  int = 0
         self._latest_arc_frame:  np.ndarray | None = None
         self._last_arc_frame_ns: int = 0
 
-        self._cooldown_until: float = 0.0
-        self._auger_triggered: bool = False
+        self._cooldown_until:  float = 0.0
+        self._auger_triggered: bool  = False
+
+        # Track which camera is currently driving — for logging only.
+        self.active_camera: str = 'none'
 
         self.pid_steer = PID(
             Kp=PID_KP, Ki=PID_KI, Kd=PID_KD,
@@ -116,6 +128,8 @@ class GTGControllerNode(Node):
         self.create_timer(1.0 / 30.0, self._process_vision)
         self.get_logger().info("GTG controller initialised.")
 
+    # -----------------------------------------------------------------------
+    # Calibration
     # -----------------------------------------------------------------------
 
     def _load_calibration(self) -> None:
@@ -150,6 +164,8 @@ class GTGControllerNode(Node):
             self.arc_robot_x = self.arc_robot_y = 0
 
     # -----------------------------------------------------------------------
+    # Subscriptions
+    # -----------------------------------------------------------------------
 
     def _cooldown_cb(self, msg: String) -> None:
         try:
@@ -160,8 +176,7 @@ class GTGControllerNode(Node):
             return
         self._cooldown_until  = time.monotonic() + duration
         self._auger_triggered = False
-        self.get_logger().info(
-            f"[GTG] Cooldown active for {duration:.1f}s.")
+        self.get_logger().info(f"[GTG] Cooldown active for {duration:.1f}s.")
 
     def _in_cooldown(self) -> bool:
         return time.monotonic() < self._cooldown_until
@@ -177,7 +192,13 @@ class GTGControllerNode(Node):
         self._last_arc_frame_ns = self.get_clock().now().nanoseconds
 
     def _reset_pid(self) -> None:
-        self.pid_steer.istate = self.pid_steer.dstate = self.pid_steer.error_prev = 0.0
+        self.pid_steer.istate = \
+            self.pid_steer.dstate = \
+            self.pid_steer.error_prev = 0.0
+
+    # -----------------------------------------------------------------------
+    # Vision helpers
+    # -----------------------------------------------------------------------
 
     def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y,
                                pixels_per_meter, robot_x, robot_y):
@@ -209,6 +230,8 @@ class GTGControllerNode(Node):
         return None, None
 
     # -----------------------------------------------------------------------
+    # Main vision loop
+    # -----------------------------------------------------------------------
 
     def _process_vision(self) -> None:
         if self._in_cooldown():
@@ -218,21 +241,25 @@ class GTGControllerNode(Node):
                 throttle_duration_sec=2.0)
             return
 
-        now_ns          = self.get_clock().now().nanoseconds
-        rs_target_found = False
+        now_ns = self.get_clock().now().nanoseconds
 
+        # ------------------------------------------------------------------
+        # 1. Try RealSense first — but ONLY if it is actively publishing
+        #    frames.  A stale camera (cable pulled, crashed) is skipped.
+        # ------------------------------------------------------------------
         rs_frame_age = (now_ns - self._last_rs_frame_ns) / 1e9
-        if self._latest_rs_frame is not None and rs_frame_age < FRAME_TIMEOUT_SEC:
+        rs_alive     = (self._latest_rs_frame is not None
+                        and rs_frame_age < FRAME_TIMEOUT_SEC)
 
+        if rs_alive:
             cX, cY = self.get_red_centroid(
                 self._latest_rs_frame, publish_debug=True)
 
             if cX is not None:
-                rs_target_found          = True
-                self.last_realsense_time = now_ns
-
+                # RealSense has a live detection — it drives.
                 if self.active_camera != 'realsense':
-                    self.get_logger().info("RealSense regained detection.")
+                    self.get_logger().info(
+                        "RealSense has detection — taking control.")
                     self._reset_pid()
                     self.active_camera = 'realsense'
 
@@ -242,31 +269,35 @@ class GTGControllerNode(Node):
                 dist = math.sqrt(x_robot**2 + y_robot**2)
 
                 self.get_logger().info(
-                    f"[GTG RS] DETECTED centroid=({cX},{cY}) dist={dist:.2f}m",
+                    f"[GTG RS] centroid=({cX},{cY}) dist={dist:.2f}m",
                     throttle_duration_sec=0.5)
 
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
+                return   # <-- RealSense handled this tick; skip Arducam.
 
             else:
-                self.get_logger().info(
-                    f"[GTG RS] No red detected (mask area < {MIN_CONTOUR_AREA}px).",
-                    throttle_duration_sec=2.0)
+                # RealSense is alive but sees no red this tick.
+                # Fall through immediately to the Arducam — no timeout gate.
+                if self.active_camera == 'realsense':
+                    self.get_logger().info(
+                        "[GTG RS] Lost centroid — handing off to Arducam.")
+                    self.active_camera = 'none'
 
-        realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
-        arc_frame_age     = (now_ns - self._last_arc_frame_ns) / 1e9
+        # ------------------------------------------------------------------
+        # 2. Arducam fallback — takes over the moment RealSense loses red,
+        #    regardless of how long ago the RealSense last detected anything.
+        # ------------------------------------------------------------------
+        arc_frame_age = (now_ns - self._last_arc_frame_ns) / 1e9
+        arc_alive     = (self._latest_arc_frame is not None
+                         and arc_frame_age < FRAME_TIMEOUT_SEC)
 
-        if (not rs_target_found
-                and realsense_age_sec >= REALSENSE_TIMEOUT_SEC
-                and self._latest_arc_frame is not None
-                and arc_frame_age < FRAME_TIMEOUT_SEC):
-
+        if arc_alive:
             cX, cY = self.get_red_centroid(self._latest_arc_frame)
 
             if cX is not None:
                 if self.active_camera != 'arducam':
                     self.get_logger().info(
-                        f"RealSense lost {realsense_age_sec:.1f}s "
-                        "— Arducam taking control.")
+                        "Arducam has detection — taking control.")
                     self._reset_pid()
                     self.active_camera = 'arducam'
 
@@ -276,11 +307,33 @@ class GTGControllerNode(Node):
                 dist = math.sqrt(x_robot**2 + y_robot**2)
 
                 self.get_logger().info(
-                    f"[GTG ARC] DETECTED centroid=({cX},{cY}) dist={dist:.2f}m",
+                    f"[GTG ARC] centroid=({cX},{cY}) dist={dist:.2f}m",
                     throttle_duration_sec=0.5)
 
                 self._run_control(x_robot, y_robot, dist, GOAL_THRESH_ARDUCAM)
+                return
 
+            else:
+                if self.active_camera == 'arducam':
+                    self.get_logger().info(
+                        "[GTG ARC] Lost centroid — no camera has detection.",
+                        throttle_duration_sec=1.0)
+                    self.active_camera = 'none'
+
+        # ------------------------------------------------------------------
+        # 3. Neither camera has a detection this tick — publish nothing.
+        #    Commander will hold the robot still (GTG mode) or fall back to
+        #    optical (OPTICAL mode) because gtg_active will go False after
+        #    GTG_TIMEOUT_SEC without a wheel command from this node.
+        # ------------------------------------------------------------------
+        if self.active_camera != 'none':
+            self.active_camera = 'none'
+        self.get_logger().info(
+            "[GTG] No detection on either camera — waiting.",
+            throttle_duration_sec=2.0)
+
+    # -----------------------------------------------------------------------
+    # Control
     # -----------------------------------------------------------------------
 
     def _run_control(self, x_robot, y_robot, dist, goal_thresh) -> None:
@@ -288,7 +341,8 @@ class GTGControllerNode(Node):
             if not self._auger_triggered:
                 self._auger_triggered = True
                 self.get_logger().info(
-                    f"Target reached (dist={dist:.2f}m). Triggering auger (one-shot).")
+                    f"Target reached (dist={dist:.2f}m ≤ {goal_thresh}m). "
+                    "Triggering auger (one-shot).")
                 self._publish_wheels(0.0, 0.0)
                 msg = String(); msg.data = "drill"
                 self.auger_trigger_pub.publish(msg)
