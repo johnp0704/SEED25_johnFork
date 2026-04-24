@@ -136,15 +136,18 @@ def _annotate_frame(frame: np.ndarray) -> np.ndarray:
 
     blue_cnts, _ = cv2.findContours(
         blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    if blue_cnts:
-        largest = max(blue_cnts, key=cv2.contourArea)
-        if cv2.contourArea(largest) >= MIN_BLUE_AREA:
-            x, y, bw, bh = cv2.boundingRect(largest)
-            x, y, bw, bh = x*2, y*2, bw*2, bh*2
-            cv2.rectangle(out, (x, y), (x+bw, y+bh), COLOR_BLUE_BOX, BOX_THICKNESS)
-            cv2.putText(out, "tape", (x, max(y-6, 10)),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE_BOX, 1,
-                        cv2.LINE_AA)
+    valid_blue = [c for c in blue_cnts
+                  if cv2.contourArea(c) >= MIN_BLUE_AREA]
+    if valid_blue:
+        # Pick the contour lowest in the frame (max bottom-edge Y)
+        lowest = max(valid_blue,
+                     key=lambda c: cv2.boundingRect(c)[1] + cv2.boundingRect(c)[3])
+        x, y, bw, bh = cv2.boundingRect(lowest)
+        x, y, bw, bh = x*2, y*2, bw*2, bh*2
+        cv2.rectangle(out, (x, y), (x+bw, y+bh), COLOR_BLUE_BOX, BOX_THICKNESS)
+        cv2.putText(out, "tape", (x, max(y-6, 10)),
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLOR_BLUE_BOX, 1,
+                    cv2.LINE_AA)
 
     return out
 

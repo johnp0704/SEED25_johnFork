@@ -1,31 +1,26 @@
 """
 commander_node.py  —  arbitrates wheel commands and drives Sabertooth hardware.
 
-Tool integration
-----------------
-When the GTG controller reaches its target it publishes on /auger/activate.
-The commander intercepts this, enters DRILLING mode, and:
+Changes vs. previous version
+-----------------------------
+* TELEOP mode added — GUI D-pad commands arrive on /vision/teleop_cmd and
+  are passed straight through to the wheels.  All other sources (optical,
+  GTG) are ignored while TELEOP is active.  The drill interlock still works:
+  if a drill cycle is running, wheels stay at zero even in TELEOP.
 
-  1. Immediately zeroes all wheel outputs (wheels stay at 0 for entire cycle).
-  2. Forwards the activate signal to /tool/activate (tool_controller_node).
-  3. Subscribes to /tool/status and waits for DONE or ERROR.
-     • DONE  → resumes the mode that was active before drilling started, and
-               publishes a 10-second cooldown to /gtg/cooldown so the GTG
-               controller won't re-detect the same weed immediately.
-     • ERROR → transitions to IDLE and waits for user input from the GUI.
-               The GUI's /commander/ack subscription will show "IDLE".
-
-Publishes /rehome/reset whenever the GUI switches INTO REHOME mode so the
-aruco_rehoming_node restarts its scan from scratch.
+* The drill no longer re-homes between weed cycles — homing happens once at
+  tool_controller_node startup.  The GUI exposes REHOME DRILL and E-STOP
+  DRILL buttons that send directly to /tool/rehome and /tool/estop;
+  commander doesn't need to relay those.
 
 Modes
 -----
   IDLE        — all wheels stopped.
   REHOME      — aruco-based re-homing; uses rehome_cmd topic.
   OPTICAL     — optical path follower with GTG override when red detected.
-  GTG         — pure go-to-goal; robot ONLY moves when the GTG controller is
-                actively publishing commands (red weed detected).  No optical
-                fallback — wheels stay at zero otherwise.
+  GTG         — pure go-to-goal; robot ONLY moves when GTG controller is
+                actively publishing commands (red weed detected).
+  TELEOP      — GUI D-pad; /vision/teleop_cmd drives the wheels directly.
 """
 from __future__ import annotations
 
@@ -38,18 +33,12 @@ from demo_night.sabertooth import SaberToothMotorDriver
 GTG_TIMEOUT_SEC         = 0.5
 MODE_TIMEOUT_SEC        = 1.0
 SABERTOOTH_CALL_RATE_HZ = 20.0
-
-# How long (seconds) to suppress GTG detection after a successful drill.
-GTG_COOLDOWN_SEC = 10.0
+GTG_COOLDOWN_SEC        = 10.0
 
 
 class CommanderNode(Node):
 
-    # All valid modes the commander can be in.
-    # DRILLING is an internal sub-mode — externally it looks like the prior
-    # mode is paused, so the GUI still shows the last confirmed mode while
-    # drilling.
-    _VALID_GUI_MODES = {"IDLE", "REHOME", "OPTICAL", "GTG"}
+    _VALID_GUI_MODES = {"IDLE", "REHOME", "OPTICAL", "GTG", "TELEOP"}
 
     def __init__(self):
         super().__init__('commander_node')
@@ -70,20 +59,18 @@ class CommanderNode(Node):
         self.current_mode:   str = "IDLE"
         self.confirmed_mode: str = "IDLE"
 
-        # Indicates the robot is mid-drill cycle — overrides all wheel commands
-        # regardless of current_mode.
-        self._drilling: bool = False
-
-        # Mode to restore after a successful drill cycle.
+        self._drilling:      bool = False
         self._pre_drill_mode: str = "IDLE"
 
         self.cmd_gtg     = [0.0, 0.0]
         self.cmd_rehome  = [0.0, 0.0]
         self.cmd_optical = [0.0, 0.0]
+        self.cmd_teleop  = [0.0, 0.0]
 
         self.t_gtg     = 0
         self.t_rehome  = 0
         self.t_optical = 0
+        self.t_teleop  = 0
 
         self.gtg_active: bool = False
 
@@ -99,19 +86,19 @@ class CommanderNode(Node):
         self.create_subscription(
             String, '/gui/system_state', self._gui_state_cb, 10)
         self.create_subscription(
-            Float32MultiArray, '/vision/gtg_cmd', self._gtg_cb, 10)
+            Float32MultiArray, '/vision/gtg_cmd',    self._gtg_cb,    10)
         self.create_subscription(
             Float32MultiArray, '/vision/rehome_cmd', self._rehome_cb, 10)
         self.create_subscription(
             Float32MultiArray, '/vision/optical_cmd', self._optical_cb, 10)
+        self.create_subscription(
+            Float32MultiArray, '/vision/teleop_cmd', self._teleop_cb, 10)
 
-        # Auger trigger from GTG controller
+        # Tool pipeline
         self.create_subscription(
             String, '/auger/activate', self._auger_activate_cb, 10)
-
-        # Tool status from tool_controller_node
         self.create_subscription(
-            String, '/tool/status', self._tool_status_cb, 10)
+            String, '/tool/status',    self._tool_status_cb,    10)
 
         self.create_timer(1.0 / SABERTOOTH_CALL_RATE_HZ, self._control_loop)
         self.get_logger().info(
@@ -128,13 +115,15 @@ class CommanderNode(Node):
                 f"GUI requested unknown mode '{new_mode}' — ignored.")
             return
 
-        # If the user manually commands IDLE while drilling, honour it:
-        # abort any in-progress drill tracking and reset.
         if new_mode == "IDLE" and self._drilling:
             self.get_logger().warn(
                 "GUI commanded IDLE during active drill — "
                 "aborting drill tracking and stopping.")
             self._drilling = False
+
+        # Leaving TELEOP — zero the teleop command so stale values don't linger
+        if self.current_mode == "TELEOP" and new_mode != "TELEOP":
+            self.cmd_teleop = [0.0, 0.0]
 
         previous_mode     = self.current_mode
         self.current_mode = new_mode
@@ -162,23 +151,25 @@ class CommanderNode(Node):
         self.cmd_optical = [msg.data[0], msg.data[1]]
         self.t_optical   = self.get_clock().now().nanoseconds
 
+    def _teleop_cb(self, msg: Float32MultiArray) -> None:
+        self.cmd_teleop = [msg.data[0], msg.data[1]]
+        self.t_teleop   = self.get_clock().now().nanoseconds
+
     # ===================================================================
     # Callbacks — tool pipeline
     # ===================================================================
 
     def _auger_activate_cb(self, _msg: String) -> None:
-        """
-        GTG controller signals it has reached the weed target.
-
-        Accepts the trigger if:
-          • A drill cycle is not already running, AND
-          • The robot is in OPTICAL or GTG mode with GTG actively in control
-            (a fresh GTG wheel command arrived within GTG_TIMEOUT_SEC).
-        """
         if self._drilling:
             self.get_logger().warn(
                 "[TOOL] /auger/activate received but drill already in progress — "
                 "ignoring duplicate.")
+            return
+
+        # Don't trigger a drill from TELEOP mode — operator is in control
+        if self.current_mode == "TELEOP":
+            self.get_logger().warn(
+                "[TOOL] /auger/activate received but mode is TELEOP — ignoring.")
             return
 
         gtg_is_in_control = (
@@ -203,12 +194,6 @@ class CommanderNode(Node):
         self.tool_pub.publish(activate_msg)
 
     def _tool_status_cb(self, msg: String) -> None:
-        """
-        Receives status updates from tool_controller_node.
-
-        Only the terminal states (DONE, ERROR) require action here.
-        Intermediate states (HOMING, DRILLING) are just logged.
-        """
         status = msg.data.upper()
 
         if status in ("HOMING", "DRILLING"):
@@ -238,7 +223,7 @@ class CommanderNode(Node):
 
         elif status == "ERROR":
             self.get_logger().error(
-                "[TOOL] Drill cycle ERROR (RC_MOVE_UNSAFE or serial failure).  "
+                "[TOOL] Drill cycle ERROR.  "
                 "Transitioning to IDLE — awaiting user input.")
             self._drilling = False
 
@@ -280,7 +265,6 @@ class CommanderNode(Node):
                 self.cmd_rehome, self.t_rehome, now_ns, "REHOME")
 
         elif self.current_mode == "OPTICAL":
-            # GTG overrides optical when red is actively detected.
             if self.gtg_active:
                 final_cmd = self.cmd_gtg
                 self.get_logger().info(
@@ -291,16 +275,23 @@ class CommanderNode(Node):
                     self.cmd_optical, self.t_optical, now_ns, "OPTICAL")
 
         elif self.current_mode == "GTG":
-            # Pure go-to-goal: ONLY move when GTG is actively publishing.
-            # No optical fallback — wheels stay at zero if no red detected.
             if self.gtg_active:
                 final_cmd = self.cmd_gtg
                 self.get_logger().info(
                     "GTG active — driving toward weed.",
                     throttle_duration_sec=1.0)
             else:
-                # No red detected — hold position silently.
                 final_cmd = [0.0, 0.0]
+
+        elif self.current_mode == "TELEOP":
+            # Pass teleop commands straight through.
+            # Use a slightly longer timeout (0.5s) since the GUI publishes
+            # at 20 Hz — a missed packet shouldn't cause a spurious stop.
+            teleop_age = (now_ns - self.t_teleop) / 1e9
+            if self.t_teleop == 0 or teleop_age > 0.5:
+                final_cmd = [0.0, 0.0]
+            else:
+                final_cmd = self.cmd_teleop
 
         self._apply_wheels(float(final_cmd[0]), float(final_cmd[1]))
 
