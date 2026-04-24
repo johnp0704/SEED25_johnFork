@@ -50,7 +50,7 @@ def analyze_roi(x1, y1, x2, y2, frame):
 def main():
     global frame_copy, drawing, ix, iy, fx, fy
 
-    cap = cv2.VideoCapture(0)   # change index if needed
+    cap = cv2.VideoCapture(1)   # change index if needed
     if not cap.isOpened():
         print("ERROR: Could not open Arducam. Check device index.")
         return
