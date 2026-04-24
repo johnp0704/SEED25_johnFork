@@ -3,25 +3,32 @@ gtg_controller_node.py
 
 Go-To-Goal vision controller.
 
-Camera handoff logic
---------------------
-The RealSense is preferred when it has an active red detection.
-The moment the RealSense LOSES the centroid (mask area too small), the
-Arducam takes over immediately — there is NO timeout gate between them.
-If neither camera detects red, the GTG node publishes nothing and the
-commander holds the robot still (in GTG mode) or falls back to optical
-(in OPTICAL mode).
+Camera priority (revised)
+--------------------------
+The Arducam is mounted lower and closer to the ground — it keeps the weed
+in frame longer as the robot approaches and is more reliable for the final
+approach.  The RealSense has a wider FOV and is used as a long-range scout.
 
-This prevents the previous failure mode where the RealSense was still
-publishing frames (so rs_frame_age stayed fresh) but had lost the
-centroid, silently blocking the Arducam handoff.
+Priority order each tick:
+  1. Arducam  — if it has a live red detection, it drives.
+  2. RealSense — if Arducam sees nothing but RealSense does, RealSense drives.
+  3. Neither  — publish nothing; commander holds the robot still (GTG mode)
+                or falls back to optical (OPTICAL mode).
+
+Separate HSV thresholds
+-----------------------
+The Arducam produces a noticeably different colour response under indoor
+lighting — the red mat appears more desaturated/darker than on the RealSense.
+ARC_LOWER/UPPER_RED_* use looser S and V minimums to catch it.
+
+If you get false positives with the Arducam, raise ARC_S_MIN back toward 80
+in steps of 10 until they go away.
 
 Cooldown integration
 --------------------
 After a successful drill cycle the commander publishes a float string on
 /gtg/cooldown (e.g. "10.0").  During that window this node will NOT
-publish wheel commands or auger triggers — it simply sits quiet and lets
-the optical path follower or pure-GTG mode take back control.
+publish wheel commands or auger triggers.
 """
 from __future__ import annotations
 import math
@@ -54,12 +61,10 @@ REALSENSE_OFFSET_Y    =  0.16
 ARDUCAM_OFFSET_X      =  0.1
 ARDUCAM_OFFSET_Y      =  0.0
 
-# How long a camera can go without publishing ANY frame before we consider
-# it stale.  This is purely a "is the camera alive?" check — it does NOT
-# gate the detection handoff between cameras.
+# "Is the camera alive?" check only — does NOT gate detection handoff.
 FRAME_TIMEOUT_SEC = 0.5
 
-# Stopping distance from the detected centroid in metres.
+# Stopping distances.
 GOAL_THRESH_REALSENSE =  0.20
 GOAL_THRESH_ARDUCAM   =  0.15
 
@@ -73,13 +78,32 @@ PID_KD  =  2.0
 PID_N   = 15.0
 PID_KAW =  1.0
 
-# HSV red mask — two ranges because red wraps around hue=0/180.
-LOWER_RED_1 = np.array([0,   120, 120])
-UPPER_RED_1 = np.array([15,  255, 255])
-LOWER_RED_2 = np.array([165, 120, 120])
-UPPER_RED_2 = np.array([180, 255, 255])
+# ------------------------------------------------------------------------------
+# RealSense HSV thresholds — conservative; the RealSense pipeline is
+# well white-balanced so red is vivid.
+# ------------------------------------------------------------------------------
+RS_LOWER_RED_1 = np.array([0,   120, 120])
+RS_UPPER_RED_1 = np.array([15,  255, 255])
+RS_LOWER_RED_2 = np.array([165, 120, 120])
+RS_UPPER_RED_2 = np.array([180, 255, 255])
+RS_MIN_AREA    = 300
 
-MIN_CONTOUR_AREA  = 300
+# ------------------------------------------------------------------------------
+# Arducam HSV thresholds — looser S and V floors.
+# Under indoor demo lighting the red mat looks desaturated/darker on the
+# Arducam sensor.  The hue band is also slightly wider for lens colour shift.
+#
+# TUNING: if you see false positives on walls/floor, raise ARC_S_MIN toward
+# 80 in steps of 10.  If the target is still missed, lower it toward 40.
+# ------------------------------------------------------------------------------
+ARC_S_MIN = 60    # was 120 on RealSense — key relaxation
+ARC_V_MIN = 60    # was 120 on RealSense
+
+ARC_LOWER_RED_1 = np.array([0,   ARC_S_MIN, ARC_V_MIN])
+ARC_UPPER_RED_1 = np.array([18,  255,        255       ])
+ARC_LOWER_RED_2 = np.array([162, ARC_S_MIN, ARC_V_MIN])
+ARC_UPPER_RED_2 = np.array([180, 255,        255       ])
+ARC_MIN_AREA    = 150   # lower bar — target is smaller/more washed-out
 
 # ==============================================================================
 
@@ -101,7 +125,6 @@ class GTGControllerNode(Node):
         self._cooldown_until:  float = 0.0
         self._auger_triggered: bool  = False
 
-        # Track which camera is currently driving — for logging only.
         self.active_camera: str = 'none'
 
         self.pid_steer = PID(
@@ -111,12 +134,15 @@ class GTGControllerNode(Node):
             Kaw=PID_KAW,
         )
 
-        self.wheel_cmd_pub     = self.create_publisher(
+        self.wheel_cmd_pub      = self.create_publisher(
             Float32MultiArray, '/vision/gtg_cmd', 10)
-        self.auger_trigger_pub = self.create_publisher(
+        self.auger_trigger_pub  = self.create_publisher(
             String, '/auger/activate', 10)
-        self.debug_mask_pub    = self.create_publisher(
-            Image, '/vision/gtg_debug_mask', SENSOR_QOS)
+        # Separate debug mask topics so you can inspect each camera in RViz.
+        self.rs_debug_mask_pub  = self.create_publisher(
+            Image, '/vision/gtg_debug_mask',     SENSOR_QOS)
+        self.arc_debug_mask_pub = self.create_publisher(
+            Image, '/vision/gtg_arc_debug_mask', SENSOR_QOS)
 
         self.create_subscription(
             Image, '/vision/realsense_color', self._rs_frame_cb, SENSOR_QOS)
@@ -126,7 +152,9 @@ class GTGControllerNode(Node):
             String, '/gtg/cooldown', self._cooldown_cb, 10)
 
         self.create_timer(1.0 / 30.0, self._process_vision)
-        self.get_logger().info("GTG controller initialised.")
+        self.get_logger().info(
+            "GTG controller initialised.  "
+            "Priority: Arducam (close-range finisher) → RealSense (wide-FOV scout).")
 
     # -----------------------------------------------------------------------
     # Calibration
@@ -197,7 +225,7 @@ class GTGControllerNode(Node):
             self.pid_steer.error_prev = 0.0
 
     # -----------------------------------------------------------------------
-    # Vision helpers
+    # Detection — separate tuning per camera
     # -----------------------------------------------------------------------
 
     def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y,
@@ -208,24 +236,49 @@ class GTGControllerNode(Node):
         rel_y = (dy_px / pixels_per_meter) + offset_y
         return rel_y, -rel_x
 
-    def get_red_centroid(self, frame: np.ndarray, publish_debug: bool = False):
+    def _get_red_centroid_realsense(self, frame: np.ndarray):
+        """Red detection tuned for the RealSense colour pipeline."""
         hsv  = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
         mask = cv2.bitwise_or(
-            cv2.inRange(hsv, LOWER_RED_1, UPPER_RED_1),
-            cv2.inRange(hsv, LOWER_RED_2, UPPER_RED_2),
+            cv2.inRange(hsv, RS_LOWER_RED_1, RS_UPPER_RED_1),
+            cv2.inRange(hsv, RS_LOWER_RED_2, RS_UPPER_RED_2),
         )
         mask = cv2.erode(mask,  None, iterations=2)
         mask = cv2.dilate(mask, None, iterations=2)
-
-        if publish_debug:
-            try:
-                debug_msg = self.bridge.cv2_to_imgmsg(mask, encoding='mono8')
-                self.debug_mask_pub.publish(debug_msg)
-            except Exception:
-                pass
-
+        try:
+            self.rs_debug_mask_pub.publish(
+                self.bridge.cv2_to_imgmsg(mask, encoding='mono8'))
+        except Exception:
+            pass
         M = cv2.moments(mask)
-        if M['m00'] > MIN_CONTOUR_AREA:
+        if M['m00'] > RS_MIN_AREA:
+            return int(M['m10'] / M['m00']), int(M['m01'] / M['m00'])
+        return None, None
+
+    def _get_red_centroid_arducam(self, frame: np.ndarray):
+        """
+        Red detection tuned for the Arducam under indoor demo lighting.
+
+        Key differences from RealSense:
+          - Lower S and V minimums — the target looks desaturated/darker.
+          - Slightly wider hue band for lens colour shift.
+          - Only 1 erosion pass — prevents killing small/low-contrast detections.
+          - Lower minimum area threshold.
+        """
+        hsv  = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        mask = cv2.bitwise_or(
+            cv2.inRange(hsv, ARC_LOWER_RED_1, ARC_UPPER_RED_1),
+            cv2.inRange(hsv, ARC_LOWER_RED_2, ARC_UPPER_RED_2),
+        )
+        mask = cv2.erode(mask,  None, iterations=1)   # gentler than RS
+        mask = cv2.dilate(mask, None, iterations=2)
+        try:
+            self.arc_debug_mask_pub.publish(
+                self.bridge.cv2_to_imgmsg(mask, encoding='mono8'))
+        except Exception:
+            pass
+        M = cv2.moments(mask)
+        if M['m00'] > ARC_MIN_AREA:
             return int(M['m10'] / M['m00']), int(M['m01'] / M['m00'])
         return None, None
 
@@ -243,56 +296,19 @@ class GTGControllerNode(Node):
 
         now_ns = self.get_clock().now().nanoseconds
 
-        # ------------------------------------------------------------------
-        # 1. Try RealSense first — but ONLY if it is actively publishing
-        #    frames.  A stale camera (cable pulled, crashed) is skipped.
-        # ------------------------------------------------------------------
-        rs_frame_age = (now_ns - self._last_rs_frame_ns) / 1e9
-        rs_alive     = (self._latest_rs_frame is not None
-                        and rs_frame_age < FRAME_TIMEOUT_SEC)
-
-        if rs_alive:
-            cX, cY = self.get_red_centroid(
-                self._latest_rs_frame, publish_debug=True)
-
-            if cX is not None:
-                # RealSense has a live detection — it drives.
-                if self.active_camera != 'realsense':
-                    self.get_logger().info(
-                        "RealSense has detection — taking control.")
-                    self._reset_pid()
-                    self.active_camera = 'realsense'
-
-                x_robot, y_robot = self._pixel_to_robot_frame(
-                    cX, cY, REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y,
-                    self.rs_pixels_per_meter, self.rs_robot_x, self.rs_robot_y)
-                dist = math.sqrt(x_robot**2 + y_robot**2)
-
-                self.get_logger().info(
-                    f"[GTG RS] centroid=({cX},{cY}) dist={dist:.2f}m",
-                    throttle_duration_sec=0.5)
-
-                self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
-                return   # <-- RealSense handled this tick; skip Arducam.
-
-            else:
-                # RealSense is alive but sees no red this tick.
-                # Fall through immediately to the Arducam — no timeout gate.
-                if self.active_camera == 'realsense':
-                    self.get_logger().info(
-                        "[GTG RS] Lost centroid — handing off to Arducam.")
-                    self.active_camera = 'none'
-
-        # ------------------------------------------------------------------
-        # 2. Arducam fallback — takes over the moment RealSense loses red,
-        #    regardless of how long ago the RealSense last detected anything.
-        # ------------------------------------------------------------------
         arc_frame_age = (now_ns - self._last_arc_frame_ns) / 1e9
         arc_alive     = (self._latest_arc_frame is not None
                          and arc_frame_age < FRAME_TIMEOUT_SEC)
 
+        rs_frame_age  = (now_ns - self._last_rs_frame_ns) / 1e9
+        rs_alive      = (self._latest_rs_frame is not None
+                         and rs_frame_age < FRAME_TIMEOUT_SEC)
+
+        # ------------------------------------------------------------------
+        # 1. Arducam — preferred; close-range finisher.
+        # ------------------------------------------------------------------
         if arc_alive:
-            cX, cY = self.get_red_centroid(self._latest_arc_frame)
+            cX, cY = self._get_red_centroid_arducam(self._latest_arc_frame)
 
             if cX is not None:
                 if self.active_camera != 'arducam':
@@ -316,15 +332,42 @@ class GTGControllerNode(Node):
             else:
                 if self.active_camera == 'arducam':
                     self.get_logger().info(
-                        "[GTG ARC] Lost centroid — no camera has detection.",
-                        throttle_duration_sec=1.0)
+                        "[GTG ARC] Lost centroid — falling back to RealSense.")
                     self.active_camera = 'none'
 
         # ------------------------------------------------------------------
-        # 3. Neither camera has a detection this tick — publish nothing.
-        #    Commander will hold the robot still (GTG mode) or fall back to
-        #    optical (OPTICAL mode) because gtg_active will go False after
-        #    GTG_TIMEOUT_SEC without a wheel command from this node.
+        # 2. RealSense — wide-FOV scout when Arducam has no detection.
+        # ------------------------------------------------------------------
+        if rs_alive:
+            cX, cY = self._get_red_centroid_realsense(self._latest_rs_frame)
+
+            if cX is not None:
+                if self.active_camera != 'realsense':
+                    self.get_logger().info(
+                        "RealSense has detection — taking control.")
+                    self._reset_pid()
+                    self.active_camera = 'realsense'
+
+                x_robot, y_robot = self._pixel_to_robot_frame(
+                    cX, cY, REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y,
+                    self.rs_pixels_per_meter, self.rs_robot_x, self.rs_robot_y)
+                dist = math.sqrt(x_robot**2 + y_robot**2)
+
+                self.get_logger().info(
+                    f"[GTG RS] centroid=({cX},{cY}) dist={dist:.2f}m",
+                    throttle_duration_sec=0.5)
+
+                self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
+                return
+
+            else:
+                if self.active_camera == 'realsense':
+                    self.get_logger().info(
+                        "[GTG RS] Lost centroid — no camera has detection.")
+                    self.active_camera = 'none'
+
+        # ------------------------------------------------------------------
+        # 3. No detection on either camera — hold still.
         # ------------------------------------------------------------------
         if self.active_camera != 'none':
             self.active_camera = 'none'
