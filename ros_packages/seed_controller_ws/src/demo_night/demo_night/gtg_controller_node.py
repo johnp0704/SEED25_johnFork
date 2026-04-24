@@ -58,7 +58,7 @@ from ml_red_controller.PID import PID
 
 REALSENSE_OFFSET_X    = -0.3
 REALSENSE_OFFSET_Y    =  0.16
-ARDUCAM_OFFSET_X      =  0.0
+ARDUCAM_OFFSET_X      =  -0.05
 ARDUCAM_OFFSET_Y      =  0.0
 
 # "Is the camera alive?" check only — does NOT gate detection handoff.
@@ -66,7 +66,7 @@ FRAME_TIMEOUT_SEC = 0.5
 
 # Stopping distances.
 GOAL_THRESH_REALSENSE =  0.20
-GOAL_THRESH_ARDUCAM   =  0.20
+GOAL_THRESH_ARDUCAM   =  0.18
 
 MAX_ACTUATOR_INPUT    = 50.0
 PIVOT_THRESH          = np.deg2rad(30.0)

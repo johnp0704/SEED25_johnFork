@@ -6,29 +6,33 @@ a USB serial link.
 
 Startup homing
 --------------
-As soon as the serial port opens successfully the node fires a background
-thread that sends "home\n" and waits for "0".  This guarantees the stepper
-is always at its calibrated offset before any drill cycle runs, regardless
-of whether the ESP32 was power-cycled.  The node publishes:
-  HOMING  → during startup home
-  IDLE    → once startup home completes (or ERROR if it fails)
+The stepper is homed ONCE when the node starts.  Subsequent drill cycles
+skip the home step entirely — the ESP32 maintains position between cycles.
+This eliminates the ~10-45s homing delay on every weed detection.
+
+The GUI exposes two manual overrides via separate topics:
+  /tool/rehome — triggers an on-demand home (e.g. after an E-stop recovery
+                 or if the head is suspected to be in an unknown position).
+  /tool/estop  — immediately sends "estop\n" to the ESP32 and kills any
+                 in-progress drill sequence.
 
 ESP32 serial protocol (115 200 baud, newline-terminated):
-  Send  "home\n"  → ESP32 homes + moves to calibrated offset
-                    → responds "0\n"  (RC_OK) when done
+  Send  "home\n"  → ESP32 homes + moves to calibrated offset → responds "0\n"
   Send  "drill\n" → ESP32 runs full drill cycle (feed + retract)
-                    → responds "0\n"  (RC_OK) or "1\n"  (RC_MOVE_UNSAFE)
+                    → responds "0\n" (RC_OK) or "1\n" (RC_MOVE_UNSAFE)
+  Send  "estop\n" → ESP32 kills motor immediately
   Either side can receive "ESTOP\n" if the ESP32 triggers an emergency stop.
 
 Drill sequence on every /tool/activate message:
   1. Flush stale serial data
-  2. Send "home\n", wait for "0"      → publish HOMING, then DRILLING
-  3. Send "drill\n", wait for "0"/"1" → publish DONE or ERROR
-  4. Return to IDLE
+  2. Send "drill\n", wait for "0"/"1" → publish DONE or ERROR
+  3. Return to IDLE
 
 Topics
 ------
 Subscribes : /tool/activate  (std_msgs/String)  — any message triggers a cycle
+             /tool/rehome    (std_msgs/String)  — triggers on-demand home
+             /tool/estop     (std_msgs/String)  — immediate motor kill
 Publishes  : /tool/status    (std_msgs/String)  — IDLE | HOMING | DRILLING | DONE | ERROR
 
 Parameters
@@ -51,7 +55,7 @@ except ImportError:
     _SERIAL_AVAILABLE = False
 
 # ============================================================
-# Timing budgets (generous — homing can take 10+ seconds)
+# Timing budgets
 # ============================================================
 HOME_TIMEOUT_SEC  = 45.0
 DRILL_TIMEOUT_SEC = 90.0
@@ -59,8 +63,8 @@ DRILL_TIMEOUT_SEC = 90.0
 
 class ToolControllerNode(Node):
 
-    _STATE_IDLE  = "IDLE"
-    _STATE_BUSY  = "BUSY"
+    _STATE_IDLE = "IDLE"
+    _STATE_BUSY = "BUSY"
 
     def __init__(self):
         super().__init__('tool_controller_node')
@@ -73,6 +77,7 @@ class ToolControllerNode(Node):
 
         self._ser: serial.Serial | None = None
         self._serial_ok = False
+        self._serial_lock = threading.Lock()   # guards all serial I/O
 
         if _SERIAL_AVAILABLE:
             try:
@@ -89,8 +94,7 @@ class ToolControllerNode(Node):
                     f"ESP32 serial opened: {port} @ {baud} baud.")
             except Exception as exc:
                 self.get_logger().error(
-                    f"Failed to open serial port {port}: {exc}\n"
-                    "Node will publish ERROR for every activate request.")
+                    f"Failed to open serial port {port}: {exc}")
         else:
             self.get_logger().error(
                 "pyserial not installed — cannot control tool.  "
@@ -99,51 +103,56 @@ class ToolControllerNode(Node):
         self._state      = self._STATE_BUSY   # busy until startup home finishes
         self._state_lock = threading.Lock()
 
-        self._status_pub = self.create_publisher(String, '/tool/status',    10)
-        self.create_subscription(String, '/tool/activate', self._activate_cb, 10)
+        self._status_pub = self.create_publisher(String, '/tool/status', 10)
 
-        # Publish initial HOMING so downstream nodes know we're starting up
+        self.create_subscription(
+            String, '/tool/activate', self._activate_cb, 10)
+        self.create_subscription(
+            String, '/tool/rehome',   self._rehome_cb,   10)
+        self.create_subscription(
+            String, '/tool/estop',    self._estop_cb,    10)
+
         self._publish_status("HOMING")
-        self.get_logger().info("Tool Controller Node ready — running startup home.")
+        self.get_logger().info(
+            "Tool Controller Node ready — running startup home (one-time).")
 
-        # Fire startup homing in a background thread so we don't block spin()
-        t = threading.Thread(target=self._run_startup_home, daemon=True)
-        t.start()
+        threading.Thread(target=self._run_startup_home, daemon=True).start()
 
     # -----------------------------------------------------------------------
-    # Startup homing
+    # Startup homing — runs ONCE
     # -----------------------------------------------------------------------
 
     def _run_startup_home(self) -> None:
         """
-        Runs once at node startup.  Sends 'home' and waits for '0'.
-        Sets state to IDLE on success, ERROR on failure.
+        Runs once at node startup.  After this completes successfully, the
+        stepper position is known and no further homing is needed before
+        each drill cycle.
         """
         try:
             if not self._serial_ok or self._ser is None:
                 self.get_logger().error(
-                    "[TOOL] No serial connection — cannot run startup home.")
+                    "[TOOL] No serial — cannot run startup home.")
                 self._publish_status("ERROR")
                 return
 
-            # Give the ESP32 a moment to finish its own boot sequence
-            time.sleep(2.0)
+            time.sleep(2.0)   # let ESP32 finish booting
 
-            self._ser.reset_input_buffer()
-            self._ser.reset_output_buffer()
+            with self._serial_lock:
+                self._ser.reset_input_buffer()
+                self._ser.reset_output_buffer()
+                self.get_logger().info("[TOOL] Startup: sending HOME.")
+                self._ser.write(b"home\n")
+                resp = self._read_response_locked(HOME_TIMEOUT_SEC)
 
-            self.get_logger().info("[TOOL] Startup: sending HOME command.")
-            self._ser.write(b"home\n")
-            resp = self._read_response(HOME_TIMEOUT_SEC)
             self.get_logger().info(f"[TOOL] Startup home response: '{resp}'")
 
             if resp == "0":
                 self.get_logger().info(
-                    "[TOOL] Startup homing complete — IDLE, ready for drill cycles.")
+                    "[TOOL] Startup homing complete — ready.")
                 self._publish_status("IDLE")
             else:
                 self.get_logger().error(
-                    f"[TOOL] Startup homing failed (response='{resp}') — ERROR.")
+                    f"[TOOL] Startup homing failed ('{resp}') — ERROR.")
                 self._publish_status("ERROR")
 
         except Exception as exc:
@@ -155,65 +164,120 @@ class ToolControllerNode(Node):
                 self._state = self._STATE_IDLE
 
     # -----------------------------------------------------------------------
-    # Callbacks
+    # On-demand rehome (GUI button)
     # -----------------------------------------------------------------------
 
-    def _activate_cb(self, _msg: String) -> None:
-        """Received on /tool/activate.  Starts the drill sequence if idle."""
+    def _rehome_cb(self, _msg: String) -> None:
+        """
+        Triggered by the GUI REHOME DRILL button.
+        Only runs if the tool is currently idle.
+        """
         with self._state_lock:
             if self._state != self._STATE_IDLE:
                 self.get_logger().warn(
-                    "[TOOL] Activate request received but tool is already busy — ignoring.")
+                    "[TOOL] Rehome requested but tool is busy — ignoring.")
                 return
             self._state = self._STATE_BUSY
 
-        t = threading.Thread(target=self._run_drill_sequence, daemon=True)
-        t.start()
+        threading.Thread(target=self._run_on_demand_home, daemon=True).start()
+
+    def _run_on_demand_home(self) -> None:
+        try:
+            if not self._serial_ok or self._ser is None:
+                self._publish_status("ERROR")
+                return
+
+            self.get_logger().info("[TOOL] On-demand HOME requested by GUI.")
+            self._publish_status("HOMING")
+
+            with self._serial_lock:
+                self._ser.reset_input_buffer()
+                self._ser.reset_output_buffer()
+                self._ser.write(b"home\n")
+                resp = self._read_response_locked(HOME_TIMEOUT_SEC)
+
+            self.get_logger().info(f"[TOOL] On-demand home response: '{resp}'")
+
+            if resp == "0":
+                self.get_logger().info("[TOOL] On-demand home complete.")
+                self._publish_status("IDLE")
+            else:
+                self.get_logger().error(
+                    f"[TOOL] On-demand home failed ('{resp}').")
+                self._publish_status("ERROR")
+
+        except Exception as exc:
+            self.get_logger().error(f"[TOOL] On-demand home exception: {exc}")
+            self._publish_status("ERROR")
+
+        finally:
+            with self._state_lock:
+                self._state = self._STATE_IDLE
 
     # -----------------------------------------------------------------------
-    # Background drill-sequence thread
+    # E-stop (GUI button) — interrupts any in-progress sequence
     # -----------------------------------------------------------------------
+
+    def _estop_cb(self, _msg: String) -> None:
+        """
+        Sends "estop\\n" immediately on the serial line regardless of current
+        state.  Uses the serial lock to avoid colliding with an in-progress
+        readline, but does NOT wait for a response — this must be fast.
+        """
+        self.get_logger().error("[TOOL] E-STOP commanded by GUI!")
+        self._publish_status("ERROR")
+
+        if not self._serial_ok or self._ser is None:
+            return
+
+        try:
+            with self._serial_lock:
+                self._ser.reset_output_buffer()
+                self._ser.write(b"estop\n")
+        except Exception as exc:
+            self.get_logger().error(f"[TOOL] E-stop serial write failed: {exc}")
+
+        # Force state back to IDLE so the system can recover after the operator
+        # re-homes and resumes.
+        with self._state_lock:
+            self._state = self._STATE_IDLE
+
+    # -----------------------------------------------------------------------
+    # Activate callback — drill cycle (NO homing before drill)
+    # -----------------------------------------------------------------------
+
+    def _activate_cb(self, _msg: String) -> None:
+        with self._state_lock:
+            if self._state != self._STATE_IDLE:
+                self.get_logger().warn(
+                    "[TOOL] Activate received but tool is busy — ignoring.")
+                return
+            self._state = self._STATE_BUSY
+
+        threading.Thread(target=self._run_drill_sequence, daemon=True).start()
 
     def _run_drill_sequence(self) -> None:
         """
-        Runs entirely in a daemon thread so blocking serial I/O doesn't
-        stall the ROS2 event loop.
+        Drill-only sequence — no homing step.
 
-        Flow:
-          1. home  → wait for "0"
-          2. drill → wait for "0" or "1"
-          3. Publish DONE / ERROR and return to IDLE
+        The stepper was homed at startup (or by an explicit on-demand home).
+        Skipping the home here saves 10-45 seconds per weed detection.
         """
         try:
             if not self._serial_ok or self._ser is None:
-                self.get_logger().error("[TOOL] No serial connection — publishing ERROR.")
+                self.get_logger().error("[TOOL] No serial — publishing ERROR.")
                 self._publish_status("ERROR")
                 return
 
-            # Flush any stale bytes from a previous run
-            self._ser.reset_input_buffer()
-            self._ser.reset_output_buffer()
-
-            # ------- HOMING -------
-            self.get_logger().info("[TOOL] Sending HOME command.")
-            self._publish_status("HOMING")
-
-            self._ser.write(b"home\n")
-            home_resp = self._read_response(HOME_TIMEOUT_SEC)
-            self.get_logger().info(f"[TOOL] Home response: '{home_resp}'")
-
-            if home_resp != "0":
-                self.get_logger().error(
-                    f"[TOOL] Homing failed (response='{home_resp}') — aborting.")
-                self._publish_status("ERROR")
-                return
-
-            # ------- DRILLING -------
-            self.get_logger().info("[TOOL] Sending DRILL command.")
+            self.get_logger().info("[TOOL] Sending DRILL command (no pre-home).")
             self._publish_status("DRILLING")
 
-            self._ser.write(b"drill\n")
-            drill_resp = self._read_response(DRILL_TIMEOUT_SEC)
+            with self._serial_lock:
+                self._ser.reset_input_buffer()
+                self._ser.reset_output_buffer()
+                self._ser.write(b"drill\n")
+                drill_resp = self._read_response_locked(DRILL_TIMEOUT_SEC)
+
             self.get_logger().info(f"[TOOL] Drill response: '{drill_resp}'")
 
             if drill_resp == "0":
@@ -221,11 +285,11 @@ class ToolControllerNode(Node):
                 self._publish_status("DONE")
             else:
                 self.get_logger().error(
-                    f"[TOOL] Drill cycle failed (response='{drill_resp}') — ERROR.")
+                    f"[TOOL] Drill failed ('{drill_resp}') — ERROR.")
                 self._publish_status("ERROR")
 
         except Exception as exc:
-            self.get_logger().error(f"[TOOL] Unexpected exception: {exc}")
+            self.get_logger().error(f"[TOOL] Drill exception: {exc}")
             self._publish_status("ERROR")
 
         finally:
@@ -236,13 +300,10 @@ class ToolControllerNode(Node):
     # Serial helpers
     # -----------------------------------------------------------------------
 
-    def _read_response(self, timeout_s: float) -> str:
+    def _read_response_locked(self, timeout_s: float) -> str:
         """
-        Reads lines from serial until a non-empty response arrives or the
-        deadline is exceeded.
-
-        Returns the stripped response string, or "TIMEOUT" / "ESTOP" as
-        appropriate.
+        Read lines until a non-empty response or deadline.
+        MUST be called with self._serial_lock already held.
         """
         deadline = time.monotonic() + timeout_s
 
@@ -266,7 +327,7 @@ class ToolControllerNode(Node):
             self.get_logger().info(f"[TOOL] Serial ← '{line}'")
 
             if line == "ESTOP":
-                self.get_logger().error("[TOOL] ESTOP received from ESP32!")
+                self.get_logger().error("[TOOL] ESTOP from ESP32!")
                 return "ESTOP"
 
             return line
@@ -274,16 +335,12 @@ class ToolControllerNode(Node):
         return "TIMEOUT"
 
     # -----------------------------------------------------------------------
-    # Publisher helper
-    # -----------------------------------------------------------------------
 
     def _publish_status(self, status: str) -> None:
         msg      = String()
         msg.data = status
         self._status_pub.publish(msg)
         self.get_logger().info(f"[TOOL] Status → {status}")
-
-    # -----------------------------------------------------------------------
 
     def destroy_node(self) -> None:
         if self._ser is not None and self._ser.is_open:
@@ -293,8 +350,6 @@ class ToolControllerNode(Node):
                 pass
         super().destroy_node()
 
-
-# ===========================================================================
 
 def main(args=None):
     rclpy.init(args=args)
