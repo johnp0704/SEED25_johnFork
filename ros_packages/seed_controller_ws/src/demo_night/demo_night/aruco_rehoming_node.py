@@ -104,7 +104,7 @@ SCAN_PIVOT_SPEED   = 35.0   # cmd units
 # ===========================================================================
 
 # Short steps so we don't overshoot the alignment target.
-ORIENT_STEP_DURATION_SEC  = 0.4   # seconds of pivoting per orient step
+ORIENT_STEP_DURATION_SEC  = 0.6   # seconds of pivoting per orient step
 ORIENT_PAUSE_DURATION_SEC = 0.6   # seconds of stillness per orient pause
 
 # ===========================================================================
