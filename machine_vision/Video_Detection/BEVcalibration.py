@@ -6,7 +6,7 @@ import os
 # ================Physical Configs===================
 CARDBOARD_WIDTH_M = 0.225
 CARDBOARD_HEIGHT_M = 0.175
-DIST_TO_CARDBOARD_M = 0.42
+DIST_TO_CARDBOARD_M = 0.72
 
 #BEV settings
 PIXELS_PER_METER = 400

@@ -17,8 +17,20 @@ def generate_launch_description():
         ),
         Node(
             package='ml_red_controller',
+            executable='gtg_motor_node',
+            name='gtg_motor_node',
+            output='screen'
+        ),
+        Node(
+            package='ml_red_controller',
             executable='cam_display_node',
             name='cam_display_node',
             output='screen'
-        )
+        ),
+        Node(
+            package='ml_red_controller',
+            executable='arducam_detector_node',
+            name='arducam_detector_node',
+            output='screen'
+        ),
     ])

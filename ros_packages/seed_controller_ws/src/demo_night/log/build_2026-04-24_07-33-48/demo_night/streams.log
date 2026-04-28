@@ -1,0 +1,77 @@
+[1.486s] Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/demo_night build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/install.log --install-scripts $base/lib/demo_night --single-version-externally-managed install_data
+[2.013s] running egg_info
+[2.014s] creating build/demo_night/demo_night.egg-info
+[2.014s] writing build/demo_night/demo_night.egg-info/PKG-INFO
+[2.015s] writing dependency_links to build/demo_night/demo_night.egg-info/dependency_links.txt
+[2.015s] writing entry points to build/demo_night/demo_night.egg-info/entry_points.txt
+[2.016s] writing requirements to build/demo_night/demo_night.egg-info/requires.txt
+[2.016s] writing top-level names to build/demo_night/demo_night.egg-info/top_level.txt
+[2.019s] writing manifest file 'build/demo_night/demo_night.egg-info/SOURCES.txt'
+[2.083s] reading manifest file 'build/demo_night/demo_night.egg-info/SOURCES.txt'
+[2.085s] writing manifest file 'build/demo_night/demo_night.egg-info/SOURCES.txt'
+[2.085s] running build
+[2.085s] running build_py
+[2.085s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build
+[2.086s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib
+[2.086s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.086s] copying demo_night/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.087s] copying demo_night/commander_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.087s] copying demo_night/realsense_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.087s] copying demo_night/gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.088s] copying demo_night/arducam_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.088s] copying demo_night/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.089s] copying demo_night/aruco_rehoming_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.089s] copying demo_night/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.089s] copying demo_night/tool_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.090s] copying demo_night/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.090s] copying demo_night/display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.091s] copying demo_night/optical_path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night
+[2.092s] running install
+[2.093s] running install_lib
+[2.095s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.096s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/sabertooth.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.096s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/commander_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.096s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/realsense_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.097s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/gui_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.097s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/arducam_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.097s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/PID.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.097s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/aruco_rehoming_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.098s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/__init__.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.098s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/tool_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.098s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/gtg_controller_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.098s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/display_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.099s] copying /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build/lib/demo_night/optical_path_follower_node.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night
+[2.100s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/sabertooth.py to sabertooth.cpython-38.pyc
+[2.103s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/commander_node.py to commander_node.cpython-38.pyc
+[2.106s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/realsense_node.py to realsense_node.cpython-38.pyc
+[2.108s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/gui_node.py to gui_node.cpython-38.pyc
+[2.114s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/arducam_node.py to arducam_node.cpython-38.pyc
+[2.115s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/PID.py to PID.cpython-38.pyc
+[2.116s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/aruco_rehoming_node.py to aruco_rehoming_node.cpython-38.pyc
+[2.121s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/__init__.py to __init__.cpython-38.pyc
+[2.121s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/tool_controller_node.py to tool_controller_node.cpython-38.pyc
+[2.123s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/gtg_controller_node.py to gtg_controller_node.cpython-38.pyc
+[2.127s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/display_node.py to display_node.cpython-38.pyc
+[2.130s] byte-compiling /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night/optical_path_follower_node.py to optical_path_follower_node.cpython-38.pyc
+[2.131s] running install_data
+[2.132s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/ament_index
+[2.132s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/ament_index/resource_index
+[2.132s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/ament_index/resource_index/packages
+[2.132s] copying resource/demo_night -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/ament_index/resource_index/packages
+[2.132s] copying package.xml -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night
+[2.133s] creating /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/launch
+[2.133s] copying launch/launch.py -> /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/launch
+[2.133s] running install_egg_info
+[2.137s] Copying build/demo_night/demo_night.egg-info to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages/demo_night-0.0.0-py3.8.egg-info
+[2.139s] running install_scripts
+[2.176s] Installing arducam_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.176s] Installing aruco_rehoming_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.176s] Installing commander_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.176s] Installing display_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.177s] Installing gtg_controller_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.177s] Installing gui_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.177s] Installing optical_path_follower_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.177s] Installing realsense_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.177s] Installing tool_controller_node script to /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/demo_night
+[2.178s] writing list of installed files to '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/install.log'
+[2.237s] Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/demo_night build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/install.log --install-scripts $base/lib/demo_night --single-version-externally-managed install_data

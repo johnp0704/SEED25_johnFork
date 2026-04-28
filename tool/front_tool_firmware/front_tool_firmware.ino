@@ -4,6 +4,7 @@
 #include <EEPROM.h>
 #include <Wire.h>
 #include <SparkFun_VL53L1X.h>
+#include "esp_system.h"
 
 SFEVL53L1X distanceSensor;
 
@@ -41,7 +42,7 @@ SFEVL53L1X distanceSensor;
 //  DRILL CONFIG
 // ============================================================
 #define DRILL_STARTUP_MS   2000   // ms to spin up/down drill before/after move
-#define DRILL_DUTY_PCT     80     // PWM duty cycle for drill motor (0-100)
+#define DRILL_DUTY_PCT     0//15     // PWM duty cycle for drill motor (0-100)
 
 // ============================================================
 //  EEPROM CONFIG
@@ -149,6 +150,33 @@ void bothOff() {
     setDuty(PWM_CH_CCW, 0);
 }
 
+// ============================================================
+//  STOP FLAG
+// ============================================================
+volatile bool stopRequested = false;
+
+// Call inside any blocking loop. Drains serial looking for "stop";
+// if found, kills outputs and resets the chip immediately.
+void checkStop() {
+    while (Serial.available()) {
+        char c = Serial.read();
+        if (c == 's') {
+            // Read rest of "stop\n" non-blocking
+            delay(2);
+            String tail = "";
+            while (Serial.available()) tail += (char)Serial.read();
+            tail.trim();
+            if (tail == "top") {
+                bothOff();
+                Serial.flush();
+                Serial.println("ESTOP");
+                esp_restart();
+            }
+        }
+    }
+}
+
+
 void pwmSetChannel(ledc_channel_t ch, uint8_t pct) {
     uint32_t duty  = (uint32_t)(pct * (1 << PWM_RES_BITS) / 100);
     ledc_channel_t other = (ch == PWM_CH_CW) ? PWM_CH_CCW : PWM_CH_CW;
@@ -245,6 +273,7 @@ void sendStep(uint32_t freq_hz) {
     item.duration1 = half;
 
     rmt_write_items(RMT_CHANNEL, &item, 1, true);
+    checkStop();
 }
 
 // ============================================================
@@ -325,17 +354,17 @@ void moveAbsolute(long targetPos) {
 // ============================================================
 void doHome() {
     digitalWrite(DIR_GPIO, HIGH);
-    while (!homeTriggered()) sendStep(HOMING_SPEED);
+    while (!homeTriggered()) { sendStep(HOMING_SPEED); checkStop(); }
 
     delay(50);
 
     digitalWrite(DIR_GPIO, LOW);
-    while (homeTriggered()) sendStep(BACKOFF_SPEED);
+    while (homeTriggered()) { sendStep(BACKOFF_SPEED); checkStop(); }
 
     delay(50);
 
     digitalWrite(DIR_GPIO, HIGH);
-    while (!homeTriggered()) sendStep(BACKOFF_SPEED);
+    while (!homeTriggered()) { sendStep(BACKOFF_SPEED); checkStop(); }
 
     delay(50);
 
@@ -407,6 +436,11 @@ void handleCommand(const String &raw) {
     } else if (cmd.equalsIgnoreCase("drill")) {
         int rc = doDrill();
         Serial.println(rc);
+
+    } else if (cmd.equalsIgnoreCase("stop")) {
+        bothOff();
+        Serial.flush();
+        esp_restart();
     }
     // unknown commands silently ignored
 }
@@ -448,3 +482,6 @@ void loop() {
         }
     }
 }
+
+
+

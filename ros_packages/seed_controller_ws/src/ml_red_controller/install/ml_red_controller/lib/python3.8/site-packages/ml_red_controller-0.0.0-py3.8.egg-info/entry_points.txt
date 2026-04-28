@@ -1,0 +1,5 @@
+[console_scripts]
+cam_display_node = ml_red_controller.cam_display_node:main
+gtg_controller_node = ml_red_controller.gtg_controller_node:main
+ml_red_detector_node = ml_red_controller.ml_red_detector_node:main
+

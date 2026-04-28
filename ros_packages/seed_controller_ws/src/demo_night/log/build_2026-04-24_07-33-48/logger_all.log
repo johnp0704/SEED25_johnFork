@@ -1,0 +1,91 @@
+[0.477s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.477s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffff828fa4f0>>, merge_install=False, metas=['./colcon.meta'], mixin=None, mixin_files=None, mixin_verb=('build',), packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=4, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffff828fa4f0>, verb_name='build', verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffff828faa00>)
+[0.840s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.840s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.840s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.841s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.841s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.841s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.841s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night'
+[0.841s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.842s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.843s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.871s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_python' and name 'demo_night'
+[0.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.872s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.908s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.909s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.940s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 9 installed packages in /home/airlab/seed25/ros_packages/seed_controller_ws/install
+[0.943s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 259 installed packages in /opt/ros/foxy
+[0.946s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[1.073s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_args' from command line to 'None'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_target' from command line to 'None'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_clean_cache' from command line to 'False'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_clean_first' from command line to 'False'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'cmake_force_configure' from command line to 'False'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'ament_cmake_args' from command line to 'None'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'catkin_cmake_args' from command line to 'None'
+[1.074s] Level 5:colcon.colcon_core.verb:set package 'demo_night' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.074s] DEBUG:colcon.colcon_core.verb:Building package 'demo_night' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night', 'merge_install': False, 'path': '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night', 'symlink_install': False, 'test_result_base': None}
+[1.074s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[1.077s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[1.077s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night' with build type 'ament_python'
+[1.078s] Level 1:colcon.colcon_core.shell:create_environment_hook('demo_night', 'ament_prefix_path')
+[1.082s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.083s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/ament_prefix_path.ps1'
+[1.084s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/ament_prefix_path.dsv'
+[1.085s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/ament_prefix_path.sh'
+[1.087s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.087s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.648s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night'
+[1.649s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.649s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.564s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/demo_night build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/install.log --install-scripts $base/lib/demo_night --single-version-externally-managed install_data
+[3.315s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night' returned '0': PYTHONPATH=/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py egg_info --egg-base build/demo_night build --build-base /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/build install --record /home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/build/demo_night/install.log --install-scripts $base/lib/demo_night --single-version-externally-managed install_data
+[3.325s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night' for CMake module files
+[3.327s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night' for CMake config files
+[3.329s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib'
+[3.330s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/bin'
+[3.330s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/pkgconfig/demo_night.pc'
+[3.331s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/lib/python3.8/site-packages'
+[3.331s] Level 1:colcon.colcon_core.shell:create_environment_hook('demo_night', 'pythonpath')
+[3.332s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/pythonpath.ps1'
+[3.334s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/pythonpath.dsv'
+[3.335s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/hook/pythonpath.sh'
+[3.337s] Level 1:colcon.colcon_core.environment:checking '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/bin'
+[3.337s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(demo_night)
+[3.339s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/package.ps1'
+[3.341s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/package.dsv'
+[3.342s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/package.sh'
+[3.344s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/package.bash'
+[3.345s] INFO:colcon.colcon_core.shell:Creating package script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/demo_night/package.zsh'
+[3.348s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/demo_night/share/colcon-core/packages/demo_night)
+[3.349s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[3.350s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[3.350s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[3.351s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[3.367s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[3.367s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[3.367s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[3.391s] DEBUG:colcon.colcon_notification.desktop_notification.notify2:Failed to initialize notify2: org.freedesktop.DBus.Error.Spawn.ChildExited: Process org.freedesktop.Notifications exited with status 1
+[3.391s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[3.392s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/local_setup.ps1'
+[3.394s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/_local_setup_util_ps1.py'
+[3.398s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/setup.ps1'
+[3.401s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/local_setup.sh'
+[3.403s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/_local_setup_util_sh.py'
+[3.404s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/setup.sh'
+[3.408s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/local_setup.bash'
+[3.409s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/setup.bash'
+[3.412s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/local_setup.zsh'
+[3.413s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/airlab/seed25/ros_packages/seed_controller_ws/src/demo_night/install/setup.zsh'

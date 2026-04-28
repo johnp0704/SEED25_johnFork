@@ -1,47 +1,61 @@
+# waypoint_manager_node.py
 import rclpy
 from rclpy.node import Node
 from mocap4r2_msgs.msg import RigidBodies
 from geometry_msgs.msg import Point, Pose2D
-from std_msgs.msg import Empty  # <-- NEW: Used for the start trigger
+from std_msgs.msg import Empty
 from scipy.spatial.transform import Rotation as R
+from scipy.interpolate import splprep, splev
 import numpy as np
 
 class WaypointManagerNode(Node):
     def __init__(self):
         super().__init__('waypoint_manager_node')
 
-        self.GOAL_THRESH = 0.3  # meters
-        self.current_waypoint_idx = 0 
-        
-        # --- NEW: Topic-based Startup Logic ---
+        self.GOAL_THRESH = 0.15
+        self.current_waypoint_idx = 0
+
         self.mission_started = False
         self.get_logger().info("Waiting for start signal. Run: ros2 topic pub --once /start_mission std_msgs/msg/Empty {}")
-        
-        # Listen for the start command
         self.create_subscription(Empty, '/start_mission', self.start_callback, 10)
-        # --------------------------------------
 
-        self.waypoints = [
-            (0.54899, -0.96740),
-            (-0.56269, 0.74570),
-            (-0.93254, -0.45896),
+        raw_waypoints = [
+            (0.9648,0.69976),
+            (0.09597,0.72418),
+            (-0.4974,0.67635),
+            (-1.1528,0.65479),
+            (-1.52718,0.50588),
+            (-1.5958,0.17548),
+            (-1.33124,-0.14362),
+            (-0.84188,-0.10136),
+            (-0.01673,-0.09453),
+            (0.83987,-0.10445),
+            (1.14145,-0.60751),
+            (0.48705,-0.936818),
+            (-0.957633,-0.95586),
+            (-1.58721,-0.987335),
+            (0.9648,0.69976),
         ]
+
+        pts = np.array(raw_waypoints)
+        tck, u = splprep([pts[:,0], pts[:,1]], s=0, k=2)
+        u_new = np.linspace(u.min(), u.max(), 50)
+        x_new, y_new = splev(u_new, tck)
+        self.waypoints = list(zip(x_new, y_new))
+        self.get_logger().info(f"Generated smooth spline with {len(self.waypoints)} points.")
 
         self.pose_pub = self.create_publisher(Pose2D, '/robot/pose2d', 10)
         self.target_pub = self.create_publisher(Point, '/robot/current_target', 10)
-
         self.create_subscription(RigidBodies, '/rigid_bodies', self.rigid_bodies_callback, 10)
 
         self.robot_pose = None
 
     def start_callback(self, msg):
-        """Triggers when a message is published to /start_mission"""
         if not self.mission_started:
             self.mission_started = True
             self.get_logger().info("Start command received! Beginning waypoint navigation.")
 
     def rigid_bodies_callback(self, msg):
-        # Tracking rigid body '1'
         robot_body = next((rb for rb in msg.rigidbodies if rb.rigid_body_name == '1'), None)
         if robot_body is None:
             return
@@ -58,34 +72,38 @@ class WaypointManagerNode(Node):
         self.robot_pose.x = pos.x
         self.robot_pose.y = pos.y
         self.robot_pose.theta = yaw
-        
-        # Always publish the pose so the virtual twin updates immediately
-        self.pose_pub.publish(self.robot_pose)
 
+        self.pose_pub.publish(self.robot_pose)
         self.update_waypoint()
 
     def update_waypoint(self):
-        # Block target processing until the start topic is received
-        if not self.mission_started:
-            return
-            
-        if self.robot_pose is None:
+        if not self.mission_started or self.robot_pose is None:
             return
 
         if self.current_waypoint_idx >= len(self.waypoints):
-            self.get_logger().info("All waypoints reached! Path complete.", throttle_duration_sec=2.0)
+            self.get_logger().info("All waypoints reached!", throttle_duration_sec=2.0)
             return
 
         target_x, target_y = self.waypoints[self.current_waypoint_idx]
-
         dx = target_x - self.robot_pose.x
         dy = target_y - self.robot_pose.y
         dist_to_goal = np.sqrt(dx**2 + dy**2)
 
+        # ADD THIS — will print at most once per second so it doesn't spam
+        self.get_logger().info(
+            f"Waypoint idx={self.current_waypoint_idx}, "
+            f"robot=({self.robot_pose.x:.3f},{self.robot_pose.y:.3f}), "
+            f"target=({target_x:.3f},{target_y:.3f}), "
+            f"dist={dist_to_goal:.3f}",
+            throttle_duration_sec=1.0
+        )
+
         if dist_to_goal < self.GOAL_THRESH:
-            self.get_logger().info(f"Reached waypoint {self.current_waypoint_idx}! Advancing...")
             self.current_waypoint_idx += 1
-            return 
+            if self.current_waypoint_idx >= len(self.waypoints):
+                self.get_logger().info("All waypoints reached!")
+                return
+            target_x, target_y = self.waypoints[self.current_waypoint_idx]
 
         target_msg = Point()
         target_msg.x = float(target_x)

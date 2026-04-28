@@ -1,0 +1,6 @@
+train: C:\UVM\SEED\SEED25\Images\Testing Annotated\YOLOredPoster\Data\images\train
+val: C:\UVM\SEED\SEED25\Images\Testing Annotated\YOLOredPoster\Data\images\val
+
+names:
+  0: red
+  1: no_red

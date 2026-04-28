@@ -1,150 +1,201 @@
+# path_follower_node.py
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point, Pose2D
+from std_msgs.msg import Bool, Float32MultiArray
 import numpy as np
 import atexit
 
-# Import your custom modules from the package
-from opti_waypoint_nav import sabertooth as st 
+from opti_waypoint_nav import sabertooth as st
 from opti_waypoint_nav.PID import PID
 
 class PathFollowerNode(Node):
     def __init__(self):
         super().__init__('path_follower_node')
 
-        # Configuration Constants
-        self.MAX_ACTUATOR_INPUT = 30
-        self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.ANGLE_THRESH = np.deg2rad(1)   
-        self.PIVOT_THRESH = np.deg2rad(3)  
-        
-        self.R_wheel = 0.08
-        self.L = 0.178
-        self.K_e = 30
-        self.K_theta = -self.K_e * 10
+        self.MAX_ACTUATOR_INPUT = 50
 
-        # --- NEW: Center Tuning Constants ---
-        # Offset from the OptiTrack rigid body origin to the true robot control center (in meters).
-        # OFFSET_X: Positive is forward, negative is backward.
-        # OFFSET_Y: Positive is left, negative is right.
+        # Above this, bang-bang pivot before driving
+        self.PIVOT_THRESH = np.deg2rad(15.0)
+
+        # Fixed speeds for bang-bang pivot
+        self.PIVOT_SPEED = 50.0
+        self.PIVOT_BACK_FRACTION = 0.6
+
+        # Forward drive speed — constant, no distance slowdown
+        self.DRIVE_SPEED = 50.0
+
+        # Verified convention (True, True):
+        #   Forward    = (+X, +X)
+        #   Turn left  = (-X, +X)  CCW top-down
+        #   Turn right = (+X, -X)  CW top-down
+
         self.OFFSET_X = 0.0
-        self.OFFSET_Y = 0.0  
-        
-        # --- NEW: Pause State Variables ---
-        self.PAUSE_DURATION = 3.0  # seconds
-        self.current_target_coords = None
-        self.pause_end_time = None
+        self.OFFSET_Y = 0.0
 
-        # Initialize PID Controller for Heading
-        self.pid_heading = PID(
-            Kp=self.K_theta, 
-            Ki=0.0, 
-            Kd=0.0, 
-            Ts=0.1, 
-            umax=self.MAX_ACTUATOR_INPUT, 
-            umin=-self.MAX_ACTUATOR_INPUT
+        self.motor_disabled = False
+        self.vision_wl = 0.0
+        self.vision_wr = 0.0
+        self.last_vision_time = 0
+
+        # PID for steering correction during DRIVE state.
+        # Output is a signed correction value added/subtracted to wheel speeds.
+        # Kp=15: at 15deg error (0.26 rad) -> correction = 15 * 0.26 = 3.9 units
+        # Start with P only, add Kd once P is tuned, Ki last.
+        # N is the derivative filter coefficient — 10-20 is a good range.
+        # Kaw is anti-windup gain — set to 1.0 to start.
+        self.pid_steer = PID(
+            Kp=15.0,
+            Ki=0.8,
+            Kd=2.0,
+            N=15.0,
+            Ts=0.1,
+            umax=self.MAX_ACTUATOR_INPUT,
+            umin=-self.MAX_ACTUATOR_INPUT,
+            Kaw=2.0
         )
 
-        # State Variables
-        self.robot_pose = None
+        self.robot_x = None
+        self.robot_y = None
+        self.robot_yaw = None
+        self.x_des = None
+        self.y_des = None
+
         self.last_target_time = self.get_clock().now()
 
-        # Initialize Motors
         try:
             self.motor = st.SaberToothMotorDriver(True, True)
-            self.get_logger().info("Motors Initialized.")
+            self.get_logger().info("Motors initialized. Waiting for commands...")
         except Exception as e:
             self.get_logger().error(f"Failed to initialize motors: {e}")
-        
+
         atexit.register(self.motor.all_motors_off)
 
-        # Subscribers
         self.create_subscription(Pose2D, '/robot/pose2d', self.pose_callback, 10)
         self.create_subscription(Point, '/robot/current_target', self.target_callback, 10)
+        self.create_subscription(Bool, '/motor_disable', self.disable_callback, 10)
+        self.create_subscription(Float32MultiArray, '/vision/wheel_cmd', self.vision_cmd_callback, 10)
 
-        # Safety Timer 
-        self.create_timer(0.1, self.safety_check)
+        self.create_timer(0.1, self.control_loop)
+
+    def disable_callback(self, msg):
+        self.motor_disabled = msg.data
+        if self.motor_disabled:
+            self.get_logger().info("MOTORS DISABLED.", throttle_duration_sec=2.0)
+
+    def vision_cmd_callback(self, msg):
+        self.vision_wl = msg.data[0]
+        self.vision_wr = msg.data[1]
+        self.last_vision_time = self.get_clock().now().nanoseconds
 
     def pose_callback(self, msg):
-        self.robot_pose = msg
+        yaw = msg.theta
+        self.robot_x = msg.x + (self.OFFSET_X * np.cos(yaw) - self.OFFSET_Y * np.sin(yaw))
+        self.robot_y = msg.y + (self.OFFSET_X * np.sin(yaw) + self.OFFSET_Y * np.cos(yaw))
+        self.robot_yaw = yaw
 
     def target_callback(self, msg):
         self.last_target_time = self.get_clock().now()
-        
-        if self.robot_pose is None:
-            return
+        new_x, new_y = msg.x, msg.y
 
-        # 1. Unpack raw state and target
-        raw_x, raw_y, yaw = self.robot_pose.x, self.robot_pose.y, self.robot_pose.theta
-        x_des, y_des = msg.x, msg.y
+        # Reset PID when waypoint changes to avoid stale integral/derivative
+        if self.x_des is not None:
+            if abs(new_x - self.x_des) > 0.05 or abs(new_y - self.y_des) > 0.05:
+                self.pid_steer.istate = 0.0
+                self.pid_steer.dstate = 0.0
+                self.pid_steer.error_prev = 0.0
 
-        # --- 2. Center Tuning ---
-        # Apply the rotation matrix to shift the control center
-        x = raw_x + (self.OFFSET_X * np.cos(yaw) - self.OFFSET_Y * np.sin(yaw))
-        y = raw_y + (self.OFFSET_X * np.sin(yaw) + self.OFFSET_Y * np.cos(yaw))
+        self.x_des = new_x
+        self.y_des = new_y
 
-        # --- 3. Waypoint Pause Logic ---
-        # Detect if the target has changed to a new waypoint coordinate
-        if self.current_target_coords is None or (self.current_target_coords[0] != x_des or self.current_target_coords[1] != y_des):
-            self.current_target_coords = (x_des, y_des)
-            self.get_logger().info(f"New target acquired. Pausing for {self.PAUSE_DURATION} seconds.")
-            # Calculate the future time when the pause should end (converted to nanoseconds)
-            self.pause_end_time = self.get_clock().now().nanoseconds + (self.PAUSE_DURATION * 1e9)
+    def control_loop(self):
 
-        # If we are currently inside the pause window, hold motors at 0 and skip control math
-        if self.pause_end_time and self.get_clock().now().nanoseconds < self.pause_end_time:
+        # --- Priority 1: Auger active ---
+        if self.motor_disabled:
             self.motor.updateMotorSpeed(0, 0)
             return
 
-        # 4. Calculate pure distances and desired angle
-        dx = x_des - x
-        dy = y_des - y
+        # --- Priority 2: Vision override ---
+        if (self.get_clock().now().nanoseconds - self.last_vision_time) < 5e8:
+            self.get_logger().info("Vision GTG Override Active", throttle_duration_sec=1.0)
+            self.motor.updateMotorSpeed(self.vision_wl, self.vision_wr)
+            return
         
+        # --- Safety: no recent target ---
+        elapsed_ns = (self.get_clock().now() - self.last_target_time).nanoseconds
+        if elapsed_ns > 5e8:
+            self.motor.updateMotorSpeed(0, 0)
+            return
+
+        # --- Priority 3: Waypoint nav ---
+        if self.robot_x is None or self.x_des is None:
+            return
+
+        dx = self.x_des - self.robot_x
+        dy = self.y_des - self.robot_y
+
         theta_des = np.arctan2(dy, dx)
-        error_theta = theta_des - yaw
-        
-        # Wrap angle to [-pi, pi]
-        error_theta_wrapped = np.arctan2(np.sin(error_theta), np.cos(error_theta))
+        error_theta = np.arctan2(
+            np.sin(theta_des - self.robot_yaw),
+            np.cos(theta_des - self.robot_yaw)
+        )
 
-        # 5. Calculate Angular Command (PID Control)
-        w_des = 0
-        if abs(error_theta_wrapped) > self.ANGLE_THRESH:
-            w_des = self.pid_heading.update(setpoint=error_theta_wrapped, output=0.0)
+        self.get_logger().info(
+            f"error={np.degrees(error_theta):.1f}deg  "
+            f"robot=({self.robot_x:.2f},{self.robot_y:.2f})  "
+            f"target=({self.x_des:.2f},{self.y_des:.2f})",
+            throttle_duration_sec=0.5
+        )
 
-        # 6. Calculate Velocity/Translation Command (Pivot-Then-Go Logic)
-        if abs(error_theta_wrapped) > self.PIVOT_THRESH:
-            # If we are facing the wrong way, do not move forward. Just pivot.
-            S_sat = 0.0
-        else:
-            # If heading is good, calculate forward speed based on distance
-            S_des = self.K_e * np.sqrt(dx**2 + dy**2)
-            S_sat = np.clip(S_des, -self.S_MAX, self.S_MAX)
+        # ----------------------------------------------------------
+        # PIVOT state: bang-bang spin for large heading errors.
+        # Bypass PID entirely — it can't overcome stiction at small outputs.
+        # Also reset PID state so it starts fresh when we enter DRIVE.
+        # ----------------------------------------------------------
+        if abs(error_theta) > self.PIVOT_THRESH:
+            self.pid_steer.istate = 0.0
+            self.pid_steer.dstate = 0.0
+            self.pid_steer.error_prev = 0.0
 
-        # 7. Kinematics (Convert to left/right wheel speeds)
-        wr_des = (S_sat - self.L * w_des) / self.R_wheel
-        wl_des = (S_sat + self.L * w_des) / self.R_wheel
+            if error_theta > 0:
+                # Target to the LEFT — turn left CCW = (-X, +X)
+                wl_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
+                wr_des =  self.PIVOT_SPEED
+            else:
+                # Target to the RIGHT — turn right CW = (+X, -X)
+                wl_des =  self.PIVOT_SPEED
+                wr_des = -self.PIVOT_SPEED * self.PIVOT_BACK_FRACTION
 
-        # 8. Saturation and Scaling
-        maxInput = max(abs(wr_des), abs(wl_des))
-        if maxInput > self.MAX_ACTUATOR_INPUT:
-            speed_adjust_factor = self.MAX_ACTUATOR_INPUT / maxInput
-            wr_des *= speed_adjust_factor
-            wl_des *= speed_adjust_factor
+            self.motor.updateMotorSpeed(wl_des, wr_des)
+            return
 
-        wr_des_sat = np.clip(wr_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
-        wl_des_sat = np.clip(wl_des, -self.MAX_ACTUATOR_INPUT, self.MAX_ACTUATOR_INPUT)
+        # ----------------------------------------------------------
+        # DRIVE state: PID steering correction mixed into both wheels.
+        # correction > 0 means turn left: slow left, speed right
+        # correction < 0 means turn right: speed left, slow right
+        #
+        # By subtracting correction from left and adding to right,
+        # a large enough correction will push one wheel negative,
+        # giving a sharp counter-rotating arc without a full stop.
+        # ----------------------------------------------------------
+        correction = self.pid_steer.update(setpoint=error_theta, output=0.0)
 
-        # Send commands to motors
-        self.motor.updateMotorSpeed(wl_des_sat, wr_des_sat)
+        wl_des = self.DRIVE_SPEED - correction
+        wr_des = self.DRIVE_SPEED + correction
 
-    def safety_check(self):
-        # Stop motors if no target seen in 0.5 seconds (e.g., path finished or tracking lost)
-        if (self.get_clock().now() - self.last_target_time).nanoseconds > 5e8:
-            self.motor.updateMotorSpeed(0, 0)
+        # Scale to fit within actuator limits while preserving the ratio
+        max_input = max(abs(wl_des), abs(wr_des))
+        if max_input > self.MAX_ACTUATOR_INPUT:
+            scale = self.MAX_ACTUATOR_INPUT / max_input
+            wl_des *= scale
+            wr_des *= scale
+
+        self.motor.updateMotorSpeed(wl_des, wr_des)
 
     def destroy_node(self):
         self.motor.all_motors_off()
         super().destroy_node()
+
 
 def main(args=None):
     rclpy.init(args=args)

@@ -17,11 +17,11 @@ class MLDetectionNode(Node):
         super().__init__('ml_red_detector_node')
         
         self.image_pub = self.create_publisher(Image, '/camera/annotated_image', 10)
-        self.target_pub = self.create_publisher(Point, '/vision/target_point', 10)
+        self.target_pub = self.create_publisher(Point, '/vision/realsense_target', 10)
         self.bridge = CvBridge()
 
         # Load Calibration Data
-        load_file = r"calibration_data.npz"
+        load_file = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/calibration_data.npz"
         if os.path.exists(load_file):
             data = np.load(load_file)
             self.matrix = data['matrix']
@@ -32,7 +32,7 @@ class MLDetectionNode(Node):
             self.matrix = None
 
         # Initialize YOLO
-        model_path = r"/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.engine" 
+        model_path = "/home/airlab/seed25/Machine_Learning/YOLOred/runs/red_train_7/weights/best.engine" 
         self.model = YOLO(model_path, task='detect')
         self.get_logger().info("YOLO Model loaded.")
 

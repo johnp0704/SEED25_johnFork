@@ -1,110 +1,215 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Point
+from std_msgs.msg import Float32MultiArray, String
 import numpy as np
 import math
 import os
-from ml_red_controller import sabertooth as st
-from ml_red_controller.PID import PID 
+from ml_red_controller.PID import PID
+
+
+# ==============================================================================
+# TUNING CONSTANTS
+# ==============================================================================
+
+# --- RealSense offset corrections (meters) ---
+# Positive OFFSET_X moves the effective goal further forward (robot stops further away)
+# Positive OFFSET_Y moves the effective goal to the left
+REALSENSE_OFFSET_X = -0.3
+REALSENSE_OFFSET_Y =  0.16
+
+# --- Arducam offset corrections (meters) ---
+ARDUCAM_OFFSET_X = 0.1
+ARDUCAM_OFFSET_Y = 0.0
+
+# --- Camera handoff ---
+# RealSense hands off to Arducam when it loses detection for this long
+REALSENSE_TIMEOUT_SEC = 0.5
+
+# --- Goal threshold: stop and trigger auger within this distance (meters) ---
+GOAL_THRESH_REALSENSE = 0.30
+GOAL_THRESH_ARDUCAM   = 0.15
+
+# --- Motion parameters ---
+MAX_ACTUATOR_INPUT = 50.0
+PIVOT_THRESH       = np.deg2rad(30.0)
+PIVOT_SPEED        = 40.0
+DRIVE_SPEED        = 40.0
+COOLDOWN_DUR       = 15.0
+
+# --- PID steering (only active during DRIVE state) ---
+PID_KP  = 15.0
+PID_KI  = 0.5
+PID_KD  = 2.0
+PID_N   = 15.0
+PID_KAW = 1.0
+
+# ==============================================================================
+
 
 class GTGControllerNode(Node):
     def __init__(self):
         super().__init__('gtg_controller_node')
-        
-        # Load Constants
+
         self.load_calibration()
-        self.MAX_ACTUATOR_INPUT = 30 
-        self.S_MAX = (self.MAX_ACTUATOR_INPUT - 10) * 0.6
-        self.GOAL_THRESH = 0.3 
-        self.ANGLE_THRESH = np.deg2rad(3) 
-        self.PIVOT_THRESHOLD = np.deg2rad(15)
-        self.R_wheel = 0.08 
-        self.L = 0.178 
-        self.K_e = 30
-        self.K_theta = -self.K_e * 10 
 
-        # Initialize Motors
-        try:
-            self.motor = st.SaberToothMotorDriver(True, True)
-            self.get_logger().info("Motors Initialized.")
-        except Exception as e:
-            self.get_logger().error(f"Failed to initialize motors: {e}")
+        self.cooldown_end_time   = 0
+        self.active_camera       = 'realsense'
+        self.last_realsense_time = 0
 
-        self.pid_heading = PID(Kp=self.K_theta, Ki=0.0, Kd=0.0, Ts=1/30, umin=-200, umax=200)
+        self.pid_steer = PID(
+            Kp=PID_KP, Ki=PID_KI, Kd=PID_KD,
+            N=PID_N, Ts=1/30.0,
+            umax=MAX_ACTUATOR_INPUT, umin=-MAX_ACTUATOR_INPUT,
+            Kaw=PID_KAW
+        )
 
-        # Subscriber
-        self.subscription = self.create_subscription(Point, '/vision/target_point', self.control_callback, 10)
-        
-        # Safety timer (stops motors if target is lost)
-        self.last_target_time = self.get_clock().now()
-        self.safety_timer = self.create_timer(0.1, self.safety_check)
+        self.wheel_cmd_pub     = self.create_publisher(Float32MultiArray, '/vision/wheel_cmd', 10)
+        self.auger_trigger_pub = self.create_publisher(String, '/auger/activate', 10)
+
+        self.create_subscription(Point, '/vision/realsense_target', self.realsense_callback, 10)
+        self.create_subscription(Point, '/vision/arducam_target',   self.arducam_callback,   10)
 
     def load_calibration(self):
-        load_file = r"calibration_data.npz"
-        if os.path.exists(load_file):
-            data = np.load(load_file)
-            self.pixels_per_meter = float(data['pixels_per_meter'])
-            self.robot_x = int(data['robot_x'])
-            self.robot_y = int(data['robot_y'])
+        rs_file  = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/calibration_data.npz"
+        arc_file = "/home/airlab/seed25/ros_packages/seed_controller_ws/src/ml_red_controller/ml_red_controller/arducam_calibration_data.npz"
+
+        if os.path.exists(rs_file):
+            data = np.load(rs_file)
+            self.rs_pixels_per_meter = float(data['pixels_per_meter'])
+            self.rs_robot_x          = int(data['robot_x'])
+            self.rs_robot_y          = int(data['robot_y'])
+            self.get_logger().info("RealSense calibration loaded.")
         else:
-            self.get_logger().error("Calibration file not found!")
+            self.get_logger().error(f"RealSense calibration not found: {rs_file}")
+            self.rs_pixels_per_meter = 1.0
+            self.rs_robot_x = 0
+            self.rs_robot_y = 0
 
-    def control_callback(self, msg):
-        self.last_target_time = self.get_clock().now()
-        cX, cY = msg.x, msg.y
+        if os.path.exists(arc_file):
+            data = np.load(arc_file)
+            self.arc_pixels_per_meter = float(data['pixels_per_meter'])
+            self.arc_robot_x          = int(data['robot_x'])
+            self.arc_robot_y          = int(data['robot_y'])
+            self.get_logger().info("Arducam calibration loaded.")
+        else:
+            self.get_logger().warn(f"Arducam calibration not found: {arc_file}")
+            self.arc_pixels_per_meter = 1.0
+            self.arc_robot_x = 0
+            self.arc_robot_y = 0
 
-        # 1. Calculate Error Vector
-        dx_px = cX - self.robot_x
-        dy_px = self.robot_y - cY 
-        
-        rel_x = (dx_px / self.pixels_per_meter) - 0.1
-        rel_y = (dy_px / self.pixels_per_meter) + 0.16
+    def _reset_pid(self):
+        self.pid_steer.istate     = 0.0
+        self.pid_steer.dstate     = 0.0
+        self.pid_steer.error_prev = 0.0
 
-        x_robot = rel_y
+    def _pixel_to_robot_frame(self, cX, cY, offset_x, offset_y, pixels_per_meter, robot_x, robot_y):
+        dx_px   = cX - robot_x
+        dy_px   = robot_y - cY
+        rel_x   = (dx_px / pixels_per_meter) + offset_x
+        rel_y   = (dy_px / pixels_per_meter) + offset_y
+        x_robot =  rel_y
         y_robot = -rel_x
-        dist_to_goal = math.sqrt(x_robot**2 + y_robot**2)
+        return x_robot, y_robot
 
-        if dist_to_goal <= self.GOAL_THRESH:
-            self.motor.updateMotorSpeed(0, 0)
+    def realsense_callback(self, msg):
+        self.last_realsense_time = self.get_clock().now().nanoseconds
+        if self.active_camera != 'realsense':
+            self.get_logger().info("RealSense regained detection — taking control.")
+            self._reset_pid()
+            self.active_camera = 'realsense'
+        x_robot, y_robot = self._pixel_to_robot_frame(
+            msg.x, msg.y,
+            REALSENSE_OFFSET_X, REALSENSE_OFFSET_Y,
+            self.rs_pixels_per_meter, self.rs_robot_x, self.rs_robot_y
+        )
+        dist = math.sqrt(x_robot**2 + y_robot**2)
+        self._run_control(x_robot, y_robot, dist, GOAL_THRESH_REALSENSE)
+
+    def arducam_callback(self, msg):
+        now_ns = self.get_clock().now().nanoseconds
+        realsense_age_sec = (now_ns - self.last_realsense_time) / 1e9
+        if realsense_age_sec < REALSENSE_TIMEOUT_SEC:
+            return
+        if self.active_camera != 'arducam':
+            self.get_logger().info(
+                f"RealSense lost for {realsense_age_sec:.1f}s — Arducam taking control."
+            )
+            self._reset_pid()
+            self.active_camera = 'arducam'
+        x_robot, y_robot = self._pixel_to_robot_frame(
+            msg.x, msg.y,
+            ARDUCAM_OFFSET_X, ARDUCAM_OFFSET_Y,
+            self.arc_pixels_per_meter, self.arc_robot_x, self.arc_robot_y
+        )
+        dist = math.sqrt(x_robot**2 + y_robot**2)
+        self._run_control(x_robot, y_robot, dist, GOAL_THRESH_ARDUCAM)
+
+    def _run_control(self, x_robot, y_robot, dist, goal_thresh):
+        # Cooldown check
+        if self.get_clock().now().nanoseconds < self.cooldown_end_time:
             return
 
-        # 2. Calculate Desired Heading
-        theta_des = math.atan2(self.K_e * y_robot, self.K_e * x_robot)
-        theta_des_wrapped = math.atan2(math.sin(theta_des), math.cos(theta_des))
+        # Goal reached — stop and trigger auger
+        if dist <= goal_thresh:
+            self.get_logger().info(f"Target reached (dist={dist:.2f}m)! Triggering auger.")
+            self._publish_wheels(0.0, 0.0)
+            trigger_msg      = String()
+            trigger_msg.data = "drill"
+            self.auger_trigger_pub.publish(trigger_msg)
+            self.cooldown_end_time = (
+                self.get_clock().now().nanoseconds + int(COOLDOWN_DUR * 1e9)
+            )
+            return
 
-        # 3. Pivot vs Drive
-        if abs(theta_des_wrapped) > self.PIVOT_THRESHOLD:
-            S_sat = 0
+        error_theta = math.atan2(y_robot, x_robot)
+
+        # Diagnostic log — shows sign of error vs physical target position
+        self.get_logger().info(
+            f"[{self.active_camera}] dist={dist:.2f}m  "
+            f"err={np.degrees(error_theta):.1f}deg  "
+            f"x_robot={x_robot:.3f} y_robot={y_robot:.3f}",
+            throttle_duration_sec=0.5
+        )
+
+        # ----------------------------------------------------------
+        # PIVOT: full counter-rotation until heading is aligned
+        # Verified convention (True, True wiring):
+        #   Turn left  CCW = (-X, +X)
+        #   Turn right CW  = (+X, -X)
+        # error_theta > 0 = target is to the LEFT
+        # error_theta < 0 = target is to the RIGHT
+        # ----------------------------------------------------------
+        if abs(error_theta) > PIVOT_THRESH:
+            self._reset_pid()
+            if error_theta > 0:
+                wl_des = -PIVOT_SPEED
+                wr_des =  PIVOT_SPEED
+            else:
+                wl_des =  PIVOT_SPEED
+                wr_des = -PIVOT_SPEED
+
+        # ----------------------------------------------------------
+        # DRIVE: heading aligned, PID correction mixed into wheels
+        # ----------------------------------------------------------
         else:
-            Ux_des = self.K_e * x_robot
-            Uy_des = self.K_e * y_robot
-            S_sat = np.clip(math.sqrt(Ux_des**2 + Uy_des**2), -self.S_MAX, self.S_MAX)
+            correction = self.pid_steer.update(setpoint=error_theta, output=0.0)
+            wl_des = DRIVE_SPEED - correction
+            wr_des = DRIVE_SPEED + correction
 
-        # 4. Angular PID Update
-        w_des = self.pid_heading.update(theta_des_wrapped, 0)
-        if abs(theta_des_wrapped) < self.ANGLE_THRESH:
-            w_des = 0
+            max_input = max(abs(wl_des), abs(wr_des))
+            if max_input > MAX_ACTUATOR_INPUT:
+                scale  = MAX_ACTUATOR_INPUT / max_input
+                wl_des *= scale
+                wr_des *= scale
 
-        # 5. Kinematics
-        wr_des = (S_sat - self.L * w_des) / self.R_wheel
-        wl_des = (S_sat + self.L * w_des) / self.R_wheel
+        self._publish_wheels(wl_des, wr_des)
 
-        maxInput = max(abs(wr_des), abs(wl_des))
-        if maxInput > self.MAX_ACTUATOR_INPUT:
-            scale = self.MAX_ACTUATOR_INPUT / maxInput
-            wr_des *= scale
-            wl_des *= scale
+    def _publish_wheels(self, left, right):
+        msg      = Float32MultiArray()
+        msg.data = [float(left), float(right)]
+        self.wheel_cmd_pub.publish(msg)
 
-        self.motor.updateMotorSpeed(wl_des, wr_des)
-
-    def safety_check(self):
-        # Stop motors if no target seen in 0.5 seconds
-        if (self.get_clock().now() - self.last_target_time).nanoseconds > 5e8:
-            self.motor.updateMotorSpeed(0, 0)
-
-    def destroy_node(self):
-        self.motor.all_motors_off()
-        super().destroy_node()
 
 def main(args=None):
     rclpy.init(args=args)
